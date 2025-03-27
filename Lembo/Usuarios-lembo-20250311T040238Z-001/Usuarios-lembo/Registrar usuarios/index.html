@@ -4,7 +4,8 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" href="styles.css"> <!-- Enlace al archivo CSS -->
+    <link rel="stylesheet" href="styles.css"> 
+    <script src="enviar.js"></script>
 </head>
 <body>
 
@@ -16,12 +17,12 @@
 </header>
 
 <main class="page__main">
-    <form class="form form--registro" id="registroForm">
+    <form class="form form--registro" id="registroForm" action="http://localhost:3000/register" method="POST">
         <h3 class="form__title">Registro usuario</h3>
         
         <div class="form__group">
             <label for="tipoUsuario">Tipo de Usuario</label>
-            <select id="tipoUsuario" name="tipoUsuario" class="form__select">
+            <select id="tipoUsuario" name="tipoUsuario" class="form__select form__select--user">
                 <option value="">Seleccione una opción</option>
                 <option value="superadmin">SADMIN</option>
                 <option value="admin">ADMIN</option>
@@ -32,7 +33,7 @@
         
         <div class="form__group">
             <label for="tipoDocumento">Tipo de Documento</label>
-            <select id="tipoDocumento" name="tipoDocumento" class="form__select">
+            <select id="tipoDocumento" name="tipoDocumento" class="form__select form__select--id">
                 <option value="">Seleccione una opción</option>
                 <option value="RC">RC</option>
                 <option value="TI">TI</option>
@@ -43,27 +44,27 @@
         
         <div class="form__group">
             <label for="numeroDocumento">Número del Documento</label>
-            <input type="text" id="numeroDocumento" name="numeroDocumento" class="form__input">
+            <input type="text" id="numeroDocumento" name="numeroDocumento" class="form__input form__input--id" required>
         </div>
         
         <div class="form__group">
             <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" class="form__input">
+            <input type="text" id="nombre" name="nombre" class="form__input form__input--name" required>
         </div>
         
         <div class="form__group">
             <label for="correo">Correo Electrónico</label>
-            <input type="email" id="correo" name="correo" class="form__input">
+            <input type="email" id="correo" name="correo" class="form__input form__input--email" required>
         </div>
         
         <div class="form__group">
             <label for="confirmarCorreo">Confirmar Correo</label>
-            <input type="email" id="confirmarCorreo" name="confirmarCorreo" class="form__input">
+            <input type="email" id="confirmarCorreo" name="confirmarCorreo" class="form__input form__input--email" required>
         </div>
         
         <div class="form__group">
             <label for="telefono">Número de Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" class="form__input">
+            <input type="tel" id="telefono" name="telefono" class="form__input .form__input--phone">
         </div>
 
         <!-- Aquí aparecerá el mensaje de validación -->
