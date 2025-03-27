@@ -21,20 +21,26 @@ db.connect(err => {
     console.log('Conectado a la BD - Full');
 });
 
-app.post('/user', (req, res) => {
-    const { name, email, address, phone } = req.body;
+app.post('/register', (req, res) => {
+    const { tipoUsuario, tipoDocumento, numeroDocumento, nombre, correo, telefono} = req.body;
+
+       // Validación para asegurarse de que los correos coincidan
+    if (correo !== confirmarCorreo) {
+        return res.status(400).json({ error: 'Los correos no coinciden' });
+    }
+
     
     console.log('Datos recibidos:', req.body);  // Verifica los datos que llegan al servidor
 
     db.query(
-        'INSERT INTO user (name, email, address, phone) VALUES (?, ?, ?, ?)',
-        [name, email, address, phone],
+        'INSERT INTO register (tipoUsuario, tipoDocumento, numeroDocumento,  nombre, correo, telefono) VALUES (?, ?, ?, ?)',
+        [tipoUsuario, tipoDocumento, numeroDocumento, nombre, correo, telefono ],
         (err, result) => {
             if (err) {
                 console.error('Error insertando usuario:', err);
                 return res.status(500).json({ error: 'Error al registrar usuario' });
             }
-            res.status(201).json({ id: result.insertId, name, email, address, phone });
+            res.status(201).json({ id: result.insertId, tipoUsuario, tipoDocumento, numeroDocumento, nombre, correo, telefono});
         }
     );
 });
