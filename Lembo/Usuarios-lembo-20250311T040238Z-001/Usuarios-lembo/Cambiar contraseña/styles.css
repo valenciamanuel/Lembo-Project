@@ -117,8 +117,8 @@ body {
 .password-form__link {
     border-radius: 1rem;
     padding: 2.4rem 1.2rem;
-    width: 9.7rem ;
-    height: 4.3rem;
+    width: 12.6rem; /* Aseguramos que ambos botones tengan el mismo ancho */
+    height: 4.3rem; /* Aseguramos que ambos botones tengan la misma altura */
     background-color: var(--Primary-Green600);
     color: var(--Primary-Black);
     border: none;
@@ -127,18 +127,25 @@ body {
     font-family: var(--font-primary);
     font-size: 1.6rem;
     font-weight: bold;
-    margin-left: -105rem;
-    margin-top: -2rem;
     text-decoration: none;
 }
 
 .password-form__link--back {
     margin-left: 0;
-    margin-top: 1rem;
+    margin-top: 0; /* Eliminamos el margen superior para que estén alineados */
+    text-align: center;
 }
 
 .password-form__message {
     color: red;
+}
+
+/* Contenedor de los botones alineados uno al lado del otro */
+.password-form__buttons-container {
+    display: flex;
+    gap: 1rem;             /* Espacio entre los botones */
+    justify-content: center; /* Centra los botones */
+    width: 100%;
 }
 
 /* Queries */
