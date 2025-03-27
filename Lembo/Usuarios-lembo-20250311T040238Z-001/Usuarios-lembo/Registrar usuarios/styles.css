@@ -3,7 +3,7 @@
 *, *::before, *::after {
     margin: 0;
     padding: 0;
-    box-sizing: inherit;
+    box-sizing: border-box;
 }
 
 html {
@@ -48,21 +48,24 @@ body {
 }
 
 .page__title {
-    text-align: center;
-    padding: 0;
-    margin: 0;
     font-size: 6.4rem;
     text-transform: uppercase;
+    text-align: center;
+    margin: 0;
     font-family: var(--font-primary);
 }
 
 .page__main {
-    width: 90.0rem;
-    height: 81.9rem;
+    width: 90%;
+    max-width: 60rem; /* Tamaño máximo del formulario */
+    height: auto;
     margin: 0 auto;
+    padding: 2rem;
     border: 2rem solid var(--primary-white);
-    border-radius: 2rem;
     background-color: var(--primary-white);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    overflow: hidden;
 }
 
 .form__title {
@@ -70,12 +73,13 @@ body {
     font-size: 2.4rem;
     font-family: var(--font-primary);
     text-transform: uppercase;
+    margin-bottom: 1.6rem;
 }
 
 .form__group {
     display: flex;
     flex-direction: column;
-    margin-top: 1rem;
+    margin-bottom: 1.6rem;
     align-items: center;
 }
 
@@ -83,18 +87,19 @@ body {
     display: block;
     margin-bottom: 0.5rem;
     font-family: var(--font-primary);
-    font-size: 1.6em;
+    font-size: 1.6rem;
 }
 
 .form__select,
 .form__input {
-    width: 32.0rem;
-    height: 5.7rem;
-    border: 0.0625rem solid var(--primary-black);
-    border-radius: 5rem;
-    gap: 2.4rem;
+    width: 100%; /* Cajas ocupan el 100% del contenedor */
+    max-width: 32rem; /* Máximo tamaño de las cajas */
+    height: 4.8rem; /* Altura estándar para los campos de formulario */
     padding: 1rem;
+    border: 1px solid var(--primary-black);
     text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 1.6rem;
 }
 
 .form__message {
@@ -105,38 +110,33 @@ body {
 .form__button-group {
     display: flex;
     justify-content: center;
-    padding-top: 1rem;
-}
-
-.form__button-group--back {
-    display: flex;
-    justify-content: start;
+    gap: 1rem; /* Espacio entre los botones */
+    margin-top: 2rem;
 }
 
 .form__btn {
-    padding: 2.4rem 1.2rem;
+    padding: 1.4rem 2rem;
     border: none;
-    border-radius: 1rem;
-    width: 12.0rem;
+    width: 45%; /* Ajusta el tamaño de los botones */
     height: 4.3rem;
     cursor: pointer;
     font-family: var(--font-primary);
     text-align: center;
-    text-decoration: none;
+    font-size: 1.6rem;
+    text-transform: uppercase;
 }
 
 .form__btn--registrar {
     background-color: var(--primary-green-950);
-    color: var(--primary-black);
+    color: var(--primary-white);
     font-weight: bold;
-    font-size: 1.6rem;
 }
 
 .form__btn--back {
     background-color: var(--primary-green-600);
-    color: var(--primary-black);
+    color: var(--primary-white);
     font-weight: bold;
-    font-size: 1.6rem;
+    text-decoration: none;
 }
 
 /* Media Queries */
@@ -163,7 +163,7 @@ body {
     }
 
     .page__main {
-        width: 90%;
+        width: 100%;
         height: auto;
         margin: 0 auto;
         border: 1rem solid var(--primary-white);
