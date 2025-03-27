@@ -31,20 +31,25 @@ body {
     background-image: url('../img/cafe.jpg');
     background-size: cover;
     color: #000;
+    min-height: 100vh; /* Asegura que el body tenga al menos la altura de la ventana */
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos dentro del body se organicen en columna */
 }
 
 .header {
     display: flex;
-    align-items: center;
+    align-items: center; /* Asegura que el contenido esté centrado verticalmente */
+    justify-content: flex-start; /* Alinea los elementos a la izquierda */
     background-color: var(--Primary-Green950);
     color: var(--Primary-white);
-    padding: 1rem;
+    padding: 1rem 1.5rem; /* Reduce el padding para hacer el header más pequeño */
+    height: auto; /* Asegura que la altura se ajuste al contenido */
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho */
 }
 
 .header__logo {
-    text-align: end;
-    margin-top: -8rem;
-    padding-right: 10rem;
+    padding-right: 1rem; /* Ajusté el padding para dar más espacio entre el logo y el título */
+    text-align: left; /* Alinea el logo a la izquierda */
 }
 
 .header__logo-image {
@@ -55,14 +60,16 @@ body {
 .header__title {
     font-size: 2.4rem;
     margin: 0;
-    padding-left: 5rem;
+    padding-left: 1rem; /* Ajusté el padding para evitar exceso de espacio */
     color: var(--Primary-white);
+    text-align: left; /* Alinea el título a la izquierda */
 }
 
 .table-container {
-    margin: 2rem;
+    margin: 0;
     padding: 2rem;
     background-color: var(--Primary-white);
+    flex-grow: 1; /* Esto hará que el table-container ocupe el espacio restante */
 }
 
 .table-container__data-table {
@@ -115,21 +122,20 @@ body {
 @media (max-width: 769px) {
     .header {
         flex-direction: column;
-        align-items: center;
-        padding: 1rem;
+        align-items: flex-start; /* Alinea el contenido a la izquierda */
+        padding: 1rem 1rem; /* Ajusta el padding para móviles */
     }
 
     .header__title {
         font-size: 2rem;
         padding-left: 0;
-        text-align: center;
+        text-align: left; /* Alinea el título a la izquierda */
         margin-top: 1rem;
     }
 
     .header__logo {
-        text-align:start;
-        padding-bottom: -4rem;
-        padding-left: 0;
+        text-align: left; /* Alinea el logo a la izquierda */
+        padding-bottom: 1rem;
     }
 
     .table-container {
