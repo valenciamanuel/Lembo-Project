@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.getElementById("registroForm");
+    const form = document.querySelector(".form");
     const mensajeValidacion = document.getElementById("mensajeValidacion");
 
     form.addEventListener("submit", function (event) {

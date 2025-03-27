@@ -17,8 +17,10 @@ document.addEventListener('DOMContentLoaded', () => {
             ID: userID ? userID.value : '',
             name: userName ? userName.value : '',
             email: userEmail ? userEmail.value : '',
-            phone: userPhone ? userPhone.value : ''
+            phone: userPhone ? userPhone.value : '',
+            confirmarCorreo: document.querySelector('.form__input--email').value // Agregar este campo
         };
+        
 
         try {
             const response = await fetch('http://localhost:3000/register', {
