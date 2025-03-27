@@ -1,9 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.form__container');
+    const form = document.querySelector('.form form--registro');
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        const userID = document.querySelector('.form__input--id');
         const userName = document.querySelector('.form__input--name');
         const userEmail = document.querySelector('.form__input--email');
         const userAddress = document.querySelector('.form__input--address');
