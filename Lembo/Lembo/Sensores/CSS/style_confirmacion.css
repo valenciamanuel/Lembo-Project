@@ -1,0 +1,152 @@
+:root {
+    --Blanco: #ffffff;
+    --Negro: #000000;
+    --green: #39A900;
+    --ligth_green: #81c85d;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+h1 {
+    font-size: 4rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+h2 {
+    font-size: 2.4rem;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+h4 {
+    font-size: 1.6rem;
+}
+
+.header {
+    background-color: var(--green);
+    width: 100%;
+    height: 6rem;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+}
+
+.header__logo {
+    width: 4%;
+    height: 80%;
+    margin-top: 0.5rem;
+    margin-left: 1%;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../IMG/granos.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh; /* Asegura que el body ocupe toda la altura de la pantalla */
+}
+
+.confirmation {
+    display: grid;
+    background-color: var(--Blanco);
+    width: 90%; /* Ajusta el ancho */
+    max-width: 600px; /* Ajusta el ancho máximo */
+    margin: 8rem auto; /* Ajusta el margen superior */
+    padding: 2rem; /* Añade padding */
+    border-radius: 5rem;
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.confirmation__title {
+    font-size: 3rem; /* Ajusta el tamaño del título */
+    font-weight: bold;
+    text-align: center;
+    margin-bottom: 1rem; /* Añade margen inferior */
+}
+
+.confirmation__button {
+    background-color: var(--green);
+    padding: 0.5rem 1rem;
+    border-radius: 0.4rem;
+    font-size: 1.4rem; /* Ajusta el tamaño de la fuente */
+    font-weight: 500;
+    letter-spacing: 0.0892857143em;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+    transition: box-shadow 0.2s ease-in-out;
+    margin-top: 1rem; /* Añade margen superior */
+}
+
+.confirmation__button:hover {
+    box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+}
+
+.confirmation__button-link {
+    color: var(--Blanco);
+    text-decoration: none;
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+.volver {
+    font-size: 1.4rem; /* Ajusta el tamaño de la fuente */
+    text-decoration: none;
+    color: var(--Blanco);
+    margin-left: 3%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    margin-top: -3.5rem;
+    margin-left: 7%;
+}
+
+@media (max-width: 768px) {
+    .confirmation {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .confirmation__title {
+        font-size: 2.5rem;
+    }
+
+    .confirmation__button {
+        font-size: 1.2rem;
+    }
+
+    .volver {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .confirmation {
+        width: 100%;
+        padding: 1rem;
+        margin-top: 6rem;
+    }
+
+    .confirmation__title {
+        font-size: 2rem;
+    }
+
+    .confirmation__button {
+        font-size: 1rem;
+    }
+
+    .volver {
+        font-size: 1rem;
+    }
+}/* hay un probela que no deja colocar mq y botones   */

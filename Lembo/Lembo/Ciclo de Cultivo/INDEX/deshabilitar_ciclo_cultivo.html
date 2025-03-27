@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deshabilitar Ciclo Cultivo</title>
+    <link rel="stylesheet" href="../CSS/style_deshabilitar_ciclo_cultivo.css">
+    <script src="../JS/validacion_deshabilitar.js" defer></script> 
+</head>
+<body>
+    <header class="header">
+        <img class="header__logo" src="../IMG/loso_SENA.png" alt="Logo SENA">
+        <a class="header__back-link" href="#">Volver</a>
+    </header>
+
+    <main class="main">
+        <div class="main__container">
+            <div class="form-section">
+                <div class="form-section__image">
+                    <svg class="form-section__icon" xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 24 24" fill="none" stroke="#dcdcdc" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></svg>
+                </div>
+                
+                <form class="form">
+                    <legend class="form__legend"><h2 class="form__title">Datos Ciclo Cultivo</h2></legend>
+
+                    <br>
+                    
+                    <div class="form__group">
+                        <label class="form__label">ID Ciclo Cultivo</label>
+                        <input class="form__input" type="text">
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label">Nombre Ciclo Cultivo</label>
+                        <input class="form__input" type="text">  <!-- ✅ Corregido -->
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label">Fecha Siembra</label>
+                        <input class="form__input" type="text">
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label">Fecha Cosecha</label>
+                        <input class="form__input" type="text">
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label">Novedades</label>
+                        <input class="form__input" type="text">  
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label">Descripción</label>
+                        <input class="form__input" type="text">
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label">Estado (activo / inactivo)</label>
+                        <input class="form__input" type="text">
+                    </div>
+
+                    <p id="mensaje-validacion" class="form__message"></p> <!-- Mensaje de validación -->
+                    
+                    <div class="form-section__buttons">
+                        <button class="form-section__button" id="btnHabilitar">Habilitar</button>
+                        <button class="form-section__button" id="btnActualizar">Actualizar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </main>
+</body>
+</html>

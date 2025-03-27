@@ -1,0 +1,239 @@
+:root {
+    --Blanco: #ffffff;
+    --Negro: #000000;
+    --green: #39A900;
+    --ligth_green: #81c85d;
+    --sombra-boton: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+    --sombra-boton-hover: 0 3px 4px rgba(0, 0, 0, 0.24), 0 3px 4px rgba(0, 0, 0, 0.12);
+    --sombra-caja: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    font-family: 'Roboto', sans-serif;
+}
+
+h1 {
+    font-size: 3.2rem;
+}
+
+h2 {
+    font-size: 2.4rem;
+}
+
+h3 {
+    font-size: 2rem;
+}
+
+h4 {
+    font-size: 1.6rem;
+}
+
+/* HEADER */
+header {
+    background-color: var(--green);
+    width: 100%;
+    height: 6rem;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+}
+
+.volver {
+    font-size: 1.7rem;
+    text-decoration: none;
+    color: var(--Blanco);
+    margin-left: 7%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+}
+
+img {
+    width: 4%;
+    height: 80%;
+    margin-top: 0.5rem;
+    margin-left: 1%;
+}
+
+/* MAIN CONTENT */
+.content_img_form {
+    border: none;
+    margin-top: 8rem;
+    width: 70%;
+    margin-left: 15%;
+    display: grid;
+    box-shadow: var(--sombra-caja);
+    border-radius: 4px;
+}
+
+.content_img {
+    border: none;
+    margin: 1rem;
+    width: 40%;
+    height: 40rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: var(--sombra-caja);
+    border-radius: 4px;
+}
+
+/* FORM */
+form {
+    margin-left: 50%;
+    margin-top: -40%;
+    display: grid;
+    padding: 2.4rem;
+}
+
+.input label {
+    margin-bottom: -2rem;
+}
+
+legend h2 {
+    font-size: 4rem;
+    margin-top: -25%;
+}
+
+.botones {
+    text-decoration: none;
+    color: var(--Negro);
+}
+
+/* BUTTONS */
+.buttons {
+    text-align: end;
+    padding: 1.6rem;
+}
+
+button {
+    height: 3.6rem;
+    min-width: 6.4rem;
+    padding: 0 0.8rem;
+    border-radius: 4px;
+    font-size: 1.4rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.0892857143em;
+    margin-left: 0.8rem;
+    background-color: var(--green);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+    box-shadow: var(--sombra-boton);
+    position: relative;
+    overflow: hidden;
+}
+
+button:hover {
+    box-shadow: var(--sombra-boton-hover);
+}
+
+button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+}
+
+button:active::before {
+    width: 200%;
+    height: 200%;
+    opacity: 1;
+}
+
+.text {
+    display: flex;
+    flex-direction: column;
+    border: 0.1rem solid var(--Negro);
+    border-radius: 0.4rem;
+    margin-top: 1.6rem;
+    padding: 1.4rem 2.4rem;
+}
+
+.input-text {
+    display: flex;
+    flex-direction: column;
+    border: 0.1rem solid var(--Negro);
+    border-radius: 0.4rem;
+    resize: none;
+}
+
+/* RESPONSIVE DESIGN */
+@media(min-width: 768px) {
+    .content_img {
+        margin: 10rem;
+        width: 40%;
+        height: 40rem;
+    }
+
+    form {
+        margin-left: 50%;
+        margin-top: -40%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        font-size: 1.5rem;
+        gap: 0.5rem;
+    }
+
+    .content_img_form {
+        height: 100%;
+    }
+}
+
+@media(max-width: 480px) {
+    .content_img_form {
+        margin-top: 15%;
+        width: 95%;
+        margin-left: 2.5%;
+    }
+
+    .content_img {
+        width: 90%;
+        height: 30rem;
+        margin: 1rem auto;
+    }
+
+    form {
+        margin-left: 5%;
+        margin-top: 2rem;
+        grid-template-columns: 1fr;
+        width: 90%;
+    }
+
+    legend h2 {
+        font-size: 2.8rem;
+        margin-top: 0;
+        text-align: center;
+    }
+
+    .buttons {
+        text-align: center;
+    }
+
+    button {
+        margin: 0.5rem;
+        width: 80%;
+    }
+
+    img {
+        width: 10%;
+    }
+
+    .volver {
+        margin-left: 15%;
+    }
+}/* no me cudra los para colocarlo en la mitad  */

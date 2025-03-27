@@ -1,0 +1,359 @@
+/* Root de variables CSS - Simplificado */
+:root {
+    /* Colores originales */
+    --verde-principal: #39a900;
+    --verde-hover: black;
+    --texto-blanco: white;
+    --texto-titulos: #333;
+
+    /* Tamaños de fuente - Ajuste a Material Design Body sizes */
+    --font-family-principal: 'Roboto', sans-serif;
+    --font-size-base: 62.5%; /* 10px - Base para rem */
+    --font-size-titulos-header: 2.4rem;
+    --font-size-enlaces-header: 1.6rem;
+    --font-size-cajas-superiores: 1.4rem;
+    --font-size-boton: 1.4rem; /* Tamaño de botón Material Design */
+    --font-size-footer-boton: 1.6rem; /* Botón en footer ligeramente más grande */
+
+    /* Espaciado - Ajuste a sistema de espaciado Material Design (múltiplos de 8px) */
+    --spacing-1: 0.8rem;
+    --spacing-2: 1.6rem;
+    --spacing-3: 2.4rem;
+    --spacing-5: 4.0rem;
+    --spacing-6: 4.8rem; /* Espacio adicional para footer */
+
+    /* Sombras - Material Design - Más fuerte para el botón */
+    --sombra-caja: rgba(0, 0, 0, 0.2);
+    --sombra-caja-hover-boton: rgba(0, 0, 0, 0.3);
+    --sombra-caja-boton-visible: rgba(0, 0, 0, 0.4);
+}
+
+/* Configuración base */
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: var(--font-size-base);
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-family-principal);
+    color: var(--texto-titulos);
+    display: flex; /* Para footer pegado abajo */
+    flex-direction: column; /* Para footer pegado abajo */
+}
+
+.header__title {
+    font-size: var(--font-size-titulos-header);
+    color: var(--texto-blanco);
+    margin: 0;
+}
+
+/* Header */
+.header {
+    background-color: var(--verde-principal);
+    width: 100%;
+    height: 5.6rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 var(--spacing-2);
+    z-index: 10;
+    box-shadow: 0 0.1rem 0.3rem var(--sombra-caja);
+}
+
+.header__logo {
+    width: auto;
+    height: 3.6rem;
+    margin-top: var(--spacing-1);
+}
+
+.header__nav {
+    display: flex;
+    gap: var(--spacing-2);
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.header__link {
+    color: var(--texto-blanco);
+    text-decoration: none;
+    font-weight: bold;
+    font-size: var(--font-size-enlaces-header);
+    text-align: center;
+    padding: var(--spacing-1) var(--spacing-2);
+    border-radius: 0.4rem;
+}
+
+.header__link:hover {
+    text-decoration: none;
+}
+
+/* Cajas superiores para texto */
+.top-boxes {
+    display: flex;
+    justify-content: center;
+    padding: var(--spacing-3) var(--spacing-5);
+    position: absolute;
+    top: 7rem;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    gap: var(--spacing-5);
+    flex-wrap: wrap;
+}
+
+.top-boxes__item {
+    background-color: rgba(255, 255, 255, 0.6);
+    padding: var(--spacing-1) var(--spacing-2);
+    font-size: var(--font-size-cajas-superiores);
+    text-align: center;
+    border-radius: 0.4rem;
+    width: auto;
+    min-width: 20rem;
+    height: auto;
+    min-height: 3.2rem;
+    box-shadow: 0 0.2rem 0.4rem var(--sombra-caja);
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--texto-titulos);
+    margin-bottom: var(--spacing-1);
+}
+
+/* Imagen de fondo */
+.background {
+    background-image: url('/imagenes proyecto/cultivos-1.jpg');
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1; /* Para empujar footer abajo */
+}
+
+/* Contenedor de cuadros */
+.grid {
+    display: flex;
+    gap: var(--spacing-3);
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    top: auto;
+    padding: 0 var(--spacing-2) var(--spacing-5) var(--spacing-2);
+    flex-wrap: wrap;
+    margin-top: var(--spacing-2);
+}
+
+/* Cuadros individuales */
+.grid__item {
+    width: 28rem;
+    height: 28rem;
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: 0 0.4rem 0.8rem var(--sombra-caja);
+    border-radius: 1rem;
+    overflow: hidden;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+    margin: 0;
+}
+
+.grid__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 1rem;
+}
+
+/* Footer */
+.footer {
+    width: 100%;
+    padding: var(--spacing-3) var(--spacing-2); /* Padding vertical y horizontal */
+    display: flex;
+    justify-content: flex-start; /* Alinea el botón a la izquierda */
+    align-items: center;
+    box-sizing: border-box;
+}
+
+/* Botón en Footer */
+.footer__button {
+    border: none;
+    padding: var(--spacing-2) var(--spacing-3);
+    font-size: var(--font-size-footer-boton); /* Tamaño ligeramente mayor en footer */
+    border-radius: 0.4rem; /* Bordes redondeados MD */
+    cursor: pointer;
+    box-shadow: 0 0.2rem 0.4rem var(--sombra-caja-boton-visible); /* Sombra visible */
+    transition: background-color 0.3s, transform 0.2s;
+    font-weight: bold;
+    letter-spacing: 0.08929em;
+    text-transform: uppercase;
+    line-height: 1.5rem;
+    min-width: 8.8rem;
+    text-align: center;
+    background-color: var(--verde-principal);
+    color: var(--texto-blanco);
+    margin-left: var(--spacing-2); /* Margen izquierdo para separarlo del borde */
+}
+
+.footer__button:hover {
+    background-color: var(--verde-hover);
+    color: var(--texto-blanco);
+    box-shadow: 0 0.4rem 0.8rem var(--sombra-caja-hover-boton);
+}
+
+.footer__button:active {
+    transform: scale(0.95);
+    box-shadow: 0 0.2rem 0.4rem var(--sombra-caja);
+}
+
+
+/* Media Queries para Responsive Design */
+
+@media (max-width: 1200px) {
+    .top-boxes {
+        gap: var(--spacing-3);
+        padding: var(--spacing-2) var(--spacing-2);
+    }
+    .grid {
+        gap: var(--spacing-2);
+    }
+    .grid__item {
+        width: 30%;
+        height: auto;
+        min-width: 20rem;
+        aspect-ratio: 1/1;
+    }
+    .footer {
+        justify-content: center; /* Centrar botón en pantallas medianas */
+    }
+    .footer__button {
+        margin-left: 0; /* Eliminar margen izquierdo en pantallas medianas */
+    }
+}
+
+@media (max-width: 768px) {
+    .header {
+        height: 6.4rem;
+        padding: 0 var(--spacing-2);
+    }
+    .header__title {
+        font-size: var(--font-size-enlaces-header);
+    }
+    .header__logo {
+        width: auto;
+        height: 3rem;
+    }
+    .header__nav {
+        gap: var(--spacing-1);
+    }
+    .header__link {
+        font-size: var(--font-size-cajas-superiores);
+        padding: var(--spacing-1);
+    }
+    .top-boxes {
+        flex-direction: column;
+        align-items: center;
+        gap: var(--spacing-2);
+        padding: var(--spacing-2) var(--spacing-1);
+        top: 7rem;
+    }
+    .top-boxes__item {
+        width: 90%;
+        max-width: 40rem;
+        font-size: var(--font-size-cajas-superiores);
+        padding: var(--spacing-1) var(--spacing-2);
+    }
+    .grid {
+        flex-direction: column;
+        gap: var(--spacing-3);
+        margin-top: var(--spacing-3);
+        position: relative;
+        top: auto;
+        padding-left: var(--spacing-2);
+        padding-right: var(--spacing-2);
+    }
+    .grid__item {
+        width: 100%;
+        height: auto;
+        min-height: 25rem;
+        margin-bottom: var(--spacing-3);
+        aspect-ratio: 16/9;
+    }
+    .footer {
+        padding: var(--spacing-2); /* Ajustar padding footer en tablet */
+        flex-direction: column; /* Apilar elementos del footer en tablet */
+        text-align: center; /* Centrar texto en footer tablet */
+    }
+    .footer__button {
+        font-size: var(--font-size-boton); /* Volver a tamaño botón normal en tablet */
+        padding: var(--spacing-1_5) var(--spacing-3);
+        min-width: auto; /* Ancho automático en tablet */
+        width: 90%; /* Botón ocupa 90% del ancho en tablet */
+        margin-left: 0; /* Eliminar margen izquierdo en tablet */
+        margin-bottom: var(--spacing-2); /* Margen inferior para botón en footer tablet */
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        padding: 0 var(--spacing-1);
+    }
+    .header__title {
+        font-size: var(--font-size-enlaces-header);
+    }
+    .header__logo {
+        width: auto;
+        height: 2.4rem;
+    }
+    .header__link {
+        font-size: var(--font-size-cajas-superiores);
+        padding: var(--spacing-0_5);
+    }
+    .top-boxes {
+        padding: var(--spacing-1);
+        top: 9rem;
+    }
+    .top-boxes__item {
+        font-size: var(--font-size-cajas-superiores);
+        width: 95%;
+        padding: var(--spacing-1);
+    }
+    .grid {
+        margin-top: var(--spacing-2);
+        gap: var(--spacing-2);
+        position: relative;
+        top: auto;
+        padding-left: var(--spacing-1);
+        padding-right: var(--spacing-1);
+    }
+    .grid__item {
+        width: 100%;
+        min-height: 20rem;
+        margin-bottom: var(--spacing-2);
+        aspect-ratio: 4/3;
+    }
+    .footer {
+        padding: var(--spacing-1); /* Ajustar padding footer en móvil */
+    }
+    .footer__button {
+        width: 95%;
+        max-width: 30rem;
+        font-size: var(--font-size-cajas-superiores);
+        padding: var(--spacing-1) var(--spacing-2);
+        min-width: 7.2rem;
+        margin-left: 0; /* Eliminar margen izquierdo en móvil */
+        margin-bottom: var(--spacing-1); /* Margen inferior para botón en footer móvil */
+    }
+}

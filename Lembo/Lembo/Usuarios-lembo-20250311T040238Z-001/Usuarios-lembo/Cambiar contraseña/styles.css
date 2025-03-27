@@ -1,0 +1,211 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}  
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colores Principales */
+    --Primary-Green950: #39A900;
+    --Primary-Green600: #81C85D;
+    /* Colores Basicos */
+    --Primary-white: #FFFFFF;
+    --Primary-Black: #000;
+    /* Tipografía */
+    --font-primary: 'Work Sans';
+}
+
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    background-image: url(../img/cafe.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    font-family: var(--font-primary);
+}
+
+.header {
+    padding-top: 0.5rem;
+    padding-bottom: -0.1rem;
+    width: 100%;
+    height: 7rem;
+    background-color: var(--Primary-Green950);
+    color: var(--Primary-white);
+    text-align: center;
+}
+
+.header__logo {
+    text-align: end;
+    margin-top: -9rem;
+    padding-right: 10rem;
+}
+
+.header__logo-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.header__title {
+    font-size: 6.4rem;
+    text-transform: uppercase;
+    font-family: "Work Sans";
+}
+
+.main {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--Primary-white);
+    width: 117rem;
+    height: 81.9rem;
+    margin: 0 auto; 
+    margin-top: 1rem;
+    margin-bottom: 3rem;
+}
+
+.password-form {
+    position: absolute;
+    display: flex;
+    flex-direction: column; 
+    gap: 2.4rem;  
+    align-items: center; 
+    top: 2rem; 
+}
+
+.password-form__title,
+.password-form__subtitle {
+    font-size: 2.4rem;
+}
+
+.password-form__input {
+    padding: 0.625rem;
+    border: 0.0625rem solid var(--Primary-Black);
+    border-radius: 0.625rem;
+    width: 32rem;
+    height: 5.6rem;
+}
+
+.password-form__button {
+    border-radius: 1rem;
+    padding: 2.4rem 1.2rem;
+    width: 12.6rem;
+    height: 4.3rem;
+    background-color: var(--Primary-Green950);
+    color: var(--Primary-Black);
+    border: none;
+    cursor: pointer;
+    gap: 2.4rem;
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+    font-weight: bold;
+    text-decoration: none;
+}
+
+.password-form__link {
+    border-radius: 1rem;
+    padding: 2.4rem 1.2rem;
+    width: 9.7rem ;
+    height: 4.3rem;
+    background-color: var(--Primary-Green600);
+    color: var(--Primary-Black);
+    border: none;
+    cursor: pointer;
+    gap: 2.4rem;
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+    font-weight: bold;
+    margin-left: -105rem;
+    margin-top: -2rem;
+    text-decoration: none;
+}
+
+.password-form__link--back {
+    margin-left: 0;
+    margin-top: 1rem;
+}
+
+.password-form__message {
+    color: red;
+}
+
+/* Queries */
+@media (max-width: 769px) {
+    .main {
+        width: 60rem;
+    }
+
+    .password-form__input {
+        width: 50rem;
+    }
+
+    .password-form__button, 
+    .password-form__link {
+        width: 25rem;
+    }
+
+    .password-form__link--back {
+        margin-left: 0;
+        margin-top: 1rem;
+    }
+
+    .header__title {
+        font-size: 3rem;
+    }
+
+    .password-form__title,
+    .password-form__subtitle {
+        font-size: 1.5rem;
+    }
+
+    .header__logo {
+        margin-top: -5rem;
+        padding-right: 3rem;
+    }
+}
+
+/* Media Query para pantallas aún más pequeñas (por ejemplo, móviles en modo vertical) */
+@media (max-width: 480px) {
+    .header__title {
+        font-size: 2.5rem;
+    }
+
+    .password-form__title,
+    .password-form__subtitle {
+        font-size: 1.4rem;
+    }
+
+    .password-form__input {
+        width: 90%;
+        font-size: 1.4rem;
+        padding: 0.6rem;
+    }
+
+    .password-form__button,
+    .password-form__link {
+        width: 90%;
+        font-size: 1.4rem;
+    }
+
+    .header__logo {
+        margin-top: -4rem;
+        padding-right: 1rem;
+    }
+
+    .password-form__link--back {
+        margin-left: 0;
+        margin-top: 2rem;
+    }
+}

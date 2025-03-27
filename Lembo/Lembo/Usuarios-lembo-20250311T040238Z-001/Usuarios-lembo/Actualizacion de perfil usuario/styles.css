@@ -1,0 +1,199 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+:root {
+    --Primary-Green950: #39A900;
+    --Primary-Green600: #81C85D;
+    --Primary-white: #FFFFFF;
+    --Primary-Black: #000000;
+    --font-primary: 'Work Sans', sans-serif;
+}
+
+body {
+    font-family: var(--font-primary);
+    background-color: var(--Primary-white);
+    color: var(--Primary-Black);
+    background-image: url(../img/backgroun-perfil-usuario.jpeg);
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    min-height: 100vh;
+    padding: 2rem;
+}
+
+.form-container {
+    display: flex;
+    flex-direction: column;
+    gap: 3rem;
+    background-color: rgba(255, 255, 255, 0.9); 
+    padding: 2rem;
+    border-radius: 1rem;
+    max-width: 50rem;
+    width: 100%;
+    box-shadow: 0 0.4rem 0.8rem rgba(0, 0, 0, 0.1);
+}
+
+.form-container__wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+}
+
+.form-container__photo-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.form-container__profile-photo {
+    width: 15rem;
+    height: 15rem;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 0.2rem solid var(--Primary-Green600);
+}
+
+.form-container__form-section {
+    display: flex;
+    flex-direction: column;
+    gap: 2.4rem;
+}
+
+.form-container__form {
+    display: grid;
+    gap: 2.4rem;
+}
+
+.form-container__input,
+.form-container__select {
+    width: 36rem;
+    height: 4rem;
+    border: 1px solid var(--Primary-Green600);
+    border-radius: 0;
+    padding: 0.5rem;
+    font-size: 1.6rem;
+    justify-self: center;
+}
+
+.form-container__label {
+    color: var(--Primary-Black);
+    font-size: 1.6rem;
+    padding-left: 1rem;
+}
+
+.form-container__checkbox {
+    width: 5.8rem;
+    height: 5.8rem;
+    accent-color: var(--Primary-Green950);
+}
+
+.form-container__button {
+    width: 12.8rem;
+    height: 4.3rem;
+    border-radius: 1rem;
+    padding: 0.8rem;
+    background-color: var(--Primary-Green950);
+    color: var(--Primary-white);
+    border: none;
+    font-size: 1.6rem;
+    cursor: pointer;
+    font-weight: bold;
+    color: var(--Primary-Black);
+}
+
+.form-container__fieldset {
+    display: flex;
+    flex-direction: column;
+    gap: 1.2rem;
+    border: 1px solid var(--Primary-Green600);
+    padding: 1rem;
+    border-radius: 0.5rem;
+}
+
+.form-container__legend {
+    font-size: 1.6rem;
+    font-weight: bold;
+    color: var(--Primary-Black);
+}
+
+.form-container__error {
+    color: red;
+    font-size: 1.2rem;
+}
+
+/* Media Query para pantallas pequeñas */
+@media (max-width: 769px) {
+    body {
+        padding: 1rem;
+    }
+
+    .form-container {
+        padding: 1rem;
+        max-width: 100%;
+    }
+
+    .form-container__input,
+    .form-container__select {
+        width: 100%;
+    }
+
+    .form-container__profile-photo {
+        width: 10rem;
+        height: 10rem;
+    }
+
+    .form-container__button {
+        width: 100%;
+    }
+}
+
+/* Media Query para pantallas aún más pequeñas (por ejemplo, móviles en modo vertical) */
+@media (max-width: 480px) {
+    .form-container__profile-photo {
+        width: 8rem;
+        height: 8rem;
+    }
+
+    .form-container__input,
+    .form-container__select {
+        width: 100%;
+        font-size: 1.4rem;
+    }
+
+    .form-container__label {
+        font-size: 1.4rem;
+    }
+
+    .form-container__button {
+        width: 100%;
+        height: 3.8rem;
+        font-size: 1.4rem;
+    }
+
+    .form-container__fieldset {
+        padding: 0.8rem;
+    }
+
+    .form-container__legend {
+        font-size: 1.4rem;
+    }
+
+    .form-container__error {
+        font-size: 1rem;
+    }
+}

@@ -1,0 +1,182 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colores Principales */
+    --Primary-Green950: #39A900;
+    --Primary-Green600: #81C85D;
+    /* Colores Básicos */
+    --Primary-white: #FFFFFF;
+    --Primary-Black: #000;
+    /* Tipografía */
+    --font-primary: 'Work Sans';
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    font-family: var(--font-primary);
+}
+
+.page-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url('../img/cafe.jpg');
+    background-size: cover;
+    height: 100%;
+    width: 100%;
+}
+
+.header {
+    padding-top: 0.2rem;
+    padding-bottom: -0.2rem;
+    width: 100%;
+    height: 7rem;
+    color: var(--Primary-white);
+    background-color: var(--Primary-Green950);
+    bottom: 1rem;
+    font-family: var(--font-primary);
+    margin-bottom: 1rem;
+}
+
+.header__logo {
+    text-align: end;
+    margin-top: -8rem;
+    padding-right: 10rem;
+}
+
+.header__logo-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.header__title {
+    text-align: center;
+    padding: 0;
+    margin: 0;
+    font-size: 6.4rem;
+    text-transform: uppercase;
+    font-family: var(--font-primary);
+}
+
+.login {
+    padding: 4rem;
+    border-radius: 2.0rem;
+    border: var(--Primary-white) solid;
+    background-color: var(--Primary-white);
+    box-shadow: 0 0 1rem rgba(0, 0, 0, 0.1);
+    width: 100rem;
+    height: 100rem;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.login__title {
+    text-align: center;
+    margin-bottom: 2rem;
+    margin-top: 0rem;
+    font-size: 2.4rem;
+}
+
+.login__label {
+    display: block;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+}
+
+.login__label-text {
+    font-size: 1.6rem;
+}
+
+.login__input {
+    width: 32rem;
+    height: 5.6rem;
+    padding: 1rem;
+    margin-bottom: 2rem;
+    border: 0.1rem solid #ccc;
+    font-size: 1.6rem;
+}
+
+.login__btn {
+    display: block;
+    border-style: none;
+    border-radius: 0.5rem;
+    cursor: pointer;
+    width: 14.9rem;
+    height: 4.3rem;
+    background-color: var(--Primary-Green950);
+    margin-top: 1.5rem;
+    color: var(--Primary-Black);
+    font-size: 1.6rem;
+    font-family: var(--font-primary);
+    font-weight: bold;
+}
+
+.login__forgot-password {
+    text-align: center;
+    margin-top: 3rem;
+    font-size: 1.4rem;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-weight: bold;
+    color: var(--Primary-Black);
+}
+
+.login__forgot-password-link {
+    text-decoration: none;
+    color: var(--Primary-Black);
+}
+
+/* Media Queries */
+@media (max-width: 769px) {
+    html {
+        font-size: 50%;
+    }
+
+    .header__title {
+        font-size: 4.8rem;
+    }
+
+    .login {
+        padding: 2rem;
+        width: 90%;
+        height: auto;
+    }
+
+    .login__input {
+        width: 100%;
+    }
+
+    .login__btn {
+        width: 100%;
+    }
+
+    .header__logo {
+        margin-top: -7rem;
+        padding-right: 5rem;
+    }
+
+    .login__title {
+        font-size: 2rem;
+    }
+
+    .login__forgot-password,
+    .login__forgot-password-link {
+        font-size: 1.2rem;
+    }
+}

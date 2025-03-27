@@ -1,0 +1,194 @@
+:root {
+    --Blanco: #ffffff;
+    --Negro: #000000;
+    --green: #39A900;
+    --ligth_green: #81c85d;
+}
+
+html, body {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    background-image: url(../IMG/granos.webp);
+    background-repeat: no-repeat;
+    background-size: 100% 100%;
+    background-position: center;
+}
+
+/* HEADER */
+.header {
+    background-color: var(--green);
+    width: 100%;
+    height: 6rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    z-index: 100;
+    display: flex;
+    align-items: center;
+    padding-left: 2rem;
+}
+
+.header__logo {
+    width: 4%;
+    height: 80%;
+}
+
+/* MAIN CONTENT */
+.main {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: var(--Blanco);
+    max-width: 100rem;
+    width: 90%;
+    height: 70vh;
+    border-radius: 2rem;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+}
+
+/* CONTENEDOR INTERNO */
+.main__content {
+    text-align: center;
+    width: 80%;
+}
+
+/* TITULO */
+.main__title {
+    font-size: 4rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+/* BOTÓN (Material Design) */
+.main__button {
+    background-color: var(--green);
+    width: 160px;
+    height: 48px;
+    border-radius: 8px;
+    font-size: 1.6rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 2rem auto 0;
+}
+
+/* QUITAR SUBRAYADO DEL BOTÓN */
+.main__button a {
+    text-decoration: none;
+    color: var(--Blanco);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* EFECTOS HOVER & ACTIVE */
+.main__button:hover {
+    background-color: var(--ligth_green);
+    transform: scale(1.05);
+}
+
+.main__button:active {
+    background-color: var(--green);
+    transform: scale(0.95);
+}
+
+/* BOTÓN VOLVER (ABAJO A LA DERECHA) */
+.volver {
+    position: fixed;
+    bottom: 2rem;
+    right: 2rem;
+}
+
+.volver__button {
+    background-color: var(--green);
+    padding: 1rem 1.5rem;
+    border-radius: 8px;
+    font-size: 1.6rem;
+    color: var(--Blanco);
+    text-decoration: none;
+    display: flex;
+    align-items: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.volver__button:hover {
+    background-color: var(--ligth_green);
+    transform: scale(1.05);
+}
+
+.volver__button:active {
+    transform: scale(0.95);
+}
+
+.volver__button i {
+    margin-right: 0.5rem;
+}
+
+/* MEDIA QUERIES */
+@media (max-width: 1200px) {
+    .main {
+        width: 95%;
+        height: 65vh;
+    }
+
+    .header__logo {
+        width: 6%;
+        height: 75%;
+    }
+}
+
+@media (max-width: 768px) {
+    .main {
+        width: 90%;
+        height: 60vh;
+    }
+
+    .header__logo {
+        width: 8%;
+        height: 70%;
+    }
+
+    .main__button {
+        width: 140px;
+        height: 40px;
+        font-size: 1.4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header__logo {
+        width: 12%;
+        height: 65%;
+    }
+
+    .main {
+        width: 95%;
+        height: 55vh;
+    }
+
+    .main__button {
+        width: 120px;
+        height: 36px;
+        font-size: 1.2rem;
+    }
+
+    .main__title {
+        font-size: 3rem;
+    }
+}

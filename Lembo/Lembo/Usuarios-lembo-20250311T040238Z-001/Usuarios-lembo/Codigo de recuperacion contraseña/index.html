@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lembo - Ingresar Código</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header__title">Lembo</h1>
+        <div class="header__logo">
+            <img src="../img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="logo sena" class="header__logo-image">
+        </div>
+    </header>
+
+    <div class="container">
+        <h3 class="container__title">Ingresar Código</h3>
+        <p class="container__description">Ingresa el código que llegó al correo *****@***.com para recuperar la contraseña</p>
+        
+        <form id="codeForm" class="code-form">
+            <div class="code-form__input-group">
+                <input type="text" maxlength="1" class="code-form__input" required>
+                <input type="text" maxlength="1" class="code-form__input" required>
+                <input type="text" maxlength="1" class="code-form__input" required>
+                <input type="text" maxlength="1" class="code-form__input" required>
+                <input type="text" maxlength="1" class="code-form__input" required>
+                <input type="text" maxlength="1" class="code-form__input" required>
+            </div>
+            
+            <span id="message" class="code-form__message"></span>
+
+            <div class="code-form__button-group">
+                <button type="submit" class="btn btn--confirm">Confirmar</button>
+            </div>
+        </form>
+
+        <div class="container__buttons">
+            <a href="/Usuarios-lembo-20250311T040238Z-001/Usuarios-lembo/Recuperar contraseña/index.html" class="container__link">
+                <button class="btn btn--back">Volver</button>
+            </a>      
+        </div>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

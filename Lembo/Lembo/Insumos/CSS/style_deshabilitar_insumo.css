@@ -1,0 +1,213 @@
+:root {
+    --Blanco: #ffffff;
+    --Negro: #000000;
+    --green: #39A900;
+    --ligth_green: #81c85d;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    font-family: Arial, Helvetica, sans-serif;
+}
+
+body {
+    overflow-y: auto; /* Permite el scroll vertical si es necesario */
+    margin: 0;
+}
+
+h1 {
+    font-size: 3.2rem;
+}
+
+h2 {
+    font-size: 2.4rem;
+}
+
+h3 {
+    font-size: 2.0rem;
+}
+
+h4 {
+    font-size: 1.6rem;
+}
+
+/* HEADER */
+.header {
+    background-color: var(--green);
+    width: 100%;
+    height: 6rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    z-index: 100;
+}
+
+.header__logo {
+    width: 4rem; /* Cambiado a rem para consistencia */
+    height: 4.8rem; /* Cambiado a rem para consistencia */
+    margin-left: 1rem; /* Cambiado a rem para consistencia */
+}
+
+.header__volver {
+    font-size: 1.7rem;
+    text-decoration: none;
+    color: var(--Blanco);
+    margin-left: 2rem; /* Cambiado a rem para consistencia */
+}
+
+/* MAIN CONTENT */
+.insumo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  min-height: 100vh;
+  width: 100%;
+  padding-top: 6rem; /* Espacio para el header fijo */
+  box-sizing: border-box;
+}
+
+.insumo__container {
+    width: 80%;
+    max-width: 60rem;
+    border: 0.1rem solid var(--green);
+    padding: 1rem;
+    display: flex;
+    flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+    justify-content: space-between;
+    background-color: var(--Blanco);
+    margin: 2rem 0;
+}
+
+.insumo__content {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+}
+
+/* IMAGE */
+.insumo__image {
+    width: 45%; /* Ajustado para que quepa junto al formulario */
+    height: auto;
+    aspect-ratio: 16 / 9;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0.1rem solid var(--ligth_green);
+    margin-bottom: 1rem;
+}
+
+/* FORM */
+.insumo__form {
+    width: 45%; /* Ajustado para que quepa junto a la imagen */
+    display: grid;
+    gap: 0.8rem;
+}
+
+.insumo__title h2 {
+    font-size: 2.4rem;
+    text-align: center;
+}
+
+.insumo__input {
+    display: flex;
+    flex-direction: column;
+}
+
+.insumo__label {
+    font-size: 1.2rem;
+    margin-bottom: 0.4rem;
+}
+
+.insumo__text {
+    border: 0.1rem solid var(--Negro);
+    border-radius: 0.4rem;
+    padding: 1rem 1.2rem;
+    font-size: 1.6rem;
+}
+
+/* BUTTONS */
+.insumo__buttons {
+    display: flex;
+    justify-content: center; /* Centrado en móviles */
+    gap: 1rem;
+    padding: 1rem;
+    width: 100%; /* Ocupa todo el ancho */
+}
+
+.insumo__button {
+    height: 3.6rem;
+    min-width: 8rem;
+    padding: 0 1rem;
+    border-radius: 0.4rem;
+    font-size: 1.2rem;
+    text-transform: uppercase;
+    font-weight: 500;
+    background-color: var(--green);
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+
+.insumo__link {
+    text-decoration: none;
+    color: var(--Negro);
+}
+
+/* RESPONSIVE DESIGN */
+@media (max-width: 768px) {
+    .insumo__container {
+        width: 90%;
+    }
+
+    .insumo__content {
+        flex-direction: column;
+        align-items: center;
+    }
+
+    .insumo__image,
+    .insumo__form {
+        width: 100%; /* Ocupan todo el ancho en móviles */
+    }
+
+    .insumo__buttons {
+        justify-content: center;
+    }
+
+    .header__logo {
+        width: 6rem;
+    }
+
+    .header__volver {
+        margin-left: 4rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .insumo__container {
+        width: 95%;
+        padding: 1.5rem;
+    }
+
+    .insumo__title h2 {
+        font-size: 2.8rem;
+    }
+
+    .insumo__buttons {
+        flex-direction: column;
+        align-items: stretch;
+    }
+
+    .insumo__button {
+        width: 100%;
+        margin: 0.5rem 0;
+    }
+
+    .header__logo {
+        width: 8rem;
+    }
+}

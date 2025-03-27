@@ -1,0 +1,145 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}  
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colores Principales */
+    --Primary-Green950: #39A900;
+    --Primary-Green600: #81C85D;
+    /* Colores Básicos */
+    --Primary-white: #FFFFFF;
+    --Primary-Black: #000;
+    /* Tipografía */
+    --font-primary: 'Work Sans';
+}
+
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url(../img/cafe.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.header {
+    padding-top: 0.5rem;
+    padding-bottom: -0.1rem;
+    width: 100%;
+    height: 7rem;
+    background-color: var(--Primary-Green950);
+    color: var(--Primary-white);
+}
+
+.header__logo {
+    text-align: end;
+    margin-top: -9rem;
+    padding-right: 10rem;
+}
+
+.header__logo-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.header__title {
+    font-size: 6.4rem;
+    text-transform: uppercase;
+    text-align: center;
+}
+
+.success-message__title {
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-top: 10rem;
+}
+
+.success-message__button {
+    padding: 2.4rem 1.2rem;
+    background-color: var(--Primary-Green950);
+    color: var(--Primary-Black);
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    margin-top: 7rem;
+    width: 15.4rem;  
+    height: 4.3rem;  
+    font-family: var(--font-primary);
+    font-weight: bold;
+}
+
+.success-message__button-text {
+    font-size: 1.6rem;
+}
+
+.container {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.success-message {
+    background-color: var(--Primary-white);
+    border: 0.0625rem solid var(--Primary-Green600);
+    padding: 1.25rem;
+    border-radius: 0.625rem;
+    text-align: center;
+    width: 117rem;
+    height: 46rem;
+}
+
+/* Media Queries */
+@media (max-width: 769px) {
+    body {
+        flex-direction: column;
+    }
+
+    .container {
+        width: 90vw;
+        margin: 2rem auto;
+    }
+
+    .success-message {
+        width: 80vw;
+        height: auto;
+    }
+
+    .success-message__button {
+        width: 40vw;
+        margin-top: 2rem;
+    }
+
+    .header__title {
+        font-size: 3rem;
+    }
+
+    .success-message__title {
+        font-size: 1.8rem;
+        margin-top: -1rem;
+    }
+
+    .success-message__button-text {
+        font-size: 1.4rem;
+    }
+
+    .header__logo {
+        margin-top: -5rem;
+        padding-right: 5rem;
+    }
+}

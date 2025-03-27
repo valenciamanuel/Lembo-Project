@@ -1,0 +1,345 @@
+/* :root {
+    --Blanco:#ffffff;
+    --Negro:#000000;
+    --green: #39A900;
+    --ligth_green: #81c85d;
+}
+
+
+html{
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+h1{
+    font-size: 4rem;
+    font-weight: bold;
+    text-align: center;
+}
+
+h2{
+    font-size: 2.4rem;
+}
+
+h3{
+    font-size: 2rem;
+}
+
+h4{
+    font-size: 1.6rem;
+} 
+
+header{
+    background-color: var(--green);
+    width: 100%;
+    height: 6rem;
+    margin: 0;
+    padding: 0;
+    position: fixed;
+    top: 0;
+    left: 0;
+
+}
+
+img{
+    width: 4%;
+    height: 80%;
+    margin-top: 0.5rem;
+    margin-left: 1%;
+}
+
+
+body{
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-image: url(../IMG/granos.webp);
+    background-repeat: no-repeat;
+    background-size: cover ;
+}
+
+.content{
+    display: grid;
+    background-color: var(--Blanco);
+    height: 40rem;
+    width: 100rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20%;
+    border-radius: 5rem;
+}
+
+button{
+    background-color: var(--green);
+    width: 30%;
+    margin-left: 40%;
+    height: 4rem;
+    border-radius: 2rem;
+    font-size: 1.6rem;
+    border: none;
+    cursor: pointer;
+}
+
+@media (max-width: 768px) {
+    img {
+        width: 8%;
+        height: 70%;
+        margin-top: 0.8rem;
+    }
+
+    .content {
+        width: 90%;
+        height: 35rem;
+        margin-top: 20%;
+    }
+
+    button {
+        width: 50%;
+        margin-left: 25%;
+        height: 3.5rem;
+        font-size: 1.4rem;
+    }
+    body {
+        min-height: 100vh;
+        margin: 0;
+        background-size: cover;     
+        background-position: center; 
+        background-attachment: fixed;
+        background-repeat: no-repeat;
+        width: 100%;
+        height: 100%;
+    }
+}
+
+
+@media (max-width: 480px) {
+    img {
+        width: 12%;
+        height: 65%;
+        margin-top: 1rem;
+    }
+
+    .content {
+        width: 95%;
+        height: 30rem;
+        margin-top: 35%;
+    }
+
+    button {
+        width: 70%;
+        margin-left: 15%;
+        height: 3rem;
+        font-size: 1.2rem;
+    }
+
+    h1 {
+        font-size: 3rem;
+    }
+
+    body {
+        min-height: 100vh;
+        margin: 0;
+    }
+} */
+
+:root {
+    --Blanco: #ffffff;
+    --Negro: #000000;
+    --green: #4CAF50; /* Verde de Material Design */
+    --light-green: #81c85d;
+
+    --font-size-h1-plus-plus: 4.8rem;
+    --font-size-h1-plus: 4.0rem;
+    --font-size-h1: 3.2rem;
+    --font-size-h2: 2.4rem;
+    --font-size-h3: 2.0rem;
+    --font-size-h4: 1.6rem;
+    --font-size-button: 1.4rem;
+
+    --sombra-boton: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+    --sombra-boton-hover: 0 3px 4px rgba(0, 0, 0, 0.24), 0 3px 4px rgba(0, 0, 0, 0.12);
+    --sombra-caja: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    height: 100%;
+    overflow-y: hidden;
+}
+
+body {
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    background-image: url(../IMG/granos.webp);
+    background-repeat: no-repeat;
+    background-size: cover;
+    min-height: 100vh;
+    max-height: 960px;
+    margin: 0;
+    background-position: center;
+    background-attachment: fixed;
+    height: 100%;
+    overflow-y: auto;
+}
+
+.header {
+    background-color: var(--green);
+    width: 100%;
+    height: 6rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.header__logo {
+    width: 4%;
+    height: 80%;
+    margin-top: 0.5rem;
+    margin-left: 1%;
+}
+
+.confirmation {
+    display: grid;
+    background-color: var(--Blanco);
+    height: auto;
+    max-height: 960px;
+    width: 90%;
+    max-width: 100rem;
+    justify-content: center;
+    align-items: center;
+    margin-top: 20vh;
+    border-radius: 8px;
+    text-align: center;
+    padding: 3rem;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    overflow-y: auto;
+}
+
+.confirmation__title {
+    font-size: var(--font-size-h1);
+    font-weight: 600;
+    margin-bottom: 2rem;
+}
+
+.confirmation__button {
+    background-color: var(--green);
+    width: auto;
+    min-height: 4.0rem;
+    border-radius: 4px;
+    font-size: var(--font-size-button);
+    border: none;
+    cursor: pointer;
+    margin: 2rem auto;
+    color: var(--Blanco);
+    text-transform: uppercase;
+    font-weight: 500;
+    box-shadow: var(--sombra-boton);
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    padding: 0 1.6rem;
+    line-height: 4.0rem;
+    position: relative;
+    overflow: hidden;
+}
+
+.confirmation__button:hover {
+    background-color: var(--light-green);
+    box-shadow: var(--sombra-boton-hover);
+}
+
+.confirmation__button::before {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.5);
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    opacity: 0;
+    transition: width 0.5s ease, height 0.5s ease, opacity 0.5s ease;
+}
+
+.confirmation__button:active::before {
+    width: 200%;
+    height: 200%;
+    opacity: 1;
+}
+
+.confirmation__link {
+    text-decoration: none;
+    color: var(--Blanco);
+    display: block;
+    height: 100%;
+    line-height: 4.0rem;
+    text-align: center;
+}
+
+@media (min-width: 1200px) {
+    .confirmation {
+        width: 80%;
+        max-width: 110rem;
+        margin-top: 15vh;
+        padding: 4rem;
+    }
+
+    .confirmation__title {
+        font-size: var(--font-size-h1-plus);
+    }
+
+    .confirmation__button {
+        font-size: var(--font-size-h3);
+        line-height: 4.8rem;
+        min-height: 4.8rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header__logo {
+        width: 8%;
+        height: 70%;
+        margin-top: 0.8rem;
+    }
+
+    .confirmation {
+        width: 90%;
+        margin-top: 15vh;
+        padding: 2.5rem;
+    }
+
+    .confirmation__button {
+        font-size: var(--font-size-h4);
+        line-height: 3.6rem;
+        min-height: 3.6rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .header__logo {
+        width: 12%;
+        height: 65%;
+        margin-top: 1rem;
+    }
+
+    .confirmation {
+        width: 95%;
+        margin-top: 10vh;
+        padding: 1.5rem;
+    }
+
+    .confirmation__button {
+        font-size: var(--font-size-h4);
+        line-height: 3.2rem;
+        min-height: 3.2rem;
+    }
+
+    .confirmation__title {
+        font-size: var(--font-size-h2);
+    }
+}

@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualización Perfil</title>
+    <link rel="stylesheet" href="styles.css"> 
+</head>
+<body>
+    <div class="form-container">
+        <div class="form-container__wrapper">
+            <div class="form-container__photo-section">
+                <img src="/img/foto perfil.jpg" alt="Foto de la Persona" class="form-container__profile-photo">
+            </div>
+
+            <div class="form-container__form-section">
+                <form id="perfilForm" class="form-container__form">
+                    <label for="tipo-usuario" class="form-container__label">Tipo de Usuario</label>
+                    <select id="tipo-usuario" name="tipo-usuario" class="form-container__select">
+                        <option value="">Seleccionar...</option>
+                        <option value="sadmin">SADMIN</option>
+                        <option value="admin">ADMIN</option>
+                        <option value="pap">PAP</option>
+                        <option value="vte">VTE</option>
+                    </select>
+                    <div class="form-container__error" id="error-tipo-usuario"></div>
+
+                    <label for="tipo-documento" class="form-container__label">Tipo de Documento</label>
+                    <select id="tipo-documento" name="tipo-documento" class="form-container__select">
+                        <option value="">Seleccionar...</option>
+                        <option value="dni-te">TE</option>
+                        <option value="dni-cc">CC</option>
+                        <option value="dni-ri">RI</option>
+                        <option value="passport">Pasaporte</option>
+                    </select>
+                    <div class="form-container__error" id="error-tipo-documento"></div>
+
+                    <label for="numero-documento" class="form-container__label">Número de Documento</label>
+                    <input type="text" id="numero-documento" name="numero-documento" class="form-container__input">
+                    <div class="form-container__error" id="error-numero-documento"></div>
+
+                    <label for="identificacion" class="form-container__label">ID</label>
+                    <input type="text" id="identificacion" name="identificacion" class="form-container__input">
+                    <div class="form-container__error" id="error-identificacion"></div>
+
+                    <label for="nombre" class="form-container__label">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="form-container__input">
+                    <div class="form-container__error" id="error-nombre"></div>
+
+                    <label for="correo" class="form-container__label">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" class="form-container__input">
+                    <div class="form-container__error" id="error-correo"></div>
+
+                    <label for="telefono" class="form-container__label">Número Telefónico</label>
+                    <input type="number" id="telefono" name="telefono" class="form-container__input">
+                    <div class="form-container__error" id="error-telefono"></div>
+
+                    <fieldset class="form-container__fieldset">
+                        <legend class="form-container__legend">Estado</legend>
+                        <label class="form-container__label">
+                            <input type="checkbox" id="activo" name="estado" value="activo" class="form-container__checkbox">
+                            Activo
+                        </label>
+                        <label class="form-container__label">
+                            <input type="checkbox" id="inactivo" name="estado" value="inactivo" class="form-container__checkbox">
+                            Inactivo
+                        </label>
+                    </fieldset>
+                    <div class="form-container__error" id="error-estado"></div>
+
+                    <button class="form-container__button" type="submit">Actualizar</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <script src="validacion.js"></script>
+</body>
+</html>

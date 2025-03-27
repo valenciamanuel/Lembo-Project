@@ -1,0 +1,241 @@
+/* root con variables CSS */
+:root {
+    /* Colores principales */
+    --primary-color: #39a900;
+    --background-image: url('/imagenes proyecto/cultivo22.webp');
+    --text-color: #333;
+    --white-transparent: rgba(255, 255, 255, 0.8);
+    --black-transparent: rgba(0, 0, 0, 0.7);
+    --white-light: rgba(255, 255, 255, 0.3);
+
+    /* Tamaños base */
+    --base-font-size: 62.5%;
+    --header-height: 6rem;
+    --top-boxes-height: 3.2rem;
+    --grid-item-size: 30rem;
+    --grid-text-size: 1.4rem;
+
+    /* Tamaños responsive */
+    --header-logo-width: 4%;
+    --header-link-size: 1.6rem;
+    --top-boxes-item-width: 20rem;
+}
+
+/* BEM para Proyecto SENA con Responsive - Material Design */
+
+/* Configuración base */
+html, body {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-size: var(--base-font-size);
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Roboto', sans-serif;
+}
+
+/* Header */
+.header {
+    background-color: var(--primary-color);
+    width: 100%;
+    height: var(--header-height);
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 16px;
+    z-index: 10;
+}
+
+.header__logo {
+    width: var(--header-logo-width);
+    height: auto;
+    margin-top: 8px;
+    margin-left: 8px;
+}
+
+.header__nav {
+    display: flex;
+    gap: 16px;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+}
+
+.header__link {
+    color: white;
+    text-decoration: none;
+    font-size: var(--header-link-size);
+    font-weight: 500;
+    text-align: center;
+}
+
+.header__link:hover {
+    text-decoration: none;
+}
+
+/* Background */
+.background {
+    background-image: var(--background-image);
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+/* Top Boxes */
+.top-boxes {
+    display: flex;
+    justify-content: center;
+    padding: 12px 16px;
+    position: absolute;
+    top: calc(var(--header-height) + 8px);
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    gap: 16px;
+    flex-wrap: wrap;
+}
+
+.top-boxes__item {
+    background-color: var(--white-light);
+    padding: 8px 16px;
+    font-size: 1.4rem;
+    text-align: center;
+    border-radius: 4px;
+    width: var(--top-boxes-item-width);
+    height: var(--top-boxes-height);
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: var(--text-color);
+}
+
+/* Grid */
+.grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+    gap: 16px;
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 90%;
+    padding: 0 8px;
+}
+
+.grid__item {
+    position: relative;
+    background-color: var(--white-transparent);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+.grid__image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    border-radius: 8px;
+}
+
+.grid__text {
+    position: absolute;
+    background-color: var(--black-transparent);
+    color: white;
+    padding: 8px;
+    font-size: var(--grid-text-size);
+    border-radius: 4px;
+    text-align: center;
+    width: 80%;
+}
+
+.grid__text--top {
+    top: -32px;
+}
+
+.grid__text--bottom {
+    bottom: -32px;
+}
+
+/* Media Queries */
+
+/* Para pantallas de 1200px o más grandes */
+@media (min-width: 1200px) {
+    :root {
+        --header-logo-width: 5%;
+        --header-link-size: 1.8rem;
+        --top-boxes-item-width: 22rem;
+        --grid-text-size: 1.6rem;
+    }
+
+    .top-boxes {
+        gap: 24px;
+        padding: 16px 24px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(3, 1fr);
+        width: 80%;
+    }
+
+    .grid__text {
+        font-size: 1.6rem;
+    }
+}
+
+/* Para tablets (768px) */
+@media (max-width: 768px) {
+    :root {
+        --header-logo-width: 6%;
+        --header-link-size: 1.4rem;
+        --top-boxes-item-width: 18rem;
+        --grid-text-size: 1.2rem;
+    }
+
+    .top-boxes {
+        gap: 16px;
+        padding: 8px 16px;
+    }
+
+    .grid {
+        grid-template-columns: repeat(2, 1fr);
+        width: 95%;
+    }
+}
+
+/* Para móviles (480px) */
+@media (max-width: 480px) {
+    :root {
+        --header-logo-width: 8%;
+        --header-link-size: 1.2rem;
+        --top-boxes-item-width: 90%;
+        --grid-text-size: 1rem;
+    }
+
+    .top-boxes {
+        flex-direction: column;
+        padding: 8px;
+        gap: 8px;
+    }
+
+    .grid {
+        grid-template-columns: 1fr;
+        width: 95%;
+    }
+}
+

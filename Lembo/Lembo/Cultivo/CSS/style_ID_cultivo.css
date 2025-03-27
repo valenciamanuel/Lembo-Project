@@ -1,0 +1,210 @@
+:root {
+    --Blanco: #ffffff;
+    --Negro: #000000;
+    --green: #39A900;
+    --light-green: #81c85d;
+    --gray: #757575;
+    --font-size-h1: 2.4rem;
+    --font-size-label: 1.6rem;
+    --font-size-button: 1.4rem;
+    --sombra-boton: 0 2px 2px rgba(0, 0, 0, 0.24), 0 0 2px rgba(0, 0, 0, 0.12);
+    --sombra-boton-hover: 0 3px 4px rgba(0, 0, 0, 0.24), 0 3px 4px rgba(0, 0, 0, 0.12);
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    padding: 0;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+.header {
+    background-color: var(--green);
+    width: 100%;
+    height: 6rem;
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 2rem;
+}
+
+.header__logo {
+    width: 4%;
+    height: 80%;
+}
+
+.cultivo {
+    margin-top: 8rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-grow: 1;
+}
+
+.cultivo__contenedor {
+    border: 0.1rem solid var(--green);
+    width: 90%;
+    max-width: 1200px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 3rem;
+    background: url(../IMG/istockphoto-1190429132-612x612.webp) no-repeat center;
+    background-size: cover;
+    padding: 2rem; /* Material Design padding */
+    border-radius: 8px; /* Material Design border-radius */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.cultivo__imagen {
+    border: 0.1rem solid var(--light-green);
+    width: 80%;
+    max-width: 400px;
+    height: 25rem;
+    background: url(../IMG/istockphoto-926358082-612x612.webp) no-repeat center;
+    background-size: cover;
+    border-radius: 8px; /* Material Design border-radius */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cultivo__formulario {
+    background-color: rgba(117, 117, 117, 0.8);
+    width: 90%;
+    max-width: 600px;
+    border-radius: 8px; /* Material Design border-radius */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 1rem;
+    padding: 1.5rem; /* Material Design padding */
+    flex-wrap: wrap;
+}
+
+.cultivo__label {
+    font-size: var(--font-size-label);
+    color: var(--Blanco);
+    width: 100%;
+    text-align: center;
+}
+
+.cultivo__input {
+    border-radius: 4px; /* Material Design border-radius */
+    padding: 1.2rem 1.6rem;
+    font-size: 1.6rem;
+    border: 0.1rem solid var(--gray);
+    transition: border 0.3s ease;
+    width: 100%;
+    max-width: 30rem;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
+
+.cultivo__input:focus {
+    border: 0.2rem solid var(--green);
+    outline: none;
+}
+
+.boton {
+    height: 36px; /* Material Design height */
+    min-width: 64px; /* Material Design min-width */
+    padding: 0 16px; /* Material Design padding */
+    border-radius: 4px; /* Material Design border-radius */
+    font-size: 14px; /* Material Design font-size */
+    text-transform: uppercase;
+    font-weight: 500;
+    letter-spacing: 0.089em;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s ease, box-shadow 0.3s ease;
+    box-shadow: var(--sombra-boton); /* Material Design box-shadow */
+}
+
+.boton:hover {
+    box-shadow: var(--sombra-boton-hover); /* Material Design box-shadow on hover */
+}
+
+.boton--primario {
+    background-color: var(--green);
+    color: white;
+}
+
+.boton__enlace {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Media Queries */
+
+@media (min-width: 1200px) {
+    .cultivo__contenedor {
+        width: 80%;
+        max-width: 1200px;
+        gap: 4rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .cultivo__contenedor {
+        flex-direction: column;
+        width: 95%;
+        padding: 2rem; /* Material Design padding */
+        gap: 2rem;
+    }
+
+    .cultivo__imagen {
+        width: 90%;
+        height: 25rem;
+    }
+
+    .cultivo__formulario {
+        flex-direction: column;
+        width: 90%;
+    }
+
+    .cultivo__input {
+        width: 100%;
+    }
+}
+
+@media (max-width: 480px) {
+    .cultivo__contenedor {
+        width: 95%;
+        padding: 1rem; /* Material Design padding */
+        gap: 1.5rem;
+    }
+
+    .cultivo__imagen {
+        width: 95%;
+        height: 20rem;
+    }
+
+    .cultivo__formulario {
+        width: 95%;
+        padding: 1rem; /* Material Design padding */
+    }
+
+    .cultivo__input {
+        font-size: 1.4rem;
+        padding: 1rem; /* Material Design padding */
+    }
+
+    .boton {
+        font-size: 1.2rem;
+        padding: 1rem 1.6rem; /* Material Design padding */
+    }
+
+    .header__logo {
+        width: 15%;
+        min-width: 4rem;
+    }
+}

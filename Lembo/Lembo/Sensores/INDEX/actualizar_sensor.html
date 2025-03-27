@@ -1,0 +1,78 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Actualizar Sensor</title>
+    <link rel="stylesheet" href="../CSS/style_actualizar_sensor.css">
+</head>
+<body>
+    <header class="header">
+        <img class="header__logo" src="../IMG/loso_SENA.png" alt="Logo SENA">
+        <a class="header__link" href="#">Volver</a>
+    </header>
+
+    <main class="main">
+        <div class="sensor">
+            <div class="sensor__content">
+                <div class="sensor__image">
+                    <svg class="sensor__image-icon" xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 24 24" fill="none" stroke="#dcdcdc" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M15 8h.01" />
+                        <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
+                        <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" />
+                        <path d="M14 14l1 -1c.67 -.644 1.45 -.824 2.182 -.54" />
+                        <path d="M16 19h6" />
+                        <path d="M19 16v6" />
+                    </svg>
+                </div>
+                
+                <form class="sensor__form" id="sensorForm">
+                    <legend class="sensor__form-title"><h2>Datos Sensor</h2></legend>
+                    
+                    <div class="sensor__form-group">
+                        <label class="sensor__label">Tipo Sensor</label>
+                        <input class="sensor__input" type="text" id="tipoSensor">
+                    </div>
+
+                    <div class="sensor__form-group">
+                        <label class="sensor__label">ID Sensor</label>
+                        <input class="sensor__input" type="number" id="idSensor">
+                    </div>
+
+                    <div class="sensor__form-group">
+                        <label class="sensor__label">Nombre Sensor</label>
+                        <input class="sensor__input" type="text" id="nombreSensor">
+                    </div>
+
+                    <div class="sensor__form-group">
+                        <label class="sensor__label">Unidad de Medida</label>
+                        <input class="sensor__input" type="text" id="unidadMedida">
+                    </div>
+
+                    <div class="sensor__form-group">
+                        <label class="sensor__label">Tiempo de Escaneo</label>
+                        <input class="sensor__input" type="number" id="tiempoEscaneo">
+                    </div>
+
+                    <div class="sensor__form-group">
+                        <label class="sensor__label">Descripción</label>
+                        <input class="sensor__input" type="text" id="descripcion">
+                    </div>
+
+                    <div class="sensor__form-group">
+                        <label class="sensor__label">Estado (activo / inactivo)</label>
+                        <input class="sensor__input" type="text" id="estado">
+                    </div>
+
+                    <div id="mensaje"></div>
+
+                    <button type="submit" class="sensor__button">Actualizar</button>
+                </form>
+            </div>          
+        </div>
+    </main>
+
+    <script src="../JS/validacion_actualizar.js"></script>
+</body>
+</html>

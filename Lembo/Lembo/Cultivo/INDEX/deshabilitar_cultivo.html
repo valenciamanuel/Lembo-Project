@@ -1,0 +1,87 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Deshabilitar Cultivo</title>
+    <link rel="stylesheet" href="../CSS/style_deshabilitar_cultivo.css">
+    <script src="../JS/validacion_deshabilitar.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <img class="header__logo" src="../IMG/loso_SENA.png" alt="Logo SENA">
+        <a class="header__link" href="#">Volver</a>
+    </header>
+
+    <main class="cultivo">
+        <div class="cultivo__container">
+            <div class="cultivo__imagen">
+                <svg class="cultivo__icono" xmlns="http://www.w3.org/2000/svg" width="400" height="400" viewBox="0 0 24 24" fill="none" stroke="#dcdcdc" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                    <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                    <path d="M15 8h.01" />
+                    <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
+                    <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" />
+                    <path d="M14 14l1 -1c.67 -.644 1.45 -.824 2.182 -.54" />
+                    <path d="M16 19h6" />
+                    <path d="M19 16v6" />
+                </svg>
+            </div>
+                
+            <form class="cultivo__form" id="formCultivo">
+                <legend><h2 class="cultivo__titulo">Datos Cultivo</h2></legend>
+
+                <div class="cultivo__campo">
+                    <label class="cultivo__label">Tipo de Cultivo</label>
+                    <input class="cultivo__input" type="text" id="tipoCultivo" required>
+                </div>
+
+                <div class="cultivo__campo">
+                    <label class="cultivo__label">Nombre Cultivo</label>
+                    <input class="cultivo__input" type="text" id="nombreCultivo" required>
+                </div>
+
+                <div class="cultivo__campo">
+                    <label class="cultivo__label">Identificador Cultivo</label>
+                    <input class="cultivo__input" type="text" id="idCultivo" required>
+                </div>
+
+                <div class="cultivo__campo">
+                    <label class="cultivo__label">Tamaño (ha)</label>
+                    <input class="cultivo__input" type="number" id="tamano" required>
+                </div>
+
+                <div class="cultivo__campo">
+                    <label class="cultivo__label">Ubicación</label>
+                    <input class="cultivo__input" type="text" id="ubicacion" required>
+                </div>
+
+                <div class="cultivo__campo">
+                    <label class="cultivo__label">Descripción</label>
+                    <textarea class="cultivo__input" id="descripcion" rows="3" required></textarea>
+                </div>
+
+                <div class="cultivo__campo">
+                    <label class="cultivo__label">Estado</label>
+                    <select class="cultivo__input" id="estado" required>
+                        <option value="">Seleccione</option>
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
+                    </select>
+                </div>
+
+                <p id="mensaje-validacion" class="cultivo__mensaje"></p> <!-- Mensaje de validación -->
+
+                <div class="cultivo__botones">
+                    <button type="button" class="cultivo__boton cultivo__boton--deshabilitar" id="btnDeshabilitar">Deshabilitar</button>
+                    <button type="button" class="cultivo__boton cultivo__boton--habilitar">
+                        <a class="cultivo__enlace" href="ID_cultivo_habilitar.html">Habilitar</a>
+                    </button>
+                    <button type="button" class="cultivo__boton cultivo__boton--actualizar">
+                        <a class="cultivo__enlace" href="ID_cultivo_actualizar.html">Actualizar</a>
+                    </button>
+                </div>
+            </form>
+        </div>
+    </main>
+</body>
+</html>
