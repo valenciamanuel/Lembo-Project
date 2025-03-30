@@ -16,36 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `register`
+-- Table structure for table `sensores`
 --
 
-DROP TABLE IF EXISTS `register`;
+DROP TABLE IF EXISTS `sensores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `register` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usertype` enum('superadmin','admin','personal','visitante') NOT NULL,
-  `IDtype` enum('RC','TI','CC','PASAPORTE') NOT NULL,
-  `IDnum` varchar(20) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `phone` varchar(15) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `fecha_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `IDnum` (`IDnum`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `sensores` (
+  `idSensor` int NOT NULL AUTO_INCREMENT,
+  `tipoSensor` varchar(100) NOT NULL,
+  `nombreSensor` varchar(100) NOT NULL,
+  `unidadMedida` varchar(50) NOT NULL,
+  `tiempoEscaneo` int NOT NULL,
+  `descripcion` text,
+  `estado` enum('Activo','Inactivo') NOT NULL,
+  PRIMARY KEY (`idSensor`)
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `register`
+-- Dumping data for table `sensores`
 --
 
-LOCK TABLES `register` WRITE;
-/*!40000 ALTER TABLE `register` DISABLE KEYS */;
-INSERT INTO `register` VALUES (1,'superadmin','RC','21212','diomeds','qq@gmail.com','','ww','2025-03-30 19:14:10'),(2,'admin','TI','222','1','1@gmail.com','','www','2025-03-30 19:16:26'),(4,'superadmin','TI','11','man','123@gmail.com','444','cc','2025-03-30 19:24:22'),(5,'visitante','CC','11111','yo','valencia@gamiil.com','32332','pp','2025-03-30 19:31:35'),(8,'superadmin','TI','1234','el','mi@gmail.com','555','pp','2025-03-30 19:37:45');
-/*!40000 ALTER TABLE `register` ENABLE KEYS */;
+LOCK TABLES `sensores` WRITE;
+/*!40000 ALTER TABLE `sensores` DISABLE KEYS */;
+INSERT INTO `sensores` VALUES (1,'www','wwww','hnj',3,'hbnjmk','Activo');
+/*!40000 ALTER TABLE `sensores` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-30 18:31:02
+-- Dump completed on 2025-03-30 18:31:03

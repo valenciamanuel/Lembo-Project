@@ -16,36 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `register`
+-- Table structure for table `cultivo`
 --
 
-DROP TABLE IF EXISTS `register`;
+DROP TABLE IF EXISTS `cultivo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `register` (
+CREATE TABLE `cultivo` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `usertype` enum('superadmin','admin','personal','visitante') NOT NULL,
-  `IDtype` enum('RC','TI','CC','PASAPORTE') NOT NULL,
-  `IDnum` varchar(20) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `phone` varchar(15) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `fecha_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
+  `cultivoType` varchar(100) NOT NULL,
+  `cultivoName` varchar(100) NOT NULL,
+  `cultivoID` varchar(50) NOT NULL,
+  `size` varchar(50) DEFAULT NULL,
+  `location` varchar(255) DEFAULT NULL,
+  `description` text,
+  `state` enum('Activo','Inactivo') NOT NULL,
   PRIMARY KEY (`id`),
-  UNIQUE KEY `IDnum` (`IDnum`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  UNIQUE KEY `cultivoID` (`cultivoID`)
+) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `register`
+-- Dumping data for table `cultivo`
 --
 
-LOCK TABLES `register` WRITE;
-/*!40000 ALTER TABLE `register` DISABLE KEYS */;
-INSERT INTO `register` VALUES (1,'superadmin','RC','21212','diomeds','qq@gmail.com','','ww','2025-03-30 19:14:10'),(2,'admin','TI','222','1','1@gmail.com','','www','2025-03-30 19:16:26'),(4,'superadmin','TI','11','man','123@gmail.com','444','cc','2025-03-30 19:24:22'),(5,'visitante','CC','11111','yo','valencia@gamiil.com','32332','pp','2025-03-30 19:31:35'),(8,'superadmin','TI','1234','el','mi@gmail.com','555','pp','2025-03-30 19:37:45');
-/*!40000 ALTER TABLE `register` ENABLE KEYS */;
+LOCK TABLES `cultivo` WRITE;
+/*!40000 ALTER TABLE `cultivo` DISABLE KEYS */;
+INSERT INTO `cultivo` VALUES (1,'huj','gbhj','gh','byhnj','gyhj','yhuj','Activo'),(2,'klKL','ujik','ikol','mk,l','kl','km','Inactivo');
+/*!40000 ALTER TABLE `cultivo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-30 18:31:02
+-- Dump completed on 2025-03-30 18:31:03

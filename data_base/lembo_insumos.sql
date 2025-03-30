@@ -16,36 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `register`
+-- Table structure for table `insumos`
 --
 
-DROP TABLE IF EXISTS `register`;
+DROP TABLE IF EXISTS `insumos`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `register` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `usertype` enum('superadmin','admin','personal','visitante') NOT NULL,
-  `IDtype` enum('RC','TI','CC','PASAPORTE') NOT NULL,
-  `IDnum` varchar(20) NOT NULL,
-  `name` varchar(100) NOT NULL,
-  `email` varchar(100) NOT NULL,
-  `phone` varchar(15) NOT NULL,
-  `password` varchar(255) NOT NULL,
-  `fecha_registro` timestamp NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `IDnum` (`IDnum`),
-  UNIQUE KEY `email` (`email`)
-) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `insumos` (
+  `idInsumo` int NOT NULL AUTO_INCREMENT,
+  `tipoInsumo` varchar(50) NOT NULL,
+  `nombreInsumo` varchar(100) NOT NULL,
+  `unidadMedida` varchar(50) NOT NULL,
+  `cantidad` int NOT NULL,
+  `valorUnitario` decimal(10,2) NOT NULL,
+  `valorTotal` decimal(10,2) GENERATED ALWAYS AS ((`cantidad` * `valorUnitario`)) STORED,
+  `descripcion` text NOT NULL,
+  `estado` enum('Activo','Inactivo') NOT NULL,
+  PRIMARY KEY (`idInsumo`),
+  CONSTRAINT `insumos_chk_1` CHECK ((`cantidad` > 0)),
+  CONSTRAINT `insumos_chk_2` CHECK ((`valorUnitario` > 0))
+) ENGINE=InnoDB AUTO_INCREMENT=79 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `register`
+-- Dumping data for table `insumos`
 --
 
-LOCK TABLES `register` WRITE;
-/*!40000 ALTER TABLE `register` DISABLE KEYS */;
-INSERT INTO `register` VALUES (1,'superadmin','RC','21212','diomeds','qq@gmail.com','','ww','2025-03-30 19:14:10'),(2,'admin','TI','222','1','1@gmail.com','','www','2025-03-30 19:16:26'),(4,'superadmin','TI','11','man','123@gmail.com','444','cc','2025-03-30 19:24:22'),(5,'visitante','CC','11111','yo','valencia@gamiil.com','32332','pp','2025-03-30 19:31:35'),(8,'superadmin','TI','1234','el','mi@gmail.com','555','pp','2025-03-30 19:37:45');
-/*!40000 ALTER TABLE `register` ENABLE KEYS */;
+LOCK TABLES `insumos` WRITE;
+/*!40000 ALTER TABLE `insumos` DISABLE KEYS */;
+INSERT INTO `insumos` (`idInsumo`, `tipoInsumo`, `nombreInsumo`, `unidadMedida`, `cantidad`, `valorUnitario`, `descripcion`, `estado`) VALUES (45,'gh','g','bh',67,789.00,'chjkcx','Activo'),(78,'bhnj','jmk','njmk',88,88.00,'hnj','Activo');
+/*!40000 ALTER TABLE `insumos` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
