@@ -28,47 +28,49 @@
                     </svg>
                 </div>
                 
-                <form class="form">
+                <form class="form" action="http://localhost:3000/CicloCultivo" method="POST">
                     <legend><h2 class="form__title">Datos Ciclo Cultivo</h2></legend>
                     <br>
                     
                     <div class="form__input">
                         <label class="form__label">ID Ciclo Cultivo</label>
-                        <input class="form__input-text" type="text">
+                        <input class="form__input-text form__input--ID" type="text">
                     </div>
 
                     <div class="form__input">
                         <label class="form__label">Nombre Ciclo Cultivo</label>
-                        <input class="form__input-text" type="text">
+                        <input class="form__input-text form__input--name" type="text">
                     </div>
 
                     <div class="form__input">
                         <label class="form__label">Fecha Siembra</label>
-                        <input class="form__input-text" type="text">
+                        <input class="form__input-text form__input--siembra" type="text">
                     </div>
 
                     <div class="form__input">
                         <label class="form__label">Fecha Cosecha</label>
-                        <input class="form__input-text" type="text">
+                        <input class="form__input-text form__input--cosecha" type="text">
                     </div>
 
                     <div class="form__input">
                         <label class="form__label">Novedades</label>
-                        <input class="form__input-text" type="text">
+                        <input class="form__input-text form__input--news" type="text">
                     </div>
 
                     <div class="form__input">
                         <label class="form__label">Descripción</label>
-                        <input class="form__input-text" type="text">
+                        <input class="form__input-text form__input--description" type="text">
                     </div>
 
                     <div class="form__input">
                         <label class="form__label">Estado (activo / inactivo)</label>
-                        <input class="form__input-text" type="text">
+                        <input class="form__input-text form__input-state" type="text">
                     </div>
                 </form>
 
                 <div class="main__content-buttons">
+                    <button type="submit" class="form__btn form__btn--registrar">Registrar</button>
+
                     <button class="main__content-button">
                         <a class="main__content-button-link" href="#" id="btnDeshabilitar">Deshabilitar</a>
                     </button>

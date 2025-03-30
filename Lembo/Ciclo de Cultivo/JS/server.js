@@ -20,21 +20,21 @@ db.connect(err => {
     }
     console.log('Conectado a la BD - Full');
 });
-app.post('/register', (req, res) => {
-    const { usertype, IDtype, IDnum, name, email, phone, password } = req.body;
+app.post('/CicloCultivo', (req, res) => {
+    const { cicloID, cicloName, siembraDate, cosechaDate, news, description, state } = req.body;
 
 
     console.log('Datos recibidos:', req.body);
 
     db.query(
-        'INSERT INTO register (usertype, IDtype, IDnum, name, email, phone, password) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [usertype, IDtype, IDnum, name, email, phone, password],
+        'INSERT INTO CicloCultivo (cicloID, cicloName, siembraDate, cosechaDate, news, description, state) VALUES (?, ?, ?, ?, ?, ?, ?)',
+        [cicloID, cicloName, siembraDate, cosechaDate, news, description, state],
         (err, result) => {
             if (err) {
                 console.error('Error insertando usuario:', err);
                 return res.status(500).json({ error: 'Error al registrar usuario' });
             }
-            res.status(201).json({ id: result.insertId, usertype, IDtype, IDnum, name, email, phone, password });
+            res.status(201).json({ id: result.insertId, cicloID, cicloName, siembraDate, cosechaDate, news, description, state });
         }
     );
 });

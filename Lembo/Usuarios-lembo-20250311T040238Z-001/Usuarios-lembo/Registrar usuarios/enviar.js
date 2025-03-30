@@ -10,16 +10,18 @@ document.addEventListener('DOMContentLoaded', () => {
         const userName = document.querySelector('.form__input--name');
         const userEmail = document.querySelector('.form__input--email');
         const userPhone = document.querySelector('.form__input--phone');
+        const userPassword = document.querySelector('.form__input--password');
 
         const formData = {
-            user: userType ? userType.value : '',
-            typeID: userTypeId ? userTypeId.value : '',
-            ID: userID ? userID.value : '',
+            usertype: userType ? userType.value : '',
+            IDtype: userTypeId ? userTypeId.value : '',
+            IDnum: userID ? userID.value : '',
             name: userName ? userName.value : '',
             email: userEmail ? userEmail.value : '',
-            phone: userPhone ? userPhone.value : '',
-            confirmarCorreo: document.querySelector('.form__input--email').value // Agregar este campo
+            phone: userPhone ? userPhone.value : '', 
+            password: userPassword ? userPassword.value : ''  
         };
+        
         
 
         try {

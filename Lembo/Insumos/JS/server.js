@@ -3,6 +3,8 @@ const mysql = require('mysql2');
 const cors = require('cors');
 const app = express();
 
+app.use(express.urlencoded({ extended: true })); 
+
 app.use(express.json());
 app.use(cors());
 
@@ -20,21 +22,21 @@ db.connect(err => {
     }
     console.log('Conectado a la BD - Full');
 });
-app.post('/register', (req, res) => {
-    const { usertype, IDtype, IDnum, name, email, phone, password } = req.body;
+app.post('/insumos', (req, res) => {
+    const { idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario,  descripcion, estado } = req.body;
 
 
     console.log('Datos recibidos:', req.body);
 
     db.query(
-        'INSERT INTO register (usertype, IDtype, IDnum, name, email, phone, password) VALUES (?, ?, ?, ?, ?, ?, ?)',
-        [usertype, IDtype, IDnum, name, email, phone, password],
+        'INSERT INTO insumos (idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario,  descripcion, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)',
+        [idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario,  descripcion, estado],
         (err, result) => {
             if (err) {
                 console.error('Error insertando usuario:', err);
                 return res.status(500).json({ error: 'Error al registrar usuario' });
             }
-            res.status(201).json({ id: result.insertId, usertype, IDtype, IDnum, name, email, phone, password });
+            res.status(201).json({ id: result.insertId, idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario,  descripcion, estado });
         }
     );
 });

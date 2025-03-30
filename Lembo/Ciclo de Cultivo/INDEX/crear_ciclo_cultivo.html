@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos Ciclo Cultivo</title>
+    <link rel="stylesheet" href="../CSS/style_datos_ciclo_cultivo.css">
+    <!-- <script src="../JS/validacion_datos.js" defer></script>  -->
+</head>
+<body>
+    <header class="header">
+        <img class="header__logo" src="../IMG/loso_SENA.png" alt="Logo SENA">
+        <a class="header__link" href="#">Volver</a>
+    </header>
+
+    <main class="main">
+        <div class="main__content">
+            <div class="main__content-img-form">
+                <div class="main__content-img">
+                    <svg class="main__content-img-product" xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 24 24" fill="none" stroke="#dcdcdc" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
+                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
+                        <path d="M15 8h.01" />
+                        <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
+                        <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" />
+                        <path d="M14 14l1 -1c.67 -.644 1.45 -.824 2.182 -.54" />
+                        <path d="M16 19h6" />
+                        <path d="M19 16v6" />
+                    </svg>
+                </div>
+                
+                <form class="form" action="http://localhost:3000/CicloCultivo" method="POST">
+                    <legend><h2 class="form__title">Datos Ciclo Cultivo</h2></legend>
+                    <br>
+                    
+                    <div class="form__input">
+                        <label class="form__label">ID Ciclo Cultivo</label>
+                        <input class="form__input-text form__input--ID" type="text" name="cicloID">
+                    </div>
+
+                    <div class="form__input">
+                        <label class="form__label">Nombre Ciclo Cultivo</label>
+                        <input class="form__input-text form__input--name" type="text" name="cicloName">
+                    </div>
+
+                    <div class="form__input">
+                        <label class="form__label">Fecha Siembra</label>
+                        <input class="form__input-text form__input--siembra" type="date" name="siembraDate">
+                    </div>
+
+                    <div class="form__input">
+                        <label class="form__label">Fecha Cosecha</label>
+                        <input class="form__input-text form__input--cosecha" type="date" name="cosechaDate">
+                    </div>
+
+                    <div class="form__input">
+                        <label class="form__label">Novedades</label>
+                        <input class="form__input-text form__input--news" type="text" name="news">
+                    </div>
+
+                    <div class="form__input">
+                        <label class="form__label">Descripción</label>
+                        <input class="form__input-text form__input--description" type="text" name="description">
+                    </div>
+
+                    <div class="form__input">
+                        <label class="form__label">Estado (activo / inactivo)</label>
+                        <select name="state" class="form__input-text form__input--state">
+                            <option value="">Seleccione una opción</option>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <button type="submit" class="form__btn form__btn--registrar">Crear</button>
+
+                </form>
+            </div>          
+        </div>
+    </main>
+</body>
+</html>
