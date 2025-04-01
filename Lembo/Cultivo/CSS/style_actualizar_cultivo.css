@@ -15,7 +15,7 @@
 }
 
 html {
-    font-size: 62.5%;
+    font-size: 62.5%; /* 1rem = 10px */
     box-sizing: border-box;
     font-family: Arial, Helvetica, sans-serif;
     height: 100%;
@@ -93,8 +93,8 @@ h4 {
 
 .content__container {
     border: 0.4rem solid var(--green);
-    max-width: 12%; /* Ancho máximo aún más reducido */
-    padding: 0.5rem; /* Padding reducido */
+    max-width: 90%; /* Ancho máximo ajustado */
+    padding: 1rem; /* Padding ajustado */
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -105,23 +105,23 @@ h4 {
 
 .content__image {
     border: 0.1rem solid var(--light-green);
-    width: 2.5rem; 
-    height: 2.5rem; 
+    width: 5rem; 
+    height: 5rem; 
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 0.5rem; 
+    margin-bottom: 1rem; 
 }
 
 .form {
     width: 100%;
     display: grid;
-    gap: 0.4rem; 
+    gap: 0.6rem; 
 }
 
 .form__legend {
-    font-size: 1.6rem; 
+    font-size: var(--font-size-h4); /* Establecido con variable */
     text-align: center;
 }
 
@@ -131,26 +131,31 @@ h4 {
 }
 
 .form__label {
-    font-size: 0.9rem; 
+    font-size: var(--font-size-label); /* Establecido con variable */
+    margin-bottom: 0.4rem;
+}
 
 .form__input {
     border: 0.1rem solid var(--Negro);
     border-radius: 4px;
-    padding: 0.3rem 0.6rem; 
-    font-size: 0.8rem; 
+    padding: 0.8rem 1rem; /* Padding ajustado */
+    font-size: 1.4rem; /* Tamaño de texto adecuado */
+    width: 32.0rem;
+    height: 5.6rem; /* Según Material Design (56px -> 3.5rem) */
+    box-sizing: border-box;
 }
 
 .buttons {
     text-align: center;
-    margin-top: 0.5rem; /
+    margin-top: 1rem;
 }
 
 .buttons__button {
-    height: 20px; 
-    min-width: 35px; 
-    padding: 0 6px; 
+    height: 3.6rem; /* Ajustado al estándar */
+    min-width: 8.8rem;
+    padding: 0 1.6rem;
     border-radius: 4px;
-    font-size: 0.8rem; 
+    font-size: var(--font-size-button); /* Establecido con variable */
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: 0.089em;
@@ -158,10 +163,11 @@ h4 {
     border: none;
     cursor: pointer;
     box-shadow: var(--sombra-boton);
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, box-shadow 0.2s;
 }
 
 .buttons__button:hover {
+    background-color: var(--light-green);
     box-shadow: var(--sombra-boton-hover);
 }
 
@@ -173,13 +179,13 @@ h4 {
 /* Media Queries */
 @media (min-width: 1200px) {
     .content__container {
-        max-width: 12%;
+        max-width: 40%;
     }
 }
 
 @media (min-width: 768px) and (max-width: 1199px) {
     .content__container {
-        max-width: 20%;
+        max-width: 60%;
     }
 
     .buttons__button {
@@ -191,6 +197,4 @@ h4 {
     .content__container {
         max-width: 95%;
     }
-}
-/* resposivo entre 768 y hasta  500 sale de caja */ 
 }
