@@ -42,7 +42,7 @@ body {
 }
 
 .insumo {
-    margin-top: 6rem; /* Ajuste para header fijo */
+    margin-top: 6rem;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -57,12 +57,12 @@ body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    gap: 2.4rem; /* Ajuste de gap para Material Design */
+    gap: 2.4rem; 
     background: url(../IMG/istockphoto-1190429132-612x612.webp) no-repeat center;
     background-size: cover;
-    padding: 2.4rem; /* Ajuste de padding para Material Design */
-    border-radius: 4px; /* Bordes redondeados */
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    padding: 2.4rem; 
+    border-radius: 4px; 
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1); 
 }
 
 .insumo__image {
@@ -72,20 +72,20 @@ body {
     height: 25rem;
     background: url(../IMG/istockphoto-926358082-612x612.webp) no-repeat center;
     background-size: cover;
-    border-radius: 4px; /* Bordes redondeados */
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    border-radius: 4px;
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
 }
 
 .insumo__form {
     background-color: rgba(117, 117, 117, 0.8);
     width: 90%;
     max-width: 600px;
-    border-radius: 4px; /* Bordes redondeados */
+    border-radius: 4px; 
     display: flex;
     justify-content: center;
     align-items: center;
-    gap: 1.2rem; /* Ajuste de gap para Material Design */
-    padding: 1.6rem; /* Ajuste de padding para Material Design */
+    gap: 1.2rem; 
+    padding: 1.6rem; 
     flex-wrap: wrap;
 }
 
@@ -104,26 +104,25 @@ body {
     transition: border 0.3s ease;
     width: 100%;
     max-width: 30rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Sombra ligera */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); 
 }
 
 .insumo__input:focus {
     border: 0.2rem solid var(--Green);
     outline: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra al enfocar */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
 }
 
 .insumo__button {
     background-color: var(--Green);
     min-width: 88px;
-    height: 36px; /* Altura recomendada para botones */
-    padding: 0 16px;
+    height: 36px; 
     border-radius: 4px;
     font-size: 14px;
     color: var(--Blanco);
     border: none;
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); /* Sombra ligera */
+    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2); 
     transition: background-color 0.3s, box-shadow 0.3s;
     display: flex;
     justify-content: center;
@@ -132,7 +131,7 @@ body {
 
 .insumo__button:hover {
     background-color: var(--Light-Green);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); /* Sombra al pasar el ratón */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3); 
 }
 
 .insumo__button:active {
@@ -144,8 +143,8 @@ body {
     .insumo__container {
         flex-direction: column;
         width: 95%;
-        padding: 1.6rem; /* Ajuste para Material Design */
-        gap: 1.6rem; /* Ajuste para Material Design */
+        padding: 1.6rem; 
+        gap: 1.6rem; 
     }
 
     .insumo__image {
@@ -167,7 +166,7 @@ body {
     .insumo__container {
         width: 95%;
         padding: 1rem;
-        gap: 1.2rem; /* Ajuste para Material Design */
+        gap: 1.2rem; 
     }
 
     .insumo__image {

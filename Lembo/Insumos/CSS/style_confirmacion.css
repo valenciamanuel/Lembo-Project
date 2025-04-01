@@ -74,15 +74,15 @@ html, body {
 /* BOTÓN (Material Design) */
 .confirmacion__button {
     background-color: var(--green);
-    width: 142px; /* Ancho específico */
-    height: 48px; /* Altura recomendada */
-    padding: 0 16px; /* Ajuste del padding */
-    border-radius: 4px; /* Bordes redondeados */
-    font-size: 14px; /* Tamaño de fuente recomendado */
+    width: 142px; 
+    height: 48px; 
+    padding: 0 16px; 
+    border-radius: 4px; 
+    font-size: 14px; 
     color: var(--Blanco);
     border: none;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); /* Sombra */
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2); 
     transition: background-color 0.3s, box-shadow 0.3s;
     display: flex;
     justify-content: center;
@@ -106,7 +106,7 @@ html, body {
     font-weight: bold;
     display: block;
     text-align: center;
-    line-height: 48px; /* Ajustar line-height a la altura del botón */
+    line-height: 48px; 
     width: 100%;
 }
 
@@ -131,15 +131,15 @@ html, body {
     }
 
     .confirmacion__button {
-        width: 50%; /* Ajustar el ancho para pantallas más pequeñas */
-        height: 40px; /* Ajustar la altura para pantallas más pequeñas */
+        width: 50%; 
+        height: 40px; 
         font-size: 14px;
-        padding: 0 16px; /* Ajustar el padding horizontal */
+        padding: 0 16px; 
         line-height: 40px;
     }
 
     .confirmacion__link {
-        line-height: 40px; /* Ajustar line-height para pantallas más pequeñas */
+        line-height: 40px; 
     }
 }
 
@@ -157,15 +157,15 @@ html, body {
     }
 
     .confirmacion__button {
-        width: 70%; /* Ajustar el ancho para pantallas aún más pequeñas */
-        height: 35px; /* Ajustar la altura para pantallas más pequeñas */
+        width: 70%; 
+        height: 35px; 
         font-size: 12px;
-        padding: 0 12px; /* Ajustar el padding horizontal */
+        padding: 0 12px; 
         line-height: 35px;
     }
 
     .confirmacion__link {
-        line-height: 35px; /* Ajustar line-height para pantallas más pequeñas */
+        line-height: 35px; 
     }
 
     .confirmacion__title {

@@ -6,17 +6,16 @@
     --texto-blanco: white;
     --texto-titulos: #222;
     --sombra-caja: rgba(0, 0, 0, 0.2);
-    --verde-secundario: #007bff; /* Azul para botón secundario */
-    --verde-secundario-hover: #0056b3; /* Azul más oscuro para hover */
+    --verde-secundario: #007bff; 
+    --verde-secundario-hover: #0056b3; 
   
     /* Tamaños de fuente */
-    --font-size-base: 62.5%; /* 10px - Base para rem */
-    --font-size-titulos: 2.8rem; /* 28px - Títulos */
-    --font-size-subtitulos: 1.8rem; /* 18px - Subtítulos */
-    --font-size-enlaces: 1.7rem; /* 17px - Enlaces */
-    --font-size-cajas-superiores: 1.5rem; /* 15px - Cajas superiores */
-    --font-size-boton: 2.2rem; /* 22px - Botón */
-  
+    --font-size-base: 62.5%; 
+    --font-size-titulos: 2.8rem; 
+    --font-size-subtitulos: 1.8rem; 
+    --font-size-enlaces: 1.7rem; 
+    --font-size-cajas-superiores: 1.5rem; 
+    --font-size-boton: 2.2rem; 
     /* Espaciado */
     --spacing-1: 0.8rem;
     --spacing-2: 1.6rem;
@@ -95,7 +94,7 @@
   
   /* Contenedor principal */
   .background {
-    background-image: url('/Lembo/imagenes proyecto/Cultivos.jpg');
+    background-image: url('/Lembo/imagenes proyecto/sisisi.avif');
 
     background-size: cover;
     background-position: center;
@@ -150,8 +149,8 @@
     gap: var(--spacing-3);
     justify-content: center;
     align-items: center;
-    position: fixed; /* Mantenemos fixed para pantallas grandes */
-    top: 20rem; /* Mantenemos top para pantallas grandes */
+    position: fixed; 
+    top: 20rem; 
     flex-wrap: wrap;
   }
   
@@ -208,11 +207,11 @@
   }
   
   .button--secondary {
-    background-color: var(--verde-principal); /* Color de fondo azul */
+    background-color: var(--verde-principal); 
   }
   
   .button--secondary:hover {
-    background-color: var(--verde-principal); /* Hover azul más oscuro */
+    background-color: var(--verde-principal); 
   }
   
   /* Media Queries para Responsive Design */
@@ -260,8 +259,8 @@
     .grid {
       flex-direction: column;
       gap: var(--spacing-3);
-      margin-top: 40rem; /* Ajuste de margen superior para tablets */
-      position: relative; /* Cambia a relative para tablets y móviles */
+      margin-top: 40rem; 
+      position: relative; 
       top: auto;
     }
     .grid__item {
@@ -301,8 +300,8 @@
     .grid {
       margin-top: 55rem; /* Ajuste de margen superior para móviles */
       gap: var(--spacing-2);
-      position: relative; /* Cambia a relative para tablets y móviles */
-      top: auto; /* Elimina el top fijo en móviles */
+      position: relative; 
+      top: auto; 
     }
     .grid__item {
       width: 95%;

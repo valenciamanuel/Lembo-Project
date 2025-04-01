@@ -371,7 +371,7 @@ html, body {
 
 .form-section__button {
     width: 100%;
-    height: 36px; /* Altura estándar de Material Design */
+    height: 36px; 
     border-radius: 0.4rem;
     font-size: 1.2rem;
     font-weight: bold;
@@ -381,7 +381,7 @@ html, body {
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
     color: var(--Blanco);
     box-shadow: var(--sombra-boton);
-    padding: 0 1.6rem; /* Padding de Material Design */
+    padding: 0 1.6rem; 
 }
 
 .form-section__button:hover {
