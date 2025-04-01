@@ -163,7 +163,7 @@ h4 {
     overflow: hidden;
     grid-column: 2 / 3; /* Coloca el botón en la segunda columna */
     justify-self: end; /* Alinea el botón al final de la celda */
-    margin-top: 1.6rem; /* Añade margen superior para separarlo del formulario */
+    margin-top: 1.6rem; 
 }
 
 .insumo__button::before {
@@ -223,9 +223,9 @@ h4 {
     }
 
     .insumo__button {
-        grid-column: 1 / -1; /* Ocupa toda la fila en pantallas pequeñas */
-        justify-self: center; /* Centra el botón */
-        margin-top: 1.6rem; /* Añade margen superior */
+        grid-column: 1 / -1; 
+        justify-self: center; 
+        margin-top: 1.6rem; 
     }
 }
 

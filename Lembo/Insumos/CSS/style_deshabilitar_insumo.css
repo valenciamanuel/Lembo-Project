@@ -12,7 +12,7 @@ html {
 }
 
 body {
-    overflow-y: auto; /* Permite el scroll vertical si es necesario */
+    overflow-y: auto; 
     margin: 0;
 }
 
@@ -46,16 +46,16 @@ h4 {
 }
 
 .header__logo {
-    width: 4rem; /* Cambiado a rem para consistencia */
-    height: 4.8rem; /* Cambiado a rem para consistencia */
-    margin-left: 1rem; /* Cambiado a rem para consistencia */
+    width: 4rem; 
+    height: 4.8rem; 
+    margin-left: 1rem; 
 }
 
 .header__volver {
     font-size: 1.7rem;
     text-decoration: none;
     color: var(--Blanco);
-    margin-left: 2rem; /* Cambiado a rem para consistencia */
+    margin-left: 2rem; 
 }
 
 /* MAIN CONTENT */
@@ -66,7 +66,7 @@ h4 {
   justify-content: flex-start;
   min-height: 100vh;
   width: 100%;
-  padding-top: 6rem; /* Espacio para el header fijo */
+  padding-top: 6rem; 
   box-sizing: border-box;
 }
 
@@ -76,7 +76,7 @@ h4 {
     border: 0.1rem solid var(--green);
     padding: 1rem;
     display: flex;
-    flex-wrap: wrap; /* Permite que los elementos se envuelvan */
+    flex-wrap: wrap; 
     justify-content: space-between;
     background-color: var(--Blanco);
     margin: 2rem 0;
@@ -86,12 +86,12 @@ h4 {
     display: flex;
     flex-wrap: wrap;
     justify-content: space-between;
-    width: 100%; /* Asegura que ocupe todo el ancho del contenedor */
+    width: 100%; 
 }
 
 /* IMAGE */
 .insumo__image {
-    width: 45%; /* Ajustado para que quepa junto al formulario */
+    width: 45%; 
     height: auto;
     aspect-ratio: 16 / 9;
     display: flex;
@@ -103,7 +103,7 @@ h4 {
 
 /* FORM */
 .insumo__form {
-    width: 45%; /* Ajustado para que quepa junto a la imagen */
+    width: 45%; 
     display: grid;
     gap: 0.8rem;
 }
@@ -133,10 +133,10 @@ h4 {
 /* BUTTONS */
 .insumo__buttons {
     display: flex;
-    justify-content: center; /* Centrado en móviles */
+    justify-content: center; 
     gap: 1rem;
     padding: 1rem;
-    width: 100%; /* Ocupa todo el ancho */
+    width: 100%; /
 }
 
 .insumo__button {
@@ -171,7 +171,7 @@ h4 {
 
     .insumo__image,
     .insumo__form {
-        width: 100%; /* Ocupan todo el ancho en móviles */
+        width: 100%; 
     }
 
     .insumo__buttons {

@@ -63,8 +63,8 @@ body {
     gap: 3rem;
     background: url(../IMG/istockphoto-1190429132-612x612.webp) no-repeat center;
     background-size: cover;
-    padding: 2rem; /* Material Design padding */
-    border-radius: 8px; /* Material Design border-radius */
+    padding: 2rem; 
+    border-radius: 8px; 
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
 
@@ -75,7 +75,7 @@ body {
     height: 25rem;
     background: url(../IMG/istockphoto-926358082-612x612.webp) no-repeat center;
     background-size: cover;
-    border-radius: 8px; /* Material Design border-radius */
+    border-radius: 8px; 
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
 
@@ -83,12 +83,12 @@ body {
     background-color: rgba(117, 117, 117, 0.8);
     width: 90%;
     max-width: 600px;
-    border-radius: 8px; /* Material Design border-radius */
+    border-radius: 8px; 
     display: flex;
     justify-content: center;
     align-items: center;
     gap: 1rem;
-    padding: 1.5rem; /* Material Design padding */
+    padding: 1.5rem; 
     flex-wrap: wrap;
 }
 
@@ -100,7 +100,7 @@ body {
 }
 
 .cultivo__input {
-    border-radius: 4px; /* Material Design border-radius */
+    border-radius: 4px; 
     padding: 1.2rem 1.6rem;
     font-size: 1.6rem;
     border: 0.1rem solid var(--gray);
@@ -116,22 +116,22 @@ body {
 }
 
 .boton {
-    height: 36px; /* Material Design height */
-    min-width: 64px; /* Material Design min-width */
-    padding: 0 16px; /* Material Design padding */
-    border-radius: 4px; /* Material Design border-radius */
-    font-size: 14px; /* Material Design font-size */
+    height: 36px; 
+    min-width: 64px; 
+    padding: 0 16px; 
+    border-radius: 4px; 
+    font-size: 14px;
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: 0.089em;
     border: none;
     cursor: pointer;
     transition: background-color 0.3s ease, box-shadow 0.3s ease;
-    box-shadow: var(--sombra-boton); /* Material Design box-shadow */
+    box-shadow: var(--sombra-boton); 
 }
 
 .boton:hover {
-    box-shadow: var(--sombra-boton-hover); /* Material Design box-shadow on hover */
+    box-shadow: var(--sombra-boton-hover); 
 }
 
 .boton--primario {
@@ -158,7 +158,7 @@ body {
     .cultivo__contenedor {
         flex-direction: column;
         width: 95%;
-        padding: 2rem; /* Material Design padding */
+        padding: 2rem; 
         gap: 2rem;
     }
 
@@ -180,7 +180,7 @@ body {
 @media (max-width: 480px) {
     .cultivo__contenedor {
         width: 95%;
-        padding: 1rem; /* Material Design padding */
+        padding: 1rem; 
         gap: 1.5rem;
     }
 
@@ -191,17 +191,17 @@ body {
 
     .cultivo__formulario {
         width: 95%;
-        padding: 1rem; /* Material Design padding */
+        padding: 1rem; 
     }
 
     .cultivo__input {
         font-size: 1.4rem;
-        padding: 1rem; /* Material Design padding */
+        padding: 1rem; 
     }
 
     .boton {
         font-size: 1.2rem;
-        padding: 1rem 1.6rem; /* Material Design padding */
+        padding: 1rem 1.6rem; 
     }
 
     .header__logo {
