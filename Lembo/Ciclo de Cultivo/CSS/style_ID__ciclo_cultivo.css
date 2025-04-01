@@ -117,11 +117,11 @@ body {
 
 .ciclo-cultivo__button {
     background-color: var(--green);
-    min-width: 88px; /* Ancho mínimo recomendado */
-    height: 36px; /* Altura recomendada para botones */
-    padding: 0 16px; /* Padding para mantener el tamaño */
+    min-width: 88px; 
+    height: 36px; 
+    padding: 0 16px; 
     border-radius: 4px;
-    font-size: var(--font-size-button); /* Usar variable para el tamaño de fuente */
+    font-size: var(--font-size-button); 
     color: var(--Blanco);
     border: none;
     cursor: pointer;

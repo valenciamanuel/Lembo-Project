@@ -105,23 +105,23 @@ h4 {
 
 .content__image {
     border: 0.1rem solid var(--light-green);
-    width: 2.5rem; /* Imagen reducida */
-    height: 2.5rem; /* Imagen reducida */
+    width: 2.5rem; 
+    height: 2.5rem; 
     border-radius: 50%;
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-bottom: 0.5rem; /* Margen reducido */
+    margin-bottom: 0.5rem; 
 }
 
 .form {
     width: 100%;
     display: grid;
-    gap: 0.4rem; /* Gap reducido */
+    gap: 0.4rem; 
 }
 
 .form__legend {
-    font-size: 1.6rem; /* Tamaño de la leyenda reducido */
+    font-size: 1.6rem; 
     text-align: center;
 }
 
@@ -131,27 +131,26 @@ h4 {
 }
 
 .form__label {
-    font-size: 0.9rem; /* Tamaño de fuente reducido */
-}
+    font-size: 0.9rem; 
 
 .form__input {
     border: 0.1rem solid var(--Negro);
     border-radius: 4px;
-    padding: 0.3rem 0.6rem; /* Padding reducido */
-    font-size: 0.8rem; /* Tamaño de fuente reducido */
+    padding: 0.3rem 0.6rem; 
+    font-size: 0.8rem; 
 }
 
 .buttons {
     text-align: center;
-    margin-top: 0.5rem; /* Margen reducido */
+    margin-top: 0.5rem; /
 }
 
 .buttons__button {
-    height: 20px; /* Altura del botón reducida */
-    min-width: 35px; /* Ancho mínimo del botón reducido */
-    padding: 0 6px; /* Padding del botón reducido */
+    height: 20px; 
+    min-width: 35px; 
+    padding: 0 6px; 
     border-radius: 4px;
-    font-size: 0.8rem; /* Tamaño de fuente del botón reducido */
+    font-size: 0.8rem; 
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: 0.089em;
@@ -192,4 +191,6 @@ h4 {
     .content__container {
         max-width: 95%;
     }
-}/* resposivo entre 768 y hasta  500 sale de caja  */
+}
+/* resposivo entre 768 y hasta  500 sale de caja */ 
+}
