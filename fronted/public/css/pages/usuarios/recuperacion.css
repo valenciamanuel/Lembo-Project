@@ -1,0 +1,160 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colores Principales */
+    --primary-green-950: #39A900;
+    --primary-green-600: #81C85D;
+    /* Colores Básicos */
+    --primary-white: #FFFFFF;
+    --primary-black: #000;
+    /* Tipografía */
+    --font-primary: 'Work Sans';
+}
+
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    background-image: url(../img/cafe.jpg);
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+
+.header {
+    padding-top: 1rem;
+    padding-bottom: 0.5rem;
+    width: 100%;
+    height: 7rem;
+    background-color: var(--primary-green-950);
+    color: var(--primary-white);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    position: relative;
+}
+
+.header__title {
+    font-size: 6.4rem;
+    text-transform: uppercase;
+    margin-left: 1rem;
+    font-weight: bold;
+}
+
+.header__logo {
+    position: absolute;
+    left: 2%; /* Mover el logo a la izquierda */
+    top: 50%;
+    transform: translateY(-50%);
+}
+
+.header__logo-img {
+    width: 6rem;
+    height: auto;
+}
+
+.main {
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto;
+}
+
+.message {
+    background-color: var(--primary-white);
+    border: 0.0625rem solid var(--primary-green-600);
+    padding: 2rem; /* Aumenté el padding para dar más espacio dentro de la caja */
+    border-radius: 0.625rem;
+    text-align: center;
+    width: 50rem; /* Hice la caja más ancha */
+    max-width: 90%; /* Asegura que la caja no se extienda demasiado en pantallas más pequeñas */
+    height: auto;
+    box-sizing: border-box; /* Asegura que el padding no afecte el ancho */
+}
+
+.message__title {
+    font-size: 2.4rem;
+    font-weight: bold;
+    margin-top: 2rem; /* Ajusté el margen para una mejor separación */
+}
+
+.message__button {
+    padding: 2.4rem 1.2rem;
+    background-color: var(--primary-green-950);
+    color: var(--primary-black);
+    border: none;
+    border-radius: 1rem;
+    cursor: pointer;
+    margin-top: 3rem; /* Reducido el margen para que el botón no quede tan abajo */
+    width: 100%; /* Asegura que el botón sea del 100% del ancho disponible */
+    max-width: 20rem; /* El botón no se hará más grande de este tamaño */
+    height: 4.3rem;
+    font-family: var(--font-primary);
+    font-weight: bold;
+    justify-content: center;
+    align-items: center;
+    text-align: center; /* Asegura que el texto esté centrado */
+}
+
+.message__button-text {
+    font-size: 1.6rem;
+    text-align: center; /* Centra el texto dentro del botón */
+}
+
+.message__link {
+    text-decoration: none;
+}
+
+/* Media Queries */
+@media (max-width: 769px) {
+    html {
+        font-size: 50%;
+    }
+
+    .header {
+        height: 8rem;
+        padding-top: 1rem;
+    }
+
+    .header__title {
+        font-size: 4.8rem;
+    }
+
+    .message__title {
+        font-size: 2rem;
+        margin-top: 3rem; /* Ajustado para que el título no quede tan alejado en móviles */
+    }
+
+    .message {
+        width: 90%; /* El mensaje ocupa un mayor porcentaje del ancho en dispositivos pequeños */
+        padding: 1.5rem; /* Ajustamos el padding en dispositivos pequeños */
+    }
+
+    .message__button {
+        width: 100%;
+        height: 3rem;
+        padding: 1rem;
+    }
+
+    .header__logo {
+        left: 2%; /* Mantenemos el logo a la izquierda en móviles también */
+        top: 50%;
+        transform: translateY(-50%);
+    }
+}

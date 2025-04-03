@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Cambiar Contraseña - Lembo</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <header class="header">
+        <h1 class="header__title">Lembo</h1>
+        <div class="header__logo">
+            <img src="../img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="logo sena" class="header__logo-image">
+        </div>
+    </header>
+
+    <main class="main">
+        <form id="passwordForm" class="password-form">
+            <h3 class="password-form__title">Cambiar Contraseña</h3>
+            <h3 class="password-form__subtitle">Ingresa la nueva contraseña</h3>
+            <input id="password" class="password-form__input password-form__input--password" type="password" placeholder="Contraseña">
+            <h3 class="password-form__subtitle">Confirmar la nueva contraseña</h3>
+            <input id="confirmPassword" class="password-form__input password-form__input--password" type="password" placeholder="Confirma la contraseña">
+            <p id="message" class="password-form__message"></p>
+            
+            <!-- Contenedor de los botones -->
+            <div class="password-form__buttons-container">
+                <button type="submit" class="password-form__button password-form__button--confirm">Confirmar</button>
+                <a href="../Recuperar contraseña/index.html" class="password-form__link password-form__link--back">Volver</a>
+            </div>
+        </form>
+    </main>
+    
+    <script src="script.js"></script>
+</body>
+</html>

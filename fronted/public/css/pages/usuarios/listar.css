@@ -1,0 +1,155 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Colores Principales */
+    --Primary-Green950: #39A900;
+    --Primary-Green600: #81C85D;
+    /* Colores Básicos */
+    --Primary-white: #FFFFFF;
+    --Primary-Black: #000;
+    /* Tipografía */
+    --font-primary: 'Work Sans';
+}
+
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    padding: 0;
+    background-image: url('../img/cafe.jpg');
+    background-size: cover;
+    color: #000;
+    min-height: 100vh; /* Asegura que el body tenga al menos la altura de la ventana */
+    display: flex;
+    flex-direction: column; /* Asegura que los elementos dentro del body se organicen en columna */
+}
+
+.header {
+    display: flex;
+    align-items: center; /* Asegura que el contenido esté centrado verticalmente */
+    justify-content: flex-start; /* Alinea los elementos a la izquierda */
+    background-color: var(--Primary-Green950);
+    color: var(--Primary-white);
+    padding: 1rem 1.5rem; /* Reduce el padding para hacer el header más pequeño */
+    height: auto; /* Asegura que la altura se ajuste al contenido */
+    box-sizing: border-box; /* Asegura que el padding no afecte al ancho */
+}
+
+.header__logo {
+    padding-right: 1rem; /* Ajusté el padding para dar más espacio entre el logo y el título */
+    text-align: left; /* Alinea el logo a la izquierda */
+}
+
+.header__logo-image {
+    max-width: 100%;
+    height: auto;
+}
+
+.header__title {
+    font-size: 2.4rem;
+    margin: 0;
+    padding-left: 1rem; /* Ajusté el padding para evitar exceso de espacio */
+    color: var(--Primary-white);
+    text-align: left; /* Alinea el título a la izquierda */
+}
+
+.table-container {
+    margin: 0;
+    padding: 2rem;
+    background-color: var(--Primary-white);
+    flex-grow: 1; /* Esto hará que el table-container ocupe el espacio restante */
+}
+
+.table-container__data-table {
+    width: 100%;
+    border-collapse: separate;
+    margin-bottom: 2rem;
+}
+
+.table-container__data-table-header {
+    border: 0.1rem solid var(--Primary-Green950);
+    padding: 1rem;
+    text-align: left;
+    background-color: var(--Primary-Green600);
+    color: var(--Primary-white);
+    text-transform: uppercase;
+    font-size: 2.4rem;
+    font-family: var(--font-primary);
+}
+
+.table-container__data-table td {
+    border: 0.1rem solid var(--Primary-Green950);
+    padding: 1rem;
+    text-align: left;
+    background-color: var(--Primary-white);
+}
+
+.table-container__button-container {
+    text-align: right;
+}
+
+.table-container__button-container-link {
+    text-decoration: none;
+}
+
+.btn-print {
+    background-color: var(--Primary-Green950);
+    color: var(--Primary-Black);
+    border: none;
+    border-radius: 1rem;
+    padding: 2.4rem 1.2rem;
+    cursor: pointer;
+    font-size: 1.6rem;
+    width: 11.6rem;
+    height: 5.8rem;
+    font-family: var(--font-primary);
+    font-weight: bold;
+}
+
+/* Media Queries */
+@media (max-width: 769px) {
+    .header {
+        flex-direction: column;
+        align-items: flex-start; /* Alinea el contenido a la izquierda */
+        padding: 1rem 1rem; /* Ajusta el padding para móviles */
+    }
+
+    .header__title {
+        font-size: 2rem;
+        padding-left: 0;
+        text-align: left; /* Alinea el título a la izquierda */
+        margin-top: 1rem;
+    }
+
+    .header__logo {
+        text-align: left; /* Alinea el logo a la izquierda */
+        padding-bottom: 1rem;
+    }
+
+    .table-container {
+        margin: 1rem;
+        padding: 1rem;
+    }
+
+    .table-container__data-table-header {
+        font-size: 2rem;
+    }
+
+    .btn-print {
+        width: 100%;
+        padding: 1.2rem;
+        margin-top: 1rem;
+    }
+}

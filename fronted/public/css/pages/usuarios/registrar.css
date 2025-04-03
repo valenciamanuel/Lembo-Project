@@ -1,0 +1,197 @@
+@import url('https://fonts.googleapis.com/css2?family=Work+Sans:ital,wght@0,100..900;1,100..900&display=swap');
+
+*, *::before, *::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+:root {
+    --primary-green-950: #39A900;
+    --primary-green-600: #81C85D;
+    --primary-white: #FFFFFF;
+    --primary-black: #000;
+    --font-primary: 'Work Sans';
+}
+
+body {
+    font-family: var(--font-primary);
+    margin: 0;
+    padding: 0;
+    background-image: url(../img/cafe.jpg);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+.page__header {
+    padding-top: 0.2rem;
+    padding-bottom: -0.2rem;
+    width: 100%;
+    height: 7rem;
+    color: var(--primary-white);
+    background-color: var(--primary-green-950);
+    bottom: 1rem;
+    font-family: var(--font-primary);
+    margin-bottom: 1rem;
+}
+
+.page__logo {
+    text-align: end;
+    margin-top: -8rem;
+    padding-right: 10rem;
+}
+
+.page__title {
+    font-size: 6.4rem;
+    text-transform: uppercase;
+    text-align: center;
+    margin: 0;
+    font-family: var(--font-primary);
+}
+
+.page__main {
+    width: 90%;
+    max-width: 60rem; /* Tamaño máximo del formulario */
+    height: auto;
+    margin: 0 auto;
+    padding: 2rem;
+    border: 2rem solid var(--primary-white);
+    background-color: var(--primary-white);
+    border-radius: 0.5rem;
+    box-sizing: border-box;
+    overflow: hidden;
+}
+
+.form__title {
+    text-align: center;
+    font-size: 2.4rem;
+    font-family: var(--font-primary);
+    text-transform: uppercase;
+    margin-bottom: 1.6rem;
+}
+
+.form__group {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 1.6rem;
+    align-items: center;
+}
+
+.form__group label {
+    display: block;
+    margin-bottom: 0.5rem;
+    font-family: var(--font-primary);
+    font-size: 1.6rem;
+}
+
+.form__select,
+.form__input {
+    width: 100%; /* Cajas ocupan el 100% del contenedor */
+    max-width: 32rem; /* Máximo tamaño de las cajas */
+    height: 4.8rem; /* Altura estándar para los campos de formulario */
+    padding: 1rem;
+    border: 1px solid var(--primary-black);
+    text-align: center;
+    box-sizing: border-box;
+    margin-bottom: 1.6rem;
+}
+
+.form__message {
+    margin-top: 1rem;
+    color: red;
+}
+
+.form__button-group {
+    display: flex;
+    justify-content: center;
+    gap: 1rem; /* Espacio entre los botones */
+    margin-top: 2rem;
+}
+
+.form__btn {
+    padding: 1.4rem 2rem;
+    border: none;
+    width: 45%; /* Ajusta el tamaño de los botones */
+    height: 4.3rem;
+    cursor: pointer;
+    font-family: var(--font-primary);
+    text-align: center;
+    font-size: 1.6rem;
+    text-transform: uppercase;
+}
+
+.form__btn--registrar {
+    background-color: var(--primary-green-950);
+    color: var(--primary-white);
+    font-weight: bold;
+}
+
+.form__btn--back {
+    background-color: var(--primary-green-600);
+    color: var(--primary-white);
+    font-weight: bold;
+    text-decoration: none;
+}
+
+/* Media Queries */
+@media (max-width: 769px) {
+    html {
+        font-size: 50%;
+    }
+
+    .page__header {
+        height: 8rem;
+    }
+
+    .page__logo {
+        margin-top: -7rem;
+        padding-right: 5rem;
+    }
+
+    .page__title {
+        font-size: 4.8rem;
+    }
+
+    .form__title {
+        font-size: 2rem;
+    }
+
+    .page__main {
+        width: 100%;
+        height: auto;
+        margin: 0 auto;
+        border: 1rem solid var(--primary-white);
+        border-radius: 1rem;
+    }
+
+    .form__group {
+        align-items: center;
+    }
+
+    .form__select,
+    .form__input {
+        width: 100%;
+        height: 4rem;
+    }
+
+    .form__button-group {
+        flex-direction: column;
+        gap: 1rem;
+    }
+
+    .form__btn {
+        width: 100%;
+        padding: 1rem;
+        font-size: 1.4rem;
+    }
+
+    .form__btn--back {
+        margin: 1rem auto;
+    }
+}
