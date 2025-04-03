@@ -124,6 +124,11 @@ html, body {
     margin-bottom: var(--spacing-1);
 }
 
+.top-boxes__item a{
+    text-decoration: none;
+    color: black;
+}
+
 /* Imagen de fondo */
 .background {
     background-image: url('/Lembo/imagenes proyecto/Linea-Agricola-blog-800-x-445-px.jpg');
