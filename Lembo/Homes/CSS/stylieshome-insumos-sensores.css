@@ -143,6 +143,10 @@
     margin-bottom: var(--spacing-1);
   }
   
+  .top-boxes__item a{
+    text-decoration: none;
+    color: black;
+  }
   /* Contenedor de cuadros */
   .grid {
     display: flex;
