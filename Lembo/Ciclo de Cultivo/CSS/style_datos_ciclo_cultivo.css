@@ -193,17 +193,17 @@ button.form__btn:active {
 
 .main__buttons {
     justify-self: start;
-    margin-top: 1.6rem; /* 16px */
+    margin-top: 1.6rem; 
     display: flex;
-    gap: 1rem; /* 10px */
+    gap: 1rem; 
 }
 
 .main__button {
-    height: 4rem; /* 40px */
-    min-width: 10rem; /* 100px */
-    padding: 0 2rem; /* 20px */
-    border-radius: 0.4rem; /* 4px */
-    font-size: 1.4rem; /* 14px */
+    height: 4rem; 
+    min-width: 10rem; 
+    padding: 0 2rem; 
+    border-radius: 0.4rem; 
+    font-size: 1.4rem; 
     text-transform: uppercase;
     font-weight: 500;
     letter-spacing: 0.089em;    
@@ -218,12 +218,12 @@ button.form__btn:active {
 .main__button:hover {
     background-color: var(--ligth_green);
     box-shadow: var(--sombra-boton-hover);
-    transform: translateY(-0.2rem); /* -2px */
+    transform: translateY(-0.2rem); 
 }
 
 .main__button:active {
-    transform: translateY(0.1rem); /* 1px */
-    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.2); /* Sombra sutil */
+    transform: translateY(0.1rem);
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.2); 
 }
 
 .main__button-link {
@@ -231,7 +231,7 @@ button.form__btn:active {
     color: var(--Blanco);
     display: block;
     height: 100%;
-    line-height: 4rem; /* 40px */
+    line-height: 4rem; 
     text-align: center;
 }
 
@@ -250,7 +250,7 @@ button.form__btn:active {
 
     .form {
         width: 100%;
-        max-width: 90%; /* Reducción del ancho máximo para pantallas pequeñas */
+        max-width: 90%;
     }
 
     .form__title {
@@ -260,7 +260,7 @@ button.form__btn:active {
     .main__buttons {
         grid-column: 1 / -1;
         justify-self: start;
-        margin-top: 1.6rem; /* 16px */
+        margin-top: 1.6rem; 
     }
 }
 
@@ -273,12 +273,12 @@ button.form__btn:active {
     .main__content-img {
         width: 80%;
         max-width: 80%;
-        height: 25rem; /* 250px */
+        height: 25rem; 
     }
 
     .form {
         width: 90%;
-        max-width: 30rem; /* Ancho máximo ajustado */
+        max-width: 30rem; 
     }
 }
 
