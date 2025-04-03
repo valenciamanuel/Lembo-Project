@@ -53,39 +53,37 @@ body {
     background-image: url(../IMG/granos.webp);
     background-repeat: no-repeat;
     background-size: cover;
-    min-height: 100vh; /* Asegura que el body ocupe toda la altura de la pantalla */
-}
-
+    min-height: 100vh; 
 .confirmation {
     display: grid;
     background-color: var(--Blanco);
-    width: 90%; /* Ajusta el ancho */
-    max-width: 600px; /* Ajusta el ancho máximo */
-    margin: 8rem auto; /* Ajusta el margen superior */
-    padding: 2rem; /* Añade padding */
+    width: 90%; 
+    max-width: 600px; 
+    margin: 8rem auto; 
+    padding: 2rem; 
     border-radius: 5rem;
     box-shadow: 0px 2px 4px -1px rgba(0, 0, 0, 0.2), 0px 4px 5px 0px rgba(0, 0, 0, 0.14), 0px 1px 10px 0px rgba(0, 0, 0, 0.12);
 }
 
 .confirmation__title {
-    font-size: 3rem; /* Ajusta el tamaño del título */
+    font-size: 3rem; 
     font-weight: bold;
     text-align: center;
-    margin-bottom: 1rem; /* Añade margen inferior */
+    margin-bottom: 1rem; 
 }
 
 .confirmation__button {
     background-color: var(--green);
     padding: 0.5rem 1rem;
     border-radius: 0.4rem;
-    font-size: 1.4rem; /* Ajusta el tamaño de la fuente */
+    font-size: 1.4rem; 
     font-weight: 500;
     letter-spacing: 0.0892857143em;
     border: none;
     cursor: pointer;
     box-shadow: 0px 3px 1px -2px rgba(0, 0, 0, 0.2), 0px 2px 2px 0px rgba(0, 0, 0, 0.14), 0px 1px 5px 0px rgba(0, 0, 0, 0.12);
     transition: box-shadow 0.2s ease-in-out;
-    margin-top: 1rem; /* Añade margen superior */
+    margin-top: 1rem; 
 }
 
 .confirmation__button:hover {
@@ -101,7 +99,7 @@ body {
 }
 
 .volver {
-    font-size: 1.4rem; /* Ajusta el tamaño de la fuente */
+    font-size: 1.4rem; 
     text-decoration: none;
     color: var(--Blanco);
     margin-left: 3%;
@@ -149,4 +147,5 @@ body {
     .volver {
         font-size: 1rem;
     }
-}/* hay un probela que no deja colocar mq y botones   */
+}
+}
