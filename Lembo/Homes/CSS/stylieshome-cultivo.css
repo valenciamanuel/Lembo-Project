@@ -355,4 +355,4 @@ html, body {
         margin-left: 0;
         margin-bottom: var(--spacing-1); /* Margen inferior para botón en footer móvil */
     }
-}
+} /* no mostrar responsividd */
