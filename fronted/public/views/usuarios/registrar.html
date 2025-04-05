@@ -20,7 +20,7 @@
         <div class="form__row">
             <div class="form__column">
                 <label class="form__label" for="tipoUsuario">Tipo de Usuario</label>
-                <select id="tipoUsuario" name="tipoUsuario" class="form__select">
+                <select id="tipoUsuario" name="tipoUsuario" class="form__select form__select--user">
                     <option value="">Seleccione una opción</option>
                     <option value="admin">ADMIN</option>
                     <option value="personal">Personal de Apoyo</option>
@@ -28,7 +28,7 @@
                 </select>
 
                 <label class="form__label" for="tipoDocumento">Tipo de Documento</label>
-                <select id="tipoDocumento" name="tipoDocumento" class="form__select">
+                <select id="tipoDocumento" name="tipoDocumento" class="form__select form__select--id">
                     <option value="">Seleccione una opción</option>
                     <option value="RC">Cedula de Extranjeria</option>
                     <option value="TI">Tarjeta de Identidad</option>
@@ -38,29 +38,29 @@
                 </select>
 
                 <label class="form__label" for="numeroDocumento">Número del Documento</label>
-                <input type="text" id="numeroDocumento" name="numeroDocumento" class="form__input" required>
+                <input type="text" id="numeroDocumento" name="numeroDocumento" class="form__input form__input--id" required>
 
                 <label class="form__label" for="nombre">Nombre</label>
-                <input type="text" id="nombre" name="nombre" class="form__input" required>
+                <input type="text" id="nombre" name="nombre" class="form__input form__input--name" required>
 
                 <label class="form__label" for="correo">Correo Electrónico</label>
-                <input type="email" id="correo" name="correo" class="form__input" required>
+                <input type="email" id="correo" name="correo" class="form__input form__input--email" required>
 
             </div>
 
             <div class="form__column">
 
                 <label class="form__label" for="confirmarCorreo">Confirmar Correo</label>
-                <input type="email" id="confirmarCorreo" name="confirmarCorreo" class="form__input" required>
+                <input type="email" id="confirmarCorreo" name="confirmarCorreo" class="form__input form__input--email" required>
 
                 <label class="form__label" for="telefono">Número de Teléfono</label>
-                <input type="tel" id="telefono" name="telefono" class="form__input">
+                <input type="tel" id="telefono" name="telefono" class="form__input form__input--phone">
 
                 <label class="form__label" for="contraseña">Contraseña</label>
-                <input type="password" id="contraseña" name="contraseña" class="form__input">
+                <input type="password" id="contraseña" name="contraseña" class="form__input form__input--password">
 
                 <label class="form__label" for="confirmarContraseña">Confirmar Contraseña</label>
-                <input type="password" id="confirmarContraseña" name="confirmarContraseña" class="form__input">
+                <input type="password" id="confirmarContraseña" name="confirmarContraseña" class="form__input form__input--password">
 
                 <label class="form__label" for="estado">Estado</label>
                 <select id="" name="" class="form__select">
@@ -71,13 +71,11 @@
         </div>
 
         <div id="mensajeValidacion" class="form__message"></div>
-
+        <div class="form__btn-group">
+            <button type="submit" class="form__btn form__btn--registrar">Crear</button>
+            <a href="/ruta-de-retorno" class="btn__secundary">Cancelar</a>
+        </div>        
     </form>
-    <button type="submit" class="form__btn form__btn--registrar">Registrar</button>
-    <button class="btn__secundary">
-        <a href="/Usuarios-lembo-20250311T040238Z-001/Usuarios-lembo/Inicio sesion/index.html" class="form__btn--back">Volver</a>
-    </button>
-
 
 </main>
 

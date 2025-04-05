@@ -1,5 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.form--registro');
+    const form = document.querySelector('.form');
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -30,7 +30,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)  // Aquí se están enviando los datos como JSON
+                body: JSON.stringify(formData)  
             });
 
             if (!response.ok) {
@@ -40,7 +40,7 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             console.log('Usuario registrado', result);
 
-            form.reset(); // Limpiar formulario después de enviar los datos
+            form.reset(); 
         } catch (error) {
             console.error('Error', error);
         }
