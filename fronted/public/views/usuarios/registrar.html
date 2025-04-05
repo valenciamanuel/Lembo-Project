@@ -4,92 +4,83 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Registro de Usuario</title>
-    <link rel="stylesheet" href="styles.css"> 
-    <script src="enviar.js"></script>
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <link rel="stylesheet" href="/fronted/public/css/registro.css"> <!-- Nuevo CSS separado -->
+    <script src="/fronted/public/views/components/header.js"></script>
+    <script src="/fronted/public/js/usuarios/registrar/enviar.js"></script>
 </head>
 <body>
 
-<header class="page__header">
-    <h1 class="page__title">LEMBO</h1>
-    <div class="page__logo">
-        <img src="../img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="logo sena">
-    </div>
-</header>
+<header class="header"></header>
 
-<main class="page__main">
-    <form class="form form--registro" id="registroForm" action="http://localhost:3000/register" method="POST">
-        <h3 class="form__title">Registro usuario</h3>
-        
-        <div class="form__group">
-            <label for="tipoUsuario">Tipo de Usuario</label>
-            <select id="tipoUsuario" name="tipoUsuario" class="form__select form__select--user">
-                <option value="">Seleccione una opción</option>
-                <option value="superadmin">SADMIN</option>
-                <option value="admin">ADMIN</option>
-                <option value="personal">PAP</option>
-                <option value="visitante">VTE</option>
-            </select>
-        </div>
-        
-        <div class="form__group">
-            <label for="tipoDocumento">Tipo de Documento</label>
-            <select id="tipoDocumento" name="tipoDocumento" class="form__select form__select--id">
-                <option value="">Seleccione una opción</option>
-                <option value="RC">RC</option>
-                <option value="TI">TI</option>
-                <option value="CC">CC</option>
-                <option value="PASAPORTE">Pasaporte</option>
-            </select>
-        </div>
-        
-        <div class="form__group">
-            <label for="numeroDocumento">Número del Documento</label>
-            <input type="text" id="numeroDocumento" name="numeroDocumento" class="form__input form__input--id" required>
-        </div>
-        
-        <div class="form__group">
-            <label for="nombre">Nombre</label>
-            <input type="text" id="nombre" name="nombre" class="form__input form__input--name" required>
-        </div>
-        
-        <div class="form__group">
-            <label for="correo">Correo Electrónico</label>
-            <input type="email" id="correo" name="correo" class="form__input form__input--email" required>
-        </div>
-        
-        <div class="form__group">
-            <label for="confirmarCorreo">Confirmar Correo</label>
-            <input type="email" id="confirmarCorreo" name="confirmarCorreo" class="form__input form__input--email" required>
-        </div>
-        
-        <div class="form__group">
-            <label for="telefono">Número de Teléfono</label>
-            <input type="tel" id="telefono" name="telefono" class="form__input form__input--phone">
-        </div>
-         
-        <div class="form__group">
-            <label for="Contraseña">Contraseña</label>
-            <input type="password" id="contraseña" name="contraseña" class="form__input form__input--password">
+<main class="form-container">
+    <form class="form" id="registroForm" action="http://localhost:3000/register" method="POST">
+        <h2 class="form-title">Registro usuario</h2>
+
+        <div class="form__row">
+            <div class="form__column">
+                <label class="form__label" for="tipoUsuario">Tipo de Usuario</label>
+                <select id="tipoUsuario" name="tipoUsuario" class="form__select">
+                    <option value="">Seleccione una opción</option>
+                    <option value="admin">ADMIN</option>
+                    <option value="personal">Personal de Apoyo</option>
+                    <option value="visitante">Visitante</option>
+                </select>
+
+                <label class="form__label" for="tipoDocumento">Tipo de Documento</label>
+                <select id="tipoDocumento" name="tipoDocumento" class="form__select">
+                    <option value="">Seleccione una opción</option>
+                    <option value="RC">Cedula de Extranjeria</option>
+                    <option value="TI">Tarjeta de Identidad</option>
+                    <option value="CC">Cedula de Ciudadania</option>
+                    <option value="PASAPORTE">Pasaporte</option>
+                    <option value="PEP">Permiso por Proteccion Personal</option>
+                </select>
+
+                <label class="form__label" for="numeroDocumento">Número del Documento</label>
+                <input type="text" id="numeroDocumento" name="numeroDocumento" class="form__input" required>
+
+                <label class="form__label" for="nombre">Nombre</label>
+                <input type="text" id="nombre" name="nombre" class="form__input" required>
+
+                <label class="form__label" for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" class="form__input" required>
+
+            </div>
+
+            <div class="form__column">
+
+                <label class="form__label" for="confirmarCorreo">Confirmar Correo</label>
+                <input type="email" id="confirmarCorreo" name="confirmarCorreo" class="form__input" required>
+
+                <label class="form__label" for="telefono">Número de Teléfono</label>
+                <input type="tel" id="telefono" name="telefono" class="form__input">
+
+                <label class="form__label" for="contraseña">Contraseña</label>
+                <input type="password" id="contraseña" name="contraseña" class="form__input">
+
+                <label class="form__label" for="confirmarContraseña">Confirmar Contraseña</label>
+                <input type="password" id="confirmarContraseña" name="confirmarContraseña" class="form__input">
+
+                <label class="form__label" for="estado">Estado</label>
+                <select id="" name="" class="form__select">
+                    <option value="">Habilitado</option>
+                    <option value="">Deshabilitado</option>
+                </select>
+            </div>
         </div>
 
-        <div class="form__group">
-            <label for="confirmarContraseña">Confirmar Contraseña</label>
-            <input type="password" id="confirmarContraseña" name="confirmarCo" class="form__input form__input--password">
-        </div>
-
-        <!-- Aquí aparecerá el mensaje de validación -->
         <div id="mensajeValidacion" class="form__message"></div>
 
-        <div class="form__button-group">
-            <button type="submit" class="form__btn form__btn--registrar">Registrar</button>
-        </div>
+    </form>
+    <button type="submit" class="form__btn form__btn--registrar">Registrar</button>
+    <button class="btn__secundary">
+        <a href="/Usuarios-lembo-20250311T040238Z-001/Usuarios-lembo/Inicio sesion/index.html" class="form__btn--back">Volver</a>
+    </button>
 
-        <div class="form__button-group form__button-group--back">
-            <a href="/Usuarios-lembo-20250311T040238Z-001/Usuarios-lembo/Inicio sesion/index.html" class="form__btn form__btn--back">Volver</a>
-        </div>
-    </form> 
+
 </main>
-<!-- script -->
-<script src="script.js"></script> <!-- Enlace al archivo JS -->
+
+<script src="/fronted/public/js/usuarios/registrar/script.js"></script>
 </body>
 </html>
