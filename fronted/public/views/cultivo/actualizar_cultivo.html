@@ -4,82 +4,56 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualizar Cultivo</title>
-    <link rel="stylesheet" href="../CSS/style_actualizar_cultivo.css">
-    <script src="../JS/validacion_actualizar.js" defer></script>
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <script src="/fronted/public/views/components/header.js"></script>
+    <script src="/fronted/public/js/cultivos/enviar.js"></script>
 </head>
 <body>
-    <header class="header">
-        <img class="header__logo" src="../IMG/loso_SENA.png" alt="Logo SENA">
-        <a class="header__link" href="#">Volver</a>
-    </header>
-
-    <main class="main">
-        <div class="content">
-            <div class="content__container">
-                <div class="content__image">
-                    <svg class="content__image-icon" xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 24 24" fill="none" stroke="#dcdcdc" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M15 8h.01" />
-                        <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
-                        <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" />
-                        <path d="M14 14l1 -1c.67 -.644 1.45 -.824 2.182 -.54" />
-                        <path d="M16 19h6" />
-                        <path d="M19 16v6" />
-                    </svg>
+    <header class="header"></header>
+    <main class="form-container">
+        <form class="form" action="http://localhost:3000/cultivo" method="POST" enctype="multipart/form-data">
+            <h2 class="form__title">Datos Cultivo</h2>
+    
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label">Cargar imagen</label>
+                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
+    
+                    <label class="form__label">Tipo cultivo</label>
+                    <input class="form__input cultivo__input--type" type="text" name="cultivoType">
+    
+                    <label class="form__label">Nombre Cultivo</label>
+                    <input class="form__input cultivo__input--name" type="text" name="cultivoName">
+    
+                    <label class="form__label">Identificador cultivo</label>
+                    <input class="form__input cultivo__input--ID" type="date" name="cultivoID">
                 </div>
-                
-                <form class="form" id="formCultivo">
-                    <legend class="form__legend"><h2>Datos Cultivo</h2></legend>
-
-                    <div class="form__group">
-                        <label class="form__label">Tipo Cultivo</label>
-                        <input class="form__input" type="text" id="tipoCultivo" required>
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Nombre Cultivo</label>
-                        <input class="form__input" type="text" id="nombreCultivo" required>
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Identificador Cultivo</label>
-                        <input class="form__input" type="text" id="idCultivo" required>
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Tamaño (ha)</label>
-                        <input class="form__input" type="number" id="tamano" required>
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Ubicación</label>
-                        <input class="form__input" type="text" id="ubicacion" required>
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Descripción</label>
-                        <textarea class="form__input" id="descripcion" rows="3" required></textarea>
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Estado</label>
-                        <select class="form__input" id="estado" required>
-                            <option value="">Seleccione</option>
-                            <option value="activo">Activo</option>
-                            <option value="inactivo">Inactivo</option>
-                        </select>
-                    </div>
-
-                    <p id="mensaje-validacion" class="form__message"></p> <!-- Mensaje de validación -->
-
-                    <div class="buttons">
-                        <button type="button" class="buttons__button buttons__button--update" id="btnActualizar">Actualizar</button>
-                        <button type="button" class="buttons__button buttons__button--cancel" id="btnCancelar">Cancelar</button>
-                    </div>
-                </form>
-
-            </div>          
-        </div>
+    
+                <div class="form__column">
+                    <label class="form__label">Tamaño</label>
+                    <input class="form__input cultivo__input--size" type="date" name="size">
+    
+                    <label class="form__label">Ubicacion</label>
+                    <input class="form__input cultivo__input--location" type="text" name="location">
+    
+                    <label class="form__label">Descripción</label>
+                    <input class="form__input cultivo__input--description" type="text" name="description">
+    
+                    <label class="form__label">Estado (activo / inactivo)</label>
+                    <select name="state" class="form__input cultivo__input--state">
+                        <option value="">Seleccione una opción</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+                <a href="#" class="btn__secundary">Cancelar</a>
+            </div>
+        </form>
     </main>
+    <script src="/fronted/public/js/cultivos/validacion_datos.js"></script>
 </body>
 </html>

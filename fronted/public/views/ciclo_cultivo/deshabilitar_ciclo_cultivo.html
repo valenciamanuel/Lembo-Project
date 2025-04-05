@@ -4,71 +4,58 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Deshabilitar Ciclo Cultivo</title>
-    <link rel="stylesheet" href="../CSS/style_deshabilitar_ciclo_cultivo.css">
-    <script src="../JS/validacion_deshabilitar.js" defer></script> 
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <script src="/fronted/public/views/components/header.js"></script>
+    <link rel="stylesheet" href="/fronted/public/css/components/forms.css">
+    <script src="/fronted/public/js/ciclo_cultivo/enviar.js"></script>
 </head>
 <body>
-    <header class="header">
-        <img class="header__logo" src="../IMG/loso_SENA.png" alt="Logo SENA">
-        <a class="header__back-link" href="#">Volver</a>
-    </header>
+    <header class="header"></header>
 
-    <main class="main">
-        <div class="main__container">
-            <div class="form-section">
-                <div class="form-section__image">
-                    <svg class="form-section__icon" xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 24 24" fill="none" stroke="#dcdcdc" stroke-width="1" stroke-linecap="round" stroke-linejoin="round"></svg>
+    <main class="form-container">
+        <form class="form" action="http://localhost:3000/CicloCultivo" method="POST" enctype="multipart/form-data">
+            <h2 class="form__title">Datos Ciclo Cultivo</h2>
+    
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label">Cargar imagen</label>
+                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
+    
+                    <label class="form__label">ID Ciclo Cultivo</label>
+                    <input class="form__input form__input--ID" type="text" name="cicloID">
+    
+                    <label class="form__label">Nombre Ciclo Cultivo</label>
+                    <input class="form__input form__input--name" type="text" name="cicloName">
+    
+                    <label class="form__label">Fecha Siembra</label>
+                    <input class="form__input form__input--siembra" type="date" name="siembraDate">
                 </div>
-                
-                <form class="form">
-                    <legend class="form__legend"><h2 class="form__title">Datos Ciclo Cultivo</h2></legend>
-
-                    <br>
-                    
-                    <div class="form__group">
-                        <label class="form__label">ID Ciclo Cultivo</label>
-                        <input class="form__input" type="text">
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Nombre Ciclo Cultivo</label>
-                        <input class="form__input" type="text">  <!-- ✅ Corregido -->
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Fecha Siembra</label>
-                        <input class="form__input" type="text">
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Fecha Cosecha</label>
-                        <input class="form__input" type="text">
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Novedades</label>
-                        <input class="form__input" type="text">  
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Descripción</label>
-                        <input class="form__input" type="text">
-                    </div>
-
-                    <div class="form__group">
-                        <label class="form__label">Estado (activo / inactivo)</label>
-                        <input class="form__input" type="text">
-                    </div>
-
-                    <p id="mensaje-validacion" class="form__message"></p> <!-- Mensaje de validación -->
-                    
-                    <div class="form-section__buttons">
-                        <button class="form-section__button" id="btnHabilitar">Habilitar</button>
-                        <button class="form-section__button" id="btnActualizar">Actualizar</button>
-                    </div>
-                </form>
+    
+                <div class="form__column">
+                    <label class="form__label">Fecha Cosecha</label>
+                    <input class="form__input form__input--cosecha" type="date" name="cosechaDate">
+    
+                    <label class="form__label">Novedades</label>
+                    <input class="form__input form__input--news" type="text" name="news">
+    
+                    <label class="form__label">Descripción</label>
+                    <input class="form__input form__input--description" type="text" name="description">
+    
+                    <label class="form__label">Estado (activo / inactivo)</label>
+                    <select name="state" class="form__input form__input--state">
+                        <option value="">Seleccione una opción</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
             </div>
-        </div>
+    
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+                <a href="#" class="btn__secundary">Habilitar</a>
+            </div>
+        </form>
     </main>
+    <script src="/fronted/public/js/ciclo_cultivo/validacion_datos.js"></script>
 </body>
 </html>

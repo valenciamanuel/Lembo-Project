@@ -4,77 +4,79 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Actualización Perfil</title>
-    <link rel="stylesheet" href="styles.css"> 
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <script src="/fronted/public/views/components/header.js"></script>
+    <script src="/fronted/public/js/usuarios/registrar/enviar.js"></script>
 </head>
 <body>
-    <div class="form-container">
-        <div class="form-container__wrapper">
-            <div class="form-container__photo-section">
-                <!-- <img src="/img/foto perfil.jpg" alt="Foto de la Persona" class="form-container__profile-photo"> -->
-                <img src="/Lembo/Usuarios-lembo-20250311T040238Z-001/Usuarios-lembo/img/foto perfil.jpg" alt="Foto de la Persona" class="form-container__profile-photo">
-            </div>
 
-            <div class="form-container__form-section">
-                <form id="perfilForm" class="form-container__form">
-                    <label for="tipo-usuario" class="form-container__label">Tipo de Usuario</label>
-                    <select id="tipo-usuario" name="tipo-usuario" class="form-container__select">
-                        <option value="">Seleccionar...</option>
-                        <option value="sadmin">SADMIN</option>
+    <header class="header"></header>
+    
+    <main class="form-container">
+        <form class="form" id="registroForm" action="http://localhost:3000/register" method="POST">
+            <h2 class="form-title">Registro usuario</h2>
+    
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label" for="tipoUsuario">Tipo de Usuario</label>
+                    <select id="tipoUsuario" name="tipoUsuario" class="form__select form__select--user">
+                        <option value="">Seleccione una opción</option>
                         <option value="admin">ADMIN</option>
-                        <option value="pap">PAP</option>
-                        <option value="vte">VTE</option>
+                        <option value="personal">Personal de Apoyo</option>
+                        <option value="visitante">Visitante</option>
                     </select>
-                    <div class="form-container__error" id="error-tipo-usuario"></div>
-
-                    <label for="tipo-documento" class="form-container__label">Tipo de Documento</label>
-                    <select id="tipo-documento" name="tipo-documento" class="form-container__select">
-                        <option value="">Seleccionar...</option>
-                        <option value="dni-te">TE</option>
-                        <option value="dni-cc">CC</option>
-                        <option value="dni-ri">RI</option>
-                        <option value="passport">Pasaporte</option>
+    
+                    <label class="form__label" for="tipoDocumento">Tipo de Documento</label>
+                    <select id="tipoDocumento" name="tipoDocumento" class="form__select form__select--id">
+                        <option value="">Seleccione una opción</option>
+                        <option value="RC">Cedula de Extranjeria</option>
+                        <option value="TI">Tarjeta de Identidad</option>
+                        <option value="CC">Cedula de Ciudadania</option>
+                        <option value="PASAPORTE">Pasaporte</option>
+                        <option value="PEP">Permiso por Proteccion Personal</option>
                     </select>
-                    <div class="form-container__error" id="error-tipo-documento"></div>
-
-                    <label for="numero-documento" class="form-container__label">Número de Documento</label>
-                    <input type="text" id="numero-documento" name="numero-documento" class="form-container__input">
-                    <div class="form-container__error" id="error-numero-documento"></div>
-
-                    <label for="identificacion" class="form-container__label">ID</label>
-                    <input type="text" id="identificacion" name="identificacion" class="form-container__input">
-                    <div class="form-container__error" id="error-identificacion"></div>
-
-                    <label for="nombre" class="form-container__label">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="form-container__input">
-                    <div class="form-container__error" id="error-nombre"></div>
-
-                    <label for="correo" class="form-container__label">Correo Electrónico</label>
-                    <input type="email" id="correo" name="correo" class="form-container__input">
-                    <div class="form-container__error" id="error-correo"></div>
-
-                    <label for="telefono" class="form-container__label">Número Telefónico</label>
-                    <input type="number" id="telefono" name="telefono" class="form-container__input">
-                    <div class="form-container__error" id="error-telefono"></div>
-
-                    <fieldset class="form-container__fieldset">
-                        <legend class="form-container__legend">Estado</legend>
-                        <label class="form-container__label">
-                            <input type="checkbox" id="activo" name="estado" value="activo" class="form-container__checkbox">
-                            Activo
-                        </label>
-                        <label class="form-container__label">
-                            <input type="checkbox" id="inactivo" name="estado" value="inactivo" class="form-container__checkbox">
-                            Inactivo
-                        </label>
-                    </fieldset>
-                    <div class="form-container__error" id="error-estado"></div>
-
-                    <button class="form-container__button" type="submit">Actualizar</button>
-                </form>
+    
+                    <label class="form__label" for="numeroDocumento">Número del Documento</label>
+                    <input type="text" id="numeroDocumento" name="numeroDocumento" class="form__input form__input--id" required>
+    
+                    <label class="form__label" for="nombre">Nombre</label>
+                    <input type="text" id="nombre" name="nombre" class="form__input form__input--name" required>
+    
+                    <label class="form__label" for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" class="form__input form__input--email" required>
+    
+                </div>
+    
+                <div class="form__column">
+    
+                    <label class="form__label" for="confirmarCorreo">Confirmar Correo</label>
+                    <input type="email" id="confirmarCorreo" name="confirmarCorreo" class="form__input form__input--email" required>
+    
+                    <label class="form__label" for="telefono">Número de Teléfono</label>
+                    <input type="tel" id="telefono" name="telefono" class="form__input form__input--phone">
+    
+                    <label class="form__label" for="contraseña">Contraseña</label>
+                    <input type="password" id="contraseña" name="contraseña" class="form__input form__input--password">
+    
+                    <label class="form__label" for="confirmarContraseña">Confirmar Contraseña</label>
+                    <input type="password" id="confirmarContraseña" name="confirmarContraseña" class="form__input form__input--password">
+    
+                    <label class="form__label" for="estado">Estado</label>
+                    <select id="" name="" class="form__select">
+                        <option value="">Habilitado</option>
+                        <option value="">Deshabilitado</option>
+                    </select>
+                </div>
             </div>
-        </div>
-    </div>
-
-    <script src="validacion.js"></script>
-</body>
+    
+            <div id="mensajeValidacion" class="form__message"></div>
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+            </div>        
+        </form>
+    
+    </main>
+    
+    <script src="/fronted/public/js/usuarios/registrar/script.js"></script>
+    </body>
 </html>

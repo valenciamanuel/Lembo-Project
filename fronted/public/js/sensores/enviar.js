@@ -1,15 +1,15 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.sensor__form');
+    const form = document.querySelector('.form');
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         const tipoSensor = document.querySelector('.sensor__input--type');
-        const unidadMedida = document.querySelector('.sensor__input--name');
-        const tiempoEscaneo = document.querySelector('.sensor__input--medida');
-        const descripcion = document.querySelector('.sensor__input--escaneo');
-        const estado = document.querySelector('.sensor__input--descripcion');
-        const nombreSensor = document.querySelector('.sensor__input--estado');
+        const nombreSensor = document.querySelector('.sensor__input--name');
+        const unidadMedida = document.querySelector('.sensor__input--medida');
+        const tiempoEscaneo = document.querySelector('.sensor__input--escaneo');
+        const descripcion = document.querySelector('.sensor__input--descripcion');
+        const estado = document.querySelector('.sensor__input--estado');
 
         const formData = {
             tipoSensor: tipoSensor ? tipoSensor.value : '',

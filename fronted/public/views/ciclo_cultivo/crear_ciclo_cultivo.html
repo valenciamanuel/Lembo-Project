@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/fronted/public/css/main.css">
     <script src="/fronted/public/views/components/header.js"></script>
     <link rel="stylesheet" href="/fronted/public/css/components/forms.css">
+    <script src="/fronted/public/js/ciclo_cultivo/enviar.js"></script>
 </head>
 
 <body>
@@ -16,59 +17,47 @@
     <main class="form-container">
         <form class="form" action="http://localhost:3000/CicloCultivo" method="POST" enctype="multipart/form-data">
             <h2 class="form__title">Datos Ciclo Cultivo</h2>
-
-            <div class="form_row">
-                <div class="form_column">
-
-                    <div class="form_group">
-                        <label class="form__label">Cargar imagen</label>    
-                        <input class="form__input form__input--imagen" type="file" name="image" id="image">
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form__label">ID Ciclo Cultivo</label>
-                        <input class="form__input form__input--ID" type="text" name="cicloID">
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form__label">Nombre Ciclo Cultivo</label>
-                        <input class="form__input form__input--name" type="text" name="cicloName">
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form__label">Fecha Siembra</label>
-                        <input class="form__input form__input--siembra" type="date" name="siembraDate">
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form__label">Fecha Cosecha</label>
-                        <input class="form__input form__input--cosecha" type="date" name="cosechaDate">
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form__label">Novedades</label>
-                        <input class="form__input form__input--news" type="text" name="news">
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form__label">Descripción</label>
-                        <input class="form__input form__input--description" type="text" name="description">
-                    </div>
-
-                    <div class="form_group">
-                        <label class="form__label">Estado (activo / inactivo)</label>
-                        <select name="state" class="form__input form__input--state">
-                            <option value="">Seleccione una opción</option>
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
-                        </select>
-                    </div>
-
-                    <button type="submit" class="form__btn form__btn--registrar">Crear</button>
-
+    
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label">Cargar imagen</label>
+                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
+    
+                    <label class="form__label">ID Ciclo Cultivo</label>
+                    <input class="form__input form__input--ID" type="text" name="cicloID">
+    
+                    <label class="form__label">Nombre Ciclo Cultivo</label>
+                    <input class="form__input form__input--name" type="text" name="cicloName">
+    
+                    <label class="form__label">Fecha Siembra</label>
+                    <input class="form__input form__input--siembra" type="date" name="siembraDate">
                 </div>
+    
+                <div class="form__column">
+                    <label class="form__label">Fecha Cosecha</label>
+                    <input class="form__input form__input--cosecha" type="date" name="cosechaDate">
+    
+                    <label class="form__label">Novedades</label>
+                    <input class="form__input form__input--news" type="text" name="news">
+    
+                    <label class="form__label">Descripción</label>
+                    <input class="form__input form__input--description" type="text" name="description">
+    
+                    <label class="form__label">Estado (activo / inactivo)</label>
+                    <select name="state" class="form__input form__input--state">
+                        <option value="">Seleccione una opción</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+    
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn form__btn--registrar">Crear</button>
+                <a href="#" class="btn__secundary">Cancelar</a>
             </div>
         </form>
     </main>
+    <script src="/fronted/public/js/ciclo_cultivo/validacion_datos.js"></script>
 </body>
 </html>

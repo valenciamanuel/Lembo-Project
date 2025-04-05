@@ -11,8 +11,10 @@ document.addEventListener('DOMContentLoaded', () => {
         const news = document.querySelector('.form__input--news');
         const description = document.querySelector('.form__input--description');
         const state = document.querySelector('.form__input--state');
+        const image = document.querySelector('form__input--imagen')
 
         const formData = {
+            image: image ? image.value: null,
             cicloID: cicloID ? cicloID.value : '',
             cicloName: cicloName ? cicloName.value : '',
             siembraDate: siembraDate ? siembraDate.value : '',

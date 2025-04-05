@@ -4,87 +4,59 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datos Insumo</title>
-    <link rel="stylesheet" href="../CSS/style_datos_insumo.css">
-    <script src="../JS/validacion_datos.js" defer></script> <!-- Script de validación -->
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <script src="/fronted/public/views/components/header.js"></script>
+    <script src="/fronted/public/js/insumo/enviar.js"></script>
 </head>
-<body>
-    <header class="header">
-        <img class="header__logo" src="../IMG/loso_SENA.png" alt="Logo SENA">
-        <a class="header__link" href="#">Volver</a>
-    </header>
-
-    <main class="insumo">
-        <div class="insumo__content">
-            <div class="insumo__image-form">
-                <div class="insumo__image-container">
-                    <svg class="insumo__image" xmlns="http://www.w3.org/2000/svg" width="400" height="300" viewBox="0 0 24 24" fill="none" stroke="#dcdcdc" stroke-width="1" stroke-linecap="round" stroke-linejoin="round">
-                        <path stroke="none" d="M0 0h24v24H0z" fill="none"/>
-                        <path d="M15 8h.01" />
-                        <path d="M12.5 21h-6.5a3 3 0 0 1 -3 -3v-12a3 3 0 0 1 3 -3h12a3 3 0 0 1 3 3v6.5" />
-                        <path d="M3 16l5 -5c.928 -.893 2.072 -.893 3 0l4 4" />
-                        <path d="M14 14l1 -1c.67 -.644 1.45 -.824 2.182 -.54" />
-                        <path d="M16 19h6" />
-                        <path d="M19 16v6" />
-                    </svg>
+<body> 
+    <header class="header"></header>
+    <main class="form-container">
+        <form class="form" action="http://localhost:3000/insumos" method="POST" enctype="multipart/form-data">
+            <h2 class="form__title">Datos Insumos</h2>
+    
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label">Cargar imagen</label>
+                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
+    
+                    <label class="form__label">ID insumo</label>
+                    <input class="form__input insumo__input--ID" type="text" name="idInsumo">
+    
+                    <label class="form__label">Tipo insumo</label>
+                    <input class="form__input insumo__input--type" type="text" name="tipoInsumo">
+    
+                    <label class="form__label">Nombre insumo</label>
+                    <input class="form__input insumo__input--nombre" type="text" name="nombreInsumo">
                 </div>
-                
-                <form class="insumo__form" id="formInsumo">
-                    <legend class="insumo__title"><h2>Datos Insumo</h2></legend>
+    
+                <div class="form__column">
+                    <label class="form__label">Unidad de medida</label>
+                    <input class="form__input cultivo__input--size" type="text" name="unidadMedida">
+    
+                    <label class="form__label">Cantidad</label>
+                    <input class="form__input insumo__input--cantidad" type="text" name="cantidad">
 
-                    <div class="insumo__field">
-                        <label class="insumo__label">Tipo Insumo</label>
-                        <input class="insumo__input" type="text" id="tipoInsumo" required>
-                    </div>
-
-                    <div class="insumo__field">
-                        <label class="insumo__label">ID Insumo</label>
-                        <input class="insumo__input" type="number" id="idInsumo" min="1" required>
-                    </div>
-
-                    <div class="insumo__field">
-                        <label class="insumo__label">Nombre Insumo</label>
-                        <input class="insumo__input" type="text" id="nombreInsumo" required>
-                    </div>
-
-                    <div class="insumo__field">
-                        <label class="insumo__label">Unidad de Medida</label>
-                        <input class="insumo__input" type="text" id="unidadMedida" required>
-                    </div>
-
-                    <div class="insumo__field">
-                        <label class="insumo__label">Cantidad</label>
-                        <input class="insumo__input" type="number" id="cantidad" min="1" required>
-                    </div>
-
-                    <div class="insumo__field">
-                        <label class="insumo__label">Valor Unitario</label>
-                        <input class="insumo__input" type="number" id="valorUnitario" min="1" required>
-                    </div>
-
-                    <div class="insumo__field">
-                        <label class="insumo__label">Valor Total</label>
-                        <input class="insumo__input" type="number" id="valorTotal" readonly>
-                    </div>
-
-                    <div class="insumo__field">
-                        <label class="insumo__label">Descripción</label>
-                        <input class="insumo__input" type="text" id="descripcion" required>
-                    </div>
-
-                    <div class="insumo__field">
-                        <label class="insumo__label">Estado (activo / inactivo)</label>
-                        <input class="insumo__input" type="text" id="estado" required>
-                    </div>
-
-                    <p id="mensaje-validacion" class="insumo__message"></p> <!-- Mensaje de validación -->
-                    
-                    <div class="insumo__actions">
-                        <button class="insumo__button" id="btnDeshabilitar">Deshabilitar</button>
-                        <button class="insumo__button" id="btnActualizar">Actualizar</button>
-                    </div>
-                </form>
+                    <label class="form__label">Valor unitario</label>
+                    <input class="form__input insumo__input--unitario" type="text" name="valorUnitario">
+    
+                    <label class="form__label">Descripción</label>
+                    <input class="form__input insumo__input--descripcion" type="text" name="description">
+    
+                    <label class="form__label">Estado (activo / inactivo)</label>
+                    <select name="state" class="form__input insumo__input--estado">
+                        <option value="">Seleccione una opción</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
             </div>
-        </div>
+    
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+                <a href="#" class="btn__secundary">Deshabilitar</a>
+            </div>
+        </form>
     </main>
+    <script src="/fronted/public/js/insumo/validacion_datos.js"></script>
 </body>
 </html>
