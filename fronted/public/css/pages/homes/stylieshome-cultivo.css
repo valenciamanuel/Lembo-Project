@@ -127,7 +127,7 @@ html, body {
 
 /* Imagen de fondo */
 .background {
-    background-image: url('/imagenes proyecto/cultivos-1.jpg');
+    background-image: url('/fronted/public/img/back_index.jpeg');
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -218,6 +218,10 @@ html, body {
     box-shadow: 0 0.2rem 0.4rem var(--sombra-caja);
 }
 
+a{
+    text-decoration: none;
+    color: var(--black);
+}
 
 /* Media Queries para Responsive Design */
 
