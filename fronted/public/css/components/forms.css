@@ -1,4 +1,4 @@
-html, body {
+html, body { 
     display: flex;
     justify-content: center;
     align-items: center;
@@ -66,21 +66,67 @@ html, body {
     opacity: 0.7;
 }
 
-
 .form__message {
     color: red;
 }
 
-@media (max-width: 768px) {
+/* Desktop */
+@media (min-width: 1025px) {
+    .form-container {
+        width: 700px;
+        margin-top: 5%;
+    }
+}
+
+/* Tablet */
+@media (min-width: 769px) and (max-width: 1024px) {
     .form-container {
         width: 90%;
+        margin-top: 40px;
+    }
+    .form__column {
+        width: 48%;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    html, body {
+        display: block;
+        height: auto;
+        padding: 0;
+    }
+
+    .form-container {
+        width: 100%;
+        padding: 16px;
+        margin-top: 40px;
+        box-shadow: none;
+        border: none;
+        border-radius: 0;
     }
 
     .form__row {
         flex-direction: column;
+        gap: 16px;
     }
 
     .form__column {
         width: 100%;
     }
+
+    .form-title {
+        font-size: 20px;
+    }
+
+    .form__label {
+        font-size: 13px;
+    }
+
+    .form__input,
+    .form__select {
+        width: 100%;
+        font-size: 14px;
+    }
 }
+    
