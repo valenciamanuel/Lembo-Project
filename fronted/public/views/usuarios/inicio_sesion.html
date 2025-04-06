@@ -3,42 +3,37 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/fronted/public/css/pages/usuarios/inicio_sesion.css">
     <title>Inicio Sesión</title>
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <script src="/fronted/public/views/components/header.js"></script>
 </head>
 <body>
-    <div class="page-container">
-        <header class="header">
-            <h1 class="header__title">LEMBO</h1>
-            <div class="header__logo">
-                <img src="../img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
+
+<header class="header"></header>
+
+<main class="form-container">
+    <form class="form" id="registroForm" action="http://localhost:3000/register" method="POST">
+        <h2 class="form-title">Iniciar Sesion</h2>
+
+        <div class="form__row">
+            <div class="form__column">
+                <label class="form__label" for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" class="form__input form__input--email" required>
             </div>
-        </header>
 
-        <div class="login">
-            <h2 class="login__title">Iniciar Sesión</h2>
-            <form id="loginForm" class="login__form">
-                <label for="email" class="login__label">
-                    <h3 class="login__label-text">Correo Electrónico</h3>
-                </label>
-                <input type="email" id="email" name="email" placeholder="Correo electrónico" class="login__input"/>
-
-                <label for="password" class="login__label">
-                    <h3 class="login__label-text">Contraseña</h3>
-                </label>
-                <input type="password" id="password" name="password" placeholder="Contraseña" class="login__input"/>
-
-                <span id="message" class="login__message"></span> <!-- Mensaje de validación -->
-
-                <button type="submit" class="login__btn">Iniciar Sesión</button>
-            </form>
-
-            <div class="login__forgot-password">
-                <a href="/Usuarios-lembo-20250311T040238Z-001/Usuarios-lembo/Recuperar contraseña/index.html" class="login__forgot-password-link">¿Olvidaste tu contraseña?</a>
+            <div class="form__column">
+                <label class="form__label" for="contraseña">Contraseña</label>
+                <input type="password" id="contraseña" name="contraseña" class="form__input form__input--password">
             </div>
         </div>
-    </div>
 
-    <script src="/fronted/public/js/usuarios/inicio_sesion.js"></script> <!-- Enlace al script -->
+        <div id="mensajeValidacion" class="form__message"></div>
+        <div class="form__btn-group">
+            <button type="submit" class="form__btn form__btn--registrar"><a href="/fronted/public/views/homes/index.html">Iniciar Sesion</a></button>
+        </div>       
+        <p><a href="recup_contra.html">¿Olvidaste la contraseña?</a></p> 
+    </form>
+</main>
+<script src="/fronted/public/js/usuarios/inicio_sesion.js"></script>
 </body>
 </html>

@@ -1,5 +1,5 @@
 document.addEventListener("DOMContentLoaded", function(){
-    fetch("/Lembo/fecth/grid.html")
+    fetch("/frontend/public/views/components/grid.html")
     .then(response => response.text())
     .then(data =>{
         document.querySelector(".grid").innerHTML = data;

@@ -1,46 +1,39 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Recuperar Contraseña</title>
-    <link rel="stylesheet" href="/fronted/public/css/pages/usuarios/recup_contra.css">
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <script src="/fronted/public/views/components/header.js"></script>
 </head>
+
 <body>
-    <div class="page">
-        <!-- Encabezado -->
-        <header class="page__header">
-            <h1 class="page__title">LEMBO</h1>
-            <div class="page__logo">
-                <img src="../img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="logo sena" class="page__logo-img">
+    <header class="header"></header>
+
+    <!-- Contenedor del formulario -->
+    <main class="form-container">
+
+        <form id="recoveryForm" class="form-container__form">
+            <h2 class="form-title">Recuperar contraseña</h2>
+            <p class="form-container__description">Ingresa tu correo electrónico y te enviaremos un código para
+                recuperar tu contraseña</p>
+
+            <br>
+
+                <label class="form__label" for="correo">Correo Electrónico</label>
+                <input type="email" id="correo" name="correo" class="form__input form__input--email" required>
+
+            <span id="message" class="form-container__message"></span>
+
+            <div class="form-container__button-group">
+                <button type="submit" class="form-container__btn form-container__btn--recuperar"><a href="recuperacion.html">Recuperar</a></button>
             </div>
-        </header>
-
-        <!-- Contenedor del formulario -->
-        <main class="page__main">
-            <div class="form-container">
-                <h2 class="form-container__title">Recuperar contraseña</h2>
-                <p class="form-container__description">Ingresa tu correo electrónico y te enviaremos un código para recuperar tu contraseña</p>
-                <form id="recoveryForm" class="form-container__form">
-                    <div class="form-container__group">
-                        <input type="email" id="email" placeholder="Correo Electrónico" class="form-container__input">
-                    </div>
-
-                    <span id="message" class="form-container__message"></span> <!-- Mensaje de validación -->
-
-                    <div class="form-container__button-group">
-                        <button type="submit" class="form-container__btn form-container__btn--recuperar">Recuperar</button>
-                    </div>
-
-                    <div class="form-container__button-group">
-                        <!-- <a href="/Homes/INDEX/index.html" class="form-container__btn form-container__btn--volver">Volver</a> -->
-                        <a href="/Lembo/Homes/INDEX/index.html" class="form-container__btn form-container__btn--volver">Volver</a>
-                    </div>
-                </form>
-            </div>
-        </main>
-    </div>
+        </form>
+    </main>
 
     <script src="/fronted/public/js/usuarios/recup_contra.js"></script> <!-- Enlace al script -->
 </body>
+
 </html>

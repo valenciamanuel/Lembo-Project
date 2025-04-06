@@ -124,6 +124,11 @@
     gap: var(--spacing-5);
     flex-wrap: wrap;
   }
+
+  .top-boxes a{
+    text-decoration: none;
+    color: var(--black);
+  }
   
   .top-boxes__item {
     background-color: var(--caja-superior-visible);

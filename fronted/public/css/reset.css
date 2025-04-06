@@ -10,6 +10,7 @@ body {
 
 a {
     text-decoration: none;
+    color: var(--white);
 }
 
 /* Hace que las imágenes y medios sean flexibles */
@@ -48,8 +49,8 @@ button {
     text-decoration: none;
 }
 
-a{
-    color: var(--white);
+p a{
+    color: var(--black);
 }
 
 /* Elimina los bordes predeterminados en inputs */
