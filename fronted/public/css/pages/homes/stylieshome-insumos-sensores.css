@@ -95,7 +95,7 @@
   
   /* Contenedor principal */
   .background {
-    background-image: url('/Lembo/imagenes proyecto/Cultivos.jpg');
+    background-image: url('/fronted/public/img/back_index.jpeg');
 
     background-size: cover;
     background-position: center;
