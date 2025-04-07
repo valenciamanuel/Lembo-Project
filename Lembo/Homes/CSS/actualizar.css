@@ -1,0 +1,416 @@
+/* Variables CSS (asegúrate de que estén definidas en tu archivo styleprac.css) */
+:root {
+    --primario-950 : #39A900;
+    --primario-400 : #A5D88B;
+    --blanco: #fff;
+    --negro: #000;
+    --gris-950: #101010;
+    --gris-900: #262626;
+    --gris-800 : #3B3B3B;
+    --gris-700 : #515151;
+    --gris-600 : #676767;
+    --gris-500 : #7D7D7D;
+    --fuente-principal: Helvetica, Arial, Sans-serif;
+    --tam-fuente-md : 2.4rem;
+    --tam-fuente-sm : 2.0rem;
+    --tam-fuente-xs : 1.6rem;
+    --tam-fuente-xxs : 1.4rem;
+    --tam-fuente-xxxs: 1.2rem;
+    --espacio-1: 0.8rem;
+    --espacio-2: 1.6rem;
+    --espacio-3: 2.4rem;
+    --espacio-6: 4.8rem;
+    --borde-redondo-sm: 0.4rem;
+    --borde-redondo-md: 0.8rem;
+    --alto-cabecera: 5.6rem;
+    --alto-cabecera-escritorio: 6.4rem;
+}
+
+/* Estilos generales */
+*, *::before, *::after {
+    box-sizing: border-box;
+    margin: 0;
+    padding: 0;
+}
+
+html {
+    font-size: 55%;
+    font-family: var(--fuente-principal);
+    scroll-behavior: smooth;
+    height: 100%;
+    overflow: hidden;
+}
+
+body {
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+    overflow: auto;
+}
+
+.pagina {
+    color: var(--gris-900);
+    line-height: 1.3;
+    flex-grow: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: auto;
+}
+
+.cabecera {
+    background-color: var(--primario-950);
+    color: var(--blanco);
+    height: var(--alto-cabecera);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 var(--espacio-1);
+    flex-shrink: 0;
+}
+
+.cabecera__logo-img {
+    height: calc(var(--alto-cabecera) - 0.5rem);
+}
+
+.cabecera__nav {
+    display: flex;
+    gap: var(--espacio-1);
+}
+
+.cabecera__enlace {
+    font-size: var(--tam-fuente-sm);
+    font-weight: bold;
+    color: var(--blanco);
+    text-decoration: none;
+    padding: 0.15rem 0;
+}
+
+.principal {
+    padding: var(--espacio-3);
+    flex-grow: 1;
+    overflow: auto;
+}
+
+.presentacion {
+    display: flex;
+    flex-direction: column;
+    gap: var(--espacio-3);
+    height: 100%;
+}
+
+/* Sección Hero */
+.hero-sec {
+    background-color: var(--primario-950);
+    color: var(--blanco);
+    padding: var(--espacio-0);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    border-radius: var(--borde-redondo-sm);
+    flex-shrink: 0;
+    margin-bottom: var(--espacio-3);
+}
+
+.hero-sec__izq {
+    flex: 1;
+    padding: var(--espacio-2);
+}
+
+.hero-sec__titulo {
+    font-size: 2rem;
+    margin-bottom: 0; /* --espacio-0 es 0 */
+}
+
+.hero-sec__subtitulo {
+    font-size: var(--tam-fuente-sm);
+    margin-bottom: var(--espacio-1);
+}
+
+.hero-sec__desc {
+    font-size: var(--tam-fuente-xs);
+}
+
+.hero-sec__der {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    align-items: center;
+}
+
+.hero-sec__img {
+    max-width: 40%;
+    height: auto;
+    border-radius: var(--borde-redondo-sm);
+    padding: var(--espacio-1); /* Ejemplo de padding: 0.8rem (8px) */
+}
+
+/* Sección de Estilos */
+.estilos {
+    padding: var(--espacio-0) 0;
+    background-color: var(--primario-950);
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: .6rem;
+}
+.estilos__grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: var(--espacio-2);
+    gap: 1.6rem;
+}
+
+.tarjeta {
+    background-color: var(--blanco);
+    border-radius: var(--borde-redondo-sm);
+    box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
+    padding: var(--espacio-1); /* Cambiado a --espacio-1 (0.8rem) para acercarse a 4 */
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+}
+
+.tarjeta__titulo {
+    font-size: var(--tam-fuente-sm);
+    color: var(--primario-950);
+    margin-bottom: var(--espacio-1);
+    text-align: center;
+}
+
+.tarjeta__contenedor-img {
+    margin-top: var(--espacio-2);
+    border-radius: var(--borde-redondo-sm);
+    overflow: hidden;
+    flex-grow: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.tarjeta__img {
+    width: 70%;
+    height: auto;
+    display: block;
+    max-height: 80%;
+}
+
+/* Tarjeta de Estilo Infografía */
+.info-contenido {
+    display: flex;
+    gap: var(--espacio-1); /* Espacio general entre elementos */
+    margin-bottom: var(--espacio-1);
+    flex-wrap: wrap;
+    align-items: flex-start; /* Alineación al inicio para mejor flujo en columnas */
+    justify-content: space-around;
+}
+
+.info-contenido__izq,
+.info-contenido__der {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    gap: 0.2rem; /* Espacio entre los elementos de texto dentro de cada bloque */
+    font-size: var(--tam-fuente-xs);
+    text-align: center;
+    min-width: 45%; /* Asegura que al menos ocupen casi la mitad en pantallas grandes */
+}
+
+.info-contenido__img {
+    max-width: 70%;
+    height: auto;
+    display: block;
+    margin: 0 auto 0.5rem; /* Espacio inferior para separar de los textos */
+    max-height: 80px;
+}
+
+.info-contenido__etiqueta {
+    font-size: var(--tam-fuente-xxs);
+    color: var(--gris-700);
+}
+
+.info-contenido__titulo-cosecha {
+    font-size: var(--tam-fuente-xs);
+    color: var(--primario-950);
+    font-weight: bold;
+}
+
+.info-contenido__texto-cosecha {
+    font-size: var(--tam-fuente-xxs);
+    color: var(--gris-600);
+}
+
+.info-contenido__texto {
+    font-size: var(--tam-fuente-xxs);
+}
+
+/* Diseño Responsivo */
+@media (max-width: 780px) {
+    .hero-sec {
+        flex-direction: column;
+        text-align: center;
+        padding: var(--espacio-2);
+    }
+
+    .hero-sec__der {
+        justify-content: center;
+        margin-top: var(--espacio-2);
+    }
+
+    .hero-sec__img {
+        max-width: 70%; /* Mayor tamaño en tabletas */
+    }
+
+    .estilos__grid {
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Mantener en tabletas */
+        gap: var(--espacio-2);
+    }
+
+    .info-contenido {
+        flex-direction: row; /* Volver a fila en tabletas para mejor distribución si hay espacio */
+        gap: var(--espacio-1);
+        align-items: flex-start; /* Mantener alineación */
+    }
+
+    .info-contenido__izq,
+    .info-contenido__der {
+        min-width: 48%; /* Dos columnas en tabletas */
+        font-size: var(--tam-fuente-sm); /* Un poco más grande en tabletas */
+    }
+
+    .info-contenido__img {
+        max-width: 50%; /* Ajustar tamaño de imagen en tabletas */
+        max-height: 100px;
+        margin-bottom: 0.5rem;
+    }
+}
+
+@media (max-width: 600px) { /* Nuevo punto de quiebre para móviles más grandes */
+    .info-contenido {
+        flex-direction: column; /* Una columna en móviles */
+        gap: var(--espacio-1);
+        align-items: center; /* Centrar en móviles */
+    }
+
+    .info-contenido__izq,
+    .info-contenido__der {
+        min-width: 100%;
+        font-size: var(--tam-fuente-xs); /* Volver a un tamaño adecuado para móvil */
+    }
+
+    .info-contenido__img {
+        max-width: 60%;
+        max-height: 120px;
+        margin-bottom: 1rem;
+    }
+}
+
+@media (max-width: 480px) {
+    .hero-sec__titulo {
+        font-size: 1.8rem;
+    }
+
+    .estilos__grid {
+        grid-template-columns: 1fr;
+        gap: var(--espacio-2);
+    }
+
+    .info-contenido__izq,
+    .info-contenido__der {
+        font-size: var(--tam-fuente-xxs); /* Más pequeño en móviles pequeños */
+    }
+
+    .info-contenido__img {
+        max-width: 80%;
+        max-height: 100px;
+    }
+}
+
+/* Estilos específicos para el enlace de "Actualizar Asociación de Cultivo" */
+.actualizar-cultivo-link {
+    text-decoration: none; /* Quita el subrayado del enlace */
+    color: inherit; /* Hereda el color del texto del contenedor */
+    display: block; /* Hace que el enlace ocupe todo el bloque de la sección */
+}
+
+.actualizar-cultivo-link:hover {
+    /* Opcional: Puedes añadir estilos al pasar el ratón si lo deseas */
+    opacity: 0.9;
+}
+
+/* Estilos específicos para la sección "Actualizar Asociación de Cultivo" */
+.actualizar-cultivo-container {
+    background-color: var(--blanco);
+    border-radius: var(--borde-redondo-md);
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+    padding: var(--espacio-2);
+    margin-bottom: var(--espacio-3);
+}
+
+.actualizar-cultivo-title {
+    color: var(--primario-950);
+    font-size: var(--tam-fuente-md);
+    margin-bottom: var(--espacio-1);
+    text-align: left;
+}
+
+.actualizar-cultivo-description {
+    color: var(--gris-900);
+    font-size: var(--tam-fuente-xs);
+    line-height: 1.5;
+    margin-bottom: var(--espacio-2);
+}
+
+.actualizar-cultivo-requirement {
+    color: var(--gris-700);
+    font-size: var(--tam-fuente-xxs);
+    font-style: italic;
+}
+
+/* Estilos para el formulario (opcional - si lo añades en el HTML) */
+.actualizar-cultivo-form label {
+    display: block;
+    margin-bottom: var(--espacio-0);
+    font-size: var(--tam-fuente-xxs);
+    color: var(--gris-800);
+}
+
+.actualizar-cultivo-form input[type="text"] {
+    width: 100%;
+    padding: 0.8rem;
+    margin-bottom: var(--espacio-1);
+    border: 1px solid var(--gris-500);
+    border-radius: var(--borde-redondo-sm);
+    font-size: var(--tam-fuente-xs);
+}
+
+.actualizar-cultivo-form button {
+    background-color: var(--primario-950);
+    color: var(--blanco);
+    padding: 1rem 1.5rem;
+    border: none;
+    border-radius: var(--borde-redondo-sm);
+    font-size: var(--tam-fuente-xs);
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.actualizar-cultivo-form button:hover {
+    background-color: var(--primario-400);
+}
+
+/* Media query específica para la sección "Actualizar Asociación de Cultivo" */
+@media (max-width: 600px) {
+    .actualizar-cultivo-title {
+        font-size: var(--tam-fuente-sm);
+    }
+
+    .actualizar-cultivo-description {
+        font-size: var(--tam-fuente-xxs);
+    }
+
+    .actualizar-cultivo-form input[type="text"],
+    .actualizar-cultivo-form button {
+        font-size: var(--tam-fuente-xxxs);
+        padding: 0.6rem 1rem;
+    }
+}
