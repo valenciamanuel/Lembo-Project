@@ -24,15 +24,15 @@
             <table class="table-container__data-table">
                 <thead>
                     <tr>
-                        <th>ID / Código</th>
-                        <th>Nombre del Cultivo</th>
-                        <th>Tipo</th>
-                        <th>Fecha de Siembra</th>
-                        <th>Área (m²)</th>
-                        <th>Estado</th>
-                        <th>Ubicación</th>
-                        <th>Responsable</th>
-                        <th>Acciones</th>
+                        <th class="table-container__data-table-header">ID / Código</th>
+                        <th class="table-container__data-table-header">Nombre del Cultivo</th>
+                        <th class="table-container__data-table-header">Tipo</th>
+                        <th class="table-container__data-table-header">Fecha de Siembra</th>
+                        <th class="table-container__data-table-header">Área (m²)</th>
+                        <th class="table-container__data-table-header">Estado</th>
+                        <th class="table-container__data-table-header">Ubicación</th>
+                        <th class="table-container__data-table-header">Responsable</th>
+                        <th class="table-container__data-table-header">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -46,7 +46,7 @@
                         <td>Invernadero 1</td>
                         <td>Julián Pérez</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -60,7 +60,7 @@
                         <td>Parcela 2</td>
                         <td>Laura Gómez</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -74,7 +74,7 @@
                         <td>Parcela 3</td>
                         <td>Andrés Torres</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -82,9 +82,9 @@
             </table>
 
             <div class="table-container__button-container">
-                <a href="/fronted/public/views/cultivos/imprimir.html" class="table-container__button-container-link">
+                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
                     <button class="btn-print">🖨️ Imprimir</button>
-                </a>
+                </a>   
             </div>
         </section>
     </main>

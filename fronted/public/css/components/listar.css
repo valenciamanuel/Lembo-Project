@@ -22,6 +22,13 @@ html {
     --Primary-Black: #000;
     /* Tipografía */
     --font-primary: 'Work Sans', sans-serif;
+    /* secundarios */
+    --secundary-red: #ff4d4f;
+    --secundary-red_ligth: #ff7875;
+    --gray-800: #3B3B3B;
+    --gray-700: #515151;
+    --gray-600: #676767;
+    --gray-500: #7D7D7D;
 }
 
 body {
@@ -35,7 +42,6 @@ body {
     color: #000;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
 }
 
 /* Header Styles */
@@ -79,6 +85,8 @@ main {
     margin: 4rem 2rem 2rem 2rem;
     border-radius: 1rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    border: solid 0.1rem var(--Primary-Green950);
+    margin-top: 5%;
 }
 
 .page-title {
@@ -119,7 +127,6 @@ main {
     color: var(--Primary-white);
     padding: 1.5rem;
     text-align: left;
-    font-size: 1.8rem; /* Aumentado */
     text-transform: uppercase;
     letter-spacing: 0.1rem;
     border: none;
@@ -182,14 +189,15 @@ main {
 }
 
 .btn-danger {
-    background-color: #ff4d4f;
+    margin-top: 1rem;
+    background-color: var(--secundary-red);
     color: var(--Primary-white);
-    border: 1px solid #ff4d4f;
+    border: 1px solid var(--secundary-red);
 }
 
 .btn-danger:hover {
-    background-color: #ff7875;
-    border-color: #ff7875;
+    background-color: var(--secundary-red_ligth);
+    border-color: var(--secundary-red_ligth);
 }
 
 .btn-print {

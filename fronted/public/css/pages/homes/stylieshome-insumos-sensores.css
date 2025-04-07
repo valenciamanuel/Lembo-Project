@@ -96,7 +96,6 @@
   /* Contenedor principal */
   .background {
     background-image: url('/fronted/public/img/back_index.jpeg');
-
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;

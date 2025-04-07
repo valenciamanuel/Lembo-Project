@@ -1,5 +1,27 @@
 /* responsivo */
 /* Configuración base */
+:root {
+    /* Colores principales */
+    --primary-color: #39a900;
+    --background-image: url('/imagenes proyecto/cultivo22.webp');
+    --text-color: #333;
+    --white-transparent: rgba(255, 255, 255, 0.8);
+    --black-transparent: rgba(0, 0, 0, 0.7);
+    --white-light: rgba(255, 255, 255, 0.6);
+
+    /* Tamaños base */
+    --base-font-size: 62.5%;
+    --header-height: 6rem;
+    --top-boxes-height: 3.2rem;
+    --grid-item-size: 30rem;
+    --grid-text-size: 1.4rem;
+
+    /* Tamaños responsive */
+    --header-logo-width: 4%;
+    --header-link-size: 1.6rem;
+    --top-boxes-item-width: 20rem;
+}
+
 html, body {
     margin: 0;
     padding: 0;
@@ -64,7 +86,7 @@ html, body {
 }
 
 .top-boxes__item {
-    background-color: rgba(255, 255, 255, 0.3);
+    background-color: var(--white-light);
     padding: 0.6rem 1rem;
     font-size: 1.4rem;
     text-align: center;

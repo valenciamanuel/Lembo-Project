@@ -24,16 +24,16 @@
             <table class="table-container__data-table">
                 <thead>
                     <tr>
-                        <th>ID / Código</th>
-                        <th>Nombre</th>
-                        <th>Categoría</th>
-                        <th>Cantidad Disponible</th>
-                        <th>Unidad de Medida</th>
-                        <th>Fecha de Ingreso</th>
-                        <th>Fecha de Vencimiento</th>
-                        <th>Proveedor</th>
-                        <th>Estado</th>
-                        <th>Acciones</th>
+                        <th class="table-container__data-table-header">ID / Código</th>
+                        <th class="table-container__data-table-header">Nombre</th>
+                        <th class="table-container__data-table-header">Categoría</th>
+                        <th class="table-container__data-table-header">Cantidad Disponible</th>
+                        <th class="table-container__data-table-header">Unidad de Medida</th>
+                        <th class="table-container__data-table-header">Fecha de Ingreso</th>
+                        <th class="table-container__data-table-header">Fecha de Vencimiento</th>
+                        <th class="table-container__data-table-header">Proveedor</th>
+                        <th class="table-container__data-table-header">Estado</th>
+                        <th class="table-container__data-table-header">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -48,7 +48,7 @@
                         <td>AgroColombia S.A.</td>
                         <td>Disponible</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_inusomo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -63,7 +63,7 @@
                         <td>Semillas del Valle</td>
                         <td>Disponible</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_inusomo.html"></a><button class="btn btn-outline btn-sm">Editar</button>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -78,7 +78,7 @@
                         <td>EcoProtect Ltda.</td>
                         <td>Disponible</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_inusomo.html"></a><button class="btn btn-outline btn-sm">Editar</button>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -86,9 +86,9 @@
             </table>
 
             <div class="table-container__button-container">
-                <a href="/fronted/public/views/insumos/imprimir.html" class="table-container__button-container-link">
+                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
                     <button class="btn-print">🖨️ Imprimir</button>
-                </a>
+                </a> 
             </div>
         </section>
     </main>

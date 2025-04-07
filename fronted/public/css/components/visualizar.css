@@ -80,6 +80,7 @@ body {
 @media screen and (min-width: 1025px) {
     .container {
         max-width: 1200px;
+
     }
     
     .cards-grid {
@@ -88,7 +89,7 @@ body {
 }
 
 /* Tablet (769px - 1026px) */
-@media screen and (min-width: 769px) and (max-width: 1026px) {
+@media screen and (min-width: 769px) and (max-width: 1024px) {
     .container {
         max-width: 90%;
     }
@@ -170,6 +171,9 @@ body {
     display: flex;
     justify-content: space-between;
     align-items: center;
+    color: var(--white);
+    background-color: var(--primary-950);
+    border-radius: 8px 8px 0 0;
 }
 
 .card__status-group {
@@ -187,7 +191,7 @@ body {
 
 .card__status--online {
     background-color: var(--white);
-    color: var(--primary-950);
+    color: var(--black);
 }
 
 .card__content {

@@ -1,5 +1,9 @@
 /* Reset Avanzado con Normalize.css */
 
+:root{
+    --secundary-red: #ff4d4f;
+}
+
 /* Corrige los estilos de fuentes en todos los navegadores */
 body {
     font-family: var(--main-font); 
@@ -40,8 +44,8 @@ button {
 .btn__secundary{
     border: solid 0.1rem var(--black);
     cursor: pointer;
-    background-color: var(--black);
-    padding: 1rem;
+    background-color: var(--secundary-red);
+    padding: 0.8rem;
     border-radius: 0.5rem;
     font-size: var(--fs-xs);
     margin: 2rem;
@@ -58,4 +62,10 @@ input, textarea, select {
     font: inherit;
     border: none;
     outline: none;
+}
+
+.success-message {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
 }

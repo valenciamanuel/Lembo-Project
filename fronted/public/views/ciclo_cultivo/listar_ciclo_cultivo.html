@@ -24,14 +24,14 @@
             <table class="table-container__data-table">
                 <thead>
                     <tr>
-                        <th>ID / Código</th>
-                        <th>Cultivo Asociado</th>
-                        <th>Fecha de Inicio</th>
-                        <th>Fecha de Fin</th>
-                        <th>Duración (días)</th>
-                        <th>Estado</th>
-                        <th>Observaciones</th>
-                        <th>Acciones</th>
+                        <th class="table-container__data-table-header">ID / Código</th>
+                        <th class="table-container__data-table-header">Cultivo Asociado</th>
+                        <th class="table-container__data-table-header">Fecha de Inicio</th>
+                        <th class="table-container__data-table-header">Fecha de Fin</th>
+                        <th class="table-container__data-table-header">Duración (días)</th>
+                        <th class="table-container__data-table-header">Estado</th>
+                        <th class="table-container__data-table-header">Observaciones</th>
+                        <th class="table-container__data-table-header">Acciones</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -44,7 +44,7 @@
                         <td>Finalizado</td>
                         <td>Buena producción, sin plagas.</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_ciclo_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -57,7 +57,7 @@
                         <td>En proceso</td>
                         <td>Se aplicó fertilizante orgánico.</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_ciclo_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -70,7 +70,7 @@
                         <td>Finalizado</td>
                         <td>Resultados excelentes, sin contratiempos.</td>
                         <td>
-                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <a href="datos_ciclo_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
                             <button class="btn btn-danger btn-sm">Eliminar</button>
                         </td>
                     </tr>
@@ -78,9 +78,9 @@
             </table>
 
             <div class="table-container__button-container">
-                <a href="/fronted/public/views/ciclos/imprimir.html" class="table-container__button-container-link">
+                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
                     <button class="btn-print">🖨️ Imprimir</button>
-                </a>
+                </a>    
             </div>
         </section>
     </main>
