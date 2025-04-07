@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Ciclos de Cultivo</title>
+    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__logo">
+            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
+        </div>
+        <h1 class="header__title">SGL</h1>
+    </header>
+
+    <main>
+        <h1 class="page-title">Listado de Ciclos de Cultivo</h1>
+        <p class="page-description">Gestiona los diferentes ciclos asociados a cada cultivo de la granja</p>
+
+        <section class="table-container">
+            <table class="table-container__data-table">
+                <thead>
+                    <tr>
+                        <th>ID / Código</th>
+                        <th>Cultivo Asociado</th>
+                        <th>Fecha de Inicio</th>
+                        <th>Fecha de Fin</th>
+                        <th>Duración (días)</th>
+                        <th>Estado</th>
+                        <th>Observaciones</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CIC-001</td>
+                        <td>Tomate Cherry</td>
+                        <td>2025-03-01</td>
+                        <td>2025-06-01</td>
+                        <td>92</td>
+                        <td>Finalizado</td>
+                        <td>Buena producción, sin plagas.</td>
+                        <td>
+                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CIC-002</td>
+                        <td>Maíz Dulce</td>
+                        <td>2025-02-10</td>
+                        <td>2025-05-10</td>
+                        <td>90</td>
+                        <td>En proceso</td>
+                        <td>Se aplicó fertilizante orgánico.</td>
+                        <td>
+                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CIC-003</td>
+                        <td>Lechuga Romana</td>
+                        <td>2025-01-15</td>
+                        <td>2025-03-15</td>
+                        <td>59</td>
+                        <td>Finalizado</td>
+                        <td>Resultados excelentes, sin contratiempos.</td>
+                        <td>
+                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="table-container__button-container">
+                <a href="/fronted/public/views/ciclos/imprimir.html" class="table-container__button-container-link">
+                    <button class="btn-print">🖨️ Imprimir</button>
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>

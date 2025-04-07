@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Cultivos</title>
+    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__logo">
+            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
+        </div>
+        <h1 class="header__title">SGL</h1>
+    </header>
+
+    <main>
+        <h1 class="page-title">Listado de Cultivos</h1>
+        <p class="page-description">Consulta y administra los cultivos activos en la granja</p>
+
+        <section class="table-container">
+            <table class="table-container__data-table">
+                <thead>
+                    <tr>
+                        <th>ID / Código</th>
+                        <th>Nombre del Cultivo</th>
+                        <th>Tipo</th>
+                        <th>Fecha de Siembra</th>
+                        <th>Área (m²)</th>
+                        <th>Estado</th>
+                        <th>Ubicación</th>
+                        <th>Responsable</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>CUL-001</td>
+                        <td>Tomate Cherry</td>
+                        <td>Hortaliza</td>
+                        <td>2025-03-01</td>
+                        <td>500</td>
+                        <td>En crecimiento</td>
+                        <td>Invernadero 1</td>
+                        <td>Julián Pérez</td>
+                        <td>
+                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CUL-002</td>
+                        <td>Maíz Dulce</td>
+                        <td>Cereal</td>
+                        <td>2025-02-10</td>
+                        <td>1000</td>
+                        <td>Germinando</td>
+                        <td>Parcela 2</td>
+                        <td>Laura Gómez</td>
+                        <td>
+                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>CUL-003</td>
+                        <td>Lechuga Romana</td>
+                        <td>Hortaliza</td>
+                        <td>2025-01-15</td>
+                        <td>300</td>
+                        <td>Listo para cosecha</td>
+                        <td>Parcela 3</td>
+                        <td>Andrés Torres</td>
+                        <td>
+                            <button class="btn btn-outline btn-sm">Editar</button>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="table-container__button-container">
+                <a href="/fronted/public/views/cultivos/imprimir.html" class="table-container__button-container-link">
+                    <button class="btn-print">🖨️ Imprimir</button>
+                </a>
+            </div>
+        </section>
+    </main>
+</body>
+</html>
