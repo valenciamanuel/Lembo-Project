@@ -76,11 +76,10 @@ main {
     flex-direction: column;
     align-items: center;
     background-color: rgba(255, 255, 255, 0.9);
-    margin: 4rem 2rem 2rem 2rem; /* ↑ top right bottom left */
+    margin: 4rem 2rem 2rem 2rem;
     border-radius: 1rem;
     box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
 }
-
 
 .page-title {
     font-size: 3.2rem;
@@ -120,8 +119,7 @@ main {
     color: var(--Primary-white);
     padding: 1.5rem;
     text-align: left;
-    font-size: 1.6rem;
-    font-weight: 600;
+    font-size: 1.8rem; /* Aumentado */
     text-transform: uppercase;
     letter-spacing: 0.1rem;
     border: none;
@@ -225,12 +223,12 @@ main {
     html {
         font-size: 60%;
     }
-    
+
     main {
         margin: 1.5rem;
         padding: 1.5rem;
     }
-    
+
     .page-description {
         max-width: 90%;
     }
@@ -240,52 +238,52 @@ main {
     html {
         font-size: 58%;
     }
-    
+
     .header {
         padding: 1rem;
     }
-    
+
     .header__logo-image {
         max-width: 4rem;
     }
-    
+
     .header__title {
         font-size: 2.4rem;
     }
-    
+
     main {
         margin: 1rem;
         padding: 1rem;
     }
-    
+
     .page-title {
         font-size: 2.8rem;
     }
-    
+
     .page-description {
         font-size: 1.6rem;
         max-width: 100%;
     }
-    
+
     .table-container {
         padding: 1rem;
     }
-    
+
     .table-container__data-table-header {
         padding: 1rem;
-        font-size: 1.4rem;
+        font-size: 1.5rem; /* Aumentado */
     }
-    
+
     .table-container__data-table td {
         padding: 1rem;
         font-size: 1.4rem;
     }
-    
+
     .action-cell {
         flex-direction: column;
         gap: 0.5rem;
     }
-    
+
     .btn-print {
         width: 100%;
         justify-content: center;
@@ -296,23 +294,23 @@ main {
     html {
         font-size: 55%;
     }
-    
+
     .header {
         flex-direction: column;
         align-items: center;
         text-align: center;
         padding: 1rem 0.5rem;
     }
-    
+
     .header__logo {
         padding-right: 0;
         margin-bottom: 0.5rem;
     }
-    
+
     .header__title {
         padding-left: 0;
     }
-    
+
     .table-container__data-table {
         display: block;
         overflow-x: auto;
