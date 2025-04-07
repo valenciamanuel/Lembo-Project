@@ -4,33 +4,27 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ID Sensor</title>
-    <link rel="stylesheet" href="/fronted/public/css/pages/sensores/style_deshabilitar_sensor.css">
+    <link rel="stylesheet" href="../CSS/style_ID_sensores.css">
     <link rel="stylesheet" href="/fronted/public/css/components/header.css">
 </head>
 <body>
     <header class="header">
-        <img class="header__logo" src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo del SENA">
+        <img class="header__logo" src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA">
     </header>
 
-    <main class="main-content">
-        <section class="sensor-content">
-            <div class="sensor-content__image" aria-hidden="true"></div>
+    <main>
+        <div class="sensor-content">
+            <div class="sensor-content__image"></div>
             
-            <form class="sensor-content__form" onsubmit="return false;">
-                <label for="idSensor" class="sensor-content__label">ID del Sensor</label>
-                <input 
-                    type="text" 
-                    id="idSensor" 
-                    class="sensor-content__input" 
-                    placeholder="Introduce el ID"
-                    aria-describedby="mensaje"
-                >
+            <div class="sensor-content__id-box">
+                <label class="sensor-content__label">ID Sensor</label>
+                <input class="sensor-content__input" type="text" id="idSensor">
                 
-                <div id="mensaje" class="mensaje" role="alert" aria-live="polite"></div>
+                <div id="mensaje" class="mensaje"></div>
 
-                <button type="submit" id="enviarBtn" class="sensor-content__button">Enviar</button>
-            </form>
-        </section>
+                <button id="enviarBtn" class="sensor-content__button">Enviar</button>
+            </div>
+        </div>
     </main>
 
     <script src="/fronted/public/js/sensores/validacion_deshabilitar.js"></script>
