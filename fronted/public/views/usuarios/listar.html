@@ -1,19 +1,24 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Listar usuarios</title>
-<link rel="stylesheet" href="/fronted/public/css/pages/usuarios/listar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar usuarios</title>
+    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
 </head>
 <body>
+    <!-- Original header preserved -->
     <header class="header">
         <div class="header__logo">
-            <img src="../img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
+            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
         </div>
         <h1 class="header__title">SGL</h1>
     </header>
     <main>
+        <h1 class="page-title">Listado de Usuarios</h1>
+        <p class="page-description">Administra y visualiza todos los usuarios registrados en el sistema</p>
+        
         <section class="table-container">
             <table class="table-container__data-table">
                 <thead>
@@ -23,25 +28,81 @@
                         <th class="table-container__data-table-header">N. DOCUMENTO</th>
                         <th class="table-container__data-table-header">NOMBRE</th>
                         <th class="table-container__data-table-header">TELEFONO</th>
+                        <th class="table-container__data-table-header">ACCIONES</th>
                     </tr>
                 </thead>
                 <tbody>
                     <tr>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
-                        <td></td>
+                        <td>Cédula de Ciudadanía</td>
+                        <td>Administrador</td>
+                        <td>1234567890</td>
+                        <td>Carlos Rodríguez</td>
+                        <td>300-123-4567</td>
+                        <td>
+                            <div class="action-cell">
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Tarjeta de Identidad</td>
+                        <td>Visitante</td>
+                        <td>9876543210</td>
+                        <td>María López</td>
+                        <td>311-987-6543</td>
+                        <td>
+                            <div class="action-cell">
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cédula de Extranjería</td>
+                        <td>Personal de apoyo</td>
+                        <td>5678901234</td>
+                        <td>Juan Pérez</td>
+                        <td>315-678-9012</td>
+                        <td>
+                            <div class="action-cell">
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Cédula de Ciudadanía</td>
+                        <td>Visitante</td>
+                        <td>3456789012</td>
+                        <td>Ana Martínez</td>
+                        <td>320-345-6789</td>
+                        <td>
+                            <div class="action-cell">
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>Pasaporte</td>
+                        <td>Visitante</td>
+                        <td>7890123456</td>
+                        <td>Pedro Gómez</td>
+                        <td>310-789-0123</td>
+                        <td>
+                            <div class="action-cell">
+                                <button class="btn btn-outline btn-sm">Editar</button>
+                                <button class="btn btn-danger btn-sm">Eliminar</button>
+                            </div>
+                        </td>
                     </tr>
                 </tbody>
             </table>
-
-            <div class="table-container__button-container">
-                <!-- <a href="/Usuarios-lembo-20250311T040238Z-001/Usuarios-lembo/Imprimir usuarios Mensaje/index.html" class="table-container__button-container-link"> -->
                 <a href="/fronted/public/views/usuarios/imprimir.html" class="table-container__button-container-link">
-                    <button class="btn btn-print">Imprimir</button>
+                    <button class="btn-print">🖨️ Imprimir</button>
                 </a>
-            </div>
+            
         </section>
     </main>
 </body>
