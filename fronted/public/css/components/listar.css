@@ -23,8 +23,6 @@ html {
     /* Tipografía */
     --font-primary: 'Work Sans', sans-serif;
     /* secundarios */
-    --secundary-red: #ff4d4f;
-    --secundary-red_ligth: #ff7875;
     --gray-800: #3B3B3B;
     --gray-700: #515151;
     --gray-600: #676767;
@@ -195,10 +193,7 @@ main {
     border: 1px solid var(--gray-700);
 }
 
-.btn-danger:hover {
-    background-color: var(--secundary-red_ligth);
-    border-color: var(--secundary-red_ligth);
-}
+
 
 .btn-print {
     background-color: var(--Primary-Green600);
