@@ -1,0 +1,279 @@
+/* estilos/listar-registros-diseno.css */
+
+:root {
+    --primario-950 : #39A900;
+    --primario-400 : #A5D88B;
+    --blanco: #fff;
+    --negro: #000;
+    --gris-950: #101010;
+    --gris-900: #262626;
+    --gris-800 : #3B3B3B;
+    --gris-700 : #515151;
+    --gris-600 : #676767;
+    --gris-500 : #7D7D7D;
+    --fuente-principal: Helvetica, Arial, Sans-serif;
+    --tam-fuente-md : 2.4rem;
+    --tam-fuente-sm : 2.0rem;
+    --tam-fuente-xs : 1.6rem;
+    --tam-fuente-xxs : 1.4rem;
+    --tam-fuente-xxxs: 1.2rem;
+    --espacio-1: 0.8rem;
+    --espacio-2: 1.6rem;
+    --espacio-3: 2.4rem;
+    --espacio-6: 4.8rem;
+    --borde-redondo-sm: 0.4rem;
+    --borde-redondo-md: 0.8rem;
+    --alto-cabecera: 5.6rem;
+    --alto-cabecera-escritorio: 6.4rem;
+    --tam-fuente-base: var(--tam-fuente-sm); /* Usar --tam-fuente-sm como base */
+    /* Altura base para botones según Material Design (36dp ≈ 2.25rem) */
+    --boton-altura: 2.25rem;
+    /* Espacio mínimo entre botones según Material Design (8dp ≈ 0.5rem) */
+    --boton-margen: 0.5rem;
+}
+
+.listar-registros-fondo {
+    background-color: #f4f4f4;
+    font-family: var(--fuente-principal);
+    line-height: 1.4;
+    overflow-x: auto;
+}
+
+.listar-registros-principal {
+    display: flex;
+    justify-content: center;
+    padding-top: var(--alto-cabecera);
+    box-sizing: border-box;
+    min-height: calc(100vh - var(--alto-cabecera));
+}
+
+.listar-registros-presentacion {
+    width: 98%; /* Ajustar ancho para pantallas pequeñas */
+    max-width: 1200px; /* Mantener un máximo para pantallas grandes */
+    padding: var(--espacio-2);
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    align-items: center; /* Centrar los elementos horizontalmente */
+}
+
+.listar-registros-hero {
+    text-align: center;
+    margin-bottom: var(--espacio-1);
+}
+
+.listar-registros-titulo {
+    font-size: var(--tam-fuente-md);
+    color: var(--negro); /* Texto negro */
+    margin-bottom: 0.5rem;
+}
+
+.listar-registros-descripcion {
+    font-size: var(--tam-fuente-sm);
+    color: var(--gris-700); /* Texto gris */
+}
+
+.listar-registros-estilos {
+    display: flex;
+    justify-content: center;
+    width: 100%;
+}
+
+.listar-registros-grid {
+    /* width: 100%; Ya no forzamos el ancho completo aquí */
+    display: flex;
+    justify-content: center; /* Centrar la tarjeta */
+}
+
+.listar-registros-tarjeta {
+    background-color: var(--blanco); /* Fondo blanco */
+    border-radius: var(--borde-redondo-md);
+    box-shadow: 0 0.125rem 0.375rem rgba(0, 0, 0, 0.1);
+    padding: var(--espacio-1);
+    overflow-x: auto;
+    /* width: 100%; Ya no forzamos el ancho completo aquí */
+    /* display: flex; No es necesario forzar flex aquí si solo queremos un ancho fijo */
+    flex-direction: column; /* Apilar el título y la tabla */
+    width: auto; /* La tarjeta se ajusta al contenido */
+    max-width: 100%; /* Evita que la tarjeta se desborde en pantallas pequeñas */
+}
+
+.listar-registros-tarjeta-titulo {
+    font-size: var(--tam-fuente-sm);
+    color: var(--primario-950);
+    margin-bottom: var(--espacio-1);
+    border-bottom: 0.0625rem solid var(--primario-950);
+    padding-bottom: 0.25rem;
+    text-align: center;
+}
+
+.listar-registros-tabla-contenedor {
+    overflow-x: auto;
+    width: 100%; /* El contenedor de la tabla ocupa el ancho de la tarjeta */
+    /* flex-grow: 1; Ya no forzamos el crecimiento vertical */
+    /* display: flex; No es necesario forzar flex aquí */
+    /* flex-direction: column; No es necesario forzar flex aquí */
+}
+
+.listar-registros-tabla {
+    width: auto; /* La tabla se ajusta al contenido, permitiendo el scroll horizontal */
+    border-collapse: collapse;
+    border-spacing: 0;
+    margin-bottom: var(--espacio-1);
+    border: 0.0625rem solid #ddd;
+    border-radius: var(--borde-redondo-sm);
+    font-size: var(--tam-fuente-xs);
+}
+
+.listar-registros-thead {
+    background-color: var(--primario-950);
+    color: var(--blanco);
+    text-align: left;
+}
+
+.listar-registros-th {
+    padding: 0.5rem 0.75rem;
+    font-weight: bold;
+    text-transform: uppercase;
+    white-space: nowrap;
+    font-size: var(--tam-fuente-xs);
+}
+
+.listar-registros-tbody .listar-registros-tr-body:nth-child(even) {
+    background-color: #f9f9f9;
+}
+
+.listar-registros-tr-body:hover {
+    background-color: #e9ecef;
+}
+
+.listar-registros-td {
+    padding: 0.5rem 0.75rem;
+    border-bottom: 0.0625rem solid #eee;
+    white-space: nowrap;
+    font-size: var(--tam-fuente-xs);
+}
+
+/* Estilos para botones dentro de la lista de registros (si existen) */
+.listar-registros-boton { /* Clase genérica para botones */
+    min-height: var(--boton-altura);
+    padding: 0 var(--espacio-2); /* Ancho adaptable al texto */
+    border: none;
+    border-radius: var(--borde-redondo-sm);
+    cursor: pointer;
+    font-size: var(--tam-fuente-base);
+    box-sizing: border-box;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    /* Margen para separar botones */
+    margin: var(--espacio-0-5);
+}
+
+/* Ejemplo de botón primario */
+.listar-registros-boton--primario {
+    background-color: var(--primario-950);
+    color: var(--blanco);
+}
+
+.listar-registros-boton--primario:hover {
+    background-color: var(--primario-400);
+}
+
+/* Ejemplo de botón secundario (si fuera necesario) */
+.listar-registros-boton--secundario {
+    background-color: var(--blanco);
+    color: var(--primario-950);
+    border: 1px solid var(--primario-950);
+}
+
+.listar-registros-boton--secundario:hover {
+    background-color: var(--primario-400);
+    color: var(--blanco);
+    border-color: var(--primario-400);
+}
+
+.listar-registros-footer {
+    background-color: var(--gris-900);
+    color: var(--blanco);
+    text-align: center;
+    padding: 0.5rem 0;
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    box-sizing: border-box;
+    font-size: var(--tam-fuente-xs);
+}
+
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .listar-registros-titulo {
+        font-size: 2.0rem;
+    }
+
+    .listar-registros-descripcion {
+        font-size: 1.6rem;
+    }
+
+    .listar-registros-th,
+    .listar-registros-td {
+        padding: 0.4rem 0.6rem;
+        font-size: 1.4rem;
+    }
+
+    .listar-registros-tabla {
+        font-size: 1.4rem;
+    }
+
+    .listar-registros-footer {
+        font-size: 1.4rem;
+    }
+
+    .listar-registros-presentacion {
+        padding: var(--espacio-1);
+    }
+
+    .listar-registros-boton {
+        font-size: var(--tam-fuente-xxs);
+        padding: 0 var(--espacio-1);
+        min-height: auto; /* Ajustar altura automáticamente */
+        line-height: normal;
+        margin: var(--espacio-0-25);
+    }
+}
+
+@media (max-width: 480px) {
+    .listar-registros-titulo {
+        font-size: 1.6rem;
+    }
+
+    .listar-registros-descripcion {
+        font-size: 1.4rem;
+    }
+
+    .listar-registros-th,
+    .listar-registros-td {
+        padding: 0.3rem 0.5rem;
+        font-size: 1.2rem;
+    }
+
+    .listar-registros-tabla {
+        font-size: 1.2rem;
+    }
+
+    .listar-registros-footer {
+        font-size: 1.2rem;
+    }
+
+    .listar-registros-boton {
+        font-size: var(--tam-fuente-xxxs);
+        padding: 0 var(--espacio-0-5);
+        margin: var(--espacio-0-25);
+    }
+}
+
+/* Definición de espaciado pequeño si no existe */
+:root {
+    --espacio-0-5: 0.4rem;
+}

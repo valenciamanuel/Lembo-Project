@@ -322,3 +322,14 @@ body {
         max-height: 100px;
     }
 }
+/* ... tus estilos existentes ... */
+
+.cabecera__nav a {
+    /* ... tus estilos existentes ... */
+    transition: background-color 0.3s ease, color 0.3s ease; /* Ejemplo de transición */
+}
+
+.cabecera__nav a:hover {
+    background-color: var(--primario-400);
+    color: var(--negro);
+}

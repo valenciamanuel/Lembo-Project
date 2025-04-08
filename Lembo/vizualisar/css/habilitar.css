@@ -1,0 +1,162 @@
+/* Estilos para la tarjeta del formulario */
+.tarjeta {
+    background-color: var(--blanco);
+    border-radius: var(--borde-redondo-md);
+    padding: var(--espacio-2);
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+    width: 90%; /* Ancho adaptable */
+    max-width: 400px; /* Ancho máximo */
+    margin: var(--espacio-3) auto; /* Centrar la tarjeta con más margen */
+}
+
+/* Estilos para el título de la tarjeta */
+.tarjeta__titulo {
+    color: var(--gris-900);
+    font-size: var(--tam-fuente-sm);
+    margin-bottom: var(--espacio-2);
+    text-align: center;
+}
+
+/* Estilos para cada campo del formulario */
+.campo {
+    margin-bottom: var(--espacio-2);
+}
+
+/* Estilos para las etiquetas de los campos */
+.campo label {
+    display: block;
+    color: var(--gris-700);
+    margin-bottom: var(--espacio-1);
+    font-size: var(--tam-fuente-xs);
+}
+
+/* Estilos para los campos de texto (input) */
+.campo input[type="text"] {
+    width: calc(100% - 1.6rem); /* 100% menos el padding horizontal */
+    padding: var(--espacio-1);
+    border: 1px solid #ddd;
+    border-radius: var(--borde-redondo-sm);
+    font-size: var(--tam-fuente-base);
+    box-sizing: border-box;
+    /* Altura similar a Material Design (36dp ≈ 2.25rem si 1dp ≈ 0.0625rem) */
+    min-height: 2.25rem;
+}
+
+/* Estilos para el selector (select) */
+.campo select {
+    width: 100%;
+    padding: var(--espacio-1);
+    border: 1px solid #ddd;
+    border-radius: var(--borde-redondo-sm);
+    font-size: var(--tam-fuente-base);
+    box-sizing: border-box;
+    appearance: none;
+    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
+    background-repeat: no-repeat;
+    background-position-x: 95%;
+    background-position-y: center;
+    padding-right: 2.5em;
+    /* Altura similar a Material Design (36dp ≈ 2.25rem) */
+    min-height: 2.25rem;
+}
+
+/* Estilos para el botón de enviar (Contained Button) */
+.boton {
+    background-color: var(--primario-950);
+    color: var(--blanco);
+    padding: 0 var(--espacio-2); /* Ancho adaptable al texto */
+    border: none;
+    border-radius: var(--borde-redondo-sm);
+    cursor: pointer;
+    font-size: var(--tam-fuente-base);
+    box-sizing: border-box;
+    transition: background-color 0.3s ease;
+    /* Altura Material Design: 36dp ≈ 2.25rem */
+    min-height: 2.25rem;
+    line-height: 2.25rem; /* Centrar el texto verticalmente */
+    display: inline-flex; /* Para alinear contenido si es necesario */
+    align-items: center;
+    justify-content: center;
+    /* Margen superior según recomendación */
+    margin-top: var(--espacio-1);
+}
+
+/* Estilos para el botón cuando el cursor está encima */
+.boton:hover {
+    background-color: var(--primario-400);
+}
+
+/* Espaciado y márgenes entre botones (si hubiera varios) */
+.boton + .boton {
+    margin-left: var(--espacio-1); /* Ejemplo de margen entre botones */
+}
+
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .tarjeta {
+        width: 80%;
+        padding: var(--espacio-1);
+        max-width: none;
+        margin: var(--espacio-2) auto;
+    }
+
+    .tarjeta__titulo {
+        font-size: var(--tam-fuente-xs);
+        margin-bottom: var(--espacio-1);
+    }
+
+    .campo label {
+        font-size: var(--tam-fuente-xxs);
+        margin-bottom: 0.5rem;
+    }
+
+    .campo input[type="text"],
+    .campo select,
+    .boton {
+        font-size: var(--tam-fuente-xxs);
+        padding: 0.6rem;
+        min-height: auto; /* Ajustar altura automáticamente */
+        line-height: normal;
+    }
+
+    .boton + .boton {
+        margin-left: var(--espacio-0-5); /* Reducir margen en pantallas pequeñas (si fuera necesario) */
+    }
+}
+
+@media (max-width: 480px) {
+    .tarjeta {
+        width: 95%;
+        padding: var(--espacio-1);
+        margin: var(--espacio-2) auto;
+    }
+
+    .tarjeta__titulo {
+        font-size: var(--tam-fuente-xxs);
+        margin-bottom: var(--espacio-1);
+    }
+
+    .campo label {
+        font-size: var(--tam-fuente-xxxs);
+        margin-bottom: 0.3rem;
+    }
+
+    .campo input[type="text"],
+    .campo select,
+    .boton {
+        font-size: var(--tam-fuente-xxxs);
+        padding: 0.5rem;
+        min-height: auto;
+        line-height: normal;
+    }
+
+    .boton + .boton {
+        margin-left: var(--espacio-0-25); /* Reducir aún más el margen */
+    }
+}
+
+/* Definir un espaciado más pequeño si no existe */
+:root {
+    --espacio-0-5: 0.4rem;
+    --espacio-0-25: 0.2rem;
+}
