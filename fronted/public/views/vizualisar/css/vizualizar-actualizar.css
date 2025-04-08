@@ -33,7 +33,7 @@
 }
 
 .visualizar-fondo {
-    background-image: url('/Lembo/imagenes proyecto/cultivo22.webp'); 
+    background-image: url('/fronted/public/img/cafe.jpg'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
