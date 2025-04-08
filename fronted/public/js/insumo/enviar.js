@@ -4,35 +4,35 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        const idInsumo = document.querySelector('.insumo__input--ID');
-        const tipoInsumo = document.querySelector('.insumo__input--type');
-        const nombreInsumo = document.querySelector('.insumo__input--nombre');
-        const unidadMedida = document.querySelector('.insumo__input--medida');
-        const cantidad = document.querySelector('.insumo__input--cantidad');
-        const valorUnitario = document.querySelector('.insumo__input--unitario');
-        const descripcion = document.querySelector('.insumo__input--descripcion');
-        const estado = document.querySelector('.insumo__input--estado');
+        // Extraer valores de los inputs
+        const idInsumo = document.querySelector('.insumo__input--ID').value;
+        const tipoInsumo = document.querySelector('.insumo__input--type').value;
+        const nombreInsumo = document.querySelector('.insumo__input--nombre').value;
+        const unidadMedida = document.querySelector('.cultivo__input--size').value;
+        const cantidad = document.querySelector('.insumo__input--cantidad').value;
+        const valorUnitario = document.querySelector('.insumo__input--unitario').value;
+        const descripcion = document.querySelector('.insumo__input--descripcion').value;
+        const estado = document.querySelector('.insumo__input--estado').value;
 
+        // Armamos el objeto con los datos (la imagen se omite en este ejemplo)
         const formData = {
-            idInsumo: idInsumo ? idInsumo.value : '',
-            tipoInsumo: tipoInsumo ? tipoInsumo.value : '',
-            nombreInsumo: nombreInsumo ? nombreInsumo.value : '',
-            unidadMedida: unidadMedida ? unidadMedida.value : '',
-            cantidad: cantidad ? cantidad.value : '',
-            valorUnitario: valorUnitario ? valorUnitario.value : '', 
-            descripcion: descripcion ? descripcion.value : '',  
-            estado: estado ? estado.value : ''  
+            idInsumo,
+            tipoInsumo,
+            nombreInsumo,
+            unidadMedida,
+            cantidad,
+            valorUnitario,
+            descripcion,
+            estado
         };
-        
-        
 
         try {
-            const response = await fetch('http://localhost:3000/insumos', {
+            const response = await fetch('http://localhost:3000/insumo', {
                 method: 'POST',
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)  // Aquí se están enviando los datos como JSON
+                body: JSON.stringify(formData)
             });
 
             if (!response.ok) {
@@ -40,9 +40,8 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
-            console.log('Usuario registrado', result);
-
-            form.reset(); // Limpiar formulario después de enviar los datos
+            console.log('Insumo registrado', result);
+            form.reset(); // Limpiar formulario
         } catch (error) {
             console.error('Error', error);
         }
