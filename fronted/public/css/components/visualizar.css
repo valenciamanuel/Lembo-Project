@@ -57,6 +57,11 @@
     --fs-xxs: 1.4rem; /* Extra extra pequeño */
     --fs-xxxs: 1.2rem; /* Mínimo */
 }
+
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 * {
     margin: 0;
     padding: 0;
@@ -76,53 +81,73 @@ body {
     margin: 0 auto;
 }
 
-/* Desktop (1025px y superior) */
-@media screen and (min-width: 1025px) {
+/* =======================
+   MEDIA QUERIES REORGANIZADAS
+   ======================= */
+
+/* Desktop grande (≥ 1025px) */
+@media screen and (min-width: 1024px) {
     .container {
         max-width: 1200px;
-
     }
-    
+
     .cards-grid {
         grid-template-columns: repeat(3, 1fr);
     }
+
+    .dashboard__controls {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
 }
 
-/* Tablet (769px - 1026px) */
-@media screen and (min-width: 769px) and (max-width: 1024px) {
+/* Intermedio (800px–1023px) */
+@media screen and (min-width: 800px) and (max-width: 1023px) {
     .container {
         max-width: 90%;
     }
-    
+
     .cards-grid {
         grid-template-columns: repeat(2, 1fr);
     }
-    
+
     .dashboard__controls {
+        display: flex;
         flex-direction: row;
+        flex-wrap: wrap;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .dashboard__title {
+        font-size: var(--fs-md);
     }
 }
 
-/* Móvil (768px y menos) */
-@media screen and (max-width: 768px) {
+/* Móvil (≤ 767px) */
+@media screen and (max-width: 767px) {
     .container {
         padding: 15px;
     }
-    
+
     .cards-grid {
         grid-template-columns: 1fr;
     }
-    
+
     .dashboard__controls {
-        flex-direction: column;
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap;
         gap: 10px;
-        align-items: flex-start;
+        align-items: center;
     }
-    
+
     .dashboard__title {
         font-size: 20px;
     }
-    
 }
 
 /* Dashboard */
@@ -162,8 +187,6 @@ body {
     border-radius: 8px;
     box-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
 }
-
-
 
 .card__header {
     padding: 15px;
