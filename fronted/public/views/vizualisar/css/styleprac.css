@@ -61,19 +61,25 @@ body {
     color: var(--blanco);
     height: var(--alto-cabecera);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center; /* Centra todos los elementos dentro de la cabecera */
+    align-items: center; /* Alinea los elementos verticalmente */
+    text-align: center; /* Centra el texto dentro de los elementos */
     padding: 0 var(--espacio-1);
     flex-shrink: 0;
+    width: 100%;
 }
 
+/* Si tienes un logo o elementos adicionales, puedes ajustar aquí el tamaño o la alineación */
 .cabecera__logo-img {
     height: calc(var(--alto-cabecera) - 0.5rem);
+    margin-right: var(--espacio-2); /* Espacio al logo, ajustable si lo necesitas */
 }
 
+/* Para los enlaces de navegación */
 .cabecera__nav {
     display: flex;
-    gap: var(--espacio-1);
+    justify-content: center; /* Alinea los enlaces al centro */
+    gap: var(--espacio-1); /* Espacio entre los enlaces */
 }
 
 .cabecera__enlace {
@@ -82,7 +88,15 @@ body {
     color: var(--blanco);
     text-decoration: none;
     padding: 0.15rem 0;
+    text-transform: uppercase; /* Hace que el texto esté en mayúsculas */
+    transition: background-color 0.3s ease, color 0.3s ease;
 }
+
+.cabecera__enlace:hover {
+    background-color: var(--primario-400);
+    color: var(--negro);
+}
+
 
 .principal {
     padding: var(--espacio-3);
