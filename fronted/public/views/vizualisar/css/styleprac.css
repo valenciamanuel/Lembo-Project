@@ -61,28 +61,56 @@ body {
     color: var(--blanco);
     height: var(--alto-cabecera);
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
     padding: 0 var(--espacio-1);
     flex-shrink: 0;
+    width: 100%;
 }
 
+/* Si tienes un logo o elementos adicionales, puedes ajustar aquí el tamaño o la alineación */
 .cabecera__logo-img {
     height: calc(var(--alto-cabecera) - 0.5rem);
+    margin-right: var(--espacio-2); 
 }
 
+/* Para los enlaces de navegación */
+/* Cabecera */
 .cabecera__nav {
     display: flex;
-    gap: var(--espacio-1);
+    justify-content: center; 
+    gap: var(--espacio-2); 
 }
 
+/* Para los enlaces de navegación */
 .cabecera__enlace {
     font-size: var(--tam-fuente-sm);
     font-weight: bold;
     color: var(--blanco);
     text-decoration: none;
     padding: 0.15rem 0;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: var(--espacio-2); 
+    letter-spacing: 0.05rem; 
 }
+
+
+.hero-sec__titulo, .tarjeta__titulo {
+    letter-spacing: 0.05rem; 
+}
+
+.hero-sec__desc, .info-contenido__texto, .info-contenido__titulo-cosecha, .info-contenido__texto-cosecha {
+    letter-spacing: 0.02rem; 
+}
+
+
+.cabecera__enlace:hover {
+    background-color: var(--primario-400);
+    color: var(--negro);
+}
+
 
 .principal {
     padding: var(--espacio-3);
@@ -117,7 +145,7 @@ body {
 
 .hero-sec__titulo {
     font-size: 2rem;
-    margin-bottom: 0; /* --espacio-0 es 0 */
+    margin-bottom: 0; 
 }
 
 .hero-sec__subtitulo {
