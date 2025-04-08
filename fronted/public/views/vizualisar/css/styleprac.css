@@ -32,7 +32,7 @@
 }
 
 html {
-    font-size: 55%;
+    font-size: 62.5%;
     font-family: var(--fuente-principal);
     scroll-behavior: smooth;
     height: 100%;
@@ -85,7 +85,7 @@ body {
 
 /* Para los enlaces de navegación */
 .cabecera__enlace {
-    font-size: var(--tam-fuente-sm);
+    font-size: var(--tam-fuente-xs);
     font-weight: bold;
     color: var(--blanco);
     text-decoration: none;
