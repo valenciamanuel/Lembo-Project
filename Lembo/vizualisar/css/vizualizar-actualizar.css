@@ -33,7 +33,7 @@
 }
 
 .visualizar-fondo {
-    background-image: url('/Lembo/imagenes proyecto/cultivo22.webp'); /* Reemplaza con la ruta correcta de tu imagen */
+    background-image: url('/Lembo/imagenes proyecto/cultivo22.webp'); 
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
@@ -43,19 +43,19 @@
     display: flex;
     justify-content: center;
     align-items: center;
-    min-height: calc(100vh - var(--alto-cabecera)); /* Ajustar altura principal restando la altura del header */
-    padding-top: var(--alto-cabecera); /* Espacio para el header fijo */
+    min-height: calc(100vh - var(--alto-cabecera)); 
+    padding-top: var(--alto-cabecera); 
     box-sizing: border-box;
 }
 
 .visualizar-presentacion {
-    width: 95%; /* Mayor adaptabilidad */
-    max-width: 600px; /* Reducir el ancho máximo para pantallas más pequeñas */
+    width: 95%; 
+    max-width: 600px; 
     padding: var(--espacio-2);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centrar los elementos horizontalmente */
+    align-items: center; 
 }
 
 .visualizar-hero {
@@ -82,30 +82,29 @@
 
 .visualizar-grid {
     width: 100%;
-    max-width: 400px; /* Ancho del contenedor del formulario */
+    max-width: 400px; 
 }
 
 .visualizar-contenedor {
-    background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente */
+    background-color: rgba(0, 0, 0, 0.5);
     border-radius: var(--borde-redondo-md);
     padding: var(--espacio-2);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centrar los elementos horizontalmente */
+    align-items: center; 
 }
 
 .visualizar-form {
     display: flex;
     flex-direction: column;
     gap: var(--espacio-1);
-    width: 100%; /* Asegurar que el formulario ocupe el ancho del contenedor */
-    align-items: center; /* Centrar los elementos del formulario */
+    width: 100%; 
+    align-items: center; 
 }
-
 .visualizar-campo {
     position: relative;
-    width: 100%; /* Asegurar que el campo ocupe el ancho del formulario */
+    width: 100%; 
 }
 
 .visualizar-input {
@@ -129,18 +128,18 @@
     color: var(--blanco);
     border: none;
     border-radius: var(--borde-redondo-sm);
-    padding: 0 var(--espacio-3); /* Ajustar padding horizontal */
+    padding: 0 var(--espacio-3); 
     font-size: var(--tam-fuente-base);
     cursor: pointer;
     transition: background-color 0.3s ease;
-    width: auto; /* Ancho adaptable al contenido */
-    min-width: 150px; /* Ancho mínimo para el botón */
-    height: var(--boton-altura); /* Alto fijo */
+    width: auto; 
+    min-width: 150px; 
+    height: var(--boton-altura); 
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: var(--espacio-2); /* Mayor margen superior */
-    align-self: center; /* Centra el botón horizontalmente */
+    margin-top: var(--espacio-2); 
+    align-self: center; 
 }
 
 .visualizar-boton:hover {
@@ -158,8 +157,8 @@
 .visualizar-footer {
     background-color: rgba(0, 0, 0, 0.5); /* Fondo semitransparente similar */
     padding: var(--espacio-1) 0;
-    text-align: center; /* Centrar el botón en el footer */
-    position: fixed; /* Fijo al fondo de la pantalla */
+    text-align: center; 
+    position: fixed; 
     bottom: 0;
     left: 0;
     width: 100%;
@@ -167,17 +166,17 @@
 }
 
 .visualizar-footer .visualizar-boton {
-    margin-top: var(--espacio-1); /* Añadir margen superior en el footer también */
+    margin-top: var(--espacio-1); 
     padding: 0 var(--espacio-3);
     font-size: var(--tam-fuente-base);
-    width: auto; /* Adaptar ancho al contenido */
-    min-width: 150px; /* Ancho mínimo */
-    height: var(--boton-altura); /* Alto fijo */
+    width: auto; 
+    min-width: 150px; 
+    height: var(--boton-altura); 
     display: inline-flex;
     justify-content: center;
     align-items: center;
-    align-self: center; /* Centra el botón horizontalmente */
-    margin: var(--espacio-0-5); /* Margen entre botones si hubiera */
+    align-self: center; 
+    margin: var(--espacio-0-5); 
 }
 
 /* Media Queries para ajustar en diferentes pantallas */
@@ -205,7 +204,7 @@
     .visualizar-input {
         padding: var(--espacio-0-8);
         font-size: var(--tam-fuente-xs);
-        min-height: var(--boton-altura-tablet); /* Variable para altura en tablet */
+        min-height: var(--boton-altura-tablet); 
     }
 
     .visualizar-boton,
@@ -214,7 +213,7 @@
         padding: 0 var(--espacio-2);
         height: var(--boton-altura-tablet);
         min-width: 120px;
-        margin-top: var(--espacio-1); /* Ajustar margen superior en tablet */
+        margin-top: var(--espacio-1); 
     }
 }
 
@@ -251,7 +250,7 @@
         padding: 0 var(--espacio-1);
         height: var(--boton-altura-movil);
         min-width: 100px;
-        margin-top: var(--espacio-1); /* Ajustar margen superior en móvil */
+        margin-top: var(--espacio-1); 
     }
 }
 
@@ -260,6 +259,6 @@
     --espacio-0-5: 0.4rem;
     --espacio-0-8: 0.6rem;
     --espacio-0-6: 0.5rem;
-    --boton-altura-tablet: 2rem; /* Ajuste para tablet */
-    --boton-altura-movil: 1.8rem; /* Ajuste para móvil */
+    --boton-altura-tablet: 2rem; 
+    --boton-altura-movil: 1.8rem; 
 }

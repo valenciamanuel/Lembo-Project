@@ -48,13 +48,13 @@
 }
 
 .listar-registros-presentacion {
-    width: 98%; /* Ajustar ancho para pantallas pequeñas */
-    max-width: 1200px; /* Mantener un máximo para pantallas grandes */
+    width: 98%; 
+    max-width: 1200px; 
     padding: var(--espacio-2);
     box-sizing: border-box;
     display: flex;
     flex-direction: column;
-    align-items: center; /* Centrar los elementos horizontalmente */
+    align-items: center; 
 }
 
 .listar-registros-hero {
@@ -70,7 +70,7 @@
 
 .listar-registros-descripcion {
     font-size: var(--tam-fuente-sm);
-    color: var(--gris-700); /* Texto gris */
+    color: var(--gris-700); 
 }
 
 .listar-registros-estilos {
@@ -82,7 +82,7 @@
 .listar-registros-grid {
     /* width: 100%; Ya no forzamos el ancho completo aquí */
     display: flex;
-    justify-content: center; /* Centrar la tarjeta */
+    justify-content: center; 
 }
 
 .listar-registros-tarjeta {
@@ -93,9 +93,9 @@
     overflow-x: auto;
     /* width: 100%; Ya no forzamos el ancho completo aquí */
     /* display: flex; No es necesario forzar flex aquí si solo queremos un ancho fijo */
-    flex-direction: column; /* Apilar el título y la tabla */
-    width: auto; /* La tarjeta se ajusta al contenido */
-    max-width: 100%; /* Evita que la tarjeta se desborde en pantallas pequeñas */
+    flex-direction: column; 
+    width: auto; 
+    max-width: 100%; 
 }
 
 .listar-registros-tarjeta-titulo {
@@ -116,7 +116,7 @@
 }
 
 .listar-registros-tabla {
-    width: auto; /* La tabla se ajusta al contenido, permitiendo el scroll horizontal */
+    width: auto; 
     border-collapse: collapse;
     border-spacing: 0;
     margin-bottom: var(--espacio-1);
@@ -157,7 +157,7 @@
 /* Estilos para botones dentro de la lista de registros (si existen) */
 .listar-registros-boton { /* Clase genérica para botones */
     min-height: var(--boton-altura);
-    padding: 0 var(--espacio-2); /* Ancho adaptable al texto */
+    padding: 0 var(--espacio-2); 
     border: none;
     border-radius: var(--borde-redondo-sm);
     cursor: pointer;
@@ -237,7 +237,7 @@
     .listar-registros-boton {
         font-size: var(--tam-fuente-xxs);
         padding: 0 var(--espacio-1);
-        min-height: auto; /* Ajustar altura automáticamente */
+        min-height: auto; 
         line-height: normal;
         margin: var(--espacio-0-25);
     }

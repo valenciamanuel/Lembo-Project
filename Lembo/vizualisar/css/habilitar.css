@@ -4,8 +4,8 @@
     border-radius: var(--borde-redondo-md);
     padding: var(--espacio-2);
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-    width: 90%; /* Ancho adaptable */
-    max-width: 400px; /* Ancho máximo */
+    width: 90%; 
+    max-width: 400px; 
     margin: var(--espacio-3) auto; /* Centrar la tarjeta con más margen */
 }
 
@@ -64,7 +64,7 @@
 .boton {
     background-color: var(--primario-950);
     color: var(--blanco);
-    padding: 0 var(--espacio-2); /* Ancho adaptable al texto */
+    padding: 0 var(--espacio-2); 
     border: none;
     border-radius: var(--borde-redondo-sm);
     cursor: pointer;
@@ -73,8 +73,8 @@
     transition: background-color 0.3s ease;
     /* Altura Material Design: 36dp ≈ 2.25rem */
     min-height: 2.25rem;
-    line-height: 2.25rem; /* Centrar el texto verticalmente */
-    display: inline-flex; /* Para alinear contenido si es necesario */
+    line-height: 2.25rem; 
+    display: inline-flex; 
     align-items: center;
     justify-content: center;
     /* Margen superior según recomendación */
@@ -88,7 +88,7 @@
 
 /* Espaciado y márgenes entre botones (si hubiera varios) */
 .boton + .boton {
-    margin-left: var(--espacio-1); /* Ejemplo de margen entre botones */
+    margin-left: var(--espacio-1); 
 }
 
 /* Media Queries para pantallas más pequeñas */

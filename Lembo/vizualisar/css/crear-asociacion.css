@@ -34,7 +34,7 @@
 
 html, body {
     height: 100%;
-    overflow: auto; /* Permitir scroll si el contenido excede la pantalla */
+    overflow: auto; 
 }
 
 .pagina {
@@ -54,7 +54,7 @@ html, body {
 
 .presentacion {
     width: 95%;
-    max-width: 450px; /* Ligeramente más ancho en escritorio */
+    max-width: 450px; 
     padding: var(--espacio-2);
 }
 
@@ -88,9 +88,9 @@ html, body {
     font-family: var(--fuente-principal);
     position: relative;
     box-sizing: border-box;
-    width: 356px; /* Ancho fijo del contenedor */
-    margin-left: auto; /* Centrar horizontalmente */
-    margin-right: auto; /* Centrar horizontalmente */
+    width: 356px; 
+    margin-left: auto; 
+    margin-right: auto; 
     display: flex;
     flex-direction: column;
     align-items: stretch;
@@ -114,7 +114,7 @@ html, body {
     flex-direction: column;
     border-radius: var(--borde-redondo-sm);
     padding: 0;
-    width: 100%; /* Ocupar todo el ancho del contenedor padre */
+    width: 100%;
 }
 
 .crear-asociacion__label {
@@ -132,8 +132,8 @@ html, body {
     background-color: var(--blanco);
     color: var(--gris-900);
     font-size: 0.9rem;
-    width: 100%; /* Ocupar el ancho fijo del contenedor crear-asociacion */
-    height: 2.5rem; /* Altura actual */
+    width: 100%; 
+    height: 2.5rem; 
     padding: 0.5rem 0.6rem;
     outline: none;
     border-radius: var(--borde-redondo-sm);
@@ -150,9 +150,9 @@ html, body {
     cursor: pointer;
     transition: background-color 0.3s ease;
     margin-top: var(--espacio-1);
-    width: auto; /* El ancho se adapta al contenido */
-    height: auto; /* La altura se adapta al contenido */
-    min-width: 100px; /* Ancho mínimo */
+    width: auto; 
+    height: auto; 
+    min-width: 100px; 
     text-transform: uppercase;
     letter-spacing: 0.02857em;
     font-weight: 500;
@@ -166,8 +166,8 @@ html, body {
 }
 
 .crear-asociacion__field--sensor .crear-asociacion__select {
-    width: 100%; /* Ocupar el ancho fijo del contenedor crear-asociacion */
-    height: 2.5rem; /* Altura actual */
+    width: 100%;
+    height: 2.5rem; 
     padding: 0.5rem 0.6rem;
     border: none;
     background-color: var(--blanco);

@@ -140,7 +140,7 @@ body {
     max-width: 40%;
     height: auto;
     border-radius: var(--borde-redondo-sm);
-    padding: var(--espacio-1); /* Ejemplo de padding: 0.8rem (8px) */
+    padding: var(--espacio-1); 
 }
 
 /* Sección de Estilos */
@@ -195,10 +195,10 @@ body {
 /* Tarjeta de Estilo Infografía */
 .info-contenido {
     display: flex;
-    gap: var(--espacio-1); /* Espacio general entre elementos */
+    gap: var(--espacio-1); 
     margin-bottom: var(--espacio-1);
     flex-wrap: wrap;
-    align-items: flex-start; /* Alineación al inicio para mejor flujo en columnas */
+    align-items: flex-start;
     justify-content: space-around;
 }
 
@@ -207,17 +207,17 @@ body {
     flex: 1;
     display: flex;
     flex-direction: column;
-    gap: 0.2rem; /* Espacio entre los elementos de texto dentro de cada bloque */
+    gap: 0.2rem; 
     font-size: var(--tam-fuente-xs);
     text-align: center;
-    min-width: 45%; /* Asegura que al menos ocupen casi la mitad en pantallas grandes */
+    min-width: 45%; 
 }
 
 .info-contenido__img {
     max-width: 70%;
     height: auto;
     display: block;
-    margin: 0 auto 0.5rem; /* Espacio inferior para separar de los textos */
+    margin: 0 auto 0.5rem; 
     max-height: 80px;
 }
 
@@ -255,44 +255,44 @@ body {
     }
 
     .hero-sec__img {
-        max-width: 70%; /* Mayor tamaño en tabletas */
+        max-width: 70%; 
     }
 
     .estilos__grid {
-        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); /* Mantener en tabletas */
+        grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); 
         gap: var(--espacio-2);
     }
 
     .info-contenido {
-        flex-direction: row; /* Volver a fila en tabletas para mejor distribución si hay espacio */
+        flex-direction: row; 
         gap: var(--espacio-1);
-        align-items: flex-start; /* Mantener alineación */
+        align-items: flex-start; 
     }
 
     .info-contenido__izq,
     .info-contenido__der {
-        min-width: 48%; /* Dos columnas en tabletas */
-        font-size: var(--tam-fuente-sm); /* Un poco más grande en tabletas */
+        min-width: 48%; 
+        font-size: var(--tam-fuente-sm); 
     }
 
     .info-contenido__img {
-        max-width: 50%; /* Ajustar tamaño de imagen en tabletas */
+        max-width: 50%; 
         max-height: 100px;
         margin-bottom: 0.5rem;
     }
 }
 
-@media (max-width: 600px) { /* Nuevo punto de quiebre para móviles más grandes */
+@media (max-width: 600px) { 
     .info-contenido {
-        flex-direction: column; /* Una columna en móviles */
+        flex-direction: column; 
         gap: var(--espacio-1);
-        align-items: center; /* Centrar en móviles */
+        align-items: center; 
     }
 
     .info-contenido__izq,
     .info-contenido__der {
         min-width: 100%;
-        font-size: var(--tam-fuente-xs); /* Volver a un tamaño adecuado para móvil */
+        font-size: var(--tam-fuente-xs); 
     }
 
     .info-contenido__img {
@@ -314,7 +314,7 @@ body {
 
     .info-contenido__izq,
     .info-contenido__der {
-        font-size: var(--tam-fuente-xxs); /* Más pequeño en móviles pequeños */
+        font-size: var(--tam-fuente-xxs); 
     }
 
     .info-contenido__img {
@@ -322,11 +322,11 @@ body {
         max-height: 100px;
     }
 }
-/* ... tus estilos existentes ... */
+
 
 .cabecera__nav a {
-    /* ... tus estilos existentes ... */
-    transition: background-color 0.3s ease, color 0.3s ease; /* Ejemplo de transición */
+    
+    transition: background-color 0.3s ease, color 0.3s ease; 
 }
 
 .cabecera__nav a:hover {
