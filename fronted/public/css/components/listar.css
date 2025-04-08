@@ -35,7 +35,7 @@ body {
     font-family: var(--font-primary);
     margin: 0;
     padding: 0;
-    background-image: url('../img/cafe.jpg');
+    background-image: url('/fronted/public/img/cafe.jpg');
     background-size: cover;
     background-position: center;
     background-attachment: fixed;
