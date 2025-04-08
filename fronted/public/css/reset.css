@@ -2,6 +2,7 @@
 
 :root{
     --secundary-red: #ff4d4f;
+    --gray-700: #515151;
 }
 
 /* Corrige los estilos de fuentes en todos los navegadores */
@@ -44,7 +45,7 @@ button {
 .btn__secundary{
     border: solid 0.1rem var(--black);
     cursor: pointer;
-    background-color: var(--secundary-red);
+    background-color: var(--gray-700);
     padding: 0.8rem;
     border-radius: 0.5rem;
     font-size: var(--fs-xs);
