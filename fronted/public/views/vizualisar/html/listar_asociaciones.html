@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listado de Registros de Cultivos</title>
+    <link rel="stylesheet" href="/Lembo/vizualisar/css/styleprac.css">
+    <link rel="stylesheet" href="/Lembo/vizualisar/css/listar_asociacion.css">
+</head>
+<body class="pagina listar-registros-fondo">
+    <header class="cabecera">
+        <div class="cabecera__logo">
+            <img src="/Lembo/imagenes proyecto/loso_SENA.png" alt="Logo SENA" class="cabecera__logo-img">
+        </div>
+        <nav class="cabecera__nav">
+            <a href="#" class="cabecera__enlace">Inicio</a>
+            <a href="crear_asociacion.html" class="cabecera__enlace">Crear Asociación</a>
+            <a href="visualizar_asociacion.html" class="cabecera__enlace">Visualizar</a>
+            <a href="actualizar_asociacion.html" class="cabecera__enlace">Actualizar</a>
+            <a href="habilitar_deshabilitar.html" class="cabecera__enlace">Habilitar/Deshabilitar</a>
+            <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
+            <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
+            <a href="practica.html" class="cabecera__enlace">Inicio</a>
+        </nav>
+    </header>
+    <main class="principal listar-registros-principal">
+        <div class="presentacion listar-registros-presentacion">
+            <section class="hero-sec listar-registros-hero">
+                <div class="hero-sec__izq">
+                    <h1 class="hero-sec__titulo listar-registros-titulo">Registros de Gestión de Cultivos</h1>
+                    <p class="hero-sec__desc listar-registros-descripcion">Listado de registros relacionados con sensores, insumos y ciclo de cultivo.</p>
+                </div>
+            </section>
+            <section class="estilos listar-registros-estilos">
+                <div class="estilos__grid listar-registros-grid">
+                    <div class="tarjeta listar-registros-tarjeta">
+                        <h2 class="tarjeta__titulo listar-registros-tarjeta-titulo">Registros de Cultivos</h2>
+                        <div class="listar-registros-tabla-contenedor">
+                            <table class="listar-registros-tabla">
+                                <thead class="listar-registros-thead">
+                                    <tr class="listar-registros-tr-head">
+                                        <th class="listar-registros-th">No.</th>
+                                        <th class="listar-registros-th">Tipo de Registro</th>
+                                        <th class="listar-registros-th">ID Registro</th>
+                                        <th class="listar-registros-th">Fecha</th>
+                                        <th class="listar-registros-th">Detalle Principal</th>
+                                        <th class="listar-registros-th">Responsable</th>
+                                        <th class="listar-registros-th">Estado</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="listar-registros-tbody">
+                                    <tr class="listar-registros-tr-body">
+                                        <td class="listar-registros-td">1</td>
+                                        <td class="listar-registros-td">Lectura de Sensor</td>
+                                        <td class="listar-registros-td">LS-2025-001</td>
+                                        <td class="listar-registros-td">2025-04-08</td>
+                                        <td class="listar-registros-td">Humedad del suelo: 65%</td>
+                                        <td class="listar-registros-td">Técnico de Campo</td>
+                                        <td class="listar-registros-td">Completado</td>
+                                    </tr>
+                                    <tr class="listar-registros-tr-body">
+                                        <td class="listar-registros-td">2</td>
+                                        <td class="listar-registros-td">Aplicación de Insumo</td>
+                                        <td class="listar-registros-td">AI-2025-002</td>
+                                        <td class="listar-registros-td">2025-04-05</td>
+                                        <td class="listar-registros-td">Fertilizante Nitrogenado (Dosis estándar)</td>
+                                        <td class="listar-registros-td">Operario de Insumos</td>
+                                        <td class="listar-registros-td">Completado</td>
+                                    </tr>
+                                    <tr class="listar-registros-tr-body">
+                                        <td class="listar-registros-td">3</td>
+                                        <td class="listar-registros-td">Monitoreo de Ciclo</td>
+                                        <td class="listar-registros-td">MC-2025-003</td>
+                                        <td class="listar-registros-td">2025-04-02</td>
+                                        <td class="listar-registros-td">Etapa de floración temprana</td>
+                                        <td class="listar-registros-td">Biólogo Agrónomo</td>
+                                        <td class="listar-registros-td">En curso</td>
+                                    </tr>
+                                    <tr class="listar-registros-tr-body">
+                                        <td class="listar-registros-td">4</td>
+                                        <td class="listar-registros-td">Calibración de Sensor</td>
+                                        <td class="listar-registros-td">CS-2025-001</td>
+                                        <td class="listar-registros-td">2025-03-28</td>
+                                        <td class="listar-registros-td">Sensor de temperatura y humedad (Unidad 3)</td>
+                                        <td class="listar-registros-td">Técnico de Mantenimiento</td>
+                                        <td class="listar-registros-td">Completado</td>
+                                    </tr>
+                                    <tr class="listar-registros-tr-body">
+                                        <td class="listar-registros-td">5</td>
+                                        <td class="listar-registros-td">Pedido de Insumo</td>
+                                        <td class="listar-registros-td">PI-2025-005</td>
+                                        <td class="listar-registros-td">2025-03-25</td>
+                                        <td class="listar-registros-td">Solicitud de pesticida orgánico</td>
+                                        <td class="listar-registros-td">Jefe de Cultivo</td>
+                                        <td class="listar-registros-td">Pendiente</td>
+                                    </tr>
+                                    <tr class="listar-registros-tr-body">
+                                        <td class="listar-registros-td">6</td>
+                                        <td class="listar-registros-td">Análisis de Suelo</td>
+                                        <td class="listar-registros-td">AS-2025-002</td>
+                                        <td class="listar-registros-td">2025-03-20</td>
+                                        <td class="listar-registros-td">Resultados: pH 6.2, Nitrógeno bajo</td>
+                                        <td class="listar-registros-td">Laboratorista</td>
+                                        <td class="listar-registros-td">Completado</td>
+                                    </tr>
+                                    <tr class="listar-registros-tr-body">
+                                        <td class="listar-registros-td">7</td>
+                                        <td class="listar-registros-td">Registro de Cosecha</td>
+                                        <td class="listar-registros-td">RC-2025-001</td>
+                                        <td class="listar-registros-td">2025-03-15</td>
+                                        <td class="listar-registros-td">Cosecha de tomate (Bloque A): 120 kg</td>
+                                        <td class="listar-registros-td">Supervisor de Cosecha</td>
+                                        <td class="listar-registros-td">Completado</td>
+                                    </tr>
+                                    <tr class="listar-registros-tr-body">
+                                        <td class="listar-registros-td">8</td>
+                                        <td class="listar-registros-td">Mantenimiento de Sensor</td>
+                                        <td class="listar-registros-td">MS-2025-001</td>
+                                        <td class="listar-registros-td">2025-03-10</td>
+                                        <td class="listar-registros-td">Limpieza de sensor de luz (Invernadero 1)</td>
+                                        <td class="listar-registros-td">Técnico de Campo</td>
+                                        <td class="listar-registros-td">Completado</td>
+                                    </tr>
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+    <footer class="listar-registros-footer">
+        <p class="listar-registros-footer-texto">&copy; 2025 - Registros de Gestión de Cultivos</p>
+    </footer>
+</body>
+</html>

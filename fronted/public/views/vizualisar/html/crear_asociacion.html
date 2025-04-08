@@ -1,0 +1,66 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Asociación</title>
+    <link rel="stylesheet" href="/Lembo/vizualisar/css/styleprac.css">
+    <link rel="stylesheet" href="/Lembo/vizualisar/css/crear-asociacion.css">
+    </head>
+<body class="pagina">
+    <header class="cabecera">
+        <div class="cabecera__logo">
+            <img src="/Lembo/imagenes proyecto/loso_SENA.png" alt="Logo SENA" class="cabecera__logo-img">
+        </div>
+        <nav class="cabecera__nav">
+            <a href="#" class="cabecera__enlace">Inicio</a>
+            <a href="crear_asociacion.html" class="cabecera__enlace">Crear Asociación</a>
+            <a href="visualizar_asociacion.html" class="cabecera__enlace">Visualizar </a>
+            <a href="actualizar_asociacion.html" class="cabecera__enlace">Actualizar</a>
+            <a href="habilitar_deshabilitar.html" class="cabecera__enlace">Habilitar/Deshabilitar</a>
+            <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
+            <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
+        </nav>
+    </header>
+    <main class="principal">
+        <div class="presentacion">
+            <section class="hero-sec">
+                <div class="hero-sec__izq">
+                    <h1 class="hero-sec__titulo">Crear Nueva Asociación</h1>
+                    <p class="hero-sec__desc">Ingrese la información para crear una nueva asociación de cultivo.</p>
+                </div>
+            </section>
+            <section class="estilos">
+                <div class="estilos__grid">
+                    <div class="crear-asociacion">
+                        <h2 class="crear-asociacion__title tarjeta__titulo">Formulario de Asociación</h2>
+                        <form class="crear-asociacion__form formulario">
+                            <div class="crear-asociacion__field campo">
+                                <label for="usuario" class="crear-asociacion__label">Usuario:</label>
+                                <input type="text" id="usuario" name="usuario" class="crear-asociacion__input">
+                            </div>
+                            <div class="crear-asociacion__field campo">
+                                <label for="ciclo_cultivo" class="crear-asociacion__label">Ciclo de Cultivo:</label>
+                                <input type="text" id="ciclo_cultivo" name="ciclo_cultivo" class="crear-asociacion__input">
+                            </div>
+                            <div class="crear-asociacion__field campo">
+                                <label for="sensor" class="crear-asociacion__label">Sensor:</label>
+                                <select id="sensor" name="sensor" class="crear-asociacion__select">
+                                    <option value="">-- Seleccionar --</option>
+                                    <option value="temperatura">Temperatura</option>
+                                    <option value="humedad">Humedad</option>
+                                    </select>
+                            </div>
+                            <div class="crear-asociacion__field campo">
+                                <label for="insumo" class="crear-asociacion__label">Insumo:</label>
+                                <input type="text" id="insumo" name="insumo" class="crear-asociacion__input">
+                            </div>
+                            <button type="submit" class="crear-asociacion__button boton">Crear Asociación</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

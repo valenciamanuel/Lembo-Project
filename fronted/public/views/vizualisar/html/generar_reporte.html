@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Generar Reporte</title>
+    <link rel="stylesheet" href="/Lembo/vizualisar/css/styleprac.css">
+    </head>
+<body class="pagina">
+    <header class="cabecera">
+        <div class="cabecera__logo">
+            <img src="/Lembo/imagenes proyecto/loso_SENA.png" alt="Logo SENA" class="cabecera__logo-img">
+        </div>
+        <nav class="cabecera__nav">
+            <a href="#" class="cabecera__enlace">Inicio</a>
+            <a href="crear_asociacion.html" class="cabecera__enlace">Crear Asociación</a>
+            <a href="visualizar_asociacion.html" class="cabecera__enlace">Visualizar </a>
+            <a href="actualizar_asociacion.html" class="cabecera__enlace">Actualizar </a>
+            <a href="habilitar_deshabilitar.html" class="cabecera__enlace">Habilitar/Deshabilitar</a>
+            <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
+            <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
+        </nav>
+    </header>
+    <main class="principal">
+        <div class="presentacion">
+            <section class="hero-sec">
+                <div class="hero-sec__izq">
+                    <h1 class="hero-sec__titulo">Generar Reporte</h1>
+                    <p class="hero-sec__desc">Seleccione las opciones para generar un reporte de las asociaciones.</p>
+                </div>
+            </section>
+            <section class="estilos">
+                <div class="estilos__grid">
+                    <div class="tarjeta">
+                        <h2 class="tarjeta__titulo">Opciones de Reporte</h2>
+                        <form class="formulario">
+                            <div class="campo">
+                                <label for="tipo_reporte">Tipo de Reporte:</label>
+                                <select id="tipo_reporte" name="tipo_reporte">
+                                    <option value="excel">Excel</option>
+                                    <option value="pdf">PDF</option>
+                                </select>
+                            </div>
+                            <button type="submit" class="boton">Generar Reporte</button>
+                        </form>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

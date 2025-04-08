@@ -1,0 +1,269 @@
+/* Estilos específicos para la página de crear asociación (BEM) - Diseño Similar a la Imagen */
+
+:root {
+    --primario-950 : #39A900;
+    --primario-400 : #A5D88B;
+    --blanco: #fff;
+    --negro: #000;
+    --gris-950: #101010;
+    --gris-900: #262626;
+    --gris-800 : #3B3B3B;
+    --gris-700 : #515151;
+    --gris-600 : #676767;
+    --gris-500 : #7D7D7D;
+    --fuente-principal: Helvetica, Arial, Sans-serif;
+    --tam-fuente-md : 2.4rem;
+    --tam-fuente-sm : 2.0rem;
+    --tam-fuente-xs : 1.6rem;
+    --tam-fuente-xxs : 1.4rem;
+    --tam-fuente-xxxs: 1.2rem;
+    --espacio-1: 0.8rem;
+    --espacio-2: 1.6rem;
+    --espacio-3: 2.4rem;
+    --espacio-6: 4.8rem;
+    --borde-redondo-sm: 0.4rem;
+    --borde-redondo-md: 0.8rem;
+    --alto-cabecera: 5.6rem;
+    --alto-cabecera-escritorio: 6.4rem;
+    --tam-fuente-base: var(--tam-fuente-sm); /* Usar --tam-fuente-sm como base */
+    /* Altura base para botones según Material Design (36dp ≈ 2.25rem) */
+    --boton-altura: 2.25rem;
+    /* Espacio mínimo entre botones según Material Design (8dp ≈ 0.5rem) */
+    --boton-margen: 0.5rem;
+}
+
+html, body {
+    height: 100%;
+    overflow: auto; 
+}
+
+.pagina {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.principal {
+    flex-grow: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: var(--espacio-3);
+    box-sizing: border-box;
+}
+
+.presentacion {
+    width: 95%;
+    max-width: 450px; 
+    padding: var(--espacio-2);
+}
+
+.hero-sec {
+    margin-bottom: var(--espacio-2);
+    text-align: center;
+}
+
+.hero-sec__titulo {
+    font-size: var(--tam-fuente-sm);
+    color: var(--gris-900);
+    margin-bottom: var(--espacio-0-5);
+}
+
+.hero-sec__desc {
+    font-size: var(--tam-fuente-xs);
+    color: var(--gris-700);
+}
+
+.estilos__grid {
+    display: grid;
+    grid-template-columns: 1fr;
+}
+
+.crear-asociacion {
+    background-color: var(--primario-950);
+    border-radius: var(--borde-redondo-md);
+    padding: var(--espacio-2);
+    box-shadow: 0 0.15rem 0.3rem rgba(0, 0, 0, 0.1);
+    color: var(--blanco);
+    font-family: var(--fuente-principal);
+    position: relative;
+    box-sizing: border-box;
+    width: 356px; 
+    margin-left: auto; 
+    margin-right: auto; 
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+}
+
+.crear-asociacion__title {
+    text-align: center;
+    margin-bottom: var(--espacio-1);
+    font-size: var(--tam-fuente-base);
+    font-weight: bold;
+}
+
+.crear-asociacion__form {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: var(--espacio-1);
+}
+
+.crear-asociacion__field {
+    display: flex;
+    flex-direction: column;
+    border-radius: var(--borde-redondo-sm);
+    padding: 0;
+    width: 100%;
+}
+
+.crear-asociacion__label {
+    font-size: var(--tam-fuente-xxs);
+    color: var(--blanco);
+    margin-bottom: 0.2rem;
+    display: block;
+    text-align: left;
+    padding: 0 0.6rem;
+}
+
+.crear-asociacion__input,
+.crear-asociacion__select {
+    border: none;
+    background-color: var(--blanco);
+    color: var(--gris-900);
+    font-size: 0.9rem;
+    width: 100%; 
+    height: 2.5rem; 
+    padding: 0.5rem 0.6rem;
+    outline: none;
+    border-radius: var(--borde-redondo-sm);
+    box-sizing: border-box;
+}
+
+.crear-asociacion__button {
+    background-color: var(--gris-950);
+    color: var(--blanco);
+    border: none;
+    border-radius: var(--borde-redondo-sm);
+    padding: 0.6rem var(--espacio-2);
+    font-size: 0.85rem;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    margin-top: var(--espacio-1);
+    width: auto; 
+    height: auto; 
+    min-width: 100px; 
+    text-transform: uppercase;
+    letter-spacing: 0.02857em;
+    font-weight: 500;
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+.crear-asociacion__button:hover {
+    background-color: #21BA7F;
+}
+
+.crear-asociacion__field--sensor .crear-asociacion__select {
+    width: 100%;
+    height: 2.5rem; 
+    padding: 0.5rem 0.6rem;
+    border: none;
+    background-color: var(--blanco);
+    color: var(--gris-900);
+    font-size: 0.9rem;
+    outline: none;
+    border-radius: var(--borde-redondo-sm);
+    box-sizing: border-box;
+}
+
+/* Media Queries para pantallas más pequeñas */
+@media (max-width: 768px) {
+    .presentacion {
+        max-width: 90%;
+        padding: var(--espacio-2);
+    }
+
+    .crear-asociacion {
+        width: 90%; /* Ocupar un porcentaje del ancho en tablet */
+        max-width: 356px; /* Mantener un ancho máximo */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-sec__titulo {
+        font-size: var(--tam-fuente-base);
+    }
+
+    .hero-sec__desc {
+        font-size: var(--tam-fuente-xxs);
+    }
+
+    .crear-asociacion__title {
+        font-size: var(--tam-fuente-xs);
+    }
+
+    .crear-asociacion__input,
+    .crear-asociacion__select,
+    .crear-asociacion__button,
+    .crear-asociacion__label,
+    .crear-asociacion__field--sensor .crear-asociacion__select {
+        font-size: 0.85rem;
+        height: 2.8rem;
+        padding: 0.6rem;
+    }
+
+    .crear-asociacion__button {
+        min-width: 90px;
+        padding: 0.5rem var(--espacio-1-5);
+    }
+}
+
+@media (max-width: 480px) {
+    .presentacion {
+        max-width: 95%;
+        padding: var(--espacio-1-5);
+    }
+
+    .crear-asociacion {
+        width: 95%; /* Ocupar un porcentaje mayor del ancho en móvil */
+        max-width: 356px; /* Mantener un ancho máximo */
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    .hero-sec__titulo {
+        font-size: var(--tam-fuente-xs);
+    }
+
+    .hero-sec__desc {
+        font-size: var(--tam-fuente-xxxs);
+    }
+
+    .crear-asociacion__title {
+        font-size: var(--tam-fuente-xxs);
+    }
+
+    .crear-asociacion__input,
+    .crear-asociacion__select,
+    .crear-asociacion__button,
+    .crear-asociacion__label,
+    .crear-asociacion__field--sensor .crear-asociacion__select {
+        font-size: 0.75rem;
+        height: 2.4rem;
+        padding: 0.4rem;
+    }
+
+    .crear-asociacion__button {
+        min-width: 70px;
+        padding: 0.4rem var(--espacio-1);
+        font-size: 0.7rem;
+    }
+}
+
+/* Definición de espaciado pequeño si no existe */
+:root {
+    --espacio-0-5: 0.4rem;
+    --espacio-1-5: 1.2rem;
+}
