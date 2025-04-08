@@ -190,9 +190,9 @@ main {
 
 .btn-danger {
     margin-top: 1rem;
-    background-color: var(--secundary-red);
+    background-color: var(--gray-700);
     color: var(--Primary-white);
-    border: 1px solid var(--secundary-red);
+    border: 1px solid var(--gray-700);
 }
 
 .btn-danger:hover {
