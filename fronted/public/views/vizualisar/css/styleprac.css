@@ -61,9 +61,9 @@ body {
     color: var(--blanco);
     height: var(--alto-cabecera);
     display: flex;
-    justify-content: center; /* Centra todos los elementos dentro de la cabecera */
-    align-items: center; /* Alinea los elementos verticalmente */
-    text-align: center; /* Centra el texto dentro de los elementos */
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
     padding: 0 var(--espacio-1);
     flex-shrink: 0;
     width: 100%;
@@ -72,25 +72,39 @@ body {
 /* Si tienes un logo o elementos adicionales, puedes ajustar aquí el tamaño o la alineación */
 .cabecera__logo-img {
     height: calc(var(--alto-cabecera) - 0.5rem);
-    margin-right: var(--espacio-2); /* Espacio al logo, ajustable si lo necesitas */
+    margin-right: var(--espacio-2); 
 }
 
 /* Para los enlaces de navegación */
+/* Cabecera */
 .cabecera__nav {
     display: flex;
-    justify-content: center; /* Alinea los enlaces al centro */
-    gap: var(--espacio-1); /* Espacio entre los enlaces */
+    justify-content: center; 
+    gap: var(--espacio-2); 
 }
 
+/* Para los enlaces de navegación */
 .cabecera__enlace {
     font-size: var(--tam-fuente-sm);
     font-weight: bold;
     color: var(--blanco);
     text-decoration: none;
     padding: 0.15rem 0;
-    text-transform: uppercase; /* Hace que el texto esté en mayúsculas */
+    text-transform: uppercase;
     transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: var(--espacio-2); 
+    letter-spacing: 0.05rem; 
 }
+
+
+.hero-sec__titulo, .tarjeta__titulo {
+    letter-spacing: 0.05rem; 
+}
+
+.hero-sec__desc, .info-contenido__texto, .info-contenido__titulo-cosecha, .info-contenido__texto-cosecha {
+    letter-spacing: 0.02rem; 
+}
+
 
 .cabecera__enlace:hover {
     background-color: var(--primario-400);
@@ -131,7 +145,7 @@ body {
 
 .hero-sec__titulo {
     font-size: 2rem;
-    margin-bottom: 0; /* --espacio-0 es 0 */
+    margin-bottom: 0; 
 }
 
 .hero-sec__subtitulo {
