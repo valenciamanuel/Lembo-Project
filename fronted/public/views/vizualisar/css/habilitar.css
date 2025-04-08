@@ -1,162 +1,315 @@
-/* Estilos para la tarjeta del formulario */
-.tarjeta {
-    background-color: var(--blanco);
-    border-radius: var(--borde-redondo-md);
-    padding: var(--espacio-2);
-    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-    width: 90%; 
-    max-width: 400px; 
-    margin: var(--espacio-3) auto; /* Centrar la tarjeta con más margen */
+*,
+*::before,
+*::after {
+    margin: 0;
+    padding: 0;
+    box-sizing: inherit;
 }
 
-/* Estilos para el título de la tarjeta */
-.tarjeta__titulo {
-    color: var(--gris-900);
-    font-size: var(--tam-fuente-sm);
+html {
+    font-size: 62.5%;
+    box-sizing: border-box;
+}
+
+:root {
+    /* Primary color*/
+    --primary-950: #4DB100;
+    --primary-900: #55B40C;
+    --primary-800: #67BC26;
+    --primary-700: #79C43F;
+    --primary-600: #8BCC59;
+    --primary-500: #9DD472;
+    --primary-400: #AEDB8C;
+    --primary-300: #C0E3A5;
+    --primary-200: #D2EBBF;
+    --primary-100: #EAF3D8;
+    --primary-50: #F6FBF2;
+    
+    /* Secundary color*/
+    --secundary-950:#FED638;
+    --secundary-900:#FED841;
+    --secundary-800:#FEDC55;
+    --secundary-700:#FEE069;
+    --secundary-600:#FEE47D;
+    --secundary-500:#FEE891;
+    --secundary-400:#FEECA5;
+    --secundary-300:#FEF0B9;
+    --secundary-200:#FEF4CD;
+    --secundary-100:#FEF8E1;
+    --secundary-50:#FEFCF5;
+    --secundary-red: #ff4d4f;
+    
+    /* Basic color*/
+    --white: #fff;
+    --black: #000;
+    --gray-950: #101010;
+    --gray-900: #262626;
+    --gray-800: #3B3B3B;
+    --gray-700: #515151;
+    --gray-600: #676767;
+    --gray-500: #7D7D7D;
+    --gray-400: #929292;
+    --gray-300: #A8A8A8;
+    --gray-200: #BEBEBE;
+    --gray-100: #D4D4D4;
+    --gray-50: #E9E9E9;
+    
+    /* Font-family */
+    --main-font: Helvetica, Arial, sans-serif;
+    
+    /* Font-size */
+    --fs-xxxxl: 8.0rem; /* Ultra grande */
+    --fs-xxxl: 6.4rem; /* Súper grande */
+    --fs-xxl: 4.8rem; /* Extra grande */
+    --fs-xl: 4.0rem;  /* Muy grande */
+    --fs-lg: 3.2rem;  /* Grande */
+    --fs-md: 2.4rem;  /* Mediano */
+    --fs-sm: 2.0rem;  /* Pequeño */
+    --fs-xs: 1.6rem;  /* Extra pequeño */
+    --fs-xxs: 1.4rem; /* Extra extra pequeño */
+    --fs-xxxs: 1.2rem; /* Mínimo */
+    
+    /* Espaciado */
+    --espacio-0-25: 0.2rem;
+    --espacio-0-5: 0.4rem;
+    --espacio-1: 0.8rem;
+    --espacio-2: 1.6rem;
+    --espacio-3: 2.4rem;
+    
+    /* Bordes */
+    --borde-redondo-sm: 0.4rem;
+    --borde-redondo-md: 0.8rem;
+}
+
+body {
+    font-family: var(--main-font);
+    font-size: var(--fs-xs);
+    line-height: 1.6;
+    color: var(--gray-800);
+    background-color: var(--gray-50);
+    background-image: url(/fronted/public/img/cafe.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
+/* Estilos para el header */
+.cabecera {
+    background-color: var(--primario-950);
+    color: var(--blanco);
+    height: var(--alto-cabecera);
+    display: flex;
+    justify-content: center; 
+    align-items: center; 
+    text-align: center; 
+    padding: 0 var(--espacio-1);
+    flex-shrink: 0;
+    width: 100%;
+}
+
+/* Si tienes un logo o elementos adicionales, puedes ajustar aquí el tamaño o la alineación */
+.cabecera__logo-img {
+    height: calc(var(--alto-cabecera) - 0.5rem);
+    margin-right: var(--espacio-2); 
+}
+
+/* Para los enlaces de navegación */
+/* Cabecera */
+.cabecera__nav {
+    display: flex;
+    justify-content: center; 
+    gap: var(--espacio-2); 
+}
+
+/* Para los enlaces de navegación */
+.cabecera__enlace {
+    font-weight: bold;
+    color: var(--blanco);
+    text-decoration: none;
+    padding: 0.15rem 0;
+    text-transform: uppercase;
+    transition: background-color 0.3s ease, color 0.3s ease;
+    margin-right: var(--espacio-2); 
+    letter-spacing: 0.05rem; 
+}
+
+.cabecera__enlace:hover {
+    background-color: var(--primary-700);
+}
+
+/* Estilos para el contenedor principal */
+.asociacion {
+    padding: var(--espacio-3);
+    max-width: 120rem;
+    margin: 0 auto;
+}
+
+/* Estilos para el título principal */
+.asociacion__titulo {
+    color: var(--gray-900);
+    font-size: var(--fs-md);
     margin-bottom: var(--espacio-2);
     text-align: center;
 }
 
+/* Estilos para la descripción principal */
+.asociacion__descripcion {
+    color: var(--gray-700);
+    font-size: var(--fs-xs);
+    margin-bottom: var(--espacio-3);
+    text-align: center;
+    max-width: 60rem;
+    margin-left: auto;
+    margin-right: auto;
+}
+
+/* Estilos para el formulario */
+.formulario {
+    background-color: var(--white);
+    border-radius: var(--borde-redondo-md);
+    padding: var(--espacio-3);
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
+    width: 90%;
+    max-width: 50rem;
+    margin: 0 auto;
+}
+
 /* Estilos para cada campo del formulario */
-.campo {
+.formulario__campo {
     margin-bottom: var(--espacio-2);
 }
 
-/* Estilos para las etiquetas de los campos */
-.campo label {
+/* Estilos para las etiquetas del formulario */
+.formulario__etiqueta {
     display: block;
-    color: var(--gris-700);
+    color: var(--gray-700);
     margin-bottom: var(--espacio-1);
-    font-size: var(--tam-fuente-xs);
+    font-size: var(--fs-xs);
+    font-weight: 500;
 }
 
-/* Estilos para los campos de texto (input) */
-.campo input[type="text"] {
-    width: calc(100% - 1.6rem); /* 100% menos el padding horizontal */
-    padding: var(--espacio-1);
-    border: 1px solid #ddd;
-    border-radius: var(--borde-redondo-sm);
-    font-size: var(--tam-fuente-base);
-    box-sizing: border-box;
-    /* Altura similar a Material Design (36dp ≈ 2.25rem si 1dp ≈ 0.0625rem) */
-    min-height: 2.25rem;
-}
-
-/* Estilos para el selector (select) */
-.campo select {
+/* Estilos para los campos de entrada de texto */
+.formulario__entrada {
     width: 100%;
     padding: var(--espacio-1);
-    border: 1px solid #ddd;
+    border: 1px solid var(--gray-200);
     border-radius: var(--borde-redondo-sm);
-    font-size: var(--tam-fuente-base);
-    box-sizing: border-box;
+    font-size: var(--fs-xs);
+    min-height: 4rem;
+}
+
+/* Estilos para los campos de selección */
+.formulario__selector {
+    width: 100%;
+    padding: var(--espacio-1);
+    border: 1px solid var(--gray-200);
+    border-radius: var(--borde-redondo-sm);
+    font-size: var(--fs-xs);
+    min-height: 4rem;
     appearance: none;
-    background-image: url('data:image/svg+xml;utf8,<svg fill="currentColor" height="24" viewBox="0 0 24 24" width="24" xmlns="http://www.w3.org/2000/svg"><path d="M7 10l5 5 5-5z"/><path d="M0 0h24v24H0z" fill="none"/></svg>');
     background-repeat: no-repeat;
     background-position-x: 95%;
     background-position-y: center;
     padding-right: 2.5em;
-    /* Altura similar a Material Design (36dp ≈ 2.25rem) */
-    min-height: 2.25rem;
 }
 
-/* Estilos para el botón de enviar (Contained Button) */
-.boton {
-    background-color: var(--primario-950);
-    color: var(--blanco);
-    padding: 0 var(--espacio-2); 
+/* Estilos para el botón del formulario */
+.formulario__boton {
+    background-color: var(--primary-950);
+    color: var(--white);
+    padding: var(--espacio-1) var(--espacio-2);
     border: none;
     border-radius: var(--borde-redondo-sm);
     cursor: pointer;
-    font-size: var(--tam-fuente-base);
-    box-sizing: border-box;
+    font-size: var(--fs-xs);
+    min-height: 4rem;
     transition: background-color 0.3s ease;
-    /* Altura Material Design: 36dp ≈ 2.25rem */
-    min-height: 2.25rem;
-    line-height: 2.25rem; 
-    display: inline-flex; 
-    align-items: center;
-    justify-content: center;
-    /* Margen superior según recomendación */
-    margin-top: var(--espacio-1);
+    display: block;
+    margin: var(--espacio-3) auto 0;
+    width: 100%;
+    max-width: 20rem;
 }
 
-/* Estilos para el botón cuando el cursor está encima */
-.boton:hover {
-    background-color: var(--primario-400);
-}
-
-/* Espaciado y márgenes entre botones (si hubiera varios) */
-.boton + .boton {
-    margin-left: var(--espacio-1); 
+.formulario__boton:hover {
+    background-color: var(--primary-700);
 }
 
 /* Media Queries para pantallas más pequeñas */
 @media (max-width: 768px) {
-    .tarjeta {
-        width: 80%;
+    .cabecera {
+        flex-direction: column;
         padding: var(--espacio-1);
-        max-width: none;
-        margin: var(--espacio-2) auto;
     }
-
-    .tarjeta__titulo {
-        font-size: var(--tam-fuente-xs);
+    
+    .cabecera__logo {
         margin-bottom: var(--espacio-1);
     }
-
-    .campo label {
-        font-size: var(--tam-fuente-xxs);
-        margin-bottom: 0.5rem;
+    
+    .cabecera__nav {
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: var(--espacio-1);
+    }
+    
+    .cabecera__enlace {
+        font-size: var(--fs-xxxs);
+    }
+    
+    .asociacion {
+        padding: var(--espacio-2);
+    }
+    
+    .asociacion__titulo {
+        font-size: var(--fs-sm);
+    }
+    
+    .formulario {
+        width: 95%;
+        padding: var(--espacio-2);
     }
 
-    .campo input[type="text"],
-    .campo select,
-    .boton {
-        font-size: var(--tam-fuente-xxs);
-        padding: 0.6rem;
-        min-height: auto; /* Ajustar altura automáticamente */
-        line-height: normal;
+    .formulario__etiqueta {
+        font-size: var(--fs-xxs);
     }
 
-    .boton + .boton {
-        margin-left: var(--espacio-0-5); /* Reducir margen en pantallas pequeñas (si fuera necesario) */
+    .formulario__entrada,
+    .formulario__selector,
+    .formulario__boton {
+        font-size: var(--fs-xxs);
+        min-height: 3.5rem;
     }
 }
 
 @media (max-width: 480px) {
-    .tarjeta {
-        width: 95%;
+    .cabecera__nav {
+        flex-direction: column;
+        align-items: center;
+    }
+    
+    .cabecera__enlace {
+        font-size: var(--fs-xxxs);
+        margin-bottom: var(--espacio-0-5);
+    }
+    
+    .asociacion__titulo {
+        font-size: var(--fs-xs);
+    }
+    
+    .asociacion__descripcion {
+        font-size: var(--fs-xxs);
+    }
+    
+    .formulario {
         padding: var(--espacio-1);
-        margin: var(--espacio-2) auto;
     }
 
-    .tarjeta__titulo {
-        font-size: var(--tam-fuente-xxs);
-        margin-bottom: var(--espacio-1);
+    .formulario__etiqueta {
+        font-size: var(--fs-xxxs);
     }
 
-    .campo label {
-        font-size: var(--tam-fuente-xxxs);
-        margin-bottom: 0.3rem;
+    .formulario__entrada,
+    .formulario__selector,
+    .formulario__boton {
+        font-size: var(--fs-xxxs);
+        min-height: 3rem;
     }
-
-    .campo input[type="text"],
-    .campo select,
-    .boton {
-        font-size: var(--tam-fuente-xxxs);
-        padding: 0.5rem;
-        min-height: auto;
-        line-height: normal;
-    }
-
-    .boton + .boton {
-        margin-left: var(--espacio-0-25); /* Reducir aún más el margen */
-    }
-}
-
-/* Definir un espaciado más pequeño si no existe */
-:root {
-    --espacio-0-5: 0.4rem;
-    --espacio-0-25: 0.2rem;
 }

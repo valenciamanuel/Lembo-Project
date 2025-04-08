@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Habilitar / Deshabilitar Asociación</title>
-    <link rel="stylesheet" href="../css/styleprac.css">
     <link rel="stylesheet" href="../css/habilitar.css">
-    </head>
-<body class="pagina">
+    <link rel="stylesheet" href="../css/styleprac.css">
+    <title>Habilitar y Deshabilitar Asociación</title>
+</head>
+<body class="pagina visualizar-fondo">
     <header class="cabecera">
         <div class="cabecera__logo">
             <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="cabecera__logo-img">
@@ -22,36 +22,28 @@
             <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
         </nav>
     </header>
-    <main class="principal">
-        <div class="presentacion">
-            <section class="hero-sec">
-                <div class="hero-sec__izq">
-                    <h1 class="hero-sec__titulo">Habilitar / Deshabilitar Asociación</h1>
-                    <p class="hero-sec__desc">Ingrese el ID del sensor para habilitar o deshabilitar la asociación.</p>
-                </div>
-            </section>
-            <section class="estilos">
-                <div class="estilos__grid">
-                    <div class="tarjeta">
-                        <h2 class="tarjeta__titulo">Control de Estado</h2>
-                        <form class="formulario">
-                            <div class="campo">
-                                <label for="id_sensor_estado">ID del Sensor:</label>
-                                <input type="text" id="id_sensor_estado" name="id_sensor_estado">
-                            </div>
-                            <div class="campo">
-                                <label for="estado">Estado:</label>
-                                <select id="estado" name="estado">
-                                    <option value="habilitar">Habilitar</option>
-                                    <option value="deshabilitar">Deshabilitar</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="boton">Cambiar Estado</button>
-                        </form>
-                    </div>
-                </div>
-            </section>
-        </div>
+
+    <main class="asociacion">
+        <form class="formulario">
+            <div class="formulario__campo">
+                <h1 class="asociacion__titulo">Habilitar y Deshabilitar Asociación</h1>
+                <p class="asociacion__descripcion">
+                    Ingrese el ID del sensor para habilitar o deshabilitar la asociación
+                </p>        
+                <label class="formulario__etiqueta" for="sensor-id">ID del Sensor</label>
+                <input class="formulario__entrada" type="text" id="sensor-id" name="sensor-id" required>
+            </div>
+            
+            <div class="formulario__campo">
+                <label class="formulario__etiqueta" for="estado">Estado</label>
+                <select class="formulario__selector" id="estado" name="estado">
+                    <option value="habilitado">Habilitado</option>
+                    <option value="deshabilitado">Deshabilitado</option>
+                </select>
+            </div>
+            
+            <button class="formulario__boton" type="submit">Cambiar Estado</button>
+        </form>
     </main>
 </body>
 </html>
