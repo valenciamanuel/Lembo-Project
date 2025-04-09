@@ -1,3 +1,9 @@
+body{
+    background-image: url(/fronted/public/img/cafe.jpg);
+    background-repeat: no-repeat;
+    background-size: cover;
+}
+
 .principal {
     padding: 4rem 2rem;
     max-width: 120rem;
@@ -18,7 +24,7 @@
 
 .hero__descripcion {
     font-size: var(--fs-sm);
-    color: var(--gray-700);
+    color: var(--white);
 }
 
 /* ====== REPORTE ====== */
@@ -71,4 +77,8 @@
 
 .boton:hover {
     background-color: var(--primary-800);
+}
+
+a{
+    text-decoration: none;
 }
