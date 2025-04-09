@@ -5,6 +5,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Generar Reporte</title>
     <link rel="stylesheet" href="../css/styleprac.css">
+    <link rel="stylesheet" href="../css/generar_reporte.css">
+    <link rel="stylesheet" href="/fronted/public/css/variables.css">
     </head>
 <body class="pagina">
     <header class="cabecera">
@@ -22,31 +24,26 @@
         </nav>
     </header>
     <main class="principal">
-        <div class="presentacion">
-            <section class="hero-sec">
-                <div class="hero-sec__izq">
-                    <h1 class="hero-sec__titulo">Generar Reporte</h1>
-                    <p class="hero-sec__desc">Seleccione las opciones para generar un reporte de las asociaciones.</p>
-                </div>
-            </section>
-            <section class="estilos">
-                <div class="estilos__grid">
-                    <div class="tarjeta">
-                        <h2 class="tarjeta__titulo">Opciones de Reporte</h2>
-                        <form class="formulario">
-                            <div class="campo">
-                                <label for="tipo_reporte">Tipo de Reporte:</label>
-                                <select id="tipo_reporte" name="tipo_reporte">
-                                    <option value="excel">Excel</option>
-                                    <option value="pdf">PDF</option>
-                                </select>
-                            </div>
-                            <button type="submit" class="boton">Generar Reporte</button>
-                        </form>
+        <section class="hero">
+            <h1 class="hero__titulo">Generar Reporte</h1>
+            <p class="hero__descripcion">Seleccione las opciones para generar un reporte de las asociaciones.</p>
+        </section>
+    
+        <section class="reporte">
+            <div class="reporte__contenedor">
+                <form class="formulario">
+                    <div class="formulario__grupo">
+                        <label for="tipo_reporte" class="formulario__label">Tipo de Reporte:</label>
+                        <select id="tipo_reporte" name="tipo_reporte" class="formulario__select">
+                            <option value="excel">Excel</option>
+                            <option value="pdf">PDF</option>
+                        </select>
                     </div>
-                </div>
-            </section>
-        </div>
+                    <button type="submit" class="boton">Generar Reporte</button>
+                </form>
+            </div>
+        </section>
     </main>
+    
 </body>
 </html>
