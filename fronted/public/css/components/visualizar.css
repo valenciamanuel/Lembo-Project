@@ -81,10 +81,6 @@ body {
     margin: 0 auto;
 }
 
-/* =======================
-   MEDIA QUERIES REORGANIZADAS
-   ======================= */
-
 /* Desktop grande (≥ 1025px) */
 @media screen and (min-width: 1024px) {
     .container {
@@ -92,7 +88,7 @@ body {
     }
 
     .cards-grid {
-        grid-template-columns: repeat(3, 1fr);
+        grid-template-columns: repeat(4, 1fr);
     }
 
     .dashboard__controls {

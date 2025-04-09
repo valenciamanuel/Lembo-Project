@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presentación de Cultivos</title>
     <link rel="stylesheet" href="../css/styleprac.css">
+    <link rel="stylesheet" href="../css/habilitar.css">
 </head>
 <body class="pagina">
     <header class="cabecera">
@@ -22,81 +23,58 @@
         </nav>
         
     </header>
-    <main class="principal presentacion">
-        <section class="hero-sec">
-            <div class="hero-sec__izq">
-                <h1 class="hero-sec__titulo">Cultivos</h1>
-                <p class="hero-sec__subtitulo">54 Diapositivas</p>
-                <p class="hero-sec__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident,
-                    sunt in culpa qui officia deserunt mollit anim id est laborum. 1
-                </p>
+    <main class="asociacion">
+        <form class="formulario">
+            <div class="formulario__campo">
+                <h1 class="asociacion__titulo">Crear Asociación</h1>
+                <p class="asociacion__descripcion">
+                    Ingrese la información para crear una nueva asociación
+                </p>        
+                <label class="formulario__etiqueta" for="sensor-id">cultivo</label>
+                <select class="formulario__selector">
+                    <option value="">Selecione un cultivo</option>
+                    <option value="cultivo1">Cultivo 1</option>
+                    <option value="cultivo2">Cultivo 2</option>
+                    <option value="cultivo3">Cultivo 3</option>
+                </select>
+
+                <label class="formulario__etiqueta" for="sensor-id">Usuario</label>
+                <select class="formulario__selector">
+                    <option value="">Selecione un Usuario</option>
+                    <option value="Usuario">Usuario 1</option>
+                    <option value="Usuario2">Usuario 2</option>
+                    <option value="Usuario3">Usuario 3</option>
+                </select>
             </div>
-            <div class="hero-sec__der">
-                <img src="/fronted/public/img/cultivos-de-cafe-morrones.jpg" alt="Imagen de Cultivos" class="hero-sec__img">
+            
+            <div class="formulario__campo">
+                <label class="formulario__etiqueta" for="estado">Sensores</label>
+                <select class="formulario__selector" name="estado">
+                    <option value="">Agregar Sensores</option>
+                    <option value="sensor1">Sensor 1</option>
+                    <option value="sensor2">Sensor2</option>
+                    <option value="sensor3">Sensor3</option>
+                </select>
+
+                <label class="formulario__etiqueta" for="estado">Insumos</label>
+                <select class="formulario__selector" name="estado">
+                    <option value="">Agregar Insumos</option>
+                    <option valu="insumo1">Insumo 1</option>
+                    <option value="insumo2">Insumo2</option>
+                    <option value="insumo3">Insumo3</option>
+                </select>
+
+                <label class="formulario__etiqueta" for="estado">Ciclo Cultivo</label>
+                <select class="formulario__selector" name="estado">
+                    <option value="">Agregar Ciclo Cultivo</option>
+                    <option valu="ciclo_cultivo1">Ciclo Cultivo 1</option>
+                    <option value="ciclo_cultivo2">Ciclo Cultivo2</option>
+                    <option value="ciclo_cultivo3">Ciclo Cultivo3</option>
+                </select>
             </div>
-        </section>
-        <section class="estilos">
-            <div class="estilos__grid">
-                <div class="tarjeta estilo-info">
-                    <h2 class="tarjeta__titulo">Estilo Infografía</h2>
-                    <div class="info-contenido">
-                        <div class="info-contenido__izq">
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                            <img src="/fronted/public/img/Fotos-portada-17-1-800x445.png" alt="Planta" class="info-contenido__img">
-                            <p class="info-contenido__etiqueta">Ventajas Comida Local</p>
-                        </div>
-                        <div class="info-contenido__der">
-                            <p class="info-contenido__titulo-cosecha">Ventajas Cosecha Global</p>
-                            <p class="info-contenido__texto-cosecha">Información sobre ventajas globales de la cosecha.</p>
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                        </div>
-                    </div>
-                    <div class="tarjeta__contenedor-img">
-                        <img src="/fronted/public/img/granos.webp" alt="Estilo Infografía" class="tarjeta__img">
-                    </div>
-                </div>
-                <div class="tarjeta estilo-info">
-                    <h2 class="tarjeta__titulo">Estilo Infografía</h2>
-                    <div class="info-contenido">
-                        <div class="info-contenido__izq">
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                            <img src="/fronted/public/img/fondocampo.jpg" alt="Planta" class="info-contenido__img">
-                            <p class="info-contenido__etiqueta">Ventajas Comida Local</p>
-                        </div>
-                        <div class="info-contenido__der">
-                            <p class="info-contenido__titulo-cosecha">Ventajas Cosecha Global</p>
-                            <p class="info-contenido__texto-cosecha">Información sobre ventajas globales de la cosecha.</p>
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                        </div>
-                    </div>
-                    <div class="tarjeta__contenedor-img">
-                        <img src="/fronted/public/img/Ripe-cherries_sarahemcc.jpg" alt="Estilo Infografía" class="tarjeta__img">
-                    </div>
-                </div>
-                <div class="tarjeta estilo-info">
-                    <h2 class="tarjeta__titulo">Estilo Infografía</h2>
-                    <div class="info-contenido">
-                        <div class="info-contenido__izq">
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                            <img src="/fronted/public/img/Ripe-cherries_sarahemcc.jpg" alt="Planta" class="info-contenido__img">
-                            <p class="info-contenido__etiqueta">Ventajas Comida Local</p>
-                        </div>
-                        <div class="info-contenido__der">
-                            <p class="info-contenido__titulo-cosecha">Ventajas Cosecha Global</p>
-                            <p class="info-contenido__texto-cosecha">Información sobre ventajas globales de la cosecha.</p>
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                        </div>
-                    </div>
-                    <div class="tarjeta__contenedor-img">
-                        <img src="/fronted/public/img/images (2).jpeg" alt="Estilo Infografía" class="tarjeta__img">
-                    </div>
-                </div>
-            </div>
-        </section>
+            
+            <button class="formulario__boton" type="submit"><a href="visualizar_asociacion.html">Actualizar</a></button>
+        </form>
     </main>
 </body>
 </html>

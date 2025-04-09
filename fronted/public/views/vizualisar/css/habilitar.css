@@ -313,3 +313,8 @@ body {
         min-height: 3rem;
     }
 }
+
+a{
+    text-decoration: none;
+    color: var(--blanco);
+}

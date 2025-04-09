@@ -5,6 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Presentación de Cultivos</title>
     <link rel="stylesheet" href="../css/styleprac.css">
+    <link rel="stylesheet" href="../css/vizualizar-actualizar.css">
 </head>
 <body class="pagina">
     <header class="cabecera">
@@ -22,81 +23,141 @@
         </nav>
         
     </header>
-    <main class="principal presentacion">
-        <section class="hero-sec">
-            <div class="hero-sec__izq">
-                <h1 class="hero-sec__titulo">Visualizar Asociación</h1>
-                <p class="hero-sec__subtitulo">54 Diapositivas</p>
-                <p class="hero-sec__desc">Lorem ipsum dolor sit amet, consectetur adipiscing elit.
-                    Sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam,
-                    quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat. Duis aute
-                    irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur.
-                    Excepteur sint occaecat cupidatat non proident,
-                    sunt in culpa qui officia deserunt mollit anim id est laborum. 1
-                </p>
-            </div>
-            <div class="hero-sec__der">
-                <img src="/fronted/public/img/cultivos-de-cafe-morrones.jpg" alt="Imagen de Cultivos" class="hero-sec__img">
-            </div>
-        </section>
-        <section class="estilos">
-            <div class="estilos__grid">
-                <div class="tarjeta estilo-info">
-                    <h2 class="tarjeta__titulo">Estilo Infografía</h2>
-                    <div class="info-contenido">
-                        <div class="info-contenido__izq">
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                            <img src="/fronted/public/img/Fotos-portada-17-1-800x445.png" alt="Planta" class="info-contenido__img">
-                            <p class="info-contenido__etiqueta">Ventajas Comida Local</p>
-                        </div>
-                        <div class="info-contenido__der">
-                            <p class="info-contenido__titulo-cosecha">Ventajas Cosecha Global</p>
-                            <p class="info-contenido__texto-cosecha">Información sobre ventajas globales de la cosecha.</p>
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                        </div>
-                    </div>
-                    <div class="tarjeta__contenedor-img">
-                        <img src="/fronted/public/img/granos.webp" alt="Estilo Infografía" class="tarjeta__img">
+    <div class="container">
+            
+        <div class="dashboard__search">
+            <input type="text" class="dashboard__search-input" placeholder="Buscar sensores...">
+        </div>
+        
+        <div class="cards-grid">
+
+            <div class="card">
+                <div class="card__header">
+                    <div class="card__status-group">
+                        <span class="card__status card__status--online">Asociación 1</span>
                     </div>
                 </div>
-                <div class="tarjeta estilo-info">
-                    <h2 class="tarjeta__titulo">Estilo Infografía</h2>
-                    <div class="info-contenido">
-                        <div class="info-contenido__izq">
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                            <img src="/fronted/public/img/fondocampo.jpg" alt="Planta" class="info-contenido__img">
-                            <p class="info-contenido__etiqueta">Ventajas Comida Local</p>
-                        </div>
-                        <div class="info-contenido__der">
-                            <p class="info-contenido__titulo-cosecha">Ventajas Cosecha Global</p>
-                            <p class="info-contenido__texto-cosecha">Información sobre ventajas globales de la cosecha.</p>
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                        </div>
-                    </div>
-                    <div class="tarjeta__contenedor-img">
-                        <img src="/fronted/public/img/Ripe-cherries_sarahemcc.jpg" alt="Estilo Infografía" class="tarjeta__img">
-                    </div>
+                <div class="card__content">
+                    <h3 class="card__name">Usuario</h3>
+                    <p class="card__location">Insumos</p>
+                    <p class="card__states">Cultivos</p>
                 </div>
-                <div class="tarjeta estilo-info">
-                    <h2 class="tarjeta__titulo">Estilo Infografía</h2>
-                    <div class="info-contenido">
-                        <div class="info-contenido__izq">
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                            <img src="/fronted/public/img/Ripe-cherries_sarahemcc.jpg" alt="Planta" class="info-contenido__img">
-                            <p class="info-contenido__etiqueta">Ventajas Comida Local</p>
-                        </div>
-                        <div class="info-contenido__der">
-                            <p class="info-contenido__titulo-cosecha">Ventajas Cosecha Global</p>
-                            <p class="info-contenido__texto-cosecha">Información sobre ventajas globales de la cosecha.</p>
-                            <p class="info-contenido__texto">Contenido Aquí</p>
-                        </div>
-                    </div>
-                    <div class="tarjeta__contenedor-img">
-                        <img src="/fronted/public/img/images (2).jpeg" alt="Estilo Infografía" class="tarjeta__img">
-                    </div>
+                <div class="card__footer">
+                    <a href="crear_asociacion.html"><button class="card__details-btn">Ver detalles</button></a>
                 </div>
             </div>
-        </section>
-    </main>
+            <div class="card">
+                <div class="card__header">
+                    <div class="card__status-group">
+                        <span class="card__status card__status--online">Asociación 2</span>
+                    </div>
+                </div>
+                <div class="card__content">
+                    <h3 class="card__name">Usuario</h3>
+                    <p class="card__location">Insumos</p>
+                    <p class="card__states">Cultivos</p>
+                </div>
+                <div class="card__footer">
+                    <a href="crear_asociacion.html"><button class="card__details-btn">Ver detalles</button></a>
+                </div>
+            </div>
+            <div class="card">
+                <div class="card__header">
+                    <div class="card__status-group">
+                        <span class="card__status card__status--online">Asociación 3</span>
+                    </div>
+                </div>
+                <div class="card__content">
+                    <h3 class="card__name">Usuario</h3>
+                    <p class="card__location">Insumos</p>
+                    <p class="card__states">Cultivos</p>
+                </div>
+                <div class="card__footer">
+                    <a href="crear_asociacion.html"><button class="card__details-btn">Ver detalles</button></a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card__header">
+                    <div class="card__status-group">
+                        <span class="card__status card__status--online">Asociación 4</span>
+                    </div>
+                </div>
+                <div class="card__content">
+                    <h3 class="card__name">Usuario</h3>
+                    <p class="card__location">Insumos</p>
+                    <p class="card__states">Cultivos</p>
+                </div>
+                <div class="card__footer">
+                    <a href="crear_asociacion.html"><button class="card__details-btn">Ver detalles</button></a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card__header">
+                    <div class="card__status-group">
+                        <span class="card__status card__status--online">Asociación 5</span>
+                    </div>
+                </div>
+                <div class="card__content">
+                    <h3 class="card__name">Usuario</h3>
+                    <p class="card__location">Insumos</p>
+                    <p class="card__states">Cultivos</p>
+                </div>
+                <div class="card__footer">
+                    <a href="crear_asociacion.html"><button class="card__details-btn">Ver detalles</button></a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card__header">
+                    <div class="card__status-group">
+                        <span class="card__status card__status--online">Asociación 6</span>
+                    </div>
+                </div>
+                <div class="card__content">
+                    <h3 class="card__name">Usuario</h3>
+                    <p class="card__location">Insumos</p>
+                    <p class="card__states">Cultivos</p>
+                </div>
+                <div class="card__footer">
+                    <a href="crear_asociacion.html"><button class="card__details-btn">Ver detalles</button></a>
+                </div>
+            </div>
+
+            <div class="card">
+                <div class="card__header">
+                    <div class="card__status-group">
+                        <span class="card__status card__status--online">Asociación 7</span>
+                    </div>
+                </div>
+                <div class="card__content">
+                    <h3 class="card__name">Usuario</h3>
+                    <p class="card__location">Insumos</p>
+                    <p class="card__states">Cultivos</p>
+                </div>
+                <div class="card__footer">
+                    <a href="crear_asociacion.html"><button class="card__details-btn">Ver detalles</button></a>
+                </div>
+            </div>
+            
+            <div class="card">
+                <div class="card__header">
+                    <div class="card__status-group">
+                        <span class="card__status card__status--online">Asociación 8</span>
+                    </div>
+                </div>
+                <div class="card__content">
+                    <h3 class="card__name">Usuario</h3>
+                    <p class="card__location">Insumos</p>
+                    <p class="card__states">Cultivos</p>
+                </div>
+                <div class="card__footer">
+                    <a href="crear_asociacion.html"><button class="card__details-btn">Ver detalles</button></a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
 </body>
 </html>
