@@ -172,12 +172,15 @@ body {
 }
 
 /* Sección de Estilos */
+/* Sección de Estilos */
 .estilos {
     padding: var(--espacio-0) 0;
     background-color: var(--primario-950);
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: .6rem;
+    
+    margin-top: 0.1rem;
 }
 .estilos__grid {
     display: grid;
@@ -190,7 +193,7 @@ body {
     background-color: var(--blanco);
     border-radius: var(--borde-redondo-sm);
     box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
-    padding: var(--espacio-1); /* Cambiado a --espacio-1 (0.8rem) para acercarse a 4 */
+    padding: var(--espacio-1);
     display: flex;
     flex-direction: column;
     justify-content: space-between;

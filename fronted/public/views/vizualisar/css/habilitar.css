@@ -24,7 +24,7 @@ html {
     --primary-200: #D2EBBF;
     --primary-100: #EAF3D8;
     --primary-50: #F6FBF2;
-    
+
     /* Secundary color*/
     --secundary-950:#FED638;
     --secundary-900:#FED841;
@@ -38,7 +38,7 @@ html {
     --secundary-100:#FEF8E1;
     --secundary-50:#FEFCF5;
     --secundary-red: #ff4d4f;
-    
+
     /* Basic color*/
     --white: #fff;
     --black: #000;
@@ -53,10 +53,10 @@ html {
     --gray-200: #BEBEBE;
     --gray-100: #D4D4D4;
     --gray-50: #E9E9E9;
-    
+
     /* Font-family */
     --main-font: Helvetica, Arial, sans-serif;
-    
+
     /* Font-size */
     --fs-xxxxl: 8.0rem; /* Ultra grande */
     --fs-xxxl: 6.4rem; /* Súper grande */
@@ -68,17 +68,20 @@ html {
     --fs-xs: 1.6rem;  /* Extra pequeño */
     --fs-xxs: 1.4rem; /* Extra extra pequeño */
     --fs-xxxs: 1.2rem; /* Mínimo */
-    
+
     /* Espaciado */
     --espacio-0-25: 0.2rem;
     --espacio-0-5: 0.4rem;
     --espacio-1: 0.8rem;
     --espacio-2: 1.6rem;
     --espacio-3: 2.4rem;
-    
+
     /* Bordes */
     --borde-redondo-sm: 0.4rem;
     --borde-redondo-md: 0.8rem;
+
+    /* Header Height */
+    --alto-cabecera: 5.6rem; /* Altura base del header */
 }
 
 body {
@@ -94,13 +97,13 @@ body {
 
 /* Estilos para el header */
 .cabecera {
-    background-color: var(--primario-950);
+    background-color: var(--primary-950);
     color: var(--blanco);
     height: var(--alto-cabecera);
     display: flex;
-    justify-content: center; 
-    align-items: center; 
-    text-align: center; 
+    justify-content: center;
+    align-items: center;
+    text-align: center;
     padding: 0 var(--espacio-1);
     flex-shrink: 0;
     width: 100%;
@@ -109,15 +112,15 @@ body {
 /* Si tienes un logo o elementos adicionales, puedes ajustar aquí el tamaño o la alineación */
 .cabecera__logo-img {
     height: calc(var(--alto-cabecera) - 0.5rem);
-    margin-right: var(--espacio-2); 
+    margin-right: var(--espacio-2);
 }
 
 /* Para los enlaces de navegación */
 /* Cabecera */
 .cabecera__nav {
     display: flex;
-    justify-content: center; 
-    gap: var(--espacio-2); 
+    justify-content: center;
+    gap: var(--espacio-2);
 }
 
 /* Para los enlaces de navegación */
@@ -128,8 +131,8 @@ body {
     padding: 0.15rem 0;
     text-transform: uppercase;
     transition: background-color 0.3s ease, color 0.3s ease;
-    margin-right: var(--espacio-2); 
-    letter-spacing: 0.05rem; 
+    margin-right: var(--espacio-2);
+    letter-spacing: 0.05rem;
 }
 
 .cabecera__enlace:hover {
@@ -239,29 +242,29 @@ body {
         flex-direction: column;
         padding: var(--espacio-1);
     }
-    
+
     .cabecera__logo {
         margin-bottom: var(--espacio-1);
     }
-    
+
     .cabecera__nav {
         flex-wrap: wrap;
         justify-content: center;
         gap: var(--espacio-1);
     }
-    
+
     .cabecera__enlace {
         font-size: var(--fs-xxxs);
     }
-    
+
     .asociacion {
         padding: var(--espacio-2);
     }
-    
+
     .asociacion__titulo {
         font-size: var(--fs-sm);
     }
-    
+
     .formulario {
         width: 95%;
         padding: var(--espacio-2);
@@ -284,20 +287,20 @@ body {
         flex-direction: column;
         align-items: center;
     }
-    
+
     .cabecera__enlace {
         font-size: var(--fs-xxxs);
         margin-bottom: var(--espacio-0-5);
     }
-    
+
     .asociacion__titulo {
         font-size: var(--fs-xs);
     }
-    
+
     .asociacion__descripcion {
         font-size: var(--fs-xxs);
     }
-    
+
     .formulario {
         padding: var(--espacio-1);
     }
@@ -314,7 +317,7 @@ body {
     }
 }
 
-a{
+a {
     text-decoration: none;
     color: var(--blanco);
 }
