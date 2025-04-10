@@ -187,7 +187,7 @@ a {
     overflow: hidden;
     border-radius: var(--border-radius-md);
     box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.1);
-    height: 200px;
+    height: 500px;
 }
 
 .featured__image {
@@ -260,7 +260,7 @@ a {
     }
 
     .featured__item {
-        height: 250px;
+        height: 500px;
     }
 }
 
