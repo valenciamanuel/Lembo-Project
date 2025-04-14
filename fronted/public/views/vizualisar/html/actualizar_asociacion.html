@@ -21,59 +21,60 @@
             <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
             <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
         </nav>
-        
     </header>
+    
     <main class="asociacion">
         <form class="formulario">
             <div class="formulario__campo">
-                <h1 class="asociacion__titulo">Crear Asociación</h1>
+                <h1 class="asociacion__titulo">Presentación de Cultivos</h1>
                 <p class="asociacion__descripcion">
-                    Ingrese la información para crear una nueva asociación
+                    Ingrese la información para presentar los cultivos
                 </p>        
-                <label class="formulario__etiqueta" for="sensor-id">cultivo</label>
-                <select class="formulario__selector">
-                    <option value="">Selecione un cultivo</option>
+                
+                <label class="formulario__etiqueta" for="cultivo">Cultivo</label>
+                <select class="formulario__selector" id="cultivo">
+                    <option value="">Seleccione un cultivo</option>
                     <option value="cultivo1">Cultivo 1</option>
                     <option value="cultivo2">Cultivo 2</option>
                     <option value="cultivo3">Cultivo 3</option>
                 </select>
 
-                <label class="formulario__etiqueta" for="sensor-id">Usuario</label>
-                <select class="formulario__selector">
-                    <option value="">Selecione un Usuario</option>
-                    <option value="Usuario">Usuario 1</option>
-                    <option value="Usuario2">Usuario 2</option>
-                    <option value="Usuario3">Usuario 3</option>
+                <label class="formulario__etiqueta" for="usuario">Usuario</label>
+                <select class="formulario__selector" id="usuario">
+                    <option value="">Seleccione un Usuario</option>
+                    <option value="usuario1">Usuario 1</option>
+                    <option value="usuario2">Usuario 2</option>
+                    <option value="usuario3">Usuario 3</option>
                 </select>
             </div>
             
             <div class="formulario__campo">
-                <label class="formulario__etiqueta" for="estado">Sensores</label>
-                <select class="formulario__selector" name="estado">
+                <label class="formulario__etiqueta" for="sensores">Sensores</label>
+                <select class="formulario__selector" id="sensores">
                     <option value="">Agregar Sensores</option>
                     <option value="sensor1">Sensor 1</option>
-                    <option value="sensor2">Sensor2</option>
-                    <option value="sensor3">Sensor3</option>
+                    <option value="sensor2">Sensor 2</option>
+                    <option value="sensor3">Sensor 3</option>
                 </select>
 
-                <label class="formulario__etiqueta" for="estado">Insumos</label>
-                <select class="formulario__selector" name="estado">
+                <label class="formulario__etiqueta" for="insumos">Insumos</label>
+                <select class="formulario__selector" id="insumos">
                     <option value="">Agregar Insumos</option>
-                    <option valu="insumo1">Insumo 1</option>
-                    <option value="insumo2">Insumo2</option>
-                    <option value="insumo3">Insumo3</option>
+                    <option value="insumo1">Insumo 1</option>
+                    <option value="insumo2">Insumo 2</option>
+                    <option value="insumo3">Insumo 3</option>
                 </select>
 
-                <label class="formulario__etiqueta" for="estado">Ciclo Cultivo</label>
-                <select class="formulario__selector" name="estado">
+                <label class="formulario__etiqueta" for="ciclo-cultivo">Ciclo Cultivo</label>
+                <select class="formulario__selector" id="ciclo-cultivo">
                     <option value="">Agregar Ciclo Cultivo</option>
-                    <option valu="ciclo_cultivo1">Ciclo Cultivo 1</option>
-                    <option value="ciclo_cultivo2">Ciclo Cultivo2</option>
-                    <option value="ciclo_cultivo3">Ciclo Cultivo3</option>
+                    <option value="ciclo_cultivo1">Ciclo Cultivo 1</option>
+                    <option value="ciclo_cultivo2">Ciclo Cultivo 2</option>
+                    <option value="ciclo_cultivo3">Ciclo Cultivo 3</option>
                 </select>
             </div>
             
-            <button class="formulario__boton" type="submit"><a href="visualizar_asociacion.html">Actualizar</a></button>
+            <button class="formulario__boton" type="submit">Actualizar</button>
         </form>
     </main>
 </body>

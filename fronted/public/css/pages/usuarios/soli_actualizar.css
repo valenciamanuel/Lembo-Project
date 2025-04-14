@@ -59,7 +59,6 @@ body {
     font-size: 6.4rem;
     width: 67.6rem;
     height: 5.1rem;
-    font-family: var(--font-primary);
     margin: 0;
     position: absolute;
     left: 50%;
@@ -115,6 +114,13 @@ h3 {
     font-family: var(--font-primary);
 }
 
+.form__message {
+    font-size: 1.4rem;
+    color: red;
+    margin-top: 1rem;
+}
+
+/* Submit Button */
 .form__submit-button {
     background-color: var(--primary-green-950);
     border: none;
@@ -126,6 +132,10 @@ h3 {
     cursor: pointer;
     font-family: var(--font-primary);
     color: var(--primary-black);
+}
+
+.form__submit-button-text {
+    margin: 0;
 }
 
 /* Querie */
