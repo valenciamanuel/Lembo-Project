@@ -14,7 +14,7 @@ document.addEventListener('DOMContentLoaded', () => {
         const descripcion = document.querySelector('.insumo__input--descripcion').value;
         const estado = document.querySelector('.insumo__input--estado').value;
 
-        // Armamos el objeto con los datos (la imagen se omite en este ejemplo)
+        // Armamos el objeto con los datos 
         const formData = {
             idInsumo,
             tipoInsumo,

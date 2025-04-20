@@ -6,7 +6,7 @@
     <title>Crear Uso de Insumo</title>
     <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/styleprac.css">
     <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/crear-asociacion.css">
-    <script src="/fronted/public/js/asociacion/asociacion.js"></script>
+    <script src="/fronted/public/js/insumo/enviaruso.js"></script>
 </head>
 
 <body class="pagina">
@@ -29,7 +29,7 @@
     <nav class="cabecera__nav">
        
         <main class="asociacion">
-            <form class="formulario"> <h1 class="asociacion__titulo">Crear Uso de Insumo</h1>
+            <form class="formulario" action="http://localhost:3000/uso_insumo" method="POST"> <h1 class="asociacion__titulo">Crear Uso de Insumo</h1>
                 <p class="asociacion__descripcion">
                     Ingrese la información para crear un nuevo uso de insumo
                 </p>
@@ -37,38 +37,38 @@
                 <div class="formulario__grid">
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">fecha Uso</label>
-                        <input type="date" class="formulario__entrada" placeholder="Fecha Uso">
+                        <input type="date" class="formulario__entrada formulario__entrada--fecha" placeholder="Fecha Uso">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Cantidad</label>
-                        <input type="number" class="formulario__entrada" placeholder="Cantidad">
+                        <input type="number" class="formulario__entrada formulario__entrada--cantidad" placeholder="Cantidad">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Responsable</label>
-                        <input type="text" class="formulario__entrada" placeholder="Responsable">
+                        <input type="text" class="formulario__entrada formulario__entrada--responsable" placeholder="Responsable">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Valor Unitario</label>
-                        <input type="number" class="formulario__entrada" placeholder="Valor Unitario">
+                        <input type="number" class="formulario__entrada formulario__entrada--valorUnitario" placeholder="Valor Unitario">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Valor Total</label>
-                        <input type="number" class="formulario__entrada" placeholder="Valor Total">
+                        <input type="number" class="formulario__entrada formulario__entrada--valorTotal" placeholder="Valor Total">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Observaciones</label>
-                        <input type="text" class="formulario__entrada" placeholder="Observaciones">
+                        <input type="text" class="formulario__entrada formulario__entrada--observaciones" placeholder="Observaciones">
                     </div>
     
                     <div class="formulario__columna">
     
                         <label class="formulario__etiqueta">Insumos</label>
-                        <select class="formulario__selector">
+                        <select class="formulario__selector formulario__selector--insumo">
                             <option value="">Agregar Insumos</option>
                             <option value="insumo1">Insumo 1</option>
                             <option value="insumo2">Insumo 2</option>

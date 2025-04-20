@@ -11,6 +11,7 @@ const insumoRoutes = require('./routes/insumoRoute.js');
 const sensorRoutes = require('./routes/sensoresRoute.js');
 const regsiterRoutes = require('./routes/registerRoute.js');
 const asociacionRoutes = require('./routes/asociacionRoute.js');
+const usoRoutes = require('./routes/usoRoute.js');
 
 app .use('/ciclocultivo', cicloCultivoRoutes);
 app .use('/cultivo', cultivoRoutes);
@@ -18,6 +19,7 @@ app .use('/insumo', insumoRoutes);
 app .use('/sensores', sensorRoutes); 
 app .use('/register',regsiterRoutes)
 app .use('/asociaciones',asociacionRoutes)
+app .use('/uso_insumo',usoRoutes)
 
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
