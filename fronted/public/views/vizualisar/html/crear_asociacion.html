@@ -4,9 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Crear Asociación</title>
-    <link rel="stylesheet" href="../css/styleprac.css">
-    <link rel="stylesheet" href="../css/crear-asociacion.css">
-    <script src="/fronted/public/js/asociacion/asociacion.js"></script>
+    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/styleprac.css">
+    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/crear-asociacion.css">
+    <script src="/fronted/public/js/asociacion/enviar.js"></script>
 </head>
 
 <body class="pagina">
@@ -29,41 +29,47 @@
     <nav class="cabecera__nav">
        
         <main class="asociacion">
-            <form class="formulario"> <h1 class="asociacion__titulo">Crear Asociación</h1>
+            <form class="formulario" action="http://localhost:3000/asociaciones" method="POST"> <h1 class="asociacion__titulo">Crear Asociación</h1>
                 <p class="asociacion__descripcion">
                     Ingrese la información para crear una nueva asociación
                 </p>
     
                 <div class="formulario__grid">
                     <div class="formulario__columna">
+                        <label class="formulario__etiqueta">Responsable</label>
+                        <input type="text" class="formulario__entrada formulario__entrada--responsable" placeholder="Responsable">
+                        <button><a href="/fronted/public/views/cultivo/crear_cultivo.html">Agregar</a></button>
+                    </div>
+    
+                    <div class="formulario__columna">
                         <label class="formulario__etiqueta">Nombre Asociación</label>
-                        <input type="text" class="formulario__entrada" placeholder="Nombre Asociación">
+                        <input type="text" class="formulario__entrada formulario__entrada--nombre" placeholder="Nombre Asociación">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Inversión</label>
-                        <input type="number" class="formulario__entrada" placeholder="Inversión">
+                        <input type="number" class="formulario__entrada formulario__entrada--inversion" placeholder="Inversión">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Meta</label>
-                        <input type="number" class="formulario__entrada" placeholder="Meta Gana">
+                        <input type="number" class="formulario__entrada formulario__entrada--meta" placeholder="Meta">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Inicio Produccion</label>
-                        <input type="date" class="formulario__entrada" placeholder="Meta Gana">
+                        <input type="date" class="formulario__entrada formulario__entrada--inicio" placeholder="Meta Gana">
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Fin Produccion</label>
-                        <input type="date" class="formulario__entrada" placeholder="Meta Gana">
+                        <input type="date" class="formulario__entrada formulario__entrada--fin" placeholder="Meta Gana">
                     </div>
     
                     <div class="formulario__columna">
     
                         <label class="formulario__etiqueta">Cultivo</label>
-                        <select class="formulario__selector">
+                        <select class="formulario__selector formulario__selector--cultivo">
                             <option value="">Seleccione un cultivo</option>
                             <option value="cultivo1">Cultivo 1</option>
                             <option value="cultivo2">Cultivo 2</option>
@@ -76,7 +82,7 @@
                     <div class="formulario__columna">
     
                         <label class="formulario__etiqueta">Sensores</label>
-                        <select class="formulario__selector">
+                        <select class="formulario__selector formulario__selector--sensor">
                             <option value="">Agregar Sensores</option>
                             <option value="sensor1">Sensor 1</option>
                             <option value="sensor2">Sensor 2</option>
@@ -88,18 +94,18 @@
                     <div class="formulario__columna">
     
                         <label class="formulario__etiqueta">Insumos</label>
-                        <select class="formulario__selector">
+                        <select class="formulario__selector formulario__selector--insumo">
                             <option value="">Agregar Insumos</option>
                             <option value="insumo1">Insumo 1</option>
                             <option value="insumo2">Insumo 2</option>
                             <option value="insumo3">Insumo 3</option>
                         </select>
-                        <button><a href="/fronted/public/views/insumos/crear_inusomo.html">Crear Insumo</a></button>
+                        <button><a href="/fronted/public/views/insumos/usar.html">Usar Insumo</a></button>
                     </div>
     
                     <div class="formulario__columna">
                         <label class="formulario__etiqueta">Ciclo Cultivo</label>
-                        <select class="formulario__selector">
+                        <select class="formulario__selector formulario__selector--ciclo-cultivo">
                             <option value="">Agregar Ciclo Cultivo</option>
                             <option value="ciclo1">Ciclo 1</option>
                             <option value="ciclo2">Ciclo 2</option>
@@ -108,10 +114,11 @@
                         <button><a href="/fronted/public/views/ciclo_cultivo/crear_ciclo_cultivo.html">Crear
                                 Ciclo</a></button>
                     </div>
-    
-    
-    
-                </div> <button class="formulario__boton" type="submit">Crear Asociación</button>
+                    <div></div>
+                    <div class="formulario__columna">
+                        <button class="formulario__boton" type="submit">Crear Asociación</button>
+                    </div>
+                </div> 
             </form>
         </main> 
         </main>

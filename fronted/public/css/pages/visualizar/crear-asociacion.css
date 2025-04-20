@@ -178,7 +178,7 @@ body {
 .formulario__etiqueta {
     display: block;
     color: var(--gray-700);
-    margin-bottom: var(--espacio-1);
+    margin-bottom: var(--espacio-0-5);
     font-size: var(--fs-xs);
     font-weight: 500;
 }
@@ -329,7 +329,7 @@ button {
     padding: 1rem;
     border-radius: 0.5rem;
     font-size: var(--fs-xs);
-    margin: 1rem;
+    margin: 0.5rem;
     width: 15rem;
     color: var(--white);
 }
