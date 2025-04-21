@@ -434,3 +434,8 @@ button:hover {
         max-width: 100%;
     }
 }
+
+.formulario__entrada--error::placeholder {
+    color: red;
+  }
+  

@@ -1,3 +1,5 @@
+@import url('variables.css');
+
 html, body { 
     display: flex;
     justify-content: center;
@@ -130,3 +132,8 @@ html, body {
         font-size: 14px;
     }
 }
+
+.form__input--error::placeholder {
+    color: red;
+  }
+  
