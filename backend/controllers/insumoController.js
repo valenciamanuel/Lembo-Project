@@ -1,15 +1,15 @@
 const db = require('../config/db.js');
 
 const insertarInsumo = (req, res) => {
-    const { idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, descripcion, estado } = req.body;
+    const { tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado } = req.body;
 
     // Verificar que se hayan enviado todos los campos requeridos
-    if (!idInsumo || !tipoInsumo || !nombreInsumo || !unidadMedida || !cantidad || !valorUnitario || !descripcion || !estado) {
+    if (!tipoInsumo || !nombreInsumo || !unidadMedida || !cantidad || !valorUnitario || !valorTotal || !descripcion || !estado) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
 
-    const sql = 'INSERT INTO insumos (idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    const values = [idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, descripcion, estado];
+    const sql = 'INSERT INTO insumo (tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
+    const values = [tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado];
 
     db.query(sql, values, (err, result) => {
         if (err) {
@@ -18,12 +18,12 @@ const insertarInsumo = (req, res) => {
         }
         res.status(201).json({ 
             id: result.insertId, 
-            idInsumo, 
             tipoInsumo, 
             nombreInsumo, 
             unidadMedida, 
             cantidad, 
             valorUnitario, 
+            valorTotal, 
             descripcion, 
             estado 
         });

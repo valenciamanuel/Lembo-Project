@@ -5,23 +5,23 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         // Extraer valores de los inputs
-        const idInsumo = document.querySelector('.insumo__input--ID').value;
         const tipoInsumo = document.querySelector('.insumo__input--type').value;
         const nombreInsumo = document.querySelector('.insumo__input--nombre').value;
         const unidadMedida = document.querySelector('.cultivo__input--size').value;
         const cantidad = document.querySelector('.insumo__input--cantidad').value;
         const valorUnitario = document.querySelector('.insumo__input--unitario').value;
+        const valorTotal = document.querySelector('.insumo__input--total').value;
         const descripcion = document.querySelector('.insumo__input--descripcion').value;
         const estado = document.querySelector('.insumo__input--estado').value;
 
         // Armamos el objeto con los datos 
         const formData = {
-            idInsumo,
             tipoInsumo,
             nombreInsumo,
             unidadMedida,
             cantidad,
             valorUnitario,
+            valorTotal,
             descripcion,
             estado
         };
