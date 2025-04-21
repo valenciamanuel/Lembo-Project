@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar uso de Insumos</title>
+    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header__logo">
+            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
+        </div>
+        <h1 class="header__title">SGL</h1>
+    </header>
+
+    <main>
+        <h1 class="page-title">Listado de uso de Insumos</h1>
+        <p class="page-description">Registra y muestra el historial de uso de todos los insumos aplicados en la granja, facilitando su control y seguimiento</p>
+
+        <section class="table-container">
+            <table class="table-container__data-table">
+                <thead>
+                    <tr>
+                        <th class="table-container__data-table-header">Fecha uso </th>
+                        <th class="table-container__data-table-header">Cantidad</th>
+                        <th class="table-container__data-table-header">Responsable</th>
+                        <th class="table-container__data-table-header">Valor Unitario</th>
+                        <th class="table-container__data-table-header">Valor Total</th>
+                        <th class="table-container__data-table-header">Observaciones</th>
+                        <th class="table-container__data-table-header">Acciones</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr>
+                        <td>2025-04-01</td> 
+                        <td>20 kg</td> 
+                        <td>Juan Pérez</td> 
+                        <td>$15.00</td> 
+                        <td>$300.00</td> 
+                        <td>Aplicado en el lote 1</td> 
+                        <td>
+                            <a href="datos_inusomo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2025-03-15</td> 
+                        <td>100 kg</td> 
+                        <td>María López</td> 
+                        <td>$10.00</td> 
+                        <td>$1,000.00</td> 
+                        <td>Sembrado en el lote 2</td> 
+                        <td>
+                            <a href="datos_inusomo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                    <tr>
+                        <td>2025-01-10</td> 
+                        <td>10 litros</td> 
+                        <td>Carlos Gómez</td> 
+                        <td>$25.00</td> 
+                        <td>$250.00</td> 
+                        <td>Usado para control de plagas</td> 
+                        <td>
+                            <a href="datos_inusomo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
+                            <button class="btn btn-danger btn-sm">Eliminar</button>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+            <div class="table-container__button-container">
+                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
+                    <button class="btn-print">🖨️ Imprimir</button>
+                </a> 
+            </div>
+        </section>
+    </main>
+</body>
+</html>
