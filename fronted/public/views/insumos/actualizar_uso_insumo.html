@@ -1,17 +1,18 @@
+<!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualizar uso insumo</title>
-    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/styleprac.css">
-    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/crear-asociacion.css">
-    <script src="/fronted/public/js/insumo/enviaruso.js"></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Actualizar Uso de Insumo</title>
+    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/styleprac.css" />
+    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/crear-asociacion.css" />
+    <script src="/fronted/public/js/insumo/enviaruso.js" defer></script>
 </head>
 
 <body class="pagina">
     <header class="cabecera">
         <div class="cabecera__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="cabecera__logo-img">
+            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="cabecera__logo-img" />
         </div>
         <nav class="cabecera__nav">
             <a href="/fronted/public/views/homes/index.html" class="cabecera__enlace">Inicio</a>
@@ -22,65 +23,60 @@
             <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
             <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
         </nav>
-        
     </header>
-    
-    <nav class="cabecera__nav">
-       
-        <main class="asociacion">
-            <form class="formulario" action="http://localhost:3000/uso_insumo" method="POST"> <h1 class="asociacion__titulo">Crear Uso de Insumo</h1>
-                <p class="asociacion__descripcion">
-                    Ingrese la información para crear un nuevo uso de insumo
-                </p>
-    
-                <div class="formulario__grid">
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">fecha Uso</label>
-                        <input type="date" class="formulario__entrada formulario__entrada--fecha" placeholder="Fecha Uso">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Cantidad</label>
-                        <input type="number" class="formulario__entrada formulario__entrada--cantidad" placeholder="Cantidad">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Responsable</label>
-                        <input type="text" class="formulario__entrada formulario__entrada--responsable" placeholder="Responsable">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Valor Unitario</label>
-                        <input type="number" class="formulario__entrada formulario__entrada--valorUnitario" placeholder="Valor Unitario">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Valor Total</label>
-                        <input type="number" class="formulario__entrada formulario__entrada--valorTotal" placeholder="Valor Total">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Observaciones</label>
-                        <input type="text" class="formulario__entrada formulario__entrada--observaciones" placeholder="Observaciones">
-                    </div>
-    
-                    <div class="formulario__columna">
-    
-                        <label class="formulario__etiqueta">Insumos</label>
-                        <select class="formulario__selector formulario__selector--insumo">
-                            <option value="">Agregar Insumos</option>
-                            <option value="insumo1">Insumo 1</option>
-                            <option value="insumo2">Insumo 2</option>
-                            <option value="insumo3">Insumo 3</option>
-                        </select>
-                        <button><a href="/fronted/public/views/insumos/crear_inusomo.html">+ Crear Insumo</a></button>
-                    </div> 
-    
-                </div> <button class="formulario__boton" type="submit">Crear Uso Insumo </button>
-            </form>
-        </main> 
-        </main>
-    
-    </body>
-    
+
+    <main class="asociacion">
+        <form class="formulario" action="http://localhost:3000/uso_insumo" method="POST">
+            <h1 class="asociacion__titulo">Actualizar Uso de Insumo</h1>
+            <p class="asociacion__descripcion">
+                Modifique la información necesaria para actualizar el uso del insumo
+            </p>
+
+            <div class="formulario__grid">
+                <div class="formulario__columna">
+                    <label for="fecha-uso" class="formulario__etiqueta">Fecha Uso</label>
+                    <input type="date" id="fecha-uso" name="fecha-uso" class="formulario__entrada formulario__entrada--fecha" required />
+                </div>
+
+                <div class="formulario__columna">
+                    <label for="cantidad" class="formulario__etiqueta">Cantidad</label>
+                    <input type="number" id="cantidad" name="cantidad" class="formulario__entrada formulario__entrada--cantidad" required min="1" />
+                </div>
+
+                <div class="formulario__columna">
+                    <label for="responsable" class="formulario__etiqueta">Responsable</label>
+                    <input type="text" id="responsable" name="responsable" class="formulario__entrada formulario__entrada--responsable" required />
+                </div>
+
+                <div class="formulario__columna">
+                    <label for="valor-unitario" class="formulario__etiqueta">Valor Unitario</label>
+                    <input type="number" id="valor-unitario" name="valor-unitario" class="formulario__entrada formulario__entrada--valorUnitario" step="0.01" required />
+                </div>
+
+                <div class="formulario__columna">
+                    <label for="valor-total" class="formulario__etiqueta">Valor Total</label>
+                    <input type="number" id="valor-total" name="valor-total" class="formulario__entrada formulario__entrada--valorTotal" step="0.01" readonly />
+                </div>
+
+                <div class="formulario__columna">
+                    <label for="observaciones" class="formulario__etiqueta">Observaciones</label>
+                    <input type="text" id="observaciones" name="observaciones" class="formulario__entrada formulario__entrada--observaciones" />
+                </div>
+
+                <div class="formulario__columna">
+                    <label for="insumo" class="formulario__etiqueta">Insumos</label>
+                    <select id="insumo" name="insumo" class="formulario__selector formulario__selector--insumo" required>
+                        <option value="">Seleccione un insumo</option>
+                        <option value="insumo1">Insumo 1</option>
+                        <option value="insumo2">Insumo 2</option>
+                        <option value="insumo3">Insumo 3</option>
+                    </select>
+                    <a href="/fronted/public/views/insumos/crear_inusomo.html" class="formulario__boton formulario__boton--crear" style="margin-top: 1rem; display: inline-block;">+ Crear Insumo</a>
+                </div>
+            </div>
+
+            <button class="formulario__boton" type="submit">Actualizar Uso de Insumo</button>
+        </form>
+    </main>
+</body>
 </html>
