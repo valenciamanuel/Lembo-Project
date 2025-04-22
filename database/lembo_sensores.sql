@@ -31,7 +31,7 @@ CREATE TABLE `sensores` (
   `descripcion` text,
   `estado` enum('Activo','Inactivo') NOT NULL,
   PRIMARY KEY (`idSensor`)
-) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=7 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -40,7 +40,7 @@ CREATE TABLE `sensores` (
 
 LOCK TABLES `sensores` WRITE;
 /*!40000 ALTER TABLE `sensores` DISABLE KEYS */;
-INSERT INTO `sensores` VALUES (1,'www','wwww','hnj',3,'hbnjmk','Activo');
+INSERT INTO `sensores` VALUES (1,'www','wwww','hnj',3,'hbnjmk','Activo'),(2,'tfygh','tyuhj','ghjk',67,'gyhj','Activo'),(3,'etsrydfu','wretyu','sadfgy',23456,'wetsrdyfu','Activo'),(4,'srdtfjyg','warestdyuiu','strdyfugih',2345678,'adsfghj','Activo'),(5,'ewrtyy','ewrytui','ewrtyu',34567,'dsfghjk','Activo'),(6,'dsfg','ewrty','wer',234,'sdefrgt','Activo');
 /*!40000 ALTER TABLE `sensores` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -53,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-30 18:31:03
+-- Dump completed on 2025-04-21 19:40:14
