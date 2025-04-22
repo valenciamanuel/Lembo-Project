@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Lectura de Datos del Sensor</title>
+    <link rel="stylesheet" href="/fronted/public/css/pages/sensores/style_lectura_sensor.css">
+    <script src="/fronted/public/js/sensores/validacion_lectura.js"></script>
+</head>
+<body class="page">
+    <header class="header">
+        <h1 class="header__title">Mi Aplicación</h1>
+    </header>
+    <main class="reading-data">
+        <h2 class="reading-data__title">Lectura de Datos del Sensor</h2>
+
+        <div class="reading-data__form">
+            <div class="reading-data__form-group">
+                <label for="sensorSeleccionado" class="reading-data__label">Seleccionar Sensor:</label>
+                <select id="sensorSeleccionado" name="sensorSeleccionado" class="reading-data__select">
+                    <option value="">Cargando sensores...</option>
+                </select>
+            </div>
+
+            <div class="reading-data__form-group">
+                <label for="tiempoMuestreo" class="reading-data__label">Tiempo de Muestreo (minutos):</label>
+                <input type="number" id="tiempoMuestreo" name="tiempoMuestreo" class="reading-data__input" min="1" value="1">
+            </div>
+
+            <div class="reading-data__controls">
+                <button type="button" id="iniciarLectura" class="reading-data__button reading-data__button--start">Iniciar Lectura</button>
+                <button type="button" id="detenerLectura" class="reading-data__button reading-data__button--stop" disabled>Detener </button>
+            </div>
+        </div>
+
+        <div class="reading-data__results">
+            <h3 class="reading-data__results-title">Datos Recientes:</h3>
+            <ul id="datosSensor" class="reading-data__data-list">
+            </ul>
+            <div id="mensajeMuestreo" class="mensaje-muestreo"></div>
+        </div>
+    </main>
+
+    
+</body>
+</html>

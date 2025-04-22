@@ -1,0 +1,490 @@
+:root {
+    --primary-950: #4DB100;
+    --primary-900: #55B40C;
+    --primary-800: #67BC26;
+    --primary-700: #5CB85C;
+    --primary-600: #66BB6A;
+    --primary-500: #81C784;
+    --primary-400: #A5D6A7;
+    --primary-300: #C8E6C9;
+    --primary-200: #E8F5E9;
+    --primary-100: #F1F8E9;
+    --primary-50: #F1F8E9;
+
+    --secondary-950: #FBC02D;
+    --secondary-900: #FDD835;
+    --secondary-800: #FFEB3B;
+    /* Amarillo principal (Material Design) */
+    --secondary-700: #FFEE58;
+    --secondary-600: #FFF176;
+    --secondary-500: #FFF59D;
+    --secondary-400: #FFF9C4;
+    --secondary-300: #FFFDE7;
+    --secondary-200: #FFFDE7;
+    --secondary-100: #FFFDE7;
+    --secondary-50: #FFFDE7;
+    --secondary-red: #FF5252;
+    --stop-red-950: #d32f2f;
+    /* Rojo más oscuro */
+    --stop-red-500: #f44336;
+    /* Rojo principal (Material Design) */
+    --stop-red-dark: #ef5350;
+
+    --white: #fff;
+    --black: #000;
+    --gray-950: #212121;
+    --gray-900: #424242;
+    --gray-800: #616161;
+    --gray-700: #757575;
+    --gray-600: #9E9E9E;
+    --gray-500: #BDBDBD;
+    --gray-400: #E0E0E0;
+    --gray-300: #EEEEEE;
+    --gray-200: #F5F5F5;
+    --gray-100: #F9F9F9;
+    --gray-50: #FAFAFA;
+
+    --main-font: "Roboto", sans-serif;
+    /* Fuente común y legible */
+
+    --fs-xxxxl: 4.0rem;
+    /* Ajustado para mejor visualización */
+    --fs-xxxl: 3.2rem;
+    --fs-xxl: 2.4rem;
+    --fs-xl: 2.0rem;
+    --fs-lg: 1.8rem;
+    --fs-md: 1.1rem;
+    /* Ajustado a tamaño base más común */
+    --fs-sm: 0.9rem;
+    --fs-xs: 0.8rem;
+    --fs-xxs: 0.7rem;
+    --fs-xxxs: 0.6rem;
+
+    --espacio-0-25: 0.05rem;
+    --espacio-0-5: 0.1rem;
+    --espacio-1: 0.2rem;
+    --espacio-2: 0.4rem;
+    --espacio-3: 0.6rem;
+    --espacio-6: 1.2rem;
+
+    --borde-redondo-sm: 0.1rem;
+    --borde-redondo-md: 0.2rem;
+
+    /* Colores primarios (verde) */
+    --primary: var(--primary-500);
+    --primary-dark: var(--primary-700);
+    --primary-light: var(--primary-300);
+
+    /* Colores para el botón de detener (rojo) */
+    --stop: var(--stop-red-500);
+    --stop-dark: var(--stop-red-dark);
+
+    /* Colores secundarios */
+    --secondary: var(--secondary-500);
+    --secondary-dark: var(--secondary-700);
+    --secondary-light: var(--secondary-300);
+    --secondary-red-color: var(--secondary-red);
+
+    /* Colores de texto */
+    --text-primary: var(--gray-900);
+    --text-secondary: var(--gray-700);
+    --text-light: var(--gray-500);
+    --text-white: var(--white);
+
+    /* Colores de fondo */
+    --background-body: var(--gray-100);
+    /* Gris claro para el fondo */
+    --background-card: var(--white);
+
+    /* Espaciado */
+    --spacing-nano: var(--espacio-0-25);
+    --spacing-micro: var(--espacio-0-5);
+    --spacing-extra-small: var(--espacio-1);
+    --spacing-small: var(--espacio-2);
+    --spacing-medium: var(--espacio-3);
+    --spacing-large: var(--espacio-6);
+
+    /* Tipografía */
+    --font-family-base: var(--main-font);
+    --font-size-base: var(--fs-md);
+    --font-size-h1: var(--fs-xxl);
+    --font-size-h2: var(--fs-xl);
+    --font-size-h3: var(--fs-lg);
+    --font-size-label: var(--fs-md);
+    --font-size-button: var(--fs-md);
+    --font-size-small: var(--fs-sm);
+
+    /* Bordes */
+    --border-radius-small: var(--borde-redondo-sm);
+    --border-radius-medium: var(--borde-redondo-md);
+
+    /* Alturas y anchos base (ajustados en rem) */
+    --input-width-base: 18.75rem;
+    /* 300px */
+    --input-height-base: 2.5rem;
+    /* 40px (más común para legibilidad) */
+    --button-width-base: 12.5rem;
+    /* 200px */
+    --button-height-base: 2.5rem;
+    /* 40px */
+    --component-spacing: 1rem;
+    /* Ajustado a rem para consistencia */
+}
+
+body {
+    font-family: var(--font-family-base);
+    font-size: var(--font-size-base);
+    color: var(--text-primary);
+    background-color: var(--background-body);
+    background-image: url('/fronted/public/img/cultivos-1.jpg');
+    background-size: cover; /* Cubre todo el body */
+    background-repeat: no-repeat; /* Evita la repetición de la imagen */
+    background-attachment: fixed; /* Fija la imagen para evitar que se desplace con el contenido (opcional) */
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    min-height: 100vh; /* Asegura que el body ocupe al menos el 100% de la altura de la ventana */
+    padding-top: calc(var(--component-spacing) * 3);
+    /* Espacio para el header */
+    box-sizing: border-box;
+    padding-left: var(--component-spacing);
+    padding-right: var(--component-spacing);
+}
+
+.header {
+    background-color: var(--primary-950);
+    /* Usa el verde primario para el header */
+    color: var(--text-white);
+    width: 100%;
+    height: 3rem;
+    /* Altura más acorde al contenido */
+    position: fixed;
+    top: 0;
+    left: 0;
+    display: flex;
+    align-items: center;
+    padding: 0 var(--component-spacing);
+    box-sizing: border-box;
+    z-index: 10;
+    box-shadow: 0 0.1rem 0.2rem rgba(0, 0, 0, 0.1);
+    /* Sombra sutil */
+}
+
+.header__title {
+    font-size: var(--fs-lg);
+    /* Título legible */
+    margin: 0;
+}
+
+.reading-data {
+    background-color: var(--background-card);
+    border-radius: var(--border-radius-medium);
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+      0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+    /* Elevación sutil */
+    padding: var(--component-spacing);
+    margin-top: calc(3rem + var(--component-spacing));
+    /* Espacio entre header y contenido */
+    max-width: 37.5rem;
+    /* 600px */
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.reading-data__title {
+    color: var(--text-primary);
+    font-size: var(--fs-xl);
+    margin-top: 0;
+    margin-bottom: var(--spacing-medium);
+    text-align: left;
+}
+
+.reading-data__form {
+    display: flex;
+    flex-direction: column;
+    gap: var(--spacing-small);
+    margin-bottom: var(--spacing-large);
+}
+
+.reading-data__form-group {
+    display: flex;
+    flex-direction: column;
+}
+
+.reading-data__label {
+    color: var(--text-secondary);
+    font-size: var(--fs-md);
+    margin-bottom: var(--spacing-nano);
+}
+
+.reading-data__select,
+.reading-data__input {
+    border: 0.05rem solid var(--gray-400);
+    border-radius: var(--border-radius-small);
+    font-size: var(--fs-md);
+    padding: var(--spacing-small);
+    height: var(--input-height-base);
+    /* 40px */
+    box-sizing: border-box;
+    width: var(--input-width-base);
+    /* 300px */
+    max-width: 100%;
+}
+
+.reading-data__controls {
+    display: flex;
+    gap: var(--spacing-small);
+    justify-content: flex-start;
+    /* Alinear a la izquierda por defecto */
+}
+
+/* Estilo base para los botones (compartido) */
+.reading-data__button {
+    color: var(--text-white);
+    border: none;
+    border-radius: var(--border-radius-medium);
+    cursor: pointer;
+    font-size: var(--fs-md);
+    padding: var(--spacing-medium) var(--spacing-large);
+    height: var(--button-height-base);
+    /* 40px */
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+      0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+    transition: background-color 0.15s ease-in-out;
+    width: var(--button-width-base);
+    /* 200px */
+    min-width: auto;
+    box-sizing: border-box;
+}
+
+/* Estilo específico para el botón de Iniciar Lectura (verde) */
+.reading-data__button--start {
+    background-color: var(--primary);
+}
+
+.reading-data__button--start:hover {
+    background-color: var(--primary-dark);
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2),
+      0 0.1rem 0.4rem rgba(0, 0, 0, 0.12);
+}
+
+/* Estilo específico para el botón de Detener Lectura (rojo) */
+.reading-data__button--stop {
+    background-color: var(--stop);
+}
+
+.reading-data__button--stop:hover {
+    background-color: var(--stop-dark);
+    box-shadow: 0 0.2rem 0.4rem rgba(0, 0, 0, 0.2),
+      0 0.1rem 0.4rem rgba(0, 0, 0, 0.12);
+}
+
+.reading-data__button:disabled {
+    background-color: var(--gray-300);
+    color: var(--text-light);
+    cursor: not-allowed;
+    box-shadow: none;
+}
+
+.reading-data__results {
+    margin-top: var(--spacing-large);
+    padding: var(--component-spacing);
+    background-color: var(--background-card);
+    border-radius: var(--border-radius-medium);
+    box-shadow: 0 0.1rem 0.3rem rgba(0, 0, 0, 0.12),
+      0 0.1rem 0.2rem rgba(0, 0, 0, 0.24);
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.reading-data__results-title {
+    color: var(--text-primary);
+    font-size: var(--fs-lg);
+    margin-top: 0;
+    margin-bottom: var(--spacing-medium);
+    text-align: left;
+}
+
+.reading-data__data-list {
+    list-style: none;
+    padding: 0;
+}
+
+.reading-data__data-list li {
+    padding: var(--spacing-small) 0;
+    border-bottom: 0.05rem solid var(--gray-300);
+    font-size: var(--fs-md);
+}
+
+.reading-data__data-list li:last-child {
+    border-bottom: none;
+}
+
+.mensaje-muestreo {
+    font-size: var(--fs-sm);
+    margin-top: var(--spacing-nano);
+    padding: var(--spacing-nano) var(--spacing-small);
+    border-radius: var(--border-radius-small);
+    text-align: left;
+}
+
+.mensaje-muestreo--success {
+    background-color: var(--primary-100);
+    /* Verde claro */
+    color: var(--primary-900);
+    /* Verde oscuro */
+    border: 1px solid var(--primary-300);
+    /* Borde verde */
+}
+
+.mensaje-muestreo--error {
+    background-color: #ffebee;
+    color: var(--stop);
+    /* Rojo */
+    border: 1px solid #ef9a9a;
+}
+
+/* Media Queries for responsivity */
+@media (max-width: 768px) {
+    .header {
+        height: 2.5rem;
+    }
+
+    .header__title {
+        font-size: var(--fs-xl);
+    }
+
+    .reading-data {
+        margin-top: calc(2.5rem + var(--spacing-small));
+        padding: var(--spacing-small);
+    }
+
+    .reading-data__title {
+        font-size: var(--fs-lg);
+        margin-bottom: var(--spacing-small);
+    }
+
+    .reading-data__select,
+    .reading-data__input {
+        width: 100%;
+        height: var(--input-height-base);
+        /* Mantenemos la altura */
+        padding: var(--spacing-small);
+        /* Ajustar padding */
+    }
+
+    .reading-data__controls {
+        flex-direction: row;
+        justify-content: flex-start;
+        width: 100%;
+        gap: var(--spacing-small);
+    }
+
+    .reading-data__button {
+        width: auto;
+        flex-grow: 1;
+        height: var(--button-height-base);
+        /* Mantenemos la altura */
+        padding: var(--spacing-small) var(--spacing-medium);
+        /* Ajustar padding */
+        font-size: var(--fs-sm);
+        /* Reducir un poco el tamaño de la fuente */
+    }
+
+    .reading-data__results {
+        padding: var(--spacing-small);
+        margin-top: var(--spacing-small);
+    }
+
+    .reading-data__results-title {
+        font-size: var(--fs-lg);
+        margin-bottom: var(--spacing-small);
+    }
+
+    .reading-data__data-list li {
+        font-size: var(--fs-sm);
+        padding: var(--spacing-nano) 0;
+    }
+}
+
+@media (max-width: 480px) {
+    .header {
+        height: 2rem;
+    }
+
+    .header__title {
+        font-size: var(--fs-lg);
+    }
+
+    .reading-data {
+        margin-top: calc(2rem + var(--spacing-small));
+        padding: var(--spacing-nano);
+    }
+
+    .reading-data__title {
+        font-size: var(--fs-md);
+        margin-bottom: var(--spacing-nano);
+    }
+
+    .reading-data__form {
+        display: flex;
+        flex-direction: column;
+        gap: var(--spacing-small);
+        margin-bottom: var(--spacing-large);
+        padding-left: var(--espacio-2); /* Añadir margen izquierdo al form */
+        padding-right: var(--espacio-2); /* Añadir margen derecho al form */
+        box-sizing: border-box; /* Incluir el padding en el ancho total */
+    }
+
+    .reading-data__form-group {
+        display: flex;
+        flex-direction: column;
+    }
+
+    .reading-data__label {
+        color: var(--text-secondary);
+        font-size: var(--fs-md);
+        margin-bottom: var(--spacing-nano);
+    }
+
+    .reading-data__select,
+    .reading-data__input {
+        width: 100%; /* Ocupar el ancho disponible dentro del padding del form */
+        height: calc(var(--input-height-base) * 1.2);
+        padding: var(--spacing-nano);
+        font-size: var(--fs-sm);
+        box-sizing: border-box; /* Asegurar que el padding no afecte el ancho */
+    }
+
+    .reading-data__controls {
+        display: flex;
+        flex-direction: column;
+        gap: var(--espacio-2);
+        width: 100%;
+    }
+
+    .reading-data__button {
+        width: 100%; /* Ocupar el ancho disponible */
+        height: var(--button-height-base);
+        padding: var(--spacing-nano) var(--spacing-small);
+        font-size: var(--fs-sm);
+        min-width: auto;
+        text-align: center;
+    }
+
+    .reading-data__results {
+        padding: var(--spacing-nano);
+        margin-top: var(--spacing-small);
+    }
+
+    .reading-data__results-title {
+        font-size: var(--fs-md);
+        margin-bottom: var(--spacing-nano);
+    }
+
+    .reading-data__data-list li {
+        font-size: var(--fs-xs);
+        padding: var(--spacing-nano) 0;
+    }
+}
