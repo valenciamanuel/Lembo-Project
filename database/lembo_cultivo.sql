@@ -33,7 +33,7 @@ CREATE TABLE `cultivo` (
   `state` enum('Activo','Inactivo') NOT NULL,
   PRIMARY KEY (`id`),
   UNIQUE KEY `cultivoID` (`cultivoID`)
-) ENGINE=InnoDB AUTO_INCREMENT=3 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -42,7 +42,7 @@ CREATE TABLE `cultivo` (
 
 LOCK TABLES `cultivo` WRITE;
 /*!40000 ALTER TABLE `cultivo` DISABLE KEYS */;
-INSERT INTO `cultivo` VALUES (1,'huj','gbhj','gh','byhnj','gyhj','yhuj','Activo'),(2,'klKL','ujik','ikol','mk,l','kl','km','Inactivo');
+INSERT INTO `cultivo` VALUES (1,'huj','gbhj','gh','byhnj','gyhj','yhuj','Activo'),(2,'klKL','ujik','ikol','mk,l','kl','km','Inactivo'),(3,'ertgh','ser','2025-04-16','2025-04-09','gfvhj','yguhj','Activo'),(4,'dgfgyuhijsd','asdfghj','dszfxgchvjjk','zdxfchgvjbj','xcvbjnkm','gxdfchghj','Activo'),(5,'sdgfhjkgf','sdrftyguhi','szfdgxfhcyuhijk','szfdxgchjiokldxfcgv','szfdxghcvjbjnk','zxdfchgvjhbjnkml,','Inactivo'),(6,'dsfghjlkawsdrtfygiuho','dsfdgfhjgkhsdgfhj','s<adszfdgxfhjgykhul','aesrdtfyiguhiwesrd','astedyrfutgiohupji','szdgxfcvhedrtfyui','Activo'),(7,'dfg','dsfgh','34567564','234','sdafg','dwefrgt','Activo');
 /*!40000 ALTER TABLE `cultivo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
@@ -55,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-03-30 18:31:03
+-- Dump completed on 2025-04-21 19:40:14

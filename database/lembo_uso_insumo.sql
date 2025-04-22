@@ -16,33 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `ciclocultivo`
+-- Table structure for table `uso_insumo`
 --
 
-DROP TABLE IF EXISTS `ciclocultivo`;
+DROP TABLE IF EXISTS `uso_insumo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `ciclocultivo` (
+CREATE TABLE `uso_insumo` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `cicloID` varchar(50) NOT NULL,
-  `cicloName` varchar(100) NOT NULL,
-  `siembraDate` date NOT NULL,
-  `cosechaDate` date NOT NULL,
-  `news` text,
-  `description` text,
-  `state` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
+  `fecha_uso` date NOT NULL,
+  `cantidad` decimal(10,2) NOT NULL,
+  `responsable` varchar(20) NOT NULL,
+  `valor_unitario` decimal(10,2) NOT NULL,
+  `valor_total` decimal(10,2) NOT NULL,
+  `observaciones` text,
+  `insumo` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=10 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `ciclocultivo`
+-- Dumping data for table `uso_insumo`
 --
 
-LOCK TABLES `ciclocultivo` WRITE;
-/*!40000 ALTER TABLE `ciclocultivo` DISABLE KEYS */;
-INSERT INTO `ciclocultivo` VALUES (1,'111','eeee','2025-03-12','2025-03-19','ghgh','hghghj','activo'),(2,'111','eeee','2025-03-12','2025-03-19','ghgh','hghghj','activo'),(3,'123','ggg','2025-03-12','2025-03-19','ghgh','hghghj','activo'),(4,'222','lplpol','2025-02-27','2025-03-01','olopl','hbjvbn','inactivo'),(5,'5445','hjk','2025-05-02','2025-04-11','hjk','ghj','activo'),(6,'345678','asdfghjklgdfthyjgukhli','2025-05-01','2025-04-09','dgfnhmbn','fdghjklñ','activo'),(7,'345678','dfghjkl','2025-04-23','2025-04-09','sdfgjyuiopl','dfghijoijhugyftr','activo'),(8,'34567890','fgdhjkppojihugyjfhdg','2025-04-16','2025-04-08','sadfghtyuoipuiy','aerstdyu7y8u9','inactivo'),(9,'09876','rgthyj','2025-04-09','2025-04-09','dfghj','sdfgh','activo');
-/*!40000 ALTER TABLE `ciclocultivo` ENABLE KEYS */;
+LOCK TABLES `uso_insumo` WRITE;
+/*!40000 ALTER TABLE `uso_insumo` DISABLE KEYS */;
+INSERT INTO `uso_insumo` VALUES (1,'2025-04-11',456.00,'dsfgh',345.00,345.00,'dsfg','insumo1');
+/*!40000 ALTER TABLE `uso_insumo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-21 19:40:14
+-- Dump completed on 2025-04-21 19:40:15
