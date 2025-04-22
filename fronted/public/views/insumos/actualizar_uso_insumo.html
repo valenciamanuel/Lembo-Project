@@ -55,7 +55,7 @@
 
                 <div class="formulario__columna">
                     <label class="formulario__etiqueta">Valor Total</label>
-                    <input type="number" name="valor-total" class="formulario__entrada formulario__entrada--valorTotal" step="0.01" readonly />
+                    <input type="number" name="valor-total" class="formulario__entrada formulario__entrada--valorTotal" step="0.01" required />
                 </div>
 
                 <div class="formulario__columna">
@@ -71,11 +71,12 @@
                         <option value="insumo2">Insumo 2</option>
                         <option value="insumo3">Insumo 3</option>
                     </select>
-                    <a href="/fronted/public/views/insumos/crear_inusomo.html" class="formulario__boton formulario__boton--crear" style="margin-top: 1rem; display: inline-block;">+ Crear Insumo</a>
+                    <a href="/fronted/public/views/insumos/crear_uso_insumo.html" class="formulario__boton formulario__boton--crear" style="margin-top: 1rem; display: inline-block;">+ Crear Insumo</a>
                 </div>
             </div>
 
-            <button class="formulario__boton" type="submit">Actualizar Uso de Insumo</button>
+            <button class="formulario__boton" type="submit"><a href="/fronted/public/views/insumos/ver_datos_uso_insumo.html">Actualizar Uso de Insumo</a></button>
+            
         </form>
     </main>
 </body>
