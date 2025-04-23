@@ -509,7 +509,7 @@ body {
 }
 
 /* Media queries */
-@media (max-width: 76.8rem) {
+@media (max-width: 76.8rem){
     .detail__grid {
         grid-template-columns: 1fr;
     }
