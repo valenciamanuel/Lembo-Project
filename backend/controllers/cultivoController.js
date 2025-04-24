@@ -19,19 +19,6 @@ const insertarCultivo = (req, res) => {
     });
 };
 
-const obtenerCultivos = (req, res) => {
-    const sql = 'SELECT id, cultivoName FROM cultivo';
-
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Error al obtener los cultivos:', err);
-            return res.status(500).json({ error: 'Error al obtener los cultivos' });
-        }
-        res.status(200).json(results);
-    });
-};
-
 module.exports = {
     insertarCultivo,
-    obtenerCultivos,
 };

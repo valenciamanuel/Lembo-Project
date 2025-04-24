@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tipoInsumo = document.querySelector('.insumo__input--type');
     const nombreInsumo = document.querySelector('.insumo__input--nombre');
-    const unidadMedida = document.querySelector('.cultivo__input--size'); // OJO: Revisa este selector, ¿es correcto?
+    const unidadMedida = document.querySelector('.cultivo__input--size');
     const cantidad = document.querySelector('.insumo__input--cantidad');
     const valorUnitario = document.querySelector('.insumo__input--unitario');
     const valorTotal = document.querySelector('.insumo__input--total');
@@ -87,15 +87,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             console.log('Insumo registrado', result);
-
-            // Enviar mensaje a la ventana que abrió este formulario
-            if (window.opener && window.opener.postMessage) {
-                window.opener.postMessage({
-                    type: 'nuevoInsumoCreado',
-                    insumo: result // Asegúrate de que 'result' contenga { idInsumo: ..., nombreInsumo: ... }
-                }, '*');
-            }
-
             form.reset();
         } catch (error) {
             console.error('Error', error);

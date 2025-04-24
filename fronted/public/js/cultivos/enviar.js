@@ -10,7 +10,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const state = document.querySelector('.cultivo__input--state');
 
     const inputs = [
-        cultivoType, cultivoName, cultivoID, size,
+        cultivoType, cultivoName, cultivoID, size, 
         location, description, state
     ];
 
@@ -73,7 +73,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData) // Aquí se están enviando los datos como JSON
+                body: JSON.stringify(formData)  // Aquí se están enviando los datos como JSON
             });
 
             if (!response.ok) {
@@ -82,17 +82,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             console.log('Cultivo registrado', result);
-
-            // Enviar mensaje a la ventana que abrió este formulario
-            if (window.opener && window.opener.postMessage) {
-                window.opener.postMessage({
-                    type: 'nuevoCultivoCreado',
-                    cultivo: {
-                        idCultivo: result.id, // Asumiendo que el ID del cultivo en la respuesta se llama 'id'
-                        nombreCultivo: result.cultivoName // Asumiendo que el nombre del cultivo en la respuesta se llama 'cultivoName'
-                    }
-                }, '*');
-            }
 
             form.reset(); // Limpiar formulario después de enviar los datos
         } catch (error) {

@@ -9,10 +9,11 @@ document.addEventListener('DOMContentLoaded', () => {
     const estado = document.querySelector('.sensor__input--estado');
 
     const inputs = [
-        tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo,
+        tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, 
         descripcion, estado
     ];
 
+    // Escucha para inputs: quitar error al escribir
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('form__input--error');
@@ -23,6 +24,7 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
+        // Limpiar errores anteriores
         [...inputs].forEach(input => {
             input.classList.remove('form__input--error');
             if (input.tagName !== 'SELECT') input.placeholder = '';
@@ -30,6 +32,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         let valido = true;
 
+        // Función para validar campos
         const validarCampo = (input, mensaje) => {
             if (!input.value.trim()) {
                 valido = false;
@@ -41,6 +44,7 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
+        // Validar cada campo
         validarCampo(tipoSensor, 'Tipo de sensor obligatorio');
         validarCampo(nombreSensor, 'Nombre del sensor obligatorio');
         validarCampo(unidadMedida, 'Unidad de medida obligatoria');
@@ -50,6 +54,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
+        // Datos del formulario
         const formData = {
             tipoSensor: tipoSensor.value,
             nombreSensor: nombreSensor.value,
@@ -65,7 +70,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)
+                body: JSON.stringify(formData)  // Aquí se están enviando los datos como JSON
             });
 
             if (!response.ok) {
@@ -74,14 +79,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             console.log('Sensor registrado', result);
-
-            // Enviar mensaje a la ventana que abrió este formulario (si existe)
-            if (window.opener && window.opener.postMessage) {
-                window.opener.postMessage({
-                    type: 'nuevoSensorCreado',
-                    sensor: result // Asegúrate de que 'result' contenga { idSensor: ..., nombreSensor: ... }
-                }, '*');
-            }
 
             form.reset(); // Limpiar formulario después de enviar los datos
         } catch (error) {

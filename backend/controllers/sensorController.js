@@ -28,19 +28,6 @@ const insertarSensor = (req, res) => {
     });
 };
 
-const obtenerSensores = (req, res) => {
-    const sql = 'SELECT idSensor, nombreSensor FROM sensores';
-
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Error al obtener los sensores:', err);
-            return res.status(500).json({ error: 'Error al obtener los sensores' });
-        }
-        res.status(200).json(results);
-    });
-};
-
 module.exports = {
     insertarSensor,
-    obtenerSensores,
 };
