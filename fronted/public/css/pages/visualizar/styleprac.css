@@ -39,7 +39,10 @@ html {
     font-family: var(--fuente-principal);
     scroll-behavior: smooth;
     height: 100%;
-    overflow:scroll;
+    /* Permitir el scroll vertical cuando sea necesario */
+    overflow-y: auto;
+    /* Evitar el scroll horizontal a menos que el contenido lo requiera */
+    overflow-x: hidden;
 }
 
 body {
@@ -47,7 +50,10 @@ body {
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    overflow: hidden;
+    /* Permitir el scroll vertical cuando sea necesario */
+    overflow-y: auto;
+    /* Evitar el scroll horizontal a menos que el contenido lo requiera */
+    overflow-x: hidden;
 }
 
 .pagina {
@@ -61,6 +67,7 @@ body {
 .principal {
     padding: var(--espacio-3);
     flex-grow: 1;
+    /* Permitir el scroll dentro del contenido principal si es necesario */
     overflow: auto;
 }
 
@@ -273,6 +280,15 @@ body {
 
 .info-contenido__texto {
     font-size: var(--tam-fuente-xxs);
+}
+.formulario__mensaje-error {
+    color: red;
+    font-size: 0.8em; /* O un tamaño que prefieras */
+    margin-top: 0.2em; /* Espacio pequeño entre el input y el mensaje */
+}
+
+.formulario__entrada--error {
+    border: 1px solid red; /* O un estilo que prefieras para el borde con error */
 }
 
 /* Diseño Responsivo para Estilo Infografía */

@@ -2,7 +2,7 @@ const db = require('../config/db.js');
 
 const insertarCicloCultivo = (req, res) => {
     const { cicloID, cicloName, siembraDate, cosechaDate, news, description, state } = req.body;
-    
+
     if (!cicloID || !cicloName || !siembraDate || !cosechaDate || !news || !description || !state) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
@@ -19,6 +19,19 @@ const insertarCicloCultivo = (req, res) => {
     });
 };
 
+const obtenerCiclosCultivo = (req, res) => {
+    const sql = 'SELECT id, cicloName FROM ciclocultivo';
+
+    db.query(sql, (err, results) => {
+        if (err) {
+            console.error('Error al obtener los ciclos de cultivo:', err);
+            return res.status(500).json({ error: 'Error al obtener los ciclos de cultivo' });
+        }
+        res.status(200).json(results);
+    });
+};
+
 module.exports = {
     insertarCicloCultivo,
+    obtenerCiclosCultivo,
 };

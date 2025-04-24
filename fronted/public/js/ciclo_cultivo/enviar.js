@@ -11,7 +11,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const image = document.querySelector('.form__input--imagen');
 
     const inputs = [
-        cicloID, cicloName, siembraDate, cosechaDate, 
+        cicloID, cicloName, siembraDate, cosechaDate,
         news, description, state
     ];
 
@@ -75,7 +75,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData)  // Aquí se están enviando los datos como JSON
+                body: JSON.stringify(formData) // Aquí se están enviando los datos como JSON
             });
 
             if (!response.ok) {
@@ -84,6 +84,14 @@ document.addEventListener('DOMContentLoaded', () => {
 
             const result = await response.json();
             console.log('Ciclo Cultivo registrado', result);
+
+            // Enviar mensaje a la ventana que abrió este formulario
+            if (window.opener && window.opener.postMessage) {
+                window.opener.postMessage({
+                    type: 'nuevoCicloCultivoCreado',
+                    cicloCultivo: result // Asegúrate de que 'result' contenga { idCiclo: ..., nombreCiclo: ... }
+                }, '*');
+            }
 
             form.reset(); // Limpiar formulario después de enviar los datos
         } catch (error) {
