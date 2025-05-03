@@ -1,130 +1,133 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <title>Dashboard de Asociaciones con Gráficos</title>
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <meta charset="UTF-8">
+    <title>Dashboard de Asociaciones con Gráficos</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/visualizar.css">
 </head>
+
 <body>
 
-<header>
-  <h1>Dashboard de Asociaciones</h1>
-</header>
+    <header>
+        <h1>Dashboard de Asociaciones</h1>
+    </header>
 
-<div class="dashboard">
-  <h2>Estadísticas Generales</h2>
+    <div class="dashboard">
+        <h2>Estadísticas Generales</h2>
 
-  <div class="charts">
-    <!-- Gráfico de inversión vs meta -->
-    <div class="chart-card">
-      <h3>Inversión vs Meta</h3>
-      <canvas id="inversionMetaChart"></canvas>
+        <div class="charts">
+            <!-- Gráfico de inversión vs meta -->
+            <div class="chart-card">
+                <h3>Inversión vs Meta</h3>
+                <canvas id="inversionMetaChart"></canvas>
+            </div>
+
+            <!-- Gráfico de asociaciones por cultivo -->
+            <div class="chart-card">
+                <h3>Asociaciones por Cultivo</h3>
+                <canvas id="cultivoChart"></canvas>
+            </div>
+
+            <!-- Gráfico de asociaciones por mes -->
+            <div class="chart-card">
+                <h3>Asociaciones por Mes</h3>
+                <canvas id="mesChart"></canvas>
+            </div>
+        </div>
     </div>
 
-    <!-- Gráfico de asociaciones por cultivo -->
-    <div class="chart-card">
-      <h3>Asociaciones por Cultivo</h3>
-      <canvas id="cultivoChart"></canvas>
-    </div>
+    <script>
+        // Datos simulados
+        const asociaciones = [
+            { nombre: "Asociación 1", cultivo: "Maíz", inversion: 5000, meta: 8000, fecha: "2025-01-15" },
+            { nombre: "Asociación 2", cultivo: "Café", inversion: 7000, meta: 9000, fecha: "2025-02-20" },
+            { nombre: "Asociación 3", cultivo: "Maíz", inversion: 4000, meta: 6000, fecha: "2025-01-25" },
+            { nombre: "Asociación 4", cultivo: "Arroz", inversion: 3000, meta: 5000, fecha: "2025-03-05" },
+        ];
 
-    <!-- Gráfico de asociaciones por mes -->
-    <div class="chart-card">
-      <h3>Asociaciones por Mes</h3>
-      <canvas id="mesChart"></canvas>
-    </div>
-  </div>
-</div>
+        // Gráfico de Inversión vs Meta
+        const labelsInvMeta = asociaciones.map(a => a.nombre);
+        const dataInversion = asociaciones.map(a => a.inversion);
+        const dataMeta = asociaciones.map(a => a.meta);
 
-<script>
-  // Datos simulados
-  const asociaciones = [
-    { nombre: "Asociación 1", cultivo: "Maíz", inversion: 5000, meta: 8000, fecha: "2025-01-15" },
-    { nombre: "Asociación 2", cultivo: "Café", inversion: 7000, meta: 9000, fecha: "2025-02-20" },
-    { nombre: "Asociación 3", cultivo: "Maíz", inversion: 4000, meta: 6000, fecha: "2025-01-25" },
-    { nombre: "Asociación 4", cultivo: "Arroz", inversion: 3000, meta: 5000, fecha: "2025-03-05" },
-  ];
+        new Chart(document.getElementById('inversionMetaChart'), {
+            type: 'bar',
+            data: {
+                labels: labelsInvMeta,
+                datasets: [
+                    {
+                        label: 'Inversión',
+                        data: dataInversion,
+                        backgroundColor: '#0a3d62'
+                    },
+                    {
+                        label: 'Meta',
+                        data: dataMeta,
+                        backgroundColor: '#38ada9'
+                    }
+                ]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
 
-  // Gráfico de Inversión vs Meta
-  const labelsInvMeta = asociaciones.map(a => a.nombre);
-  const dataInversion = asociaciones.map(a => a.inversion);
-  const dataMeta = asociaciones.map(a => a.meta);
+        // Gráfico de asociaciones por cultivo
+        const cultivoCounts = {};
+        asociaciones.forEach(a => {
+            cultivoCounts[a.cultivo] = (cultivoCounts[a.cultivo] || 0) + 1;
+        });
 
-  new Chart(document.getElementById('inversionMetaChart'), {
-    type: 'bar',
-    data: {
-      labels: labelsInvMeta,
-      datasets: [
-        {
-          label: 'Inversión',
-          data: dataInversion,
-          backgroundColor: '#0a3d62'
-        },
-        {
-          label: 'Meta',
-          data: dataMeta,
-          backgroundColor: '#38ada9'
-        }
-      ]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true }
-      }
-    }
-  });
+        new Chart(document.getElementById('cultivoChart'), {
+            type: 'pie',
+            data: {
+                labels: Object.keys(cultivoCounts),
+                datasets: [{
+                    label: 'Asociaciones',
+                    data: Object.values(cultivoCounts),
+                    backgroundColor: ['#0a3d62', '#38ada9', '#e58e26']
+                }]
+            },
+            options: {
+                responsive: true
+            }
+        });
 
-  // Gráfico de asociaciones por cultivo
-  const cultivoCounts = {};
-  asociaciones.forEach(a => {
-    cultivoCounts[a.cultivo] = (cultivoCounts[a.cultivo] || 0) + 1;
-  });
+        // Gráfico de asociaciones por mes
+        const mesCounts = Array(12).fill(0);
+        asociaciones.forEach(a => {
+            const mes = new Date(a.fecha).getMonth();
+            mesCounts[mes]++;
+        });
 
-  new Chart(document.getElementById('cultivoChart'), {
-    type: 'pie',
-    data: {
-      labels: Object.keys(cultivoCounts),
-      datasets: [{
-        label: 'Asociaciones',
-        data: Object.values(cultivoCounts),
-        backgroundColor: ['#0a3d62', '#38ada9', '#e58e26']
-      }]
-    },
-    options: {
-      responsive: true
-    }
-  });
+        new Chart(document.getElementById('mesChart'), {
+            type: 'line',
+            data: {
+                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
+                datasets: [{
+                    label: 'Asociaciones',
+                    data: mesCounts,
+                    borderColor: '#0a3d62',
+                    backgroundColor: '#0a3d62',
+                    tension: 0.3
+                }]
+            },
+            options: {
+                responsive: true,
+                scales: {
+                    y: { beginAtZero: true }
+                }
+            }
+        });
 
-  // Gráfico de asociaciones por mes
-  const mesCounts = Array(12).fill(0);
-  asociaciones.forEach(a => {
-    const mes = new Date(a.fecha).getMonth();
-    mesCounts[mes]++;
-  });
-
-  new Chart(document.getElementById('mesChart'), {
-    type: 'line',
-    data: {
-      labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
-      datasets: [{
-        label: 'Asociaciones',
-        data: mesCounts,
-        borderColor: '#0a3d62',
-        backgroundColor: '#0a3d62',
-        tension: 0.3
-      }]
-    },
-    options: {
-      responsive: true,
-      scales: {
-        y: { beginAtZero: true }
-      }
-    }
-  });
-
-</script>
+    </script>
 
 </body>
+
 </html>
