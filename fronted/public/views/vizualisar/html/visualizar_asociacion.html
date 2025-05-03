@@ -1,229 +1,130 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Producción</title>
+  <meta charset="UTF-8">
+  <title>Dashboard de Asociaciones con Gráficos</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/visualizar.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/styleprac.css">
 </head>
 <body>
-    <header class="cabecera">
-        <div class="cabecera__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="cabecera__logo-img">
-        </div>
-        <nav class="cabecera__nav">
-            <a href="/fronted/public/views/homes/index.html" class="cabecera__enlace">Inicio</a>
-            <a href="crear_asociacion.html" class="cabecera__enlace">Crear Asociación</a>
-            <a href="visualizar_asociacion.html" class="cabecera__enlace">Visualizar Asociación</a>
-            <a href="actualizar_asociacion.html" class="cabecera__enlace">Actualizar Asociación</a>
-            <a href="habilitar_deshabilitar.html" class="cabecera__enlace">Habilitar</a>
-            <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
-            <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
-        </nav>
-    </header>
 
-    <div class="app">
-        <main class="main">
-            <section class="productions">
-                <div class="productions__filters">
-                    <div class="search">
-                        <input type="text" placeholder="Buscar producción..." class="search__input">
-                        <button class="search__button">
-                            <i class="search__icon fas fa-search"></i>
-                        </button>
-                    </div>
-                    
-                    <div class="filter">
-                        <select class="filter__select">
-                            <option value="">Filtrar por cultivo</option>
-                            <option value="maiz">Maíz</option>
-                            <option value="trigo">Trigo</option>
-                            <option value="arroz">Arroz</option>
-                        </select>
-                        <select class="filter__select">
-                            <option value="">Filtrar por responsable</option>
-                            <option value="juan">Juan Pérez</option>
-                            <option value="maria">María López</option>
-                            <option value="carlos">Carlos Rodríguez</option>
-                        </select>
-                        <select class="filter__select">
-                            <option value="">Filtrar por fecha</option>
-                            <option value="hoy">Hoy</option>
-                            <option value="semana">Esta semana</option>
-                            <option value="mes">Este mes</option>
-                            <option value="año">Este año</option>
-                        </select>
-                    </div>
-                </div>
+<header>
+  <h1>Dashboard de Asociaciones</h1>
+</header>
 
-                <div class="table">
-                    <table class="table__content">
-                        <thead class="table__head">
-                            <tr class="table__row">
-                                <th class="table__header">ID Producción</th>
-                                <th class="table__header">Nombre</th>
-                                <th class="table__header">Responsable</th>
-                                <th class="table__header">Cultivo</th>
-                                <th class="table__header">Fecha Inicio</th>
-                                <th class="table__header">Fecha Fin</th>
-                                <th class="table__header">Acciones</th>
-                            </tr>
-                        </thead>
-                        <tbody class="table__body">
-                            <tr class="table__row">
-                                <td class="table__cell">PROD-09042025-0001</td>
-                                <td class="table__cell">Producción de Maíz Orgánico</td>
-                                <td class="table__cell">Juan Pérez</td>
-                                <td class="table__cell">Maíz</td>
-                                <td class="table__cell">09/04/2025</td>
-                                <td class="table__cell">09/10/2025</td>
-                                <td class="table__cell">
-                                    <button class="table__button">Ver</button>
-                                </td>
-                            </tr>
-                        </tbody>
-                    </table>
-                </div>
-            </section>
-            <section class="detail detail--hidden" id="production-detail">
-                <div class="detail__header">
-                    <h2 class="detail__title">Detalles de Producción</h2>
-                    <button class="detail__close">
-                        <i class="detail__close-icon fas fa-times"></i>
-                    </button>
-                </div>
-                
-                <div class="detail__content">
-                    <div class="detail__section">
-                        <h3 class="detail__section-title">Información General</h3>
-                        <div class="detail__grid">
-                            <div class="detail__item">
-                                <span class="detail__label">ID Producción:</span>
-                                <span class="detail__value">PROD-09042025-0001</span>
-                            </div>
-                            <div class="detail__item">
-                                <span class="detail__label">Nombre:</span>
-                                <span class="detail__value">Producción de Maíz Orgánico</span>
-                            </div>
-                            <div class="detail__item">
-                                <span class="detail__label">Responsable:</span>
-                                <span class="detail__value">Juan Pérez</span>
-                            </div>
-                            <div class="detail__item">
-                                <span class="detail__label">Cultivo:</span>
-                                <span class="detail__value">Maíz</span>
-                            </div>
-                            <div class="detail__item">
-                                <span class="detail__label">Ciclo de Cultivo:</span>
-                                <span class="detail__value">Primavera-Verano</span>
-                            </div>
-                            <div class="detail__item">
-                                <span class="detail__label">Fecha Inicio:</span>
-                                <span class="detail__value">09/04/2025</span>
-                            </div>
-                            <div class="detail__item">
-                                <span class="detail__label">Fecha Fin:</span>
-                                <span class="detail__value">09/10/2025</span>
-                            </div>
-                        </div>
-                    </div>
-            
-                    <div class="detail__section">
-                        <h3 class="detail__section-title">Sensores</h3>
-                        <div class="sensors">
-                            <div class="sensors__item">
-                                <span class="sensors__name">Sensor de Humedad S-001</span>
-                            </div>
-                            <div class="sensors__item">
-                                <span class="sensors__name">Sensor de Temperatura S-002</span>
-                            </div>
-                            <div class="sensors__item">
-                                <span class="sensors__name">Sensor de pH S-003</span>
-                            </div>
-                        </div>
-                        
-                        <div class="readings">
-                            <h4 class="readings__title">Lecturas de Sensores</h4>
-                            <div class="chart">
-                                <div class="chart__placeholder">
-                                    <p class="chart__text">Gráfico de lecturas de sensores</p>
-                                    <div class="chart__mock">
-                                        <div class="chart__line chart__line--humidity"></div>
-                                        <div class="chart__line chart__line--temperature"></div>
-                                        <div class="chart__line chart__line--ph"></div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            
-                    <div class="detail__section">
-                        <h3 class="detail__section-title">Insumos</h3>
-                        <div class="inputs">
-                            <table class="inputs__table">
-                                <thead class="inputs__head">
-                                    <tr class="inputs__row">
-                                        <th class="inputs__header">Insumo</th>
-                                        <th class="inputs__header">Fecha de Uso</th>
-                                        <th class="inputs__header">Cantidad</th>
-                                        <th class="inputs__header">Responsable</th>
-                                        <th class="inputs__header">Valor Unitario</th>
-                                        <th class="inputs__header">Valor Total</th>
-                                    </tr>
-                                </thead>
-                                <tbody class="inputs__body">
-                                    <tr class="inputs__row">
-                                        <td class="inputs__cell">Fertilizante Orgánico</td>
-                                        <td class="inputs__cell">15/04/2025</td>
-                                        <td class="inputs__cell">50 kg</td>
-                                        <td class="inputs__cell">Juan Pérez</td>
-                                        <td class="inputs__cell">$25.00</td>
-                                        <td class="inputs__cell">$1,250.00</td>
-                                    </tr>
-                                    <tr class="inputs__row">
-                                        <td class="inputs__cell">Semillas de Maíz Premium</td>
-                                        <td class="inputs__cell">10/04/2025</td>
-                                        <td class="inputs__cell">10 kg</td>
-                                        <td class="inputs__cell">María López</td>
-                                        <td class="inputs__cell">$45.00</td>
-                                        <td class="inputs__cell">$450.00</td>
-                                    </tr>
-                                    <tr class="inputs__row">
-                                        <td class="inputs__cell">Insecticida Natural</td>
-                                        <td class="inputs__cell">20/04/2025</td>
-                                        <td class="inputs__cell">5 L</td>
-                                        <td class="inputs__cell">Carlos Rodríguez</td>
-                                        <td class="inputs__cell">$80.00</td>
-                                        <td class="inputs__cell">$400.00</td>
-                                    </tr>
-                                </tbody>
-                            </table>
-                        </div>
-                    </div>
-            
-                    <div class="detail__section">
-                        <h3 class="detail__section-title">Información Financiera</h3>
-                        <div class="finance">
-                            <div class="finance__item">
-                                <span class="finance__label">Inversión Total:</span>
-                                <span class="finance__value">$2,100.00</span>
-                            </div>
-                            <div class="finance__item">
-                                <span class="finance__label">Meta (Estimación de Ganancias):</span>
-                                <span class="finance__value">$5,500.00</span>
-                            </div>
-                            <div class="finance__item">
-                                <span class="finance__label">ROI Estimado:</span>
-                                <span class="finance__value">161.90%</span>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </section>
-        </main>
+<div class="dashboard">
+  <h2>Estadísticas Generales</h2>
+
+  <div class="charts">
+    <!-- Gráfico de inversión vs meta -->
+    <div class="chart-card">
+      <h3>Inversión vs Meta</h3>
+      <canvas id="inversionMetaChart"></canvas>
     </div>
-    <script src="/fronted/public/js/asociacion/visualizar asociacion.js"></script>
+
+    <!-- Gráfico de asociaciones por cultivo -->
+    <div class="chart-card">
+      <h3>Asociaciones por Cultivo</h3>
+      <canvas id="cultivoChart"></canvas>
+    </div>
+
+    <!-- Gráfico de asociaciones por mes -->
+    <div class="chart-card">
+      <h3>Asociaciones por Mes</h3>
+      <canvas id="mesChart"></canvas>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Datos simulados
+  const asociaciones = [
+    { nombre: "Asociación 1", cultivo: "Maíz", inversion: 5000, meta: 8000, fecha: "2025-01-15" },
+    { nombre: "Asociación 2", cultivo: "Café", inversion: 7000, meta: 9000, fecha: "2025-02-20" },
+    { nombre: "Asociación 3", cultivo: "Maíz", inversion: 4000, meta: 6000, fecha: "2025-01-25" },
+    { nombre: "Asociación 4", cultivo: "Arroz", inversion: 3000, meta: 5000, fecha: "2025-03-05" },
+  ];
+
+  // Gráfico de Inversión vs Meta
+  const labelsInvMeta = asociaciones.map(a => a.nombre);
+  const dataInversion = asociaciones.map(a => a.inversion);
+  const dataMeta = asociaciones.map(a => a.meta);
+
+  new Chart(document.getElementById('inversionMetaChart'), {
+    type: 'bar',
+    data: {
+      labels: labelsInvMeta,
+      datasets: [
+        {
+          label: 'Inversión',
+          data: dataInversion,
+          backgroundColor: '#0a3d62'
+        },
+        {
+          label: 'Meta',
+          data: dataMeta,
+          backgroundColor: '#38ada9'
+        }
+      ]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+  // Gráfico de asociaciones por cultivo
+  const cultivoCounts = {};
+  asociaciones.forEach(a => {
+    cultivoCounts[a.cultivo] = (cultivoCounts[a.cultivo] || 0) + 1;
+  });
+
+  new Chart(document.getElementById('cultivoChart'), {
+    type: 'pie',
+    data: {
+      labels: Object.keys(cultivoCounts),
+      datasets: [{
+        label: 'Asociaciones',
+        data: Object.values(cultivoCounts),
+        backgroundColor: ['#0a3d62', '#38ada9', '#e58e26']
+      }]
+    },
+    options: {
+      responsive: true
+    }
+  });
+
+  // Gráfico de asociaciones por mes
+  const mesCounts = Array(12).fill(0);
+  asociaciones.forEach(a => {
+    const mes = new Date(a.fecha).getMonth();
+    mesCounts[mes]++;
+  });
+
+  new Chart(document.getElementById('mesChart'), {
+    type: 'line',
+    data: {
+      labels: ['Ene','Feb','Mar','Abr','May','Jun','Jul','Ago','Sep','Oct','Nov','Dic'],
+      datasets: [{
+        label: 'Asociaciones',
+        data: mesCounts,
+        borderColor: '#0a3d62',
+        backgroundColor: '#0a3d62',
+        tension: 0.3
+      }]
+    },
+    options: {
+      responsive: true,
+      scales: {
+        y: { beginAtZero: true }
+      }
+    }
+  });
+
+</script>
+
 </body>
 </html>
