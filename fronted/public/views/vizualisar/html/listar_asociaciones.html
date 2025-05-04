@@ -2,118 +2,62 @@
 <html lang="es">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listado de Registros de Cultivos</title>
-    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/styleprac.css">
-    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+    <title>Listar Asociaciones</title>
+    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/listar_asociacion.css">
 </head>
 <body>
-    <header class="cabecera">
-        <div class="cabecera__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="cabecera__logo-img">
-        </div>
-        <nav class="cabecera__nav">
-            <a href="/fronted/public/views/homes/index.html" class="cabecera__enlace">Inicio</a>
-            <a href="crear_asociacion.html" class="cabecera__enlace">Crear Asociación</a>
-            <a href="visualizar_asociacion.html" class="cabecera__enlace">Visualizar Asociación</a>
-            <a href="actualizar_asociacion.html" class="cabecera__enlace">Actualizar Asociación</a>
-            <a href="habilitar_deshabilitar.html" class="cabecera__enlace">Habilitar</a>
-            <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
-            <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
-        </nav>
-    </header>
+    <h1>Listado de Asociaciones</h1>
 
-    <main>  
-        <h1 class="page-title">Listado de Gestión de cultivos</h1>
-        <p class="page-description">Listado de registro relacionados con sensores, insumo y ciclo de cultivo</p>
-        
-        <section class="table-container">
-            <table class="table-container__data-table">
-                <thead>
-                    <tr>
-                        <th class="table-container__data-table-header">No.</th>
-                        <th class="table-container__data-table-header">Tipo de Registro</th>
-                        <th class="table-container__data-table-header">ID Registro</th>
-                        <th class="table-container__data-table-header">Fecha</th>
-                        <th class="table-container__data-table-header">Detalle Principal</th>
-                        <th class="table-container__data-table-header">Responsable</th>
-                        <th class="table-container__data-table-header">Estado</th>
-                        <th class="table-container__data-table-header">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>Lectura de Sensor</td>
-                        <td>LS-2025-001</td>
-                        <td>2025-04-08</td>
-                        <td>Humedad del suelo: 65%</td>
-                        <td>Técnico de Campo</td>
-                        <td>Completado</td>
-                        <td>
-                            <a href="/fronted/public/views/vizualisar/html/crear_asociacion.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>Aplicación de Insumo</td>
-                        <td>AI-2025-002</td>
-                        <td>2025-04-05</td>
-                        <td>Fertilizante Nitrogenado (Dosis estándar)</td>
-                        <td>Operario de Insumos</td>
-                        <td>Completado</td>
-                        <td>
-                            <a href="/fronted/public/views/vizualisar/html/crear_asociacion.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                        
-                    </tr>
-                    <tr>
-                        <td>3</td>
-                        <td>Monitoreo de Ciclo</td>
-                        <td>MC-2025-003</td>
-                        <td>2025-04-02</td>
-                        <td>Etapa de floración temprana</td>
-                        <td>Biólogo Agrónomo</td>
-                        <td>En curso</td>
-                        <td>
-                            <a href="/fronted/public/views/vizualisar/html/crear_asociacion.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>4</td>
-                        <td>Calibración de Sensor</td>
-                        <td>CS-2025-001</td>
-                        <td>2025-03-28</td>
-                        <td>Sensor de temperatura y humedad (Unidad 3)</td>
-                        <td>Técnico de Mantenimiento</td>
-                        <td>Completado</td>
-                        <td>
-                            <a href="/fronted/public/views/vizualisar/html/crear_asociacion.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>5</td>
-                        <td>Pedido de Insumo</td>
-                        <td>PI-2025-005</td>
-                        <td>2025-03-25</td>
-                        <td>Solicitud de pesticida orgánico</td>
-                        <td>Jefe de Cultivo</td>
-                        <td>Pendiente</td>
-                        <td>
-                            <a href="/fronted/public/views/vizualisar/html/crear_asociacion.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
-            <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
-                <button class="btn-print">🖨️ Imprimir</button>
-            </a>
-        </section>
-    </main>
+    <div class="table-container">
+        <table>
+            <thead>
+                <tr>
+                    <th>Responsable</th>
+                    <th>Nombre Asociación</th>
+                    <th>Inversión</th>
+                    <th>Meta</th>
+                    <th>Inicio Producción</th>
+                    <th>Fin Producción</th>
+                    <th>Cultivo</th>
+                    <th>Sensores</th>
+                    <th>Insumos</th>
+                    <th>Ciclo Cultivo</th>
+                    <th>Acción</th>
+                </tr>
+            </thead>
+            <tbody id="tabla-asociaciones">
+                <!-- Aquí se insertarán los datos -->
+            </tbody>
+        </table>
+    </div>
+
+    <script>
+        fetch('http://localhost:3000/asociaciones/listar')
+            .then(response => response.json())
+            .then(data => {
+                const tabla = document.getElementById('tabla-asociaciones');
+                tabla.innerHTML = ''; // Asegura que se limpie antes de agregar
+
+                data.forEach(asociacion => {
+                    const fila = document.createElement('tr');
+                    fila.innerHTML = `
+                        <td>${asociacion.responsable}</td>
+                        <td>${asociacion.nombre_asociacion}</td>
+                        <td>$${asociacion.inversion}</td>
+                        <td>$${asociacion.meta}</td>
+                        <td>${asociacion.iniico_produccion}</td>
+                        <td>${asociacion.fin_produccion}</td>
+                        <td>${asociacion.cultivo}</td>
+                        <td>${asociacion.sensores}</td>
+                        <td>${asociacion.insumos}</td>
+                        <td>${asociacion.ciclo_cultivo}</td>
+                       <td><a href="visualizar_asociacion.html?id=${asociacion.id}" class="boton-detalles">Ver Detalles</a></td>`;
+                    tabla.appendChild(fila);
+                });
+            })
+            .catch(err => {
+                console.error("Error al cargar las asociaciones:", err);
+            });
+    </script>
 </body>
 </html>

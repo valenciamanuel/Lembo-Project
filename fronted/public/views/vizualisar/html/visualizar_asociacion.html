@@ -1,133 +1,174 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
     <meta charset="UTF-8">
-    <title>Dashboard de Asociaciones con Gráficos</title>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <title>Detalles de la Asociación</title>
     <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/visualizar.css">
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
 </head>
-
 <body>
 
-    <header>
-        <h1>Dashboard de Asociaciones</h1>
-    </header>
-
-    <div class="dashboard">
-        <h2>Estadísticas Generales</h2>
-
-        <div class="charts">
-            <!-- Gráfico de inversión vs meta -->
-            <div class="chart-card">
-                <h3>Inversión vs Meta</h3>
-                <canvas id="inversionMetaChart"></canvas>
+<div class="dashboard-container">
+    <h1>Dashboard de Asociación</h1>
+    
+    <!-- Contenedor de los detalles de la Asociación en cajas -->
+    <div class="details-container">
+        <div class="details-grid">
+            <!-- Cajas de detalles -->
+            <div class="detail-box">
+                <h3>Nombre</h3>
+                <p id="nombreAsociacion"></p>
             </div>
-
-            <!-- Gráfico de asociaciones por cultivo -->
-            <div class="chart-card">
-                <h3>Asociaciones por Cultivo</h3>
-                <canvas id="cultivoChart"></canvas>
+            <div class="detail-box">
+                <h3>Responsable</h3>
+                <p id="responsable"></p>
             </div>
-
-            <!-- Gráfico de asociaciones por mes -->
-            <div class="chart-card">
-                <h3>Asociaciones por Mes</h3>
-                <canvas id="mesChart"></canvas>
+            <div class="detail-box">
+                <h3>Descripción</h3>
+                <p id="descripcion"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Inversión</h3>
+                <p id="inversion"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Meta</h3>
+                <p id="meta"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Inicio Producción</h3>
+                <p id="inicioProduccion"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Fin Producción</h3>
+                <p id="finProduccion"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Cultivo</h3>
+                <p id="cultivo"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Sensores</h3>
+                <p id="sensores"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Insumos</h3>
+                <p id="insumos"></p>
+            </div>
+            <div class="detail-box">
+                <h3>Ciclo Cultivo</h3>
+                <p id="cicloCultivo"></p>
             </div>
         </div>
     </div>
 
-    <script>
-        // Datos simulados
-        const asociaciones = [
-            { nombre: "Asociación 1", cultivo: "Maíz", inversion: 5000, meta: 8000, fecha: "2025-01-15" },
-            { nombre: "Asociación 2", cultivo: "Café", inversion: 7000, meta: 9000, fecha: "2025-02-20" },
-            { nombre: "Asociación 3", cultivo: "Maíz", inversion: 4000, meta: 6000, fecha: "2025-01-25" },
-            { nombre: "Asociación 4", cultivo: "Arroz", inversion: 3000, meta: 5000, fecha: "2025-03-05" },
-        ];
+    <!-- Contenedor de la información y gráficos organizados en cuadros -->
+    <div class="dashboard-info">
+        <!-- Cuadro de gráfico de Inversión vs Meta -->
+        <div class="info-item">
+            <h3>Inversión vs Meta</h3>
+            <canvas id="inversionMetaChart"></canvas>
+            <p>Descripción adicional sobre la inversión y la meta alcanzada.</p>
+        </div>
 
-        // Gráfico de Inversión vs Meta
-        const labelsInvMeta = asociaciones.map(a => a.nombre);
-        const dataInversion = asociaciones.map(a => a.inversion);
-        const dataMeta = asociaciones.map(a => a.meta);
+        <!-- Cuadro de gráfico de Progreso de Producción -->
+        <div class="info-item">
+            <h3>Progreso de Producción</h3>
+            <canvas id="progresoProduccionChart"></canvas>
+            <p>Detalles sobre el progreso de la producción.</p>
+        </div>
+    </div>
+</div>
 
-        new Chart(document.getElementById('inversionMetaChart'), {
-            type: 'bar',
-            data: {
-                labels: labelsInvMeta,
-                datasets: [
-                    {
-                        label: 'Inversión',
-                        data: dataInversion,
-                        backgroundColor: '#0a3d62'
-                    },
-                    {
-                        label: 'Meta',
-                        data: dataMeta,
-                        backgroundColor: '#38ada9'
-                    }
-                ]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: true }
+<script>
+    const urlParams = new URLSearchParams(window.location.search);
+    const id = urlParams.get('id');
+    
+    if (id) {
+        fetch(`http://localhost:3000/asociaciones/${id}`)
+            .then(response => {
+                if (!response.ok) {
+                    throw new Error('No se pudo cargar los detalles de la asociación');
+                }
+                return response.json();
+            })
+            .then(asociacion => {
+                // Asignación de los detalles a los elementos correspondientes
+                document.getElementById('nombreAsociacion').textContent = asociacion.nombre_asociacion;
+                document.getElementById('responsable').textContent = asociacion.responsable;
+                document.getElementById('descripcion').textContent = asociacion.descripcion;
+                document.getElementById('inversion').textContent = `$${asociacion.inversion}`;
+                document.getElementById('meta').textContent = `$${asociacion.meta}`;
+                document.getElementById('inicioProduccion').textContent = asociacion.iniico_produccion;
+                document.getElementById('finProduccion').textContent = asociacion.fin_produccion;
+                document.getElementById('cultivo').textContent = asociacion.cultivo;
+                document.getElementById('sensores').textContent = asociacion.sensores;
+                document.getElementById('insumos').textContent = asociacion.insumos;
+                document.getElementById('cicloCultivo').textContent = asociacion.ciclo_cultivo;
+            })
+            .catch(err => {
+                console.error("Error al cargar los detalles de la asociación:", err);
+            });
+    } else {
+        console.error('ID no proporcionado en la URL');
+    }
+
+    // Datos para los gráficos (solo ejemplo)
+    const asociacionData = {
+        inversion: 50000, // Ejemplo: inversión en dólares
+        meta: 60000,      // Ejemplo: meta en dólares
+        progreso: 75      // Ejemplo: progreso de producción en porcentaje
+    };
+
+    // Gráfico de Inversión vs Meta
+    const ctxInversionMeta = document.getElementById('inversionMetaChart').getContext('2d');
+    const inversionMetaChart = new Chart(ctxInversionMeta, {
+        type: 'bar',
+        data: {
+            labels: ['Inversión', 'Meta'],
+            datasets: [{
+                label: 'Monto en USD',
+                data: [asociacionData.inversion, asociacionData.meta],
+                backgroundColor: ['#4caf50', '#ff9800'],
+                borderColor: ['#388e3c', '#f57c00'],
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            scales: {
+                y: {
+                    beginAtZero: true
                 }
             }
-        });
+        }
+    });
 
-        // Gráfico de asociaciones por cultivo
-        const cultivoCounts = {};
-        asociaciones.forEach(a => {
-            cultivoCounts[a.cultivo] = (cultivoCounts[a.cultivo] || 0) + 1;
-        });
-
-        new Chart(document.getElementById('cultivoChart'), {
-            type: 'pie',
-            data: {
-                labels: Object.keys(cultivoCounts),
-                datasets: [{
-                    label: 'Asociaciones',
-                    data: Object.values(cultivoCounts),
-                    backgroundColor: ['#0a3d62', '#38ada9', '#e58e26']
-                }]
-            },
-            options: {
-                responsive: true
-            }
-        });
-
-        // Gráfico de asociaciones por mes
-        const mesCounts = Array(12).fill(0);
-        asociaciones.forEach(a => {
-            const mes = new Date(a.fecha).getMonth();
-            mesCounts[mes]++;
-        });
-
-        new Chart(document.getElementById('mesChart'), {
-            type: 'line',
-            data: {
-                labels: ['Ene', 'Feb', 'Mar', 'Abr', 'May', 'Jun', 'Jul', 'Ago', 'Sep', 'Oct', 'Nov', 'Dic'],
-                datasets: [{
-                    label: 'Asociaciones',
-                    data: mesCounts,
-                    borderColor: '#0a3d62',
-                    backgroundColor: '#0a3d62',
-                    tension: 0.3
-                }]
-            },
-            options: {
-                responsive: true,
-                scales: {
-                    y: { beginAtZero: true }
+    // Gráfico de Progreso de Producción
+    const ctxProgresoProduccion = document.getElementById('progresoProduccionChart').getContext('2d');
+    const progresoProduccionChart = new Chart(ctxProgresoProduccion, {
+        type: 'doughnut',
+        data: {
+            labels: ['Completado', 'Restante'],
+            datasets: [{
+                label: 'Progreso de Producción',
+                data: [asociacionData.progreso, 100 - asociacionData.progreso],
+                backgroundColor: ['#4caf50', '#f44336'],
+                borderColor: '#ffffff',
+                borderWidth: 1
+            }]
+        },
+        options: {
+            responsive: true,
+            cutout: '70%',
+            plugins: {
+                legend: {
+                    position: 'top'
                 }
             }
-        });
-
-    </script>
+        }
+    });
+</script>
 
 </body>
-
 </html>

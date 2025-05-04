@@ -1,115 +1,118 @@
-:root {
-    /* Primary color*/
-
-    --primary-950: #4DB100;
-    --primary-900: #55B40C;
-    --primary-800: #67BC26;
-    --primary-700: #79C43F;
-    --primary-600: #8BCC59;
-    --primary-500: #9DD472;
-    --primary-400: #AEDB8C;
-    --primary-300: #C0E3A5;
-    --primary-200: #D2EBBF;
-    --primary-100: #EAF3D8;
-    --primary-50: #F6FBF2;
-
-    /* Secundary color*/
-
-    --secundary-950:#FED638;
-    --secundary-900:#FED841;
-    --secundary-800:#FEDC55;
-    --secundary-700:#FEE069;
-    --secundary-600:#FEE47D;
-    --secundary-500:#FEE891;
-    --secundary-400:#FEECA5;
-    --secundary-300:#FEF0B9;
-    --secundary-200:#FEF4CD;
-    --secundary-100:#FEF8E1;
-    --secundary-50:#FEFCF5;
-    --secundary-red: #ff4d4f;
-
-    /* Basic color*/
-    --white: #fff;
-    --black: #000;
-    --gray-950: #101010;
-    --gray-900: #262626;
-    --gray-800: #3B3B3B;
-    --gray-700: #515151;
-    --gray-600: #676767;
-    --gray-500: #7D7D7D;
-    --gray-400: #929292;
-    --gray-300: #A8A8A8;
-    --gray-200: #BEBEBE;
-    --gray-100: #D4D4D4;
-    --gray-50: #E9E9E9;
-
-    /* Font-family */
-    --main-font: Helvetica, Arial, sans-serif;
-
-    /* Font-size */
-    --fs-xxxxl: 8.0rem; /* Ultra grande */
-    --fs-xxxl: 6.4rem; /* Súper grande */
-    --fs-xxl: 4.8rem; /* Extra grande */
-    --fs-xl: 4.0rem;  /* Muy grande */
-    --fs-lg: 3.2rem;  /* Grande */
-    --fs-md: 2.4rem;  /* Mediano */
-    --fs-sm: 2.0rem;  /* Pequeño */
-    --fs-xs: 1.6rem;  /* Extra pequeño */
-    --fs-xxs: 1.4rem; /* Extra extra pequeño */
-    --fs-xxxs: 1.2rem; /* Mínimo */
-}
-
-html {
-    font-size: 62.5%;
-    font-family: var(--fuente-principal);
-    scroll-behavior: smooth;
-    height: 100%;
-    /* Permitir el scroll vertical cuando sea necesario */
-    overflow-y: auto;
-    /* Evitar el scroll horizontal a menos que el contenido lo requiera */
-    overflow-x: hidden;
-}
-
-
+/* General */
 body {
-    font-family: 'Segoe UI', sans-serif;
-    background-color: #f4f6f9;
+    font-family: Arial, sans-serif;
+    background-color: #f4f4f9;
+    color: #333;
     margin: 0;
     padding: 0;
-  }
+}
 
-  header {
-    background-color: var(--primary-950);
-    color: white;
-    padding: 1rem;
+/* Contenedor principal del Dashboard */
+.dashboard-container {
+    max-width: 1000px;
+    margin: 20px auto;
+    padding: 15px; /* Reducir el padding */
+    background-color: #fff;
+    border-radius: 8px;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
     text-align: center;
-  }
+}
 
-  .dashboard {
-    padding: 30px;
-    max-width: 1200px;
-    margin: auto;
-  }
+/* Título principal del Dashboard */
+.dashboard-container h1 {
+    font-size: 2rem; /* Reducir el tamaño del título */
+    color: #333;
+    margin-bottom: 15px;
+}
 
-  .dashboard h2 {
-    color: #2f3640;
-    margin-bottom: 20px;
-  }
+/* Contenedor de los detalles de la asociación */
+.details-container {
+    margin-top: 20px;
+}
 
-  .charts {
+/* Grid para los detalles de la Asociación */
+.details-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 30px;
-  }
+    grid-template-columns: repeat(3, 1fr); /* Tres columnas para los cuadros */
+    gap: 8px; /* Reducir aún más el espacio entre las cajas */
+}
 
-  .chart-card {
-    background: white;
-    border-radius: 10px;
-    padding: 20px;
-    box-shadow: 0 2px 10px rgba(0,0,0,0.1);
-  }
+/* Estilo para cada caja de detalles */
+.detail-box {
+    background-color: #fafafa;
+    padding: 4px; /* Reducir más el padding */
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+}
 
-  canvas {
-    max-width: 100%;
-    height: auto;
-  }
+/* Títulos dentro de cada caja de detalles */
+.detail-box h3 {
+    font-size: 0.9rem; /* Reducir aún más el tamaño del título */
+    margin-bottom: 6px;
+    color: #444;
+}
+
+/* Estilo para el texto dentro de cada caja de detalles */
+.detail-box p {
+    font-size: 0.7rem; /* Reducir aún más el tamaño del texto */
+    color: #666;
+    text-align: center;
+    line-height: 1.3;
+}
+
+/* Sección de información (cuadros de gráficos y otros datos) */
+.dashboard-info {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Dos columnas para los cuadros */
+    gap: 12px; /* Reducir aún más el espacio entre los cuadros */
+    margin-top: 20px;
+}
+
+/* Estilo para cada cuadro de gráfico */
+.info-item {
+    background-color: #fafafa;
+    padding: 4px; /* Reducir el padding aún más */
+    border-radius: 6px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+}
+
+/* Títulos dentro de los cuadros de gráficos */
+.info-item h3 {
+    font-size: 0.1rem; /* Reducir aún más el tamaño del título */
+    margin-bottom: 6px;
+    color: #444;
+}
+
+/* Estilo para el texto dentro de los cuadros de gráficos */
+.info-item p {
+    font-size: 0.7rem; /* Reducir aún más el tamaño del texto */
+    color: #666;
+    margin-top: 6px;
+    text-align: center;
+    /* line-height: 1.3; */
+}
+
+/* Estilo para los gráficos */
+.info-item canvas {
+    width: 10%;
+    height: 10px; /* Gráficas tres veces más pequeñas */
+    border-radius: 6px;
+    background-color: #e0e0e0;
+    margin-top: 4px; /* Reducir el espacio entre la gráfica y el texto */
+}
+
+/* Adaptación para pantallas pequeñas (tablet, móviles) */
+@media (max-width: 768px) {
+    .details-grid {
+        grid-template-columns: 1fr; /* Una sola columna en pantallas pequeñas */
+    }
+
+    .info-item canvas {
+        height: 8px; /* Gráficas tres veces más pequeñas en pantallas móviles */
+    }
+}
