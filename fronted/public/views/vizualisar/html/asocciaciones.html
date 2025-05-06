@@ -19,21 +19,23 @@
     <div class="app">
         <!-- Header -->
         <header class="header">
-            <div class="header__logo">
-                <i class="fa-solid fa-leaf header__logo-icon"></i>
-                <h1 class="header__title">LEMBO</h1>
-            </div>
+            <a href="/fronted/public/views/homes/index.html">
+                <div class="header__logo">
+                    <i class="fa-solid fa-leaf header__logo-icon"></i>
+                    <h1 class="header__title">LEMBO</h1>
+                </div>
+            </a>
             <div class="header__actions">
                 <button class="button button--primary" id="btnCrearAsociacion">
                     <i class="fa-solid fa-plus button__icon"></i>
                     <span class="button__text">Nueva Asociación</span>
                 </button>
                 <div class="header__export">
-                    <button class="button button--secondary" id="btnExportarExcel">
+                    <button class="button button--primary" id="btnExportarExcel">
                         <i class="fa-solid fa-file-excel button__icon"></i>
                         <span class="button__text">Excel</span>
                     </button>
-                    <button class="button button--secondary" id="btnExportarPDF">
+                    <button class="button button--primary" id="btnExportarPDF">
                         <i class="fa-solid fa-file-pdf button__icon"></i>
                         <span class="button__text">PDF</span>
                     </button>
@@ -84,12 +86,7 @@
                 </div>
 
                 <!-- Gráficos -->
-                <div class="charts">
-                    <div class="chart-container">
-                        <h3 class="chart__title">Inversión vs Meta por Asociación</h3>
-                        <canvas id="inversionMetaChart"></canvas>
-                    </div>
-                </div>
+                
 
                 <!-- Tabla de Asociaciones -->
                 <div class="table-container">
@@ -109,6 +106,12 @@
                             <!-- Datos cargados dinámicamente -->
                         </tbody>
                     </table>
+                </div>
+                <div class="charts">
+                    <div class="chart-container">
+                        <h3 class="chart__title">Inversión vs Meta por Asociación</h3>
+                        <canvas id="inversionMetaChart"></canvas>
+                    </div>
                 </div>
             </section>
         </main>

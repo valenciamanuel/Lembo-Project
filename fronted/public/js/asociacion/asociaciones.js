@@ -466,6 +466,21 @@ function abrirModalCrearAsociacion() {
     abrirModal(modalAsociacion);
 }
 
+function validarNombreAsociacion(nombre) {
+    if (nombre.length < 3 || nombre.length > 100) {
+        return false; // No es válido
+    }
+    return true; // Es válido
+}
+
+nombre_asociacion.addEventListener('input', function() {
+    if (!validarNombreAsociacion(this.value)) {
+        this.setCustomValidity('El nombre debe tener entre 3 y 100 caracteres.');
+    } else {
+        this.setCustomValidity(''); // Campo válido
+    }
+    this.reportValidity(); // Fuerza la validación (muestra el mensaje si es necesario)
+});
 function verDetallesAsociacion(id) {
     const asociacion = asociacionesData.find(a => a.id == id);
     if (!asociacion) return;
@@ -635,7 +650,7 @@ function verDetallesAsociacion(id) {
 function editarAsociacion(id) {
     const asociacion = asociacionesData.find(a => a.id == id);
     if (!asociacion) return;
-
+    
     // Llenar el formulario con los datos de la asociación
     asociacionId.value = asociacion.id;
     // responsable.value = asociacion.responsable;  // ESTO SE ELIMINA
@@ -1224,6 +1239,14 @@ function inicializarEventListeners() {
     inversion.addEventListener('input', function() {
         const inversionValue = parseFloat(this.value) || 0;
         meta.value = (inversionValue * 1.3).toFixed(2);
+    });
+    nombre_asociacion.addEventListener('input', function() {
+        if (!validarNombreAsociacion(this.value)) {
+            this.setCustomValidity('El nombre debe tener entre 3 y 100 caracteres.');
+        } else {
+            this.setCustomValidity('');
+        }
+        this.reportValidity();
     });
 }
 
