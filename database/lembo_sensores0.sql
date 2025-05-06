@@ -16,34 +16,32 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `insumo`
+-- Table structure for table `sensores`
 --
 
-DROP TABLE IF EXISTS `insumo`;
+DROP TABLE IF EXISTS `sensores`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `insumo` (
-  `idInsumo` int NOT NULL AUTO_INCREMENT,
-  `tipoInsumo` varchar(20) NOT NULL,
-  `nombreInsumo` varchar(20) NOT NULL,
-  `unidadMedida` varchar(10) NOT NULL,
-  `cantidad` decimal(10,2) NOT NULL,
-  `valorUnitario` decimal(10,2) NOT NULL,
-  `valorTotal` decimal(10,2) NOT NULL,
+CREATE TABLE `sensores` (
+  `idSensor` int NOT NULL AUTO_INCREMENT,
+  `tipoSensor` varchar(100) NOT NULL,
+  `nombreSensor` varchar(100) NOT NULL,
+  `unidadMedida` varchar(50) NOT NULL,
+  `tiempoEscaneo` int NOT NULL,
   `descripcion` text,
-  `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
-  PRIMARY KEY (`idInsumo`)
-) ENGINE=InnoDB AUTO_INCREMENT=6 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `estado` enum('Activo','Inactivo') NOT NULL,
+  PRIMARY KEY (`idSensor`)
+) ENGINE=InnoDB AUTO_INCREMENT=15 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `insumo`
+-- Dumping data for table `sensores`
 --
 
-LOCK TABLES `insumo` WRITE;
-/*!40000 ALTER TABLE `insumo` DISABLE KEYS */;
-INSERT INTO `insumo` VALUES (1,'sdfgh','sdfghj','ertyui',3456.00,3456.00,4657.00,'sdgfhgj','activo'),(2,'ergfth','dfsgh','sfdg',23456.00,3456.00,3456.00,'sdfgh','inactivo'),(3,'ety','gfh','erfhgh',3546.00,3456.00,345678.00,'fdgh','activo'),(4,'rtyuhk','sdfg','dsfg',345.00,345.00,456.00,'sdfgh','activo'),(5,'fdg','dfgh','sdfg',3456.00,45.00,4567.00,'sdfgh','activo');
-/*!40000 ALTER TABLE `insumo` ENABLE KEYS */;
+LOCK TABLES `sensores` WRITE;
+/*!40000 ALTER TABLE `sensores` DISABLE KEYS */;
+INSERT INTO `sensores` VALUES (1,'www','wwww','hnj',3,'hbnjmk','Activo'),(2,'tfygh','tyuhj','ghjk',67,'gyhj','Activo'),(3,'etsrydfu','wretyu','sadfgy',23456,'wetsrdyfu','Activo'),(4,'srdtfjyg','warestdyuiu','strdyfugih',2345678,'adsfghj','Activo'),(5,'ewrtyy','ewrytui','ewrtyu',34567,'dsfghjk','Activo'),(6,'dsfg','ewrty','wer',234,'sdefrgt','Activo'),(7,'maneo','manuel','mk',1234,'manueo','Inactivo'),(8,'maneo','manuel','mk',1234,'manueo','Inactivo'),(9,'maneo','manuel','mk',1234,'manueo','Inactivo'),(10,'maneo','manuel','mk',1234,'manueo','Inactivo'),(11,'manue','manuelo','km',593,'bb','Activo'),(12,'manue','manuelo','km',593,'bb','Activo'),(13,'manue','manuelo','km',593,'bb','Activo'),(14,'ello','ellos','fd',912,'triste','Activo');
+/*!40000 ALTER TABLE `sensores` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +53,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-21 19:40:14
+-- Dump completed on 2025-05-06 13:52:29

@@ -16,34 +16,33 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `cultivo`
+-- Table structure for table `uso_insumo`
 --
 
-DROP TABLE IF EXISTS `cultivo`;
+DROP TABLE IF EXISTS `uso_insumo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `cultivo` (
+CREATE TABLE `uso_insumo` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `cultivoType` varchar(100) NOT NULL,
-  `cultivoName` varchar(100) NOT NULL,
-  `cultivoID` varchar(50) NOT NULL,
-  `size` varchar(50) DEFAULT NULL,
-  `location` varchar(255) DEFAULT NULL,
-  `description` text,
-  `state` enum('Activo','Inactivo') NOT NULL,
-  PRIMARY KEY (`id`),
-  UNIQUE KEY `cultivoID` (`cultivoID`)
-) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+  `fecha_uso` date NOT NULL,
+  `cantidad` decimal(10,2) NOT NULL,
+  `responsable` varchar(20) NOT NULL,
+  `valor_unitario` decimal(10,2) NOT NULL,
+  `valor_total` decimal(10,2) NOT NULL,
+  `observaciones` text,
+  `insumo` varchar(20) NOT NULL,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB AUTO_INCREMENT=9 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `cultivo`
+-- Dumping data for table `uso_insumo`
 --
 
-LOCK TABLES `cultivo` WRITE;
-/*!40000 ALTER TABLE `cultivo` DISABLE KEYS */;
-INSERT INTO `cultivo` VALUES (1,'huj','gbhj','gh','byhnj','gyhj','yhuj','Activo'),(2,'klKL','ujik','ikol','mk,l','kl','km','Inactivo'),(3,'ertgh','ser','2025-04-16','2025-04-09','gfvhj','yguhj','Activo'),(4,'dgfgyuhijsd','asdfghj','dszfxgchvjjk','zdxfchgvjbj','xcvbjnkm','gxdfchghj','Activo'),(5,'sdgfhjkgf','sdrftyguhi','szfdgxfhcyuhijk','szfdxgchjiokldxfcgv','szfdxghcvjbjnk','zxdfchgvjhbjnkml,','Inactivo'),(6,'dsfghjlkawsdrtfygiuho','dsfdgfhjgkhsdgfhj','s<adszfdgxfhjgykhul','aesrdtfyiguhiwesrd','astedyrfutgiohupji','szdgxfcvhedrtfyui','Activo'),(7,'dfg','dsfgh','34567564','234','sdafg','dwefrgt','Activo');
-/*!40000 ALTER TABLE `cultivo` ENABLE KEYS */;
+LOCK TABLES `uso_insumo` WRITE;
+/*!40000 ALTER TABLE `uso_insumo` DISABLE KEYS */;
+INSERT INTO `uso_insumo` VALUES (1,'2025-04-11',456.00,'dsfgh',345.00,345.00,'dsfg','insumo1'),(2,'2025-05-10',12.00,'manuel',1000.00,2000.00,'dfghj','insumo1'),(3,'2025-05-10',12.00,'manuel',1000.00,2000.00,'dfghj','insumo1'),(4,'2025-05-10',12.00,'manuel',1000.00,2000.00,'dfghj','insumo1'),(5,'2025-05-10',12.00,'manuel',1000.00,2000.00,'dfghj','insumo1'),(6,'2025-05-10',12.00,'manuel',1000.00,2000.00,'dfghj','insumo1'),(7,'2025-05-10',12.00,'manuel',1000.00,2000.00,'dfghj','insumo1'),(8,'2025-05-06',2.00,'1',3456.00,6912.00,'Uso en asociación: manuelooo','gfh');
+/*!40000 ALTER TABLE `uso_insumo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -55,4 +54,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-21 19:40:14
+-- Dump completed on 2025-05-06 13:52:29

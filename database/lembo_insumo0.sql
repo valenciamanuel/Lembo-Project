@@ -16,36 +16,34 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `asociaciones`
+-- Table structure for table `insumo`
 --
 
-DROP TABLE IF EXISTS `asociaciones`;
+DROP TABLE IF EXISTS `insumo`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `asociaciones` (
-  `id` int NOT NULL AUTO_INCREMENT,
-  `responsable` varchar(30) NOT NULL,
-  `nombre_asociacion` varchar(20) NOT NULL,
-  `inversion` decimal(10,2) NOT NULL,
-  `meta` decimal(10,2) NOT NULL,
-  `iniico_produccion` date NOT NULL,
-  `fin_produccion` date NOT NULL,
-  `cultivo` varchar(20) NOT NULL,
-  `sensores` varchar(20) NOT NULL,
-  `insumos` varchar(20) NOT NULL,
-  `ciclo_cultivo` varchar(20) NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB AUTO_INCREMENT=4 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
+CREATE TABLE `insumo` (
+  `idInsumo` int NOT NULL AUTO_INCREMENT,
+  `tipoInsumo` varchar(20) NOT NULL,
+  `nombreInsumo` varchar(20) NOT NULL,
+  `unidadMedida` varchar(10) NOT NULL,
+  `cantidad` decimal(10,2) NOT NULL,
+  `valorUnitario` decimal(10,2) NOT NULL,
+  `valorTotal` decimal(10,2) NOT NULL,
+  `descripcion` text,
+  `estado` enum('activo','inactivo') NOT NULL DEFAULT 'activo',
+  PRIMARY KEY (`idInsumo`)
+) ENGINE=InnoDB AUTO_INCREMENT=8 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `asociaciones`
+-- Dumping data for table `insumo`
 --
 
-LOCK TABLES `asociaciones` WRITE;
-/*!40000 ALTER TABLE `asociaciones` DISABLE KEYS */;
-INSERT INTO `asociaciones` VALUES (1,'dfgh','sdfg',345.00,3456.00,'2025-04-08','2025-04-09','cultivo2','sensor3','insumo2','ciclo1'),(2,'fghj','dfghj',345.00,23456.00,'2025-04-05','2025-04-15','cultivo1','sensor1','insumo2','ciclo2'),(3,'hgjk','efrgt',3456.00,4567.00,'2025-04-09','2025-04-10','cultivo1','sensor2','insumo1','ciclo1');
-/*!40000 ALTER TABLE `asociaciones` ENABLE KEYS */;
+LOCK TABLES `insumo` WRITE;
+/*!40000 ALTER TABLE `insumo` DISABLE KEYS */;
+INSERT INTO `insumo` VALUES (1,'sdfgh','sdfghj','ertyui',3456.00,3456.00,4657.00,'sdgfhgj','activo'),(2,'ergfth','dfsgh','sfdg',23456.00,3456.00,3456.00,'sdfgh','inactivo'),(3,'ety','gfh','erfhgh',3544.00,3456.00,12248064.00,'fdgh','activo'),(4,'rtyuhk','sdfg','dsfg',345.00,345.00,456.00,'sdfgh','activo'),(5,'fdg','dfgh','sdfg',3456.00,45.00,4567.00,'sdfgh','activo'),(6,'hola','si ','546',2.00,8.00,5.00,'6','activo'),(7,'hola','si ','546',2.00,8.00,5.00,'6','activo');
+/*!40000 ALTER TABLE `insumo` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -57,4 +55,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-21 19:40:14
+-- Dump completed on 2025-05-06 13:52:29

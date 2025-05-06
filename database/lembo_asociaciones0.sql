@@ -16,33 +16,36 @@
 /*!40111 SET @OLD_SQL_NOTES=@@SQL_NOTES, SQL_NOTES=0 */;
 
 --
--- Table structure for table `uso_insumo`
+-- Table structure for table `asociaciones`
 --
 
-DROP TABLE IF EXISTS `uso_insumo`;
+DROP TABLE IF EXISTS `asociaciones`;
 /*!40101 SET @saved_cs_client     = @@character_set_client */;
 /*!50503 SET character_set_client = utf8mb4 */;
-CREATE TABLE `uso_insumo` (
+CREATE TABLE `asociaciones` (
   `id` int NOT NULL AUTO_INCREMENT,
-  `fecha_uso` date NOT NULL,
-  `cantidad` decimal(10,2) NOT NULL,
-  `responsable` varchar(20) NOT NULL,
-  `valor_unitario` decimal(10,2) NOT NULL,
-  `valor_total` decimal(10,2) NOT NULL,
-  `observaciones` text,
-  `insumo` varchar(20) NOT NULL,
+  `responsable` varchar(30) NOT NULL,
+  `nombre_asociacion` varchar(20) NOT NULL,
+  `inversion` decimal(10,2) NOT NULL,
+  `meta` decimal(10,2) NOT NULL,
+  `iniico_produccion` date NOT NULL,
+  `fin_produccion` date NOT NULL,
+  `cultivo` varchar(20) NOT NULL,
+  `sensores` text,
+  `insumos` text,
+  `ciclo_cultivo` varchar(20) NOT NULL,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB AUTO_INCREMENT=2 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
--- Dumping data for table `uso_insumo`
+-- Dumping data for table `asociaciones`
 --
 
-LOCK TABLES `uso_insumo` WRITE;
-/*!40000 ALTER TABLE `uso_insumo` DISABLE KEYS */;
-INSERT INTO `uso_insumo` VALUES (1,'2025-04-11',456.00,'dsfgh',345.00,345.00,'dsfg','insumo1');
-/*!40000 ALTER TABLE `uso_insumo` ENABLE KEYS */;
+LOCK TABLES `asociaciones` WRITE;
+/*!40000 ALTER TABLE `asociaciones` DISABLE KEYS */;
+INSERT INTO `asociaciones` VALUES (1,'1','manuelooo',16912.00,21985.60,'2025-05-16','2025-05-29','asdfghj','wwww, wretyu, tyuhj','gfh','ggg');
+/*!40000 ALTER TABLE `asociaciones` ENABLE KEYS */;
 UNLOCK TABLES;
 /*!40103 SET TIME_ZONE=@OLD_TIME_ZONE */;
 
@@ -54,4 +57,4 @@ UNLOCK TABLES;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2025-04-21 19:40:15
+-- Dump completed on 2025-05-06 13:52:29
