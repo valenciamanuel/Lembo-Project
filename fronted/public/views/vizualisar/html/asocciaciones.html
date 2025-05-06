@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Sistema de Gestión de Asociaciones</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
+    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/asociaciones.css">
+    <!-- CDN para gráficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- CDN para exportar a Excel -->
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <!-- CDN para exportar a PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+</head>
+<body>
+    <div class="app">
+        <!-- Header -->
+        <header class="header">
+            <div class="header__logo">
+                <i class="fa-solid fa-leaf header__logo-icon"></i>
+                <h1 class="header__title">LEMBO</h1>
+            </div>
+            <div class="header__actions">
+                <button class="button button--primary" id="btnCrearAsociacion">
+                    <i class="fa-solid fa-plus button__icon"></i>
+                    <span class="button__text">Nueva Asociación</span>
+                </button>
+                <div class="header__export">
+                    <button class="button button--secondary" id="btnExportarExcel">
+                        <i class="fa-solid fa-file-excel button__icon"></i>
+                        <span class="button__text">Excel</span>
+                    </button>
+                    <button class="button button--secondary" id="btnExportarPDF">
+                        <i class="fa-solid fa-file-pdf button__icon"></i>
+                        <span class="button__text">PDF</span>
+                    </button>
+                </div>
+            </div>
+        </header>
+
+        <!-- Main Content -->
+        <main class="main">
+            <section class="dashboard">
+                <div class="dashboard__header">
+                    <h2 class="dashboard__title">Asociaciones</h2>
+                    <div class="dashboard__search">
+                        <input type="text" class="input" id="searchInput" placeholder="Buscar asociación...">
+                        <i class="fa-solid fa-search dashboard__search-icon"></i>
+                    </div>
+                </div>
+
+                <!-- Estadísticas -->
+                <div class="stats">
+                    <div class="stats__card">
+                        <div class="stats__icon">
+                            <i class="fa-solid fa-users"></i>
+                        </div>
+                        <div class="stats__info">
+                            <h3 class="stats__title">Total Asociaciones</h3>
+                            <p class="stats__value" id="totalAsociaciones">0</p>
+                        </div>
+                    </div>
+                    <div class="stats__card">
+                        <div class="stats__icon">
+                            <i class="fa-solid fa-money-bill-wave"></i>
+                        </div>
+                        <div class="stats__info">
+                            <h3 class="stats__title">Inversión Total</h3>
+                            <p class="stats__value" id="inversionTotal">$0</p>
+                        </div>
+                    </div>
+                    <div class="stats__card">
+                        <div class="stats__icon">
+                            <i class="fa-solid fa-chart-line"></i>
+                        </div>
+                        <div class="stats__info">
+                            <h3 class="stats__title">Meta Total</h3>
+                            <p class="stats__value" id="metaTotal">$0</p>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Gráficos -->
+                <div class="charts">
+                    <div class="chart-container">
+                        <h3 class="chart__title">Inversión vs Meta por Asociación</h3>
+                        <canvas id="inversionMetaChart"></canvas>
+                    </div>
+                </div>
+
+                <!-- Tabla de Asociaciones -->
+                <div class="table-container">
+                    <table class="table">
+                        <thead class="table__head">
+                            <tr>
+                                <th>ID</th>
+                                <th>Responsable</th>
+                                <th>Nombre Asociación</th>
+                                <th>Inversión</th>
+                                <th>Meta</th>
+                                <th>Cultivo</th>
+                                <th>Acciones</th>
+                            </tr>
+                        </thead>
+                        <tbody class="table__body" id="asociacionesTableBody">
+                            <!-- Datos cargados dinámicamente -->
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+        </main>
+
+        <!-- Footer -->
+        <footer class="footer">
+            <p class="footer__text">© 2025 LEMBO - Sistema de Gestión de Asociaciones</p>
+        </footer>
+    </div>
+
+    <!-- Modales -->
+    <!-- Modal Ver Detalles -->
+    <div class="modal" id="modalDetalles">
+        <div class="modal__content modal__content--large">
+            <div class="modal__header">
+                <h2 class="modal__title">Detalles de la Asociación</h2>
+                <button class="modal__close" id="closeModalDetalles">&times;</button>
+            </div>
+            <div class="modal__body" id="detallesAsociacionContent">
+                <!-- Contenido cargado dinámicamente -->
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Crear/Editar Asociación -->
+    <div class="modal" id="modalAsociacion">
+        <div class="modal__content modal__content--large">
+            <div class="modal__header">
+                <h2 class="modal__title" id="modalAsociacionTitle">Nueva Asociación</h2>
+                <button class="modal__close" id="closeModalAsociacion">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="formAsociacion" class="form">
+                    <input type="hidden" id="asociacionId">
+                    
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="responsable">Responsable</label>
+                            <div class="form__select-container">
+                                <select class="form__select" id="responsable" required>
+                                    <option value="">Seleccionar responsable</option>
+                                </select>
+                                </div>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="nombre_asociacion">Nombre de la Asociación</label>
+                            <input type="text" class="form__input" id="nombre_asociacion" required>
+                        </div>
+                    </div>
+
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="inversion">Inversión ($)</label>
+                            <input type="number" class="form__input" id="inversion" step="0.01" required>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="meta">Meta ($)</label>
+                            <input type="number" class="form__input" id="meta" step="0.01" required>
+                        </div>
+                    </div>
+
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="iniico_produccion">Inicio de Producción</label>
+                            <input type="date" class="form__input" id="iniico_produccion" required>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="fin_produccion">Fin de Producción</label>
+                            <input type="date" class="form__input" id="fin_produccion" required>
+                        </div>
+                    </div>
+
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="cultivo">Cultivo</label>
+                            <div class="form__select-container">
+                                <select class="form__select" id="cultivo" required>
+                                    <option value="">Seleccionar cultivo</option>
+                                </select>
+                                <button type="button" class="button button--icon" id="btnNuevoCultivo">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="ciclo_cultivo">Ciclo de Cultivo</label>
+                            <div class="form__select-container">
+                                <select class="form__select" id="ciclo_cultivo" required>
+                                    <option value="">Seleccionar ciclo</option>
+                                </select>
+                                <button type="button" class="button button--icon" id="btnNuevoCiclo">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label">Sensores (máximo 3)</label>
+                        <div class="form__sensors" id="sensoresContainer">
+                            <!-- Sensores se cargarán dinámicamente -->
+                        </div>
+                        <div class="form__help-text">Seleccione hasta 3 sensores para esta asociación</div>
+                    </div>
+
+                    <div class="form__group">
+                        <label class="form__label" for="insumos">Insumos</label>
+                        <div class="form__select-container">
+                            <select class="form__select" id="insumos" required>
+                                <option value="">Seleccionar insumo</option>
+                            </select>
+                            <button type="button" class="button button--icon" id="btnNuevoInsumo">
+                                <i class="fa-solid fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+
+                    <div class="form__group" id="insumoDetallesContainer" style="display: none;">
+                        <div class="insumo-detalles">
+                            <div class="insumo-detalles__header">
+                                <h4 class="insumo-detalles__title">Detalles del Insumo</h4>
+                            </div>
+                            <div class="insumo-detalles__content">
+                                <div class="form__row">
+                                    <div class="form__group">
+                                        <label class="form__label" for="insumoNombre">Nombre</label>
+                                        <input type="text" class="form__input" id="insumoNombre" readonly>
+                                    </div>
+                                    <div class="form__group">
+                                        <label class="form__label" for="insumoTipo">Tipo</label>
+                                        <input type="text" class="form__input" id="insumoTipo" readonly>
+                                    </div>
+                                </div>
+                                <div class="form__row">
+                                    <div class="form__group">
+                                        <label class="form__label" for="insumoDisponible">Cantidad Disponible</label>
+                                        <input type="text" class="form__input" id="insumoDisponible" readonly>
+                                    </div>
+                                    <div class="form__group">
+                                        <label class="form__label" for="insumoCantidad">Cantidad a Utilizar</label>
+                                        <input type="number" class="form__input" id="insumoCantidad" min="0" step="0.01">
+                                    </div>
+                                </div>
+                                <div class="form__row">
+                                    <div class="form__group">
+                                        <label class="form__label" for="insumoValorUnitario">Valor Unitario</label>
+                                        <input type="text" class="form__input" id="insumoValorUnitario" readonly>
+                                    </div>
+                                    <div class="form__group">
+                                        <label class="form__label" for="insumoValorTotal">Valor Total</label>
+                                        <input type="text" class="form__input" id="insumoValorTotal" readonly>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="btnCancelarAsociacion">Cancelar</button>
+                        <button type="submit" class="button button--primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Cultivo -->
+    <div class="modal" id="modalCultivo">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Nuevo Cultivo</h2>
+                <button class="modal__close" id="closeModalCultivo">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="formCultivo" class="form">
+                    <div class="form__group">
+                        <label class="form__label" for="cultivoType">Tipo de Cultivo</label>
+                        <input type="text" class="form__input" id="cultivoType" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cultivoName">Nombre del Cultivo</label>
+                        <input type="text" class="form__input" id="cultivoName" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cultivoID">ID del Cultivo</label>
+                        <input type="text" class="form__input" id="cultivoID" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="size">Tamaño</label>
+                        <input type="text" class="form__input" id="size">
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="location">Ubicación</label>
+                        <input type="text" class="form__input" id="location">
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cultivoDescription">Descripción</label>
+                        <textarea class="form__textarea" id="cultivoDescription"></textarea>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cultivoState">Estado</label>
+                        <select class="form__select" id="cultivoState" required>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="btnCancelarCultivo">Cancelar</button>
+                        <button type="submit" class="button button--primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Ciclo de Cultivo -->
+    <div class="modal" id="modalCiclo">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Nuevo Ciclo de Cultivo</h2>
+                <button class="modal__close" id="closeModalCiclo">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="formCiclo" class="form">
+                    <div class="form__group">
+                        <label class="form__label" for="cicloID">ID del Ciclo</label>
+                        <input type="text" class="form__input" id="cicloID" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cicloName">Nombre del Ciclo</label>
+                        <input type="text" class="form__input" id="cicloName" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="siembraDate">Fecha de Siembra</label>
+                        <input type="date" class="form__input" id="siembraDate" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cosechaDate">Fecha de Cosecha</label>
+                        <input type="date" class="form__input" id="cosechaDate" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="news">Noticias</label>
+                        <textarea class="form__textarea" id="news"></textarea>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cicloDescription">Descripción</label>
+                        <textarea class="form__textarea" id="cicloDescription"></textarea>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cicloState">Estado</label>
+                        <select class="form__select" id="cicloState" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="btnCancelarCiclo">Cancelar</button>
+                        <button type="submit" class="button button--primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Insumo -->
+    <div class="modal" id="modalInsumo">
+        <div class="modal__content">
+            <div class="modal__header">
+                <h2 class="modal__title">Nuevo Insumo</h2>
+                <button class="modal__close" id="closeModalInsumo">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="formInsumo" class="form">
+                    <div class="form__group">
+                        <label class="form__label" for="tipoInsumo">Tipo de Insumo</label>
+                        <input type="text" class="form__input" id="tipoInsumo" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="nombreInsumo">Nombre del Insumo</label>
+                        <input type="text" class="form__input" id="nombreInsumo" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="unidadMedida">Unidad de Medida</label>
+                        <input type="text" class="form__input" id="unidadMedida" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cantidad">Cantidad</label>
+                        <input type="number" class="form__input" id="cantidad" step="0.01" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="valorUnitario">Valor Unitario</label>
+                        <input type="number" class="form__input" id="valorUnitario" step="0.01" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="valorTotal">Valor Total</label>
+                        <input type="number" class="form__input" id="valorTotal" step="0.01" required>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="descripcion">Descripción</label>
+                        <textarea class="form__textarea" id="descripcion"></textarea>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="estado">Estado</label>
+                        <select class="form__select" id="estado" required>
+                            <option value="activo">Activo</option>
+                            <option value="inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="btnCancelarInsumo">Cancelar</button>
+                        <button type="submit" class="button button--primary">Guardar</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación para Eliminar -->
+    <div class="modal" id="modalConfirmacion">
+        <div class="modal__content modal__content--small">
+            <div class="modal__header">
+                <h2 class="modal__title">Confirmar Eliminación</h2>
+                <button class="modal__close" id="closeModalConfirmacion">&times;</button>
+            </div>
+            <div class="modal__body">
+                <p class="modal__message">¿Está seguro que desea eliminar esta asociación? Esta acción no se puede deshacer.</p>
+                <div class="form__actions">
+                    <button type="button" class="button button--secondary" id="btnCancelarEliminar">Cancelar</button>
+                    <button type="button" class="button button--danger" id="btnConfirmarEliminar">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="/fronted/public/js/asociacion/asociaciones.js"></script>
+</body>
+</html>

@@ -14,6 +14,7 @@ const asociacionRoutes = require('./routes/asociacionRoute.js');
 const usoRoutes = require('./routes/usoRoute.js');
 const asociacionListRoutes = require('./routes/asociacionListRoute.js'); 
 const asociacionDetalleRoute = require('./routes/asociacionDetalleRoute.js');
+const apiasociaciones = require('./routes/api.js')
 
 app.use('/ciclocultivo', cicloCultivoRoutes);
 app.use('/cultivo', cultivoRoutes);
@@ -24,7 +25,7 @@ app.use('/asociaciones', asociacionRoutes);
 app.use('/uso_insumo', usoRoutes);
 app.use('/asociaciones/listar', asociacionListRoutes); 
 app.use('/asociaciones', asociacionDetalleRoute);
-
+app.use('/api', apiasociaciones)
 app.listen(3000, () => {
     console.log('Server is running on port 3000');
 });
