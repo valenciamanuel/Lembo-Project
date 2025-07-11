@@ -7,13 +7,6 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/asociaciones.css">
-    <!-- CDN para gráficos -->
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <!-- CDN para exportar a Excel -->
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <!-- CDN para exportar a PDF -->
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
 </head>
 <body>
     <div class="app">
@@ -104,6 +97,8 @@
                         </tbody>
                     </table>
                 </div>
+
+                <!-- Gráficos -->
                 <div class="charts">
                     <div class="chart-container">
                         <h3 class="chart__title">Inversión vs Meta por Asociación</h3>
@@ -117,6 +112,19 @@
         <footer class="footer">
             <p class="footer__text">© 2025 LEMBO - Sistema de Gestión de Asociaciones</p>
         </footer>
+    </div>
+
+    <!-- Modal Ver Detalles -->
+    <div class="modal" id="modalDetalles">
+        <div class="modal__content modal__content--large">
+            <div class="modal__header">
+                <h2 class="modal__title">Detalles de la Asociación</h2>
+                <button class="modal__close" id="closeModalDetalles">&times;</button>
+            </div>
+            <div class="modal__body" id="detallesAsociacionContent">
+                <!-- Contenido cargado dinámicamente -->
+            </div>
+        </div>
     </div>
 
     <!-- Modal Crear/Editar Asociación -->
@@ -137,6 +145,9 @@
                                 <select class="form__select" id="responsable" required>
                                     <option value="">Seleccionar responsable</option>
                                 </select>
+                                <button type="button" class="button button--icon button--secondary" id="btnNuevoResponsable" title="Nuevo Responsable">
+                                    <i class="fa-solid fa-plus"></i>
+                                </button>
                             </div>
                         </div>
                         <div class="form__group">
@@ -163,7 +174,7 @@
                                 <select class="form__select" id="cultivo" required>
                                     <option value="">Seleccionar cultivo</option>
                                 </select>
-                                <button type="button" class="button button--icon" id="btnNuevoCultivo">
+                                <button type="button" class="button button--icon button--secondary" id="btnNuevoCultivo" title="Nuevo Cultivo">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
@@ -174,7 +185,7 @@
                                 <select class="form__select" id="ciclo_cultivo" required>
                                     <option value="">Seleccionar ciclo</option>
                                 </select>
-                                <button type="button" class="button button--icon" id="btnNuevoCiclo">
+                                <button type="button" class="button button--icon button--secondary" id="btnNuevoCiclo" title="Nuevo Ciclo">
                                     <i class="fa-solid fa-plus"></i>
                                 </button>
                             </div>
@@ -187,16 +198,19 @@
                             <!-- Sensores se cargarán dinámicamente -->
                         </div>
                         <div class="form__help-text">Seleccione hasta 3 sensores para esta asociación</div>
+                        <button type="button" class="button button--secondary" id="btnNuevoSensor">
+                            <i class="fa-solid fa-plus"></i>
+                            <span>Nuevo Sensor</span>
+                        </button>
                     </div>
                     
-                    <!-- Nueva sección para insumos múltiples -->
                     <div class="form__group">
                         <label class="form__label">Insumos (máximo 3)</label>
                         <div class="form__insumos" id="insumosContainer">
                             <!-- Insumos se cargarán dinámicamente -->
                         </div>
                         <div class="form__help-text">Seleccione hasta 3 insumos para esta asociación</div>
-                        <button type="button" class="button button--icon" id="btnNuevoInsumo">
+                        <button type="button" class="button button--secondary" id="btnNuevoInsumo">
                             <i class="fa-solid fa-plus"></i>
                             <span>Nuevo Insumo</span>
                         </button>
@@ -227,80 +241,375 @@
 
                     <div class="form__actions">
                         <button type="button" class="button button--secondary" id="btnCancelarAsociacion">Cancelar</button>
-                        <button type="submit" class="button button--primary">Guardar</button>
+                        <button type="submit" class="button button--success">Guardar Asociación</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Otros modales permanecen igual... -->
-    <!-- Modal Ver Detalles -->
-    <div class="modal" id="modalDetalles">
-        <div class="modal__content modal__content--large">
+    <!-- Modal Nuevo Responsable -->
+    <div class="modal" id="modalResponsable">
+        <div class="modal__content modal__content--medium">
             <div class="modal__header">
-                <h2 class="modal__title">Detalles de la Asociación</h2>
-                <button class="modal__close" id="closeModalDetalles">&times;</button>
+                <h2 class="modal__title">Nuevo Responsable</h2>
+                <button class="modal__close" id="closeModalResponsable">&times;</button>
             </div>
-            <div class="modal__body" id="detallesAsociacionContent">
-                <!-- Contenido cargado dinámicamente -->
+            <div class="modal__body">
+                <form id="formResponsable" class="form">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="responsableUsertype">Tipo de Usuario</label>
+                            <select class="form__select" id="responsableUsertype" required>
+                                <option value="">Seleccionar tipo</option>
+                                <option value="admin">Administrador</option>
+                                <option value="personal">Personal</option>
+                                <option value="superadmin">Super Administrador</option>
+                            </select>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="responsableIDtype">Tipo de Documento</label>
+                            <select class="form__select" id="responsableIDtype" required>
+                                <option value="">Seleccionar documento</option>
+                                <option value="CC">Cédula de Ciudadanía</option>
+                                <option value="TI">Tarjeta de Identidad</option>
+                                <option value="RC">Registro Civil</option>
+                                <option value="PASAPORTE">Pasaporte</option>
+                            </select>
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="responsableIDnum">Número de Documento</label>
+                            <input type="text" class="form__input" id="responsableIDnum" required>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="responsableName">Nombre Completo</label>
+                            <input type="text" class="form__input" id="responsableName" required>
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="responsableEmail">Correo Electrónico</label>
+                            <input type="email" class="form__input" id="responsableEmail" required>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="responsablePhone">Teléfono</label>
+                            <input type="tel" class="form__input" id="responsablePhone" required>
+                        </div>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="responsablePassword">Contraseña</label>
+                        <input type="password" class="form__input" id="responsablePassword" required>
+                    </div>
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="btnCancelarResponsable">Cancelar</button>
+                        <button type="submit" class="button button--success">Crear Responsable</button>
+                    </div>
+                </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal Nuevo Insumo -->
-    <div class="modal" id="modalInsumo">
-        <div class="modal__content">
+    <!-- Modal Nuevo Sensor -->
+    <div class="modal" id="modalSensor">
+        <div class="modal__content modal__content--medium">
             <div class="modal__header">
-                <h2 class="modal__title">Nuevo Insumo</h2>
-                <button class="modal__close" id="closeModalInsumo">&times;</button>
+                <h2 class="modal__title">Nuevo Sensor</h2>
+                <button class="modal__close" id="closeModalSensor">&times;</button>
             </div>
             <div class="modal__body">
-                <form id="formInsumo" class="form">
-                    <div class="form__group">
-                        <label class="form__label" for="tipoInsumo">Tipo de Insumo</label>
-                        <input type="text" class="form__input" id="tipoInsumo" required>
+                <form id="formSensor" class="form">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="sensorTipo">Tipo de Sensor</label>
+                            <input type="text" class="form__input" id="sensorTipo" required placeholder="Ej: Temperatura, Humedad, pH">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="sensorNombre">Nombre del Sensor</label>
+                            <input type="text" class="form__input" id="sensorNombre" required placeholder="Ej: Sensor Temp-01">
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="sensorUnidad">Unidad de Medida</label>
+                            <input type="text" class="form__input" id="sensorUnidad" required placeholder="Ej: °C, %, ppm">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="sensorTiempo">Tiempo de Escaneo (segundos)</label>
+                            <input type="number" class="form__input" id="sensorTiempo" required min="1" placeholder="60">
+                        </div>
                     </div>
                     <div class="form__group">
-                        <label class="form__label" for="nombreInsumo">Nombre del Insumo</label>
-                        <input type="text" class="form__input" id="nombreInsumo" required>
+                        <label class="form__label" for="sensorDescripcion">Descripción</label>
+                        <textarea class="form__textarea" id="sensorDescripcion" placeholder="Descripción del sensor y su función"></textarea>
                     </div>
                     <div class="form__group">
-                        <label class="form__label" for="unidadMedida">Unidad de Medida</label>
-                        <input type="text" class="form__input" id="unidadMedida" required>
+                        <label class="form__label" for="sensorEstado">Estado</label>
+                        <select class="form__select" id="sensorEstado" required>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="btnCancelarSensor">Cancelar</button>
+                        <button type="submit" class="button button--success">Crear Sensor</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Cultivo -->
+    <div class="modal" id="modalCultivo">
+        <div class="modal__content modal__content--medium">
+            <div class="modal__header">
+                <h2 class="modal__title">Nuevo Cultivo</h2>
+                <button class="modal__close" id="closeModalCultivo">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="formCultivo" class="form">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="cultivoType">Tipo de Cultivo</label>
+                            <input type="text" class="form__input" id="cultivoType" required placeholder="Ej: Hortalizas, Frutas, Cereales">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="cultivoName">Nombre del Cultivo</label>
+                            <input type="text" class="form__input" id="cultivoName" required placeholder="Ej: Tomate, Lechuga, Maíz">
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="cultivoID">ID del Cultivo</label>
+                            <input type="text" class="form__input" id="cultivoID" required placeholder="Ej: CULT-001">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="cultivoSize">Tamaño</label>
+                            <input type="text" class="form__input" id="cultivoSize" placeholder="Ej: 100 m², 1 hectárea">
+                        </div>
                     </div>
                     <div class="form__group">
-                        <label class="form__label" for="cantidad">Cantidad</label>
-                        <input type="number" class="form__input" id="cantidad" step="0.01" required>
+                        <label class="form__label" for="cultivoLocation">Ubicación</label>
+                        <input type="text" class="form__input" id="cultivoLocation" placeholder="Ej: Lote A, Invernadero 1">
                     </div>
                     <div class="form__group">
-                        <label class="form__label" for="valorUnitario">Valor Unitario</label>
-                        <input type="number" class="form__input" id="valorUnitario" step="0.01" required>
+                        <label class="form__label" for="cultivoDescription">Descripción</label>
+                        <textarea class="form__textarea" id="cultivoDescription" placeholder="Descripción del cultivo, características especiales, etc."></textarea>
                     </div>
                     <div class="form__group">
-                        <label class="form__label" for="valorTotal">Valor Total</label>
-                        <input type="number" class="form__input" id="valorTotal" step="0.01" required>
+                        <label class="form__label" for="cultivoState">Estado</label>
+                        <select class="form__select" id="cultivoState" required>
+                            <option value="Activo">Activo</option>
+                            <option value="Inactivo">Inactivo</option>
+                        </select>
+                    </div>
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="btnCancelarCultivo">Cancelar</button>
+                        <button type="submit" class="button button--success">Crear Cultivo</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal Nuevo Ciclo de Cultivo -->
+    <div class="modal" id="modalCiclo">
+        <div class="modal__content modal__content--medium">
+            <div class="modal__header">
+                <h2 class="modal__title">Nuevo Ciclo de Cultivo</h2>
+                <button class="modal__close" id="closeModalCiclo">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="formCiclo" class="form">
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="cicloID">ID del Ciclo</label>
+                            <input type="text" class="form__input" id="cicloID" required placeholder="Ej: CICLO-2025-01">
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="cicloName">Nombre del Ciclo</label>
+                            <input type="text" class="form__input" id="cicloName" required placeholder="Ej: Ciclo Primavera 2025">
+                        </div>
+                    </div>
+                    <div class="form__row">
+                        <div class="form__group">
+                            <label class="form__label" for="siembraDate">Fecha de Siembra</label>
+                            <input type="date" class="form__input" id="siembraDate" required>
+                        </div>
+                        <div class="form__group">
+                            <label class="form__label" for="cosechaDate">Fecha de Cosecha</label>
+                            <input type="date" class="form__input" id="cosechaDate" required>
+                        </div>
                     </div>
                     <div class="form__group">
-                        <label class="form__label" for="descripcion">Descripción</label>
-                        <textarea class="form__textarea" id="descripcion"></textarea>
+                        <label class="form__label" for="cicloNews">Noticias</label>
+                        <textarea class="form__textarea" id="cicloNews" placeholder="Noticias o eventos importantes del ciclo"></textarea>
                     </div>
                     <div class="form__group">
-                        <label class="form__label" for="estado">Estado</label>
-                        <select class="form__select" id="estado" required>
+                        <label class="form__label" for="cicloDescription">Descripción</label>
+                        <textarea class="form__textarea" id="cicloDescription" placeholder="Descripción detallada del ciclo de cultivo"></textarea>
+                    </div>
+                    <div class="form__group">
+                        <label class="form__label" for="cicloState">Estado</label>
+                        <select class="form__select" id="cicloState" required>
                             <option value="activo">Activo</option>
                             <option value="inactivo">Inactivo</option>
                         </select>
                     </div>
                     <div class="form__actions">
-                        <button type="button" class="button button--secondary" id="btnCancelarInsumo">Cancelar</button>
-                        <button type="submit" class="button button--primary">Guardar</button>
+                        <button type="button" class="button button--secondary" id="btnCancelarCiclo">Cancelar</button>
+                        <button type="submit" class="button button--success">Crear Ciclo</button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
+    <!-- Modal Nuevo Insumo - Rediseñado -->
+    <div class="modal" id="modalInsumo">
+        <div class="modal__content modal__content--large">
+            <div class="modal__header">
+                <h2 class="modal__title">Nuevo Insumo</h2>
+                <button class="modal__close" id="closeModalInsumo">&times;</button>
+            </div>
+            <div class="modal__body">
+                <form id="formInsumo" class="insumo-form">
+                    <!-- Información Básica -->
+                    <div class="insumo-form__section">
+                        <div class="insumo-form__section-header">
+                            <h3 class="insumo-form__section-title">
+                                <i class="fa-solid fa-info-circle"></i>
+                                Información Básica
+                            </h3>
+                        </div>
+                        <div class="insumo-form__section-content">
+                            <div class="insumo-form__grid">
+                                <div class="form__group">
+                                    <label class="form__label" for="tipoInsumo">Tipo de Insumo</label>
+                                    <select class="form__select" id="tipoInsumo" required>
+                                        <option value="">Seleccionar tipo</option>
+                                        <option value="Fertilizante">Fertilizante</option>
+                                        <option value="Pesticida">Pesticida</option>
+                                        <option value="Herbicida">Herbicida</option>
+                                        <option value="Fungicida">Fungicida</option>
+                                        <option value="Semilla">Semilla</option>
+                                        <option value="Sustrato">Sustrato</option>
+                                        <option value="Herramienta">Herramienta</option>
+                                        <option value="Otro">Otro</option>
+                                    </select>
+                                </div>
+                                <div class="form__group">
+                                    <label class="form__label" for="nombreInsumo">Nombre del Insumo</label>
+                                    <input type="text" class="form__input" id="nombreInsumo" required placeholder="Ej: Fertilizante NPK 10-10-10">
+                                </div>
+                                <div class="form__group">
+                                    <label class="form__label" for="unidadMedida">Unidad de Medida</label>
+                                    <select class="form__select" id="unidadMedida" required>
+                                        <option value="">Seleccionar unidad</option>
+                                        <option value="kg">Kilogramos (kg)</option>
+                                        <option value="g">Gramos (g)</option>
+                                        <option value="L">Litros (L)</option>
+                                        <option value="mL">Mililitros (mL)</option>
+                                        <option value="unidad">Unidad</option>
+                                        <option value="paquete">Paquete</option>
+                                        <option value="saco">Saco</option>
+                                        <option value="caja">Caja</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información de Inventario -->
+                    <div class="insumo-form__section">
+                        <div class="insumo-form__section-header">
+                            <h3 class="insumo-form__section-title">
+                                <i class="fa-solid fa-boxes-stacked"></i>
+                                Inventario y Precios
+                            </h3>
+                        </div>
+                        <div class="insumo-form__section-content">
+                            <div class="insumo-form__grid">
+                                <div class="form__group">
+                                    <label class="form__label" for="cantidad">Cantidad Inicial</label>
+                                    <input type="number" class="form__input" id="cantidad" step="0.01" required min="0" placeholder="0.00">
+                                </div>
+                                <div class="form__group">
+                                    <label class="form__label" for="valorUnitario">Valor Unitario ($)</label>
+                                    <input type="number" class="form__input" id="valorUnitario" step="0.01" required min="0" placeholder="0.00">
+                                </div>
+                                <div class="form__group">
+                                    <label class="form__label">Valor Total Calculado</label>
+                                    <div class="insumo-form__calculation">
+                                        <div class="insumo-form__calculation-title">Total Inventario</div>
+                                        <div class="insumo-form__calculation-value" id="valorTotalCalculado">$0.00</div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Información Adicional -->
+                    <div class="insumo-form__section">
+                        <div class="insumo-form__section-header">
+                            <h3 class="insumo-form__section-title">
+                                <i class="fa-solid fa-clipboard-list"></i>
+                                Información Adicional
+                            </h3>
+                        </div>
+                        <div class="insumo-form__section-content">
+                            <div class="form__group">
+                                <label class="form__label" for="descripcionInsumo">Descripción</label>
+                                <textarea class="form__textarea" id="descripcionInsumo" placeholder="Descripción detallada del insumo, instrucciones de uso, precauciones, etc." rows="4"></textarea>
+                            </div>
+                            <div class="insumo-form__grid">
+                                <div class="form__group">
+                                    <label class="form__label" for="estadoInsumo">Estado</label>
+                                    <select class="form__select" id="estadoInsumo" required>
+                                        <option value="activo">Activo</option>
+                                        <option value="inactivo">Inactivo</option>
+                                    </select>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <input type="hidden" id="valorTotal">
+
+                    <div class="form__actions">
+                        <button type="button" class="button button--secondary" id="btnCancelarInsumo">Cancelar</button>
+                        <button type="submit" class="button button--success">
+                            <i class="fa-solid fa-save"></i>
+                            Crear Insumo
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Modal de Confirmación para Eliminar -->
+    <div class="modal" id="modalConfirmacion">
+        <div class="modal__content modal__content--small">
+            <div class="modal__header">
+                <h2 class="modal__title">Confirmar Eliminación</h2>
+                <button class="modal__close" id="closeModalConfirmacion">&times;</button>
+            </div>
+            <div class="modal__body">
+                <p class="modal__message">¿Está seguro que desea eliminar esta asociación? Esta acción no se puede deshacer.</p>
+                <div class="form__actions">
+                    <button type="button" class="button button--secondary" id="btnCancelarEliminar">Cancelar</button>
+                    <button type="button" class="button button--danger" id="btnConfirmarEliminar">Eliminar</button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
     <script src="/fronted/public/js/asociacion/asociaciones.js"></script>
 </body>
 </html>

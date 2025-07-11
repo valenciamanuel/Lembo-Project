@@ -1,5 +1,4 @@
 
-
 // Variables globales
 const API_URL = "http://localhost:3000/api"
 let asociacionesData = []
@@ -7,11 +6,12 @@ let cultivosData = []
 let ciclosData = []
 let sensoresData = []
 let insumosData = []
-const asociacionSeleccionada = null
+let responsablesData = []
+let asociacionSeleccionada = null
 let sensoresSeleccionados = []
-let insumosSeleccionados = [] // Cambiado de insumoSeleccionado a array
+let insumosSeleccionados = []
 
-// Elementos DOM
+// Elementos DOM principales
 const asociacionesTableBody = document.getElementById("asociacionesTableBody")
 const totalAsociacionesElement = document.getElementById("totalAsociaciones")
 const inversionTotalElement = document.getElementById("inversionTotal")
@@ -21,19 +21,35 @@ const searchInput = document.getElementById("searchInput")
 // Modales
 const modalDetalles = document.getElementById("modalDetalles")
 const modalAsociacion = document.getElementById("modalAsociacion")
+const modalResponsable = document.getElementById("modalResponsable")
+const modalSensor = document.getElementById("modalSensor")
+const modalCultivo = document.getElementById("modalCultivo")
+const modalCiclo = document.getElementById("modalCiclo")
 const modalInsumo = document.getElementById("modalInsumo")
+const modalConfirmacion = document.getElementById("modalConfirmacion")
 
-// Botones
+// Botones principales
 const btnCrearAsociacion = document.getElementById("btnCrearAsociacion")
+const btnExportarExcel = document.getElementById("btnExportarExcel")
+const btnExportarPDF = document.getElementById("btnExportarPDF")
+
+// Botones de modales secundarios
+const btnNuevoResponsable = document.getElementById("btnNuevoResponsable")
+const btnNuevoSensor = document.getElementById("btnNuevoSensor")
+const btnNuevoCultivo = document.getElementById("btnNuevoCultivo")
+const btnNuevoCiclo = document.getElementById("btnNuevoCiclo")
 const btnNuevoInsumo = document.getElementById("btnNuevoInsumo")
-const btnCancelarAsociacion = document.getElementById("btnCancelarAsociacion")
-const btnCancelarInsumo = document.getElementById("btnCancelarInsumo")
 
 // Formularios
 const formAsociacion = document.getElementById("formAsociacion")
+const formResponsable = document.getElementById("formResponsable")
+const formSensor = document.getElementById("formSensor")
+const formCultivo = document.getElementById("formCultivo")
+const formCiclo = document.getElementById("formCiclo")
 const formInsumo = document.getElementById("formInsumo")
 
 // Selectores y contenedores
+const responsableSelect = document.getElementById("responsable")
 const cultivoSelect = document.getElementById("cultivo")
 const cicloSelect = document.getElementById("ciclo_cultivo")
 const sensoresContainer = document.getElementById("sensoresContainer")
@@ -43,18 +59,19 @@ const insumosDetallesContent = document.getElementById("insumosDetallesContent")
 
 // Campos de asociación
 const asociacionId = document.getElementById("asociacionId")
-const responsable = document.getElementById("responsable")
 const nombre_asociacion = document.getElementById("nombre_asociacion")
 const inversion = document.getElementById("inversion")
 const meta = document.getElementById("meta")
 const iniico_produccion = document.getElementById("iniico_produccion")
 const fin_produccion = document.getElementById("fin_produccion")
-const responsableSelect = document.getElementById("responsable")
+
+
 
 // Inicialización
 document.addEventListener("DOMContentLoaded", () => {
   cargarDatos()
   inicializarEventListeners()
+  configurarCalculoInsumo()
 })
 
 // Funciones de carga de datos
@@ -66,7 +83,7 @@ async function cargarDatos() {
       cargarCiclos(),
       cargarSensores(),
       cargarInsumos(),
-      cargarResponsables(), // Added to load responsables data
+      cargarResponsables(),
     ])
 
     actualizarEstadisticas()
@@ -129,29 +146,6 @@ async function cargarSensores() {
   }
 }
 
-async function cargarResponsables() {
-  try {
-    const response = await fetch(`${API_URL}/responsables`)
-    if (!response.ok) throw new Error("Error al cargar responsables")
-
-    const responsablesData = await response.json()
-    actualizarSelectResponsables(responsablesData)
-  } catch (error) {
-    console.error("Error:", error)
-    mostrarNotificacion("Error al cargar responsables", "error")
-  }
-}
-
-function actualizarSelectResponsables(responsables) {
-  responsableSelect.innerHTML = '<option value="">Seleccionar responsable</option>'
-  responsables.forEach((responsable) => {
-    const option = document.createElement("option")
-    option.value = responsable.name
-    option.textContent = responsable.name
-    responsableSelect.appendChild(option)
-  })
-}
-
 async function cargarInsumos() {
   try {
     const response = await fetch(`${API_URL}/insumo`)
@@ -165,7 +159,101 @@ async function cargarInsumos() {
   }
 }
 
-// Nueva función para actualizar checkboxes de insumos
+async function cargarResponsables() {
+  try {
+    const response = await fetch(`${API_URL}/responsables`)
+    if (!response.ok) throw new Error("Error al cargar responsables")
+
+    responsablesData = await response.json()
+    actualizarSelectResponsables()
+  } catch (error) {
+    console.error("Error:", error)
+    mostrarNotificacion("Error al cargar responsables", "error")
+  }
+}
+
+// Funciones de actualización de selectores
+function actualizarSelectResponsables() {
+  responsableSelect.innerHTML = '<option value="">Seleccionar responsable</option>'
+  responsablesData.forEach((responsable) => {
+    const option = document.createElement("option")
+    option.value = responsable.name
+    option.textContent = responsable.name
+    responsableSelect.appendChild(option)
+  })
+}
+
+function actualizarSelectCultivos() {
+  cultivoSelect.innerHTML = '<option value="">Seleccionar cultivo</option>'
+
+  const cultivosActivos = cultivosData.filter((c) => c.state === "Activo")
+
+  cultivosActivos.forEach((cultivo) => {
+    const option = document.createElement("option")
+    option.value = cultivo.cultivoName
+    option.textContent = cultivo.cultivoName
+    cultivoSelect.appendChild(option)
+  })
+}
+
+function actualizarSelectCiclos() {
+  cicloSelect.innerHTML = '<option value="">Seleccionar ciclo</option>'
+
+  const ciclosActivos = ciclosData.filter((c) => c.state === "activo")
+
+  ciclosActivos.forEach((ciclo) => {
+    const option = document.createElement("option")
+    option.value = ciclo.cicloName
+    option.textContent = ciclo.cicloName
+    cicloSelect.appendChild(option)
+  })
+}
+
+function actualizarSensoresCheckbox() {
+  sensoresContainer.innerHTML = ""
+
+  const sensoresActivos = sensoresData.filter((s) => s.estado === "Activo")
+
+  sensoresActivos.forEach((sensor) => {
+    const sensorDiv = document.createElement("div")
+    sensorDiv.className = "sensor-checkbox"
+
+    const isChecked = sensoresSeleccionados.includes(sensor.nombreSensor)
+
+    sensorDiv.innerHTML = `
+            <input type="checkbox" id="sensor-${sensor.idSensor}" value="${sensor.nombreSensor}" 
+                ${isChecked ? "checked" : ""} ${sensoresSeleccionados.length >= 3 && !isChecked ? "disabled" : ""}>
+            <label class="sensor-checkbox__label" for="sensor-${sensor.idSensor}">${sensor.nombreSensor}</label>
+        `
+
+    sensoresContainer.appendChild(sensorDiv)
+  })
+
+  // Agregar event listeners a los checkboxes
+  document.querySelectorAll('#sensoresContainer input[type="checkbox"]').forEach((checkbox) => {
+    checkbox.addEventListener("change", function () {
+      if (this.checked) {
+        if (sensoresSeleccionados.length < 3) {
+          sensoresSeleccionados.push(this.value)
+        } else {
+          this.checked = false
+          mostrarNotificacion("Solo puede seleccionar hasta 3 sensores", "warning")
+        }
+      } else {
+        sensoresSeleccionados = sensoresSeleccionados.filter((s) => s !== this.value)
+      }
+
+      // Actualizar estado de los checkboxes
+      const checkboxes = document.querySelectorAll('#sensoresContainer input[type="checkbox"]')
+      checkboxes.forEach((cb) => {
+        if (!cb.checked) {
+          cb.disabled = sensoresSeleccionados.length >= 3
+        }
+      })
+    })
+  })
+}
+
 function actualizarInsumosCheckbox() {
   insumosContainer.innerHTML = ""
 
@@ -181,7 +269,7 @@ function actualizarInsumosCheckbox() {
             <input type="checkbox" id="insumo-${insumo.idInsumo}" value="${insumo.idInsumo}" 
                 ${isChecked ? "checked" : ""} ${insumosSeleccionados.length >= 3 && !isChecked ? "disabled" : ""}>
             <label class="insumo-checkbox__label" for="insumo-${insumo.idInsumo}">
-                ${insumo.nombreInsumo} (${insumo.tipoInsumo})
+                ${insumo.nombreInsumo} (${insumo.tipoInsumo}) - ${insumo.cantidad} ${insumo.unidadMedida}
             </label>
         `
 
@@ -198,7 +286,7 @@ function actualizarInsumosCheckbox() {
         if (insumosSeleccionados.length < 3) {
           insumosSeleccionados.push({
             ...insumo,
-            cantidadUtilizar: 1, // Cantidad por defecto
+            cantidadUtilizar: 1,
           })
           actualizarDetallesInsumos()
         } else {
@@ -221,7 +309,6 @@ function actualizarInsumosCheckbox() {
   })
 }
 
-// Nueva función para actualizar detalles de insumos seleccionados
 function actualizarDetallesInsumos() {
   if (insumosSeleccionados.length === 0) {
     insumosDetallesContainer.style.display = "none"
@@ -304,7 +391,6 @@ function actualizarDetallesInsumos() {
   calcularInversionTotal()
 }
 
-// Nueva función para remover insumo
 function removerInsumo(insumoId) {
   insumosSeleccionados = insumosSeleccionados.filter((i) => i.idInsumo !== insumoId)
 
@@ -326,7 +412,6 @@ function removerInsumo(insumoId) {
   actualizarDetallesInsumos()
 }
 
-// Nueva función para calcular inversión total
 function calcularInversionTotal() {
   const inversionTotal = insumosSeleccionados.reduce((total, insumo) => {
     return total + Number.parseFloat(insumo.valorUnitario) * insumo.cantidadUtilizar
@@ -395,88 +480,14 @@ function renderizarTablaAsociaciones(filtro = "") {
   })
 }
 
-function actualizarSelectCultivos() {
-  cultivoSelect.innerHTML = '<option value="">Seleccionar cultivo</option>'
-
-  const cultivosActivos = cultivosData.filter((c) => c.state === "Activo")
-
-  cultivosActivos.forEach((cultivo) => {
-    const option = document.createElement("option")
-    option.value = cultivo.cultivoName
-    option.textContent = cultivo.cultivoName
-    cultivoSelect.appendChild(option)
-  })
-}
-
-function actualizarSelectCiclos() {
-  cicloSelect.innerHTML = '<option value="">Seleccionar ciclo</option>'
-
-  const ciclosActivos = ciclosData.filter((c) => c.state === "activo")
-
-  ciclosActivos.forEach((ciclo) => {
-    const option = document.createElement("option")
-    option.value = ciclo.cicloName
-    option.textContent = ciclo.cicloName
-    cicloSelect.appendChild(option)
-  })
-}
-
-function actualizarSensoresCheckbox() {
-  sensoresContainer.innerHTML = ""
-
-  const sensoresActivos = sensoresData.filter((s) => s.estado === "Activo")
-
-  sensoresActivos.forEach((sensor) => {
-    const sensorDiv = document.createElement("div")
-    sensorDiv.className = "sensor-checkbox"
-
-    const isChecked = sensoresSeleccionados.includes(sensor.nombreSensor)
-
-    sensorDiv.innerHTML = `
-            <input type="checkbox" id="sensor-${sensor.idSensor}" value="${sensor.nombreSensor}" 
-                ${isChecked ? "checked" : ""} ${sensoresSeleccionados.length >= 3 && !isChecked ? "disabled" : ""}>
-            <label class="sensor-checkbox__label" for="sensor-${sensor.idSensor}">${sensor.nombreSensor}</label>
-        `
-
-    sensoresContainer.appendChild(sensorDiv)
-  })
-
-  // Agregar event listeners a los checkboxes
-  document.querySelectorAll('#sensoresContainer input[type="checkbox"]').forEach((checkbox) => {
-    checkbox.addEventListener("change", function () {
-      if (this.checked) {
-        if (sensoresSeleccionados.length < 3) {
-          sensoresSeleccionados.push(this.value)
-        } else {
-          this.checked = false
-          mostrarNotificacion("Solo puede seleccionar hasta 3 sensores", "warning")
-        }
-      } else {
-        sensoresSeleccionados = sensoresSeleccionados.filter((s) => s !== this.value)
-      }
-
-      // Actualizar estado de los checkboxes
-      const checkboxes = document.querySelectorAll('#sensoresContainer input[type="checkbox"]')
-      checkboxes.forEach((cb) => {
-        if (!cb.checked) {
-          cb.disabled = sensoresSeleccionados.length >= 3
-        }
-      })
-    })
-  })
-}
-
 function actualizarEstadisticas() {
-  // Total de asociaciones
   totalAsociacionesElement.textContent = asociacionesData.length
 
-  // Inversión total
   const inversionTotal = asociacionesData.reduce((total, asociacion) => {
     return total + Number.parseFloat(asociacion.inversion)
   }, 0)
   inversionTotalElement.textContent = `$${inversionTotal.toFixed(2)}`
 
-  // Meta total
   const metaTotal = asociacionesData.reduce((total, asociacion) => {
     return total + Number.parseFloat(asociacion.meta)
   }, 0)
@@ -551,10 +562,320 @@ function cerrarModal(modal) {
 function abrirModalCrearAsociacion() {
   limpiarFormularioAsociacion()
   document.getElementById("modalAsociacionTitle").textContent = "Nueva Asociación"
-  cargarResponsables()
   abrirModal(modalAsociacion)
 }
 
+function limpiarFormularioAsociacion() {
+  formAsociacion.reset()
+  asociacionId.value = ""
+  sensoresSeleccionados = []
+  insumosSeleccionados = []
+  insumosDetallesContainer.style.display = "none"
+  actualizarSensoresCheckbox()
+  actualizarInsumosCheckbox()
+}
+
+// Funciones para crear elementos desde modales
+async function crearResponsable(event) {
+  event.preventDefault()
+
+  const data = {
+    usertype: document.getElementById("responsableUsertype").value,
+    IDtype: document.getElementById("responsableIDtype").value,
+    IDnum: document.getElementById("responsableIDnum").value,
+    name: document.getElementById("responsableName").value,
+    email: document.getElementById("responsableEmail").value,
+    phone: document.getElementById("responsablePhone").value,
+    password: document.getElementById("responsablePassword").value,
+  }
+
+  try {
+    const response = await fetch(`http://localhost:3000/register`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+    console.log(response);
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || "Error al crear responsable")
+    }
+
+    await cargarResponsables()
+    cerrarModal(modalResponsable)
+    mostrarNotificacion("Responsable creado exitosamente", "success")
+
+    // Seleccionar el nuevo responsable
+    responsableSelect.value = data.name
+  } catch (error) {
+    console.error("Error:", error)
+    mostrarNotificacion(error.message, "error")
+  }
+}
+
+async function crearSensor(event) {
+  event.preventDefault()
+
+  const data = {
+    tipoSensor: document.getElementById("sensorTipo").value,
+    nombreSensor: document.getElementById("sensorNombre").value,
+    unidadMedida: document.getElementById("sensorUnidad").value,
+    tiempoEscaneo: Number.parseInt(document.getElementById("sensorTiempo").value),
+    descripcion: document.getElementById("sensorDescripcion").value,
+    estado: document.getElementById("sensorEstado").value,
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/sensores`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || "Error al crear sensor")
+    }
+
+    await cargarSensores()
+    cerrarModal(modalSensor)
+    mostrarNotificacion("Sensor creado exitosamente", "success")
+  } catch (error) {
+    console.error("Error:", error)
+    mostrarNotificacion(error.message, "error")
+  }
+}
+
+async function crearCultivo(event) {
+  event.preventDefault()
+
+  const data = {
+    cultivoType: document.getElementById("cultivoType").value,
+    cultivoName: document.getElementById("cultivoName").value,
+    cultivoID: document.getElementById("cultivoID").value,
+    size: document.getElementById("cultivoSize").value,
+    location: document.getElementById("cultivoLocation").value,
+    description: document.getElementById("cultivoDescription").value,
+    state: document.getElementById("cultivoState").value,
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/cultivo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || "Error al crear cultivo")
+    }
+
+    await cargarCultivos()
+    cerrarModal(modalCultivo)
+    mostrarNotificacion("Cultivo creado exitosamente", "success")
+
+    // Seleccionar el nuevo cultivo
+    cultivoSelect.value = data.cultivoName
+  } catch (error) {
+    console.error("Error:", error)
+    mostrarNotificacion(error.message, "error")
+  }
+}
+
+async function crearCiclo(event) {
+  event.preventDefault()
+
+  const data = {
+    cicloID: document.getElementById("cicloID").value,
+    cicloName: document.getElementById("cicloName").value,
+    siembraDate: document.getElementById("siembraDate").value,
+    cosechaDate: document.getElementById("cosechaDate").value,
+    news: document.getElementById("cicloNews").value,
+    description: document.getElementById("cicloDescription").value,
+    state: document.getElementById("cicloState").value,
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/ciclocultivo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || "Error al crear ciclo de cultivo")
+    }
+
+    await cargarCiclos()
+    cerrarModal(modalCiclo)
+    mostrarNotificacion("Ciclo de cultivo creado exitosamente", "success")
+
+    // Seleccionar el nuevo ciclo
+    cicloSelect.value = data.cicloName
+  } catch (error) {
+    console.error("Error:", error)
+    mostrarNotificacion(error.message, "error")
+  }
+}
+
+async function crearInsumo(event) {
+  event.preventDefault()
+
+  const cantidad = Number.parseFloat(document.getElementById("cantidad").value)
+  const valorUnitario = Number.parseFloat(document.getElementById("valorUnitario").value)
+
+  const data = {
+    tipoInsumo: document.getElementById("tipoInsumo").value,
+    nombreInsumo: document.getElementById("nombreInsumo").value,
+    unidadMedida: document.getElementById("unidadMedida").value,
+    cantidad: cantidad,
+    valorUnitario: valorUnitario,
+    valorTotal: cantidad * valorUnitario,
+    descripcion: document.getElementById("descripcionInsumo").value,
+    estado: document.getElementById("estadoInsumo").value,
+  }
+
+  try {
+    const response = await fetch(`${API_URL}/insumo`, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      throw new Error(errorData.error || "Error al crear insumo")
+    }
+
+    await cargarInsumos()
+    cerrarModal(modalInsumo)
+    mostrarNotificacion("Insumo creado exitosamente", "success")
+  } catch (error) {
+    console.error("Error:", error)
+    mostrarNotificacion(error.message, "error")
+  }
+}
+
+// Configurar cálculo automático en modal de insumo
+function configurarCalculoInsumo() {
+  const cantidadInput = document.getElementById("cantidad")
+  const valorUnitarioInput = document.getElementById("valorUnitario")
+  const valorTotalCalculado = document.getElementById("valorTotalCalculado")
+  const valorTotalHidden = document.getElementById("valorTotal")
+
+  function calcularValorTotal() {
+    const cantidad = Number.parseFloat(cantidadInput.value) || 0
+    const valorUnitario = Number.parseFloat(valorUnitarioInput.value) || 0
+    const total = cantidad * valorUnitario
+
+    valorTotalCalculado.textContent = `$${total.toFixed(2)}`
+    valorTotalHidden.value = total.toFixed(2)
+  }
+
+  cantidadInput.addEventListener("input", calcularValorTotal)
+  valorUnitarioInput.addEventListener("input", calcularValorTotal)
+}
+
+// Función principal para guardar asociación
+async function guardarAsociacion(event) {
+  event.preventDefault()
+
+  // Validaciones
+  if (sensoresSeleccionados.length === 0) {
+    mostrarNotificacion("Debe seleccionar al menos un sensor", "error")
+    return
+  }
+
+  if (insumosSeleccionados.length === 0) {
+    mostrarNotificacion("Debe seleccionar al menos un insumo", "error")
+    return
+  }
+
+  // Validar cantidades de insumos
+  for (const insumo of insumosSeleccionados) {
+    if (!insumo.cantidadUtilizar || insumo.cantidadUtilizar <= 0) {
+      mostrarNotificacion(`Debe ingresar una cantidad válida para ${insumo.nombreInsumo}`, "error")
+      return
+    }
+
+    if (insumo.cantidadUtilizar > insumo.cantidad) {
+      mostrarNotificacion(`La cantidad de ${insumo.nombreInsumo} no puede ser mayor a la disponible`, "error")
+      return
+    }
+  }
+
+  // Preparar datos
+  const data = {
+    responsable: responsableSelect.value,
+    nombre_asociacion: nombre_asociacion.value,
+    inversion: inversion.value,
+    meta: meta.value,
+    iniico_produccion: iniico_produccion.value,
+    fin_produccion: fin_produccion.value,
+    cultivo: cultivoSelect.value,
+    sensores: sensoresSeleccionados.join(", "),
+    insumos: insumosSeleccionados.map((i) => i.nombreInsumo).join(", "),
+    ciclo_cultivo: cicloSelect.value,
+    insumos_detalle: insumosSeleccionados.map((i) => ({
+      id: i.idInsumo,
+      nombre: i.nombreInsumo,
+      cantidad: i.cantidadUtilizar,
+    })),
+  }
+
+  try {
+    let response
+    let method
+    let url = `${API_URL}/asociaciones`
+
+    if (asociacionId.value) {
+      url += `/${asociacionId.value}`
+      method = "PUT"
+    } else {
+      method = "POST"
+    }
+
+    response = await fetch(url, {
+      method: method,
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    })
+
+    if (!response.ok) {
+      const errorData = await response.json()
+      if (errorData.errores) {
+        throw new Error(errorData.errores.join(", "))
+      } else if (errorData.error) {
+        throw new Error(errorData.error)
+      } else {
+        throw new Error("Error al guardar la asociación")
+      }
+    }
+
+    await cargarDatos()
+    cerrarModal(modalAsociacion)
+    mostrarNotificacion("Asociación guardada exitosamente", "success")
+  } catch (error) {
+    console.error("Error:", error)
+    mostrarNotificacion(error.message || "Error al guardar la asociación", "error")
+  }
+}
+
+// Funciones de utilidad
 function verDetallesAsociacion(id) {
   const asociacion = asociacionesData.find((a) => a.id == id)
   if (!asociacion) return
@@ -562,10 +883,7 @@ function verDetallesAsociacion(id) {
   const cultivoInfo = cultivosData.find((c) => c.cultivoName === asociacion.cultivo) || {}
   const cicloInfo = ciclosData.find((c) => c.cicloName === asociacion.ciclo_cultivo) || {}
 
-  // Convertir string de sensores a array
   const sensoresArray = asociacion.sensores ? asociacion.sensores.split(",").map((s) => s.trim()) : []
-
-  // Obtener información de los sensores
   const sensoresInfo = sensoresArray.map((sensorNombre) => {
     const sensor = sensoresData.find((s) => s.nombreSensor === sensorNombre) || {}
     return {
@@ -575,10 +893,7 @@ function verDetallesAsociacion(id) {
     }
   })
 
-  // Convertir string de insumos a array (puede ser múltiples insumos separados por coma)
   const insumosArray = asociacion.insumos ? asociacion.insumos.split(",").map((s) => s.trim()) : []
-
-  // Obtener información de los insumos
   const insumosInfo = insumosArray.map((insumoNombre) => {
     const insumo = insumosData.find((i) => i.nombreInsumo === insumoNombre) || {}
     return {
@@ -735,6 +1050,7 @@ function editarAsociacion(id) {
 
   // Llenar el formulario con los datos de la asociación
   asociacionId.value = asociacion.id
+  responsableSelect.value = asociacion.responsable
   nombre_asociacion.value = asociacion.nombre_asociacion
   inversion.value = asociacion.inversion
   meta.value = asociacion.meta
@@ -757,7 +1073,7 @@ function editarAsociacion(id) {
       if (insumo) {
         insumosSeleccionados.push({
           ...insumo,
-          cantidadUtilizar: 1, // Valor por defecto, se puede ajustar
+          cantidadUtilizar: 1,
         })
       }
     })
@@ -768,117 +1084,34 @@ function editarAsociacion(id) {
   actualizarInsumosCheckbox()
   actualizarDetallesInsumos()
 
-  cargarResponsables()
-  setTimeout(() => {
-    responsableSelect.value = asociacion.responsable
-  }, 100)
-
   document.getElementById("modalAsociacionTitle").textContent = "Editar Asociación"
   abrirModal(modalAsociacion)
 }
 
-function limpiarFormularioAsociacion() {
-  formAsociacion.reset()
-  asociacionId.value = ""
-  sensoresSeleccionados = []
-  insumosSeleccionados = []
-  insumosDetallesContainer.style.display = "none"
-  actualizarSensoresCheckbox()
-  actualizarInsumosCheckbox()
+function confirmarEliminarAsociacion(id) {
+  asociacionSeleccionada = id
+  abrirModal(modalConfirmacion)
 }
 
-// Función para guardar asociación actualizada
-async function guardarAsociacion(event) {
-  event.preventDefault()
-
-  // Validar que se haya seleccionado al menos un sensor
-  if (sensoresSeleccionados.length === 0) {
-    mostrarNotificacion("Debe seleccionar al menos un sensor", "error")
-    return
-  }
-
-  // Validar que se haya seleccionado al menos un insumo
-  if (insumosSeleccionados.length === 0) {
-    mostrarNotificacion("Debe seleccionar al menos un insumo", "error")
-    return
-  }
-
-  // Validar cantidades de insumos
-  for (const insumo of insumosSeleccionados) {
-    if (!insumo.cantidadUtilizar || insumo.cantidadUtilizar <= 0) {
-      mostrarNotificacion(`Debe ingresar una cantidad válida para ${insumo.nombreInsumo}`, "error")
-      return
-    }
-
-    if (insumo.cantidadUtilizar > insumo.cantidad) {
-      mostrarNotificacion(`La cantidad de ${insumo.nombreInsumo} no puede ser mayor a la disponible`, "error")
-      return
-    }
-  }
-
-  // Preparar datos
-  const data = {
-    responsable: responsable.value,
-    nombre_asociacion: nombre_asociacion.value,
-    inversion: inversion.value,
-    meta: meta.value,
-    iniico_produccion: iniico_produccion.value,
-    fin_produccion: fin_produccion.value,
-    cultivo: cultivoSelect.value,
-    sensores: sensoresSeleccionados.join(", "),
-    insumos: insumosSeleccionados.map((i) => i.nombreInsumo).join(", "),
-    ciclo_cultivo: cicloSelect.value,
-    insumos_detalle: insumosSeleccionados.map((i) => ({
-      id: i.idInsumo,
-      nombre: i.nombreInsumo,
-      cantidad: i.cantidadUtilizar,
-    })),
-  }
+async function eliminarAsociacion() {
+  if (!asociacionSeleccionada) return
 
   try {
-    let response
-    let method
-    let url = `${API_URL}/asociaciones`
-
-    if (asociacionId.value) {
-      // Actualizar
-      url += `/${asociacionId.value}`
-      method = "PUT"
-    } else {
-      // Crear
-      method = "POST"
-    }
-
-    response = await fetch(url, {
-      method: method,
-      headers: {
-        "Content-Type": "application/json",
-      },
-      body: JSON.stringify(data),
+    const response = await fetch(`${API_URL}/asociaciones/${asociacionSeleccionada}`, {
+      method: "DELETE",
     })
 
-    if (!response.ok) {
-      const errorData = await response.json()
-      if (errorData.errores) {
-        throw new Error(errorData.errores.join(", "))
-      } else if (errorData.error) {
-        throw new Error(errorData.error)
-      } else {
-        throw new Error("Error al guardar la asociación")
-      }
-    }
+    if (!response.ok) throw new Error("Error al eliminar la asociación")
 
     await cargarDatos()
-
-    cerrarModal(modalAsociacion)
-    mostrarNotificacion("Asociación guardada exitosamente", "success")
+    cerrarModal(modalConfirmacion)
+    mostrarNotificacion("Asociación eliminada exitosamente", "success")
   } catch (error) {
     console.error("Error:", error)
-    mostrarNotificacion(error.message || "Error al guardar la asociación", "error")
+    mostrarNotificacion("Error al eliminar la asociación", "error")
   }
 }
 
-// Funciones de utilidad
 function formatearFecha(fechaStr) {
   if (!fechaStr) return "No disponible"
 
@@ -894,7 +1127,6 @@ function formatearFechaInput(fechaStr) {
 }
 
 function mostrarNotificacion(mensaje, tipo) {
-  // Crear elemento de notificación
   const notificacion = document.createElement("div")
   notificacion.className = `notificacion notificacion--${tipo}`
   notificacion.innerHTML = `
@@ -904,15 +1136,12 @@ function mostrarNotificacion(mensaje, tipo) {
         </div>
     `
 
-  // Agregar al DOM
   document.body.appendChild(notificacion)
 
-  // Mostrar notificación
   setTimeout(() => {
     notificacion.classList.add("notificacion--visible")
   }, 10)
 
-  // Ocultar y eliminar después de 3 segundos
   setTimeout(() => {
     notificacion.classList.remove("notificacion--visible")
     setTimeout(() => {
@@ -921,193 +1150,178 @@ function mostrarNotificacion(mensaje, tipo) {
   }, 3000)
 }
 
-// Funciones de confirmación de eliminación
-function confirmarEliminarAsociacion(id) {
-  const asociacion = asociacionesData.find((a) => a.id == id)
-  if (!asociacion) return
+// Funciones de exportación
+function exportarExcel() {
+  const data = asociacionesData.map((a) => ({
+    ID: a.id,
+    Responsable: a.responsable,
+    "Nombre Asociación": a.nombre_asociacion,
+    Inversión: Number.parseFloat(a.inversion),
+    Meta: Number.parseFloat(a.meta),
+    "Inicio Producción": formatearFecha(a.iniico_produccion),
+    "Fin Producción": formatearFecha(a.fin_produccion),
+    Cultivo: a.cultivo,
+    Sensores: a.sensores,
+    Insumos: a.insumos,
+    "Ciclo Cultivo": a.ciclo_cultivo,
+  }))
 
-  const confirmacion = confirm(`¿Está seguro de que desea eliminar la asociación "${asociacion.nombre_asociacion}"?`)
-  if (confirmacion) {
-    eliminarAsociacion(id)
-  }
+  const worksheet = XLSX.utils.json_to_sheet(data)
+  const workbook = XLSX.utils.book_new()
+  XLSX.utils.book_append_sheet(workbook, worksheet, "Asociaciones")
+
+  const columnas = [
+    { wch: 5 },
+    { wch: 15 },
+    { wch: 20 },
+    { wch: 10 },
+    { wch: 10 },
+    { wch: 15 },
+    { wch: 15 },
+    { wch: 15 },
+    { wch: 20 },
+    { wch: 15 },
+    { wch: 15 },
+  ]
+  worksheet["!cols"] = columnas
+
+  XLSX.writeFile(workbook, "Asociaciones.xlsx")
 }
 
-async function eliminarAsociacion(id) {
-  try {
-    const response = await fetch(`${API_URL}/asociaciones/${id}`, {
-      method: "DELETE",
-    })
+function exportarPDF() {
+  const { jsPDF } = window.jspdf
+  const doc = new jsPDF()
 
-    if (!response.ok) {
-      const errorData = await response.json()
-      throw new Error(errorData.error || "Error al eliminar la asociación")
-    }
+  doc.setFontSize(18)
+  doc.text("Reporte de Asociaciones", 14, 22)
 
-    await cargarDatos()
-    mostrarNotificacion("Asociación eliminada exitosamente", "success")
-  } catch (error) {
-    console.error("Error:", error)
-    mostrarNotificacion(error.message || "Error al eliminar la asociación", "error")
-  }
+  doc.setFontSize(11)
+  doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30)
+
+  const tableColumn = ["ID", "Responsable", "Asociación", "Inversión", "Meta", "Cultivo"]
+  const tableRows = []
+
+  asociacionesData.forEach((a) => {
+    const rowData = [
+      a.id,
+      a.responsable,
+      a.nombre_asociacion,
+      `$${Number.parseFloat(a.inversion).toFixed(2)}`,
+      `$${Number.parseFloat(a.meta).toFixed(2)}`,
+      a.cultivo,
+    ]
+    tableRows.push(rowData)
+  })
+
+  doc.autoTable({
+    head: [tableColumn],
+    body: tableRows,
+    startY: 40,
+    theme: "grid",
+    styles: {
+      fontSize: 9,
+      cellPadding: 3,
+    },
+    headStyles: {
+      fillColor: [57, 169, 0],
+      textColor: [255, 255, 255],
+      fontStyle: "bold",
+    },
+    alternateRowStyles: {
+      fillColor: [240, 240, 240],
+    },
+  })
+
+  const finalY = doc.lastAutoTable.finalY + 10
+
+  doc.setFontSize(14)
+  doc.text("Estadísticas", 14, finalY)
+
+  doc.setFontSize(11)
+  doc.text(`Total de Asociaciones: ${asociacionesData.length}`, 14, finalY + 8)
+
+  const inversionTotal = asociacionesData.reduce((total, a) => total + Number.parseFloat(a.inversion), 0)
+  doc.text(`Inversión Total: $${inversionTotal.toFixed(2)}`, 14, finalY + 16)
+
+  const metaTotal = asociacionesData.reduce((total, a) => total + Number.parseFloat(a.meta), 0)
+  doc.text(`Meta Total: $${metaTotal.toFixed(2)}`, 14, finalY + 24)
+
+  doc.save("Asociaciones.pdf")
 }
 
 // Inicializar event listeners
 function inicializarEventListeners() {
   // Botones principales
   btnCrearAsociacion.addEventListener("click", abrirModalCrearAsociacion)
+  btnExportarExcel.addEventListener("click", exportarExcel)
+  btnExportarPDF.addEventListener("click", exportarPDF)
+
+  // Botones para abrir modales secundarios
+  btnNuevoResponsable.addEventListener("click", () => {
+    formResponsable.reset()
+    abrirModal(modalResponsable)
+  })
+
+  btnNuevoSensor.addEventListener("click", () => {
+    formSensor.reset()
+    abrirModal(modalSensor)
+  })
+
+  btnNuevoCultivo.addEventListener("click", () => {
+    formCultivo.reset()
+    abrirModal(modalCultivo)
+  })
+
+  btnNuevoCiclo.addEventListener("click", () => {
+    formCiclo.reset()
+    abrirModal(modalCiclo)
+  })
+
+  btnNuevoInsumo.addEventListener("click", () => {
+    formInsumo.reset()
+    document.getElementById("valorTotalCalculado").textContent = "$0.00"
+    abrirModal(modalInsumo)
+  })
 
   // Cerrar modales
   document.getElementById("closeModalDetalles").addEventListener("click", () => cerrarModal(modalDetalles))
   document.getElementById("closeModalAsociacion").addEventListener("click", () => cerrarModal(modalAsociacion))
+  document.getElementById("closeModalResponsable").addEventListener("click", () => cerrarModal(modalResponsable))
+  document.getElementById("closeModalSensor").addEventListener("click", () => cerrarModal(modalSensor))
+  document.getElementById("closeModalCultivo").addEventListener("click", () => cerrarModal(modalCultivo))
+  document.getElementById("closeModalCiclo").addEventListener("click", () => cerrarModal(modalCiclo))
   document.getElementById("closeModalInsumo").addEventListener("click", () => cerrarModal(modalInsumo))
+  document.getElementById("closeModalConfirmacion").addEventListener("click", () => cerrarModal(modalConfirmacion))
 
   // Botones de cancelar
-  btnCancelarAsociacion.addEventListener("click", () => cerrarModal(modalAsociacion))
-  btnCancelarInsumo.addEventListener("click", () => cerrarModal(modalInsumo))
+  document.getElementById("btnCancelarAsociacion").addEventListener("click", () => cerrarModal(modalAsociacion))
+  document.getElementById("btnCancelarResponsable").addEventListener("click", () => cerrarModal(modalResponsable))
+  document.getElementById("btnCancelarSensor").addEventListener("click", () => cerrarModal(modalSensor))
+  document.getElementById("btnCancelarCultivo").addEventListener("click", () => cerrarModal(modalCultivo))
+  document.getElementById("btnCancelarCiclo").addEventListener("click", () => cerrarModal(modalCiclo))
+  document.getElementById("btnCancelarInsumo").addEventListener("click", () => cerrarModal(modalInsumo))
+  document.getElementById("btnCancelarEliminar").addEventListener("click", () => cerrarModal(modalConfirmacion))
 
-  // Botones para abrir modales secundarios
-  btnNuevoInsumo.addEventListener("click", () => {
-    formInsumo.reset()
-    abrirModal(modalInsumo)
-  })
+  // Botones de confirmación
+  document.getElementById("btnConfirmarEliminar").addEventListener("click", eliminarAsociacion)
 
   // Formularios
   formAsociacion.addEventListener("submit", guardarAsociacion)
+  formResponsable.addEventListener("submit", crearResponsable)
+  formSensor.addEventListener("submit", crearSensor)
+  formCultivo.addEventListener("submit", crearCultivo)
+  formCiclo.addEventListener("submit", crearCiclo)
+  formInsumo.addEventListener("submit", crearInsumo)
 
   // Búsqueda
   searchInput.addEventListener("input", function () {
     renderizarTablaAsociaciones(this.value)
   })
-}
 
-// Estilos adicionales para los nuevos elementos
-const estilosAdicionales = document.createElement("style")
-estilosAdicionales.textContent = `
-    .form__insumos {
-        display: grid;
-        gap: 10px;
-        max-height: 200px;
-        overflow-y: auto;
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        padding: 12px;
+  // Cerrar modales al hacer clic fuera
+  document.addEventListener("click", (event) => {
+    if (event.target.classList.contains("modal")) {
+      cerrarModal(event.target)
     }
-    
-    .insumo-checkbox {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 8px;
-        border-radius: 6px;
-        transition: background-color 0.2s;
-    }
-    
-    .insumo-checkbox:hover {
-        background-color: #f9fafb;
-    }
-    
-    .insumo-checkbox__label {
-        cursor: pointer;
-        font-size: 0.875rem;
-        color: #374151;
-    }
-    
-    .insumos-detalles {
-        border: 1px solid #e5e7eb;
-        border-radius: 8px;
-        overflow: hidden;
-    }
-    
-    .insumos-detalles__header {
-        background-color: #f9fafb;
-        padding: 12px 16px;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .insumos-detalles__title {
-        margin: 0;
-        font-size: 1rem;
-        font-weight: 600;
-        color: #374151;
-    }
-    
-    .insumos-detalles__content {
-        padding: 16px;
-    }
-    
-    .insumo-detalle {
-        border: 1px solid #e5e7eb;
-        border-radius: 6px;
-        margin-bottom: 16px;
-        overflow: hidden;
-    }
-    
-    .insumo-detalle:last-child {
-        margin-bottom: 0;
-    }
-    
-    .insumo-detalle__header {
-        background-color: #f3f4f6;
-        padding: 8px 12px;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        border-bottom: 1px solid #e5e7eb;
-    }
-    
-    .insumo-detalle__title {
-        margin: 0;
-        font-size: 0.875rem;
-        font-weight: 600;
-        color: #374151;
-    }
-    
-    .insumo-detalle__content {
-        padding: 12px;
-    }
-    
-    .notificacion {
-        position: fixed;
-        top: 20px;
-        right: 20px;
-        padding: 12px 20px;
-        border-radius: 8px;
-        background-color: white;
-        box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
-        z-index: 2000;
-        transform: translateX(120%);
-        transition: transform 0.3s ease;
-    }
-    
-    .notificacion--visible {
-        transform: translateX(0);
-    }
-    
-    .notificacion__content {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-    }
-    
-    .notificacion__icon {
-        font-size: 1.25rem;
-    }
-    
-    .notificacion--success .notificacion__icon {
-        color: #059669;
-    }
-    
-    .notificacion--warning .notificacion__icon {
-        color: #d97706;
-    }
-    
-    .notificacion--error .notificacion__icon {
-        color: #dc2626;
-    }
-    
-    .notificacion__message {
-        font-size: 0.875rem;
-        font-weight: 500;
-    }
-`
-document.head.appendChild(estilosAdicionales)
+  })
+}
