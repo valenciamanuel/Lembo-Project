@@ -1,7 +1,7 @@
 // routes/asociacionDetalleRoute.js
 const express = require('express');
 const router = express.Router();
-const pool = require('../config/db'); // Asegúrate de que uses mysql2/promise en db.js
+const pool = require('../config/db'); 
 
 // Ruta para obtener los detalles de una asociación
 router.get('/:id', async (req, res) => {
