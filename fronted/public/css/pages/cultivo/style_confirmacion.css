@@ -172,7 +172,7 @@ body {
     display: flex;
     justify-content: center;
     align-items: flex-start;
-    background-image: url(../IMG/granos.webp);
+    background-image: url(/fronted/public/img/granos.webp);
     background-repeat: no-repeat;
     background-size: cover;
     min-height: 100vh;

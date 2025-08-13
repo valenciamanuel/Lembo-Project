@@ -58,7 +58,7 @@ body {
     align-items: center;
     justify-content: center;
     gap: 2.4rem; /* Ajuste de gap para Material Design */
-    background: url(../IMG/istockphoto-1190429132-612x612.webp) no-repeat center;
+    background: url(/fronted/public/img/cultivos-1.jpg) no-repeat center;
     background-size: cover;
     padding: 2.4rem; /* Ajuste de padding para Material Design */
     border-radius: 4px; /* Bordes redondeados */
@@ -70,7 +70,7 @@ body {
     width: 80%;
     max-width: 400px;
     height: 25rem;
-    background: url(../IMG/istockphoto-926358082-612x612.webp) no-repeat center;
+    background: url(/fronted/public/img/insumos-agrícolas-aumento-bccba-650x404.jpg) no-repeat center;
     background-size: cover;
     border-radius: 4px; /* Bordes redondeados */
     box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1); /* Sombra ligera */
