@@ -10,6 +10,7 @@ const db = mysql.createConnection({
   password: "root",
   database: "lembo",
   multipleStatements: true,
+  port: 3307,
 })
 
 // Conectar a la base de datos

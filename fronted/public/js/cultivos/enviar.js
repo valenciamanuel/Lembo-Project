@@ -8,17 +8,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const location = document.querySelector('.cultivo__input--location');
     const description = document.querySelector('.cultivo__input--description');
     const state = document.querySelector('.cultivo__input--state');
+    const imageInput = document.getElementById('image');
 
-    const inputs = [
-        cultivoType, cultivoName, cultivoID, size,
-        location, description, state
-    ];
+    const inputs = [cultivoType, cultivoName, cultivoID, size, location, description];
+    const selects = [state];
 
-    // Escucha para inputs: quitar error al escribir
+    // Escucha para inputs: quitar rojo al escribir
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('form__input--error');
-            if (input.tagName !== 'SELECT') input.placeholder = '';
+            input.placeholder = '';
+        });
+    });
+
+    // Escucha para selects: quitar rojo al cambiar
+    selects.forEach(select => {
+        select.addEventListener('change', () => {
+            select.classList.remove('form__input--error');
         });
     });
 
@@ -26,14 +32,13 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         // Limpiar errores anteriores
-        [...inputs].forEach(input => {
+        [...inputs, ...selects].forEach(input => {
             input.classList.remove('form__input--error');
             if (input.tagName !== 'SELECT') input.placeholder = '';
         });
 
         let valido = true;
 
-        // Función para validar campos
         const validarCampo = (input, mensaje) => {
             if (!input.value.trim()) {
                 valido = false;
@@ -45,18 +50,23 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Validar cada campo
         validarCampo(cultivoType, 'Tipo de cultivo obligatorio');
         validarCampo(cultivoName, 'Nombre del cultivo obligatorio');
         validarCampo(cultivoID, 'ID del cultivo obligatorio');
         validarCampo(size, 'Tamaño obligatorio');
         validarCampo(location, 'Ubicación obligatoria');
         validarCampo(description, 'Descripción obligatoria');
-        validarCampo(state, 'Seleccionar estado');
+        validarCampo(state, 'Selecciona un estado');
+
+        if (!imageInput.files[0]) {
+            valido = false;
+            imageInput.classList.add('form__input--error');
+            alert('Por favor, selecciona una imagen.');
+        }
 
         if (!valido) return;
 
-        // Datos del formulario
+        // Preparar datos como JSON
         const formData = {
             cultivoType: cultivoType.value,
             cultivoName: cultivoName.value,
@@ -64,7 +74,8 @@ document.addEventListener('DOMContentLoaded', () => {
             size: size.value,
             location: location.value,
             description: description.value,
-            state: state.value
+            state: state.value,
+            image: imageInput.files[0].name // o puedes enviar un base64 si quieres
         };
 
         try {
@@ -73,7 +84,7 @@ document.addEventListener('DOMContentLoaded', () => {
                 headers: {
                     'Content-Type': 'application/json'
                 },
-                body: JSON.stringify(formData) // Aquí se están enviando los datos como JSON
+                body: JSON.stringify(formData)
             });
 
             if (!response.ok) {
@@ -83,20 +94,21 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             console.log('Cultivo registrado', result);
 
-            // Enviar mensaje a la ventana que abrió este formulario
             if (window.opener && window.opener.postMessage) {
                 window.opener.postMessage({
                     type: 'nuevoCultivoCreado',
                     cultivo: {
-                        idCultivo: result.id, // Asumiendo que el ID del cultivo en la respuesta se llama 'id'
-                        nombreCultivo: result.cultivoName // Asumiendo que el nombre del cultivo en la respuesta se llama 'cultivoName'
+                        idCultivo: result.id,
+                        nombreCultivo: result.cultivoName
                     }
                 }, '*');
             }
 
-            form.reset(); // Limpiar formulario después de enviar los datos
+            form.reset();
+            alert('Cultivo creado exitosamente.');
         } catch (error) {
             console.error('Error', error);
+            alert('Error al crear el cultivo. Revisa la consola para más detalles.');
         }
     });
 });
