@@ -13,7 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputs = [cultivoType, cultivoName, cultivoID, size, location, description];
     const selects = [state];
 
-    // Escucha para inputs: quitar rojo al escribir
+    // --- Quitar rojo al escribir/cambiar ---
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('form__input--error');
@@ -21,17 +21,16 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
-    // Escucha para selects: quitar rojo al cambiar
     selects.forEach(select => {
         select.addEventListener('change', () => {
             select.classList.remove('form__input--error');
         });
     });
 
+    // --- Envío del formulario ---
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Limpiar errores anteriores
         [...inputs, ...selects].forEach(input => {
             input.classList.remove('form__input--error');
             if (input.tagName !== 'SELECT') input.placeholder = '';
@@ -56,7 +55,7 @@ document.addEventListener('DOMContentLoaded', () => {
         validarCampo(size, 'Tamaño obligatorio');
         validarCampo(location, 'Ubicación obligatoria');
         validarCampo(description, 'Descripción obligatoria');
-        validarCampo(state, 'Selecciona un estado');
+        validarCampo(state, 'Seleccionar estado');
 
         if (!imageInput.files[0]) {
             valido = false;
@@ -66,7 +65,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
-        // Preparar datos como JSON
+        // --- Datos como JSON (igual que insumo) ---
         const formData = {
             cultivoType: cultivoType.value,
             cultivoName: cultivoName.value,
@@ -75,15 +74,13 @@ document.addEventListener('DOMContentLoaded', () => {
             location: location.value,
             description: description.value,
             state: state.value,
-            image: imageInput.files[0].name // o puedes enviar un base64 si quieres
+            image: imageInput.files[0].name // solo el nombre, si quieres base64 habría que convertir
         };
 
         try {
             const response = await fetch('http://localhost:3000/cultivo', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
 
@@ -106,6 +103,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
             form.reset();
             alert('Cultivo creado exitosamente.');
+
         } catch (error) {
             console.error('Error', error);
             alert('Error al crear el cultivo. Revisa la consola para más detalles.');

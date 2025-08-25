@@ -1,6 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.form');
 
+    // --- Referencias a los campos ---
     const tipoSensor = document.querySelector('.sensor__input--type');
     const nombreSensor = document.querySelector('.sensor__input--name');
     const unidadMedida = document.querySelector('.sensor__input--medida');
@@ -8,22 +9,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const descripcion = document.querySelector('.sensor__input--descripcion');
     const estado = document.querySelector('.sensor__input--estado');
 
-    const inputs = [
-        tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo,
-        descripcion, estado
-    ];
+    const inputs = [tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion];
+    const selects = [estado];
 
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
+    // --- Quitar clase de error al escribir o cambiar ---
+    [...inputs, ...selects].forEach(input => {
+        input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'input', () => {
             input.classList.remove('form__input--error');
             if (input.tagName !== 'SELECT') input.placeholder = '';
         });
     });
 
+    // --- Envío del formulario ---
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        [...inputs].forEach(input => {
+        // Limpiar errores
+        [...inputs, ...selects].forEach(input => {
             input.classList.remove('form__input--error');
             if (input.tagName !== 'SELECT') input.placeholder = '';
         });
@@ -50,6 +52,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
+        // --- Datos como JSON ---
         const formData = {
             tipoSensor: tipoSensor.value,
             nombreSensor: nombreSensor.value,
@@ -62,30 +65,28 @@ document.addEventListener('DOMContentLoaded', () => {
         try {
             const response = await fetch('http://localhost:3000/sensores', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
+                headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) {
-                throw new Error('Error en la conexión con el servidor');
-            }
+            if (!response.ok) throw new Error('Error en la conexión con el servidor');
 
             const result = await response.json();
             console.log('Sensor registrado', result);
 
-            // Enviar mensaje a la ventana que abrió este formulario (si existe)
+            // --- Mensaje a la ventana que abrió este formulario ---
             if (window.opener && window.opener.postMessage) {
                 window.opener.postMessage({
                     type: 'nuevoSensorCreado',
-                    sensor: result // Asegúrate de que 'result' contenga { idSensor: ..., nombreSensor: ... }
+                    sensor: { idSensor: result.id, nombreSensor: result.nombreSensor }
                 }, '*');
             }
 
-            form.reset(); // Limpiar formulario después de enviar los datos
+            form.reset();
+            alert('Sensor creado exitosamente.');
         } catch (error) {
             console.error('Error', error);
+            alert('Error al crear el sensor. Revisa la consola para más detalles.');
         }
     });
 });
