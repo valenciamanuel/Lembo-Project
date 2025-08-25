@@ -8,7 +8,8 @@ const pool = mysql.createPool({
   database: 'lembo',
   waitForConnections: true,
   connectionLimit: 10,
-  queueLimit: 0
+  queueLimit: 0,
+  port: 3307
 });
 
 module.exports = pool;
