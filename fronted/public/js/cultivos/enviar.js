@@ -102,13 +102,18 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             form.reset();
-            imageInput.value = ''; // Limpia el campo de imagen
-            state.selectedIndex = 0; // Selecciona la primera opción del select
-            inputs.forEach(input => input.classList.remove('form__input--error')); // Quita errores visuales
+            // Limpieza manual por si algún campo no se resetea
+            imageInput.value = '';
+            state.selectedIndex = 0;
+            inputs.forEach(input => input.classList.remove('form__input--error'));
             alert('Cultivo creado exitosamente.');
 
         } catch (error) {
             console.error('Error', error);
+            form.reset(); // <-- Limpia el formulario aunque haya error
+            imageInput.value = '';
+            state.selectedIndex = 0;
+            inputs.forEach(input => input.classList.remove('form__input--error'));
             alert('Error al crear el cultivo. Revisa la consola para más detalles.');
         }
     });

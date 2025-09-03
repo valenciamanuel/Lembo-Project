@@ -1,34 +1,62 @@
 const db = require('../config/db.js');
 
-const insertarCultivo = (req, res) => {
-    const { cultivoType, cultivoName, cultivoID, size, location, description, state } = req.body;
+// Insertar cultivo
+const insertarCultivo = async (req, res) => {
+    try {
+        const { cultivoType, cultivoName, cultivoID, size, location, description, state, image } = req.body;
 
-    if (!cultivoType || !cultivoName || !cultivoID || !size || !location || !description || !state) {
-        return res.status(400).json({ error: 'Todos los campos son obligatorios' });
-    }
-
-    const sql = 'INSERT INTO cultivo (cultivoType, cultivoName, cultivoID, size, location, description, state) VALUES (?, ?, ?, ?, ?, ?, ?)';
-    const values = [cultivoType, cultivoName, cultivoID, size, location, description, state];
-
-    db.query(sql, values, (err, result) => {
-        if (err) {
-            console.error('Error al insertar el cultivo:', err);
-            return res.status(500).json({ error: 'Error al insertar el cultivo' });
+        // Validación
+        if (!cultivoType || !cultivoName || !cultivoID || !size || !location || !description || !state || !image) {
+            return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
-        res.status(201).json({ id: result.insertId, cultivoType, cultivoName, cultivoID, size, location, description, state });
-    });
+
+        const sql = `
+            INSERT INTO cultivo 
+            (cultivoType, cultivoName, cultivoID, size, location, description, state, image) 
+            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+        `;
+        const values = [cultivoType, cultivoName, cultivoID, size, location, description, state, image];
+
+        // Usar await porque db es un pool con promesas
+        const [result] = await db.query(sql, values);
+
+        const nuevoId = result.insertId;
+        console.log('✅ Cultivo insertado correctamente:', nuevoId);
+
+        res.status(201).json({
+            id: nuevoId,
+            cultivoType,
+            cultivoName,
+            cultivoID,
+            size,
+            location,
+            description,
+            state,
+            image
+        });
+    } catch (err) {
+        console.error('❌ Error al insertar el cultivo:', err);
+        res.status(500).json({ error: 'Error al insertar el cultivo' });
+    }
 };
 
-const obtenerCultivos = (req, res) => {
-    const sql = 'SELECT id, cultivoName FROM cultivo';
+// Obtener cultivos
+const obtenerCultivos = async (req, res) => {
+    try {
+        const sql = 'SELECT id, cultivoName, image FROM cultivo';
+        const [results] = await db.query(sql);
 
-    db.query(sql, (err, results) => {
-        if (err) {
-            console.error('Error al obtener los cultivos:', err);
-            return res.status(500).json({ error: 'Error al obtener los cultivos' });
-        }
-        res.status(200).json(results);
-    });
+        const cultivos = results.map(({ id, cultivoName, image }) => ({
+            id,
+            cultivoName,
+            image   
+        }));
+
+        res.status(200).json(cultivos);
+    } catch (err) {
+        console.error('❌ Error al obtener los cultivos:', err);
+        res.status(500).json({ error: 'Error al obtener los cultivos' });
+    }
 };
 
 module.exports = {
