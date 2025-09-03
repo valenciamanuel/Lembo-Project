@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
     const tipoInsumo = document.querySelector('.insumo__input--type');
     const nombreInsumo = document.querySelector('.insumo__input--nombre');
-    const unidadMedida = document.querySelector('.cultivo__input--size'); // OJO: Revisa este selector, ¿es correcto?
+    const unidadMedida = document.querySelector('.insumo__input--unidad'); // OJO: Revisa este selector, ¿es correcto?
     const cantidad = document.querySelector('.insumo__input--cantidad');
     const valorUnitario = document.querySelector('.insumo__input--unitario');
     const valorTotal = document.querySelector('.insumo__input--total');
