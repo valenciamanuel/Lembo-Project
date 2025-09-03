@@ -19,7 +19,7 @@ const apiasociaciones = require('./routes/api.js')
 app.use('/ciclocultivo', cicloCultivoRoutes);
 app.use('/cultivo', cultivoRoutes);
 app.use('/insumo', insumoRoutes);
-app.use('/sensores', sensorRoutes); 
+app.use('/api/sensores', sensorRoutes); 
 app.use('/register', regsiterRoutes);
 app.use('/asociaciones', asociacionRoutes);
 app.use('/uso_insumo', usoRoutes);

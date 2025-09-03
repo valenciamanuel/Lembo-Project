@@ -11,7 +11,7 @@
 <body> 
     <header class="header"></header>
     <main class="form-container">
-        <form class="form" action="http://localhost:3000/sensores" method="POST">
+        <form class="form" action="http://localhost:3000/api/sensores" method="POST">
             <h2 class="form__title">Datos sensores</h2>
     
             <div class="form__row">
@@ -34,10 +34,10 @@
                     <input class="form__input sensor__input--escaneo" type="text" name="tiempoEscaneo">
     
                     <label class="form__label">Descripción</label>
-                    <input class="form__input sensor__input--descripcion" type="text" name="description">
+                    <input class="form__input sensor__input--descripcion" type="text" name="descripcion">   
     
                     <label class="form__label">Estado (activo / inactivo)</label>
-                    <select name="state" class="form__input sensor__input--estado">
+                    <select name="estado" class="form__input sensor__input--estado">
                         <option value="">Seleccione una opción</option>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
