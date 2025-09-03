@@ -102,6 +102,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             form.reset();
+            imageInput.value = ''; // Limpia el campo de imagen
+            state.selectedIndex = 0; // Selecciona la primera opción del select
+            inputs.forEach(input => input.classList.remove('form__input--error')); // Quita errores visuales
             alert('Cultivo creado exitosamente.');
 
         } catch (error) {
