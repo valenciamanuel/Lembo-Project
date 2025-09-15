@@ -27,14 +27,14 @@ document.addEventListener('DOMContentLoaded', () => {
         event.preventDefault();
 
         // Limpiar errores anteriores
-        [...inputs].forEach(input => {
+        inputs.forEach(input => {
             input.classList.remove('form__input--error');
             if (input.tagName !== 'SELECT') input.placeholder = '';
         });
 
         let valido = true;
 
-        // Función para validar campos
+        // Validar campos
         const validarCampo = (input, mensaje) => {
             if (!input.value.trim()) {
                 valido = false;
@@ -46,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // Validar cada campo
         validarCampo(cicloID, 'ID del ciclo obligatorio');
         validarCampo(cicloName, 'Nombre del ciclo obligatorio');
         validarCampo(siembraDate, 'Fecha de siembra obligatoria');
@@ -57,17 +56,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
-        // Datos del formulario
+        // Datos del formulario (imagen se queda en null por ahora)
+        const file = image.files[0];
         const formData = {
-            image: null, // por ahora no se maneja archivo real
             cicloID: cicloID.value,
             cicloName: cicloName.value,
             siembraDate: siembraDate.value,
             cosechaDate: cosechaDate.value,
             news: news.value,
             description: description.value,
-            state: state.value
+            state: state.value,
+            image: file ? file.name : null  // 👈 nombre de la imagen o null
         };
+
 
         try {
             const response = await fetch('http://localhost:3000/ciclocultivo', {
@@ -76,26 +77,16 @@ document.addEventListener('DOMContentLoaded', () => {
                 body: JSON.stringify(formData)
             });
 
-            if (!response.ok) {
-                throw new Error('Error en la conexión con el servidor');
-            }
+            if (!response.ok) throw new Error('Error en la conexión con el servidor');
 
             const result = await response.json();
             console.log('✅ Ciclo Cultivo registrado', result);
 
-            // Enviar mensaje a la ventana que abrió este formulario
-            if (window.opener && window.opener.postMessage) {
-                window.opener.postMessage({
-                    type: 'nuevoCicloCultivoCreado',
-                    cicloCultivo: result
-                }, '*');
-            }
-
-            alert("✅ Ciclo creado correctamente"); // confirmación visual
-            form.reset(); // Limpiar formulario después de enviar los datos
-
+            alert("✅ Ciclo creado correctamente");
+            form.reset();
         } catch (error) {
             console.error('❌ Error', error);
+            alert("❌ Hubo un error al crear el ciclo");
         }
     });
 });

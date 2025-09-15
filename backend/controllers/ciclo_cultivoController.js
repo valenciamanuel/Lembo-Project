@@ -1,8 +1,11 @@
 const db = require('../config/db.js');
 
 const insertarCicloCultivo = (req, res) => {
+    console.log("📩 Body recibido:", req.body);
+
     const { cicloID, cicloName, siembraDate, cosechaDate, news, description, state, image } = req.body;
 
+    // ✅ Validación de campos
     if (!cicloID || !cicloName || !siembraDate || !cosechaDate || !news || !description || !state) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
@@ -16,10 +19,11 @@ const insertarCicloCultivo = (req, res) => {
 
     db.query(sql, values, (err, result) => {
         if (err) {
-            console.error('Error al insertar el ciclo de cultivo:', err);
+            console.error('❌ Error al insertar el ciclo de cultivo:', err);
             return res.status(500).json({ error: 'Error al insertar el ciclo de cultivo' });
         }
-        // 👇 return agregado para cerrar bien el flujo
+
+        // ✅ Respuesta inmediata al frontend
         return res.status(201).json({ 
             id: result.insertId, 
             cicloID, 
@@ -39,10 +43,11 @@ const obtenerCiclosCultivo = (req, res) => {
 
     db.query(sql, (err, results) => {
         if (err) {
-            console.error('Error al obtener los ciclos de cultivo:', err);
+            console.error('❌ Error al obtener los ciclos de cultivo:', err);
             return res.status(500).json({ error: 'Error al obtener los ciclos de cultivo' });
         }
-        // 👇 también return aquí
+
+        // ✅ También cerramos el flujo
         return res.status(200).json(results);
     });
 };
