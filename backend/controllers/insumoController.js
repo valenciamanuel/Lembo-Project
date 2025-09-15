@@ -1,15 +1,31 @@
 const db = require('../config/db.js');
 
 const insertarInsumo = (req, res) => {
-    const { tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado } = req.body;
+    const { tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, } = req.body;
+    const image = req.file ? req.file.filename : null; // multer maneja la imagen
 
     // Verificar que se hayan enviado todos los campos requeridos
     if (!tipoInsumo || !nombreInsumo || !unidadMedida || !cantidad || !valorUnitario || !valorTotal || !descripcion || !estado) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
+    
+    const sql = `
+        INSERT INTO insumo 
+        (tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image) 
+        VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
+    `;
 
-    const sql = 'INSERT INTO insumo (tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado) VALUES (?, ?, ?, ?, ?, ?, ?, ?)';
-    const values = [tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado];
+    const values = [
+        tipoInsumo, 
+        nombreInsumo, 
+        unidadMedida, 
+        cantidad, 
+        valorUnitario, 
+        valorTotal, 
+        descripcion, 
+        estado, 
+        image
+    ];
 
     db.query(sql, values, (err, result) => {
         if (err) {
@@ -25,13 +41,14 @@ const insertarInsumo = (req, res) => {
             valorUnitario,
             valorTotal,
             descripcion,
-            estado
+            estado,
+            image
         });
     });
 };
 
 const obtenerInsumos = (req, res) => {
-    const sql = 'SELECT idInsumo, nombreInsumo FROM insumo';
+    const sql = 'SELECT idInsumo, nombreInsumo, image FROM insumo';
 
     db.query(sql, (err, results) => {
         if (err) {
