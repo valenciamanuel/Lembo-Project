@@ -59,7 +59,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         // Datos del formulario
         const formData = {
-            image: image ? image.value : null,
+            image: null, // por ahora no se maneja archivo real
             cicloID: cicloID.value,
             cicloName: cicloName.value,
             siembraDate: siembraDate.value,
@@ -70,12 +70,10 @@ document.addEventListener('DOMContentLoaded', () => {
         };
 
         try {
-            const response = await fetch('http://localhost:3000/CicloCultivo', {
+            const response = await fetch('http://localhost:3000/ciclocultivo', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData) // Aquí se están enviando los datos como JSON
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(formData)
             });
 
             if (!response.ok) {
@@ -83,19 +81,21 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             const result = await response.json();
-            console.log('Ciclo Cultivo registrado', result);
+            console.log('✅ Ciclo Cultivo registrado', result);
 
             // Enviar mensaje a la ventana que abrió este formulario
             if (window.opener && window.opener.postMessage) {
                 window.opener.postMessage({
                     type: 'nuevoCicloCultivoCreado',
-                    cicloCultivo: result // Asegúrate de que 'result' contenga { idCiclo: ..., nombreCiclo: ... }
+                    cicloCultivo: result
                 }, '*');
             }
 
+            alert("✅ Ciclo creado correctamente"); // confirmación visual
             form.reset(); // Limpiar formulario después de enviar los datos
+
         } catch (error) {
-            console.error('Error', error);
+            console.error('❌ Error', error);
         }
     });
 });
