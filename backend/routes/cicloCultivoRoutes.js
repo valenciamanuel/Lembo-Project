@@ -2,11 +2,12 @@
 const express = require('express');
 const router = express.Router();
 
-// ✅ CORRECCIÓN: Agrega el guion bajo (_) para que coincida con el nombre del archivo.
+// ✅ CORRECCIÓN: Usar el nombre exacto del archivo con el guion bajo
 const cicloCultivoController = require('../controllers/ciclo_cultivoController');
 
+// ...el resto de tu código
 // ...el resto de tu código de rutas es correcto
 router.post('/ciclo-cultivo', cicloCultivoController.insertarCicloCultivo);
 router.get('/ciclo-cultivo', cicloCultivoController.obtenerCiclosCultivo);
 
-module.exports = router;    
+module.exports = router;        

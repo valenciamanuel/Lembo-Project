@@ -1,18 +1,15 @@
 // controllers/ciclo_cultivoController.js
 const db = require('../config/db.js');
 
-// ✅ Insertar un nuevo ciclo de cultivo
 const insertarCicloCultivo = (req, res) => {
     console.log("📩 Body recibido:", req.body);
 
     const { cicloID, cicloName, siembraDate, cosechaDate, news, description, state, image } = req.body;
 
-    // ✅ Validación de campos obligatorios
     if (!cicloID || !cicloName || !siembraDate || !cosechaDate || !news || !description || !state) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
 
-    // ✅ SQL preparado
     const sql = `
         INSERT INTO ciclocultivo 
         (cicloID, cicloName, siembraDate, cosechaDate, news, description, state, image) 
@@ -21,7 +18,8 @@ const insertarCicloCultivo = (req, res) => {
 
     const values = [cicloID, cicloName, siembraDate, cosechaDate, news, description, state, image || null];
 
-    // ✅ Ejecutamos query y ENVIAMOS UNA RESPUESTA
+    console.log('✅ Preparando para ejecutar la consulta SQL.'); 
+    
     db.query(sql, values, (err, result) => {
         if (err) {
             console.error('❌ Error al insertar el ciclo de cultivo:', err.sqlMessage || err);
@@ -47,6 +45,7 @@ const insertarCicloCultivo = (req, res) => {
     });
 };
 
+
 // ✅ Obtener todos los ciclos de cultivo
 const obtenerCiclosCultivo = (req, res) => {
     const sql = 'SELECT id, cicloName, image FROM ciclocultivo';
@@ -65,4 +64,4 @@ const obtenerCiclosCultivo = (req, res) => {
 module.exports = {
     insertarCicloCultivo,
     obtenerCiclosCultivo,
-};
+};  

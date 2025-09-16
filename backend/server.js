@@ -12,7 +12,10 @@ app.use(cors({
 app.use(express.json());
 app.options('*', cors()); // Maneja preflight de todos los endpoints
 
-
+// ✅ RUTA DE PRUEBA: Añadida aquí
+app.get('/test', (req, res) => {
+    res.status(200).json({ message: 'Conexión exitosa, sin DB' });
+});
 
 const cicloCultivoRoutes = require('./routes/cicloCultivoRoutes.js');
 const cultivoRoutes = require('./routes/cultivoRoute.js');
