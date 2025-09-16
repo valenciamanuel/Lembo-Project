@@ -1,21 +1,16 @@
+// controllers/registerController.js
 const db = require('../config/db.js');
 
 const insertarRegister = async (req, res) => {
     console.log('llegó');
-    let { usertype, IDtype, IDnum, name, email, phone, password } = req.body;
+    const { usertype, IDtype, IDnum, name, email, phone, password } = req.body;
 
+    // Validación de campos obligatorios
     if (!usertype || !IDtype || !IDnum || !name || !email || !phone || !password) {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
 
-    usertype = usertype.trim();
-    IDtype = IDtype.trim();
-    IDnum = IDnum.trim();
-    name = name.trim();
-    email = email.trim();
-    phone = phone.trim();
-    password = password.trim();
-
+    // Validación de formato
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
     if (!emailRegex.test(email)) {
         return res.status(400).json({ error: 'Email no válido' });
@@ -33,20 +28,26 @@ const insertarRegister = async (req, res) => {
         return res.status(400).json({ error: 'La contraseña debe tener al menos 6 caracteres' });
     }
 
+    let connection;
     try {
-        const [results] = await db.query('SELECT * FROM register WHERE IDnum = ? OR email = ?', [IDnum, email]);
-        console.log('wtf');
+        console.log('✅ Obteniendo conexión del pool para el registro.');
+        connection = await db.getConnection();
+
+        // 1. Revisar si el usuario ya existe
+        const [results] = await connection.execute('SELECT * FROM register WHERE IDnum = ? OR email = ?', [IDnum, email]);
+        
 
         if (results.length > 0) {
             return res.status(400).json({ error: 'El número de documento o el email ya están registrados' });
         }
 
-        const [result] = await db.query(
+        // 2. Insertar el nuevo usuario
+        const [result] = await connection.execute(
             'INSERT INTO register (usertype, IDtype, IDnum, name, email, phone, password) VALUES (?, ?, ?, ?, ?, ?, ?)',
             [usertype, IDtype, IDnum, name, email, phone, password]
         );
 
-        console.log('melo no se que pasa');
+       
 
         res.status(201).json({
             id: result.insertId,
@@ -59,8 +60,12 @@ const insertarRegister = async (req, res) => {
         });
 
     } catch (err) {
-        console.error('Error al insertar el usuario:', err);
+        console.error('❌ Error al insertar el usuario:', err);
         res.status(500).json({ error: 'Error interno al insertar el usuario' });
+    } finally {
+        if (connection) {
+            connection.release(); // ✅ Esto asegura que la conexión se libera siempre
+        }
     }
 };
 
