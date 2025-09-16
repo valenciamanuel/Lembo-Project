@@ -69,9 +69,9 @@ document.addEventListener('DOMContentLoaded', () => {
             image: file ? file.name : null  // 👈 nombre de la imagen o null
         };
 
-
         try {
-            const response = await fetch('http://localhost:3000/ciclocultivo', {
+            // ✅ CORRECCIÓN: Se agrega '/ciclo-cultivo' a la URL
+            const response = await fetch('http://localhost:3000/ciclocultivo/ciclo-cultivo', {
                 method: 'POST',
                 headers: { 'Content-Type': 'application/json' },
                 body: JSON.stringify(formData)
