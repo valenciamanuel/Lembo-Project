@@ -1,4 +1,4 @@
-// controllers/cicloCultivoController.js
+// controllers/ciclo_cultivoController.js
 const db = require('../config/db.js');
 
 // ✅ Insertar un nuevo ciclo de cultivo
@@ -21,17 +21,19 @@ const insertarCicloCultivo = (req, res) => {
 
     const values = [cicloID, cicloName, siembraDate, cosechaDate, news, description, state, image || null];
 
-    // ✅ Ejecutamos query
+    // ✅ Ejecutamos query y ENVIAMOS UNA RESPUESTA
     db.query(sql, values, (err, result) => {
         if (err) {
             console.error('❌ Error al insertar el ciclo de cultivo:', err.sqlMessage || err);
-            return res.status(500).json({ error: 'Error al insertar el ciclo de cultivo' });
+            // ✅ En caso de error, siempre se debe enviar una respuesta
+            return res.status(500).json({ error: 'Error al insertar el ciclo de cultivo', details: err.sqlMessage });
         }
 
         console.log('✅ Ciclo de cultivo insertado con ID:', result.insertId);
 
-        // ✅ Respuesta inmediata al frontend
+        // ✅ Después de una inserción exitosa, SIEMPRE se debe enviar una respuesta
         return res.status(201).json({ 
+            message: 'Ciclo de cultivo creado exitosamente',
             id: result.insertId, 
             cicloID, 
             cicloName, 
