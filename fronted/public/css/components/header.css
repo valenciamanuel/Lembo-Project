@@ -1,3 +1,4 @@
+/* === HEADER VERDE DE TU SISTEMA === */
 .header {
     background-color: #39a900;
     width: 100%;
@@ -49,7 +50,6 @@
     }
 }
 
-/* Media Queries para móviles (420px) */
 @media (max-width: 420px) {
     .header__logo {
         width: 8%;
@@ -60,6 +60,8 @@
     }
 }
 
-.container{
-    margin-top: 10%;;
+.container {
+    margin-top: 10%;
 }
+
+
