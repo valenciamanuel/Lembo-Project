@@ -22,6 +22,7 @@ body {
     display: flex;
     flex-direction: column;
     overflow: hidden;
+    background: url(/fronted/public/img/fondocampo.jpg);
 }
 
 .header {

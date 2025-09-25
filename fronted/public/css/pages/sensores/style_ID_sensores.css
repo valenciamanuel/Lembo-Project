@@ -30,10 +30,10 @@ body {
     padding: 0;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    align-items: center;
+    justify-content: center; /* centrado horizontal */
+    align-items: center;     /* centrado vertical */
     background-color: #f4f4f4;
-    overflow: hidden;
+    background: url(/fronted/public/img/fondocampo.jpg) center/cover no-repeat;
 }
 
 .header {
@@ -54,31 +54,36 @@ body {
     width: auto;
 }
 
+/* Container centrado */
 .sensor-content {
-    margin-top: 10rem;
     display: flex;
-    justify-content: center;
+    flex-direction: row;
+    justify-content: center; /* centrado elementos horizontalmente */
     align-items: center;
-    flex-wrap: wrap;
-    background: url(../IMG/istockphoto-1190429132-612x612.webp) center/cover no-repeat;
+    gap: 3rem; /* separación entre imagen y cuadro */
+    background: url(/fronted/public/img/grid_3.webp) center/cover no-repeat;
+    
     padding: 2.4rem;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
     max-width: 1200px;
     width: 90%;
-    gap: 2rem;
 }
 
+/* Imagen izquierda */
 .sensor-content__image {
-    flex: 1 1 300px;
+    flex: 0 0 300px;
+    max-width: 55%;
     height: 25rem;
     border-radius: var(--radius);
     background: url(/fronted/public/img/sisisi.avif) center/cover no-repeat;
     box-shadow: var(--shadow);
 }
 
+/* Cuadro ID derecha */
 .sensor-content__id-box {
-    flex: 1 1 300px;
+    flex: 0 0 350px;
+    max-width: 40%;
     background-color: rgba(255, 255, 255, 0.9);
     border-radius: var(--radius);
     padding: 2rem;
@@ -135,13 +140,44 @@ body {
     text-decoration: none;
 }
 
+/* Responsivo tablets 768px */
 @media (max-width: 768px) {
     .sensor-content {
         flex-direction: column;
+        align-items: center;
+        gap: 2rem;
     }
 
     .sensor-content__image,
     .sensor-content__id-box {
-        width: 100%;
+        width: 90%;
+        max-width: 100%;
+        flex: none;
+    }
+}
+
+/* Responsivo móviles 480px */
+@media (max-width: 480px) {
+    .sensor-content {
+        padding: 1.5rem;
+        gap: 1.5rem;
+    }
+
+    .sensor-content__image {
+        height: 18rem;
+    }
+
+    .sensor-content__label,
+    .sensor-content__input,
+    .sensor-content__button {
+        font-size: 1.4rem;
+    }
+
+    .sensor-content__input {
+        padding: 1rem;
+    }
+
+    .sensor-content__button {
+        padding: 0.8rem 1.5rem;
     }
 }

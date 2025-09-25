@@ -1,12 +1,16 @@
 :root {
-    --Blanco: #ffffff;
-    --Negro: #000000;
+    --white: #ffffff;
+    --black: #000000;
     --green: #39A900;
-    --ligth_green: #81c85d;
+    --light-green: #81c85d;
     --gray: #757575;
+    --dark-gray: #3d3d3d;
     --font-size-h1: 3.2rem;
     --font-size-label: 1.6rem;
     --font-size-button: 1.4rem;
+    --radius: 0.8rem;
+    --shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    --transition: all 0.3s ease;
 }
 
 html {
@@ -15,13 +19,19 @@ html {
     overflow: hidden;
 }
 
+*, *::before, *::after {
+    box-sizing: inherit;
+}
+
 body {
     margin: 0;
     padding: 0;
     min-height: 100vh;
     display: flex;
-    flex-direction: column;
-    overflow: hidden;
+    justify-content: center;
+    align-items: center;
+    background: url(/fronted/public/img/fondocampo.jpg) center/cover no-repeat;
+    font-family: 'Poppins', sans-serif;
 }
 
 .header {
@@ -34,174 +44,142 @@ body {
     display: flex;
     align-items: center;
     padding: 0 2rem;
+    z-index: 10;
 }
 
 .header__logo {
-    width: 4%;
-    height: 80%;
+    height: 4rem;
+    width: auto;
 }
 
-.main {
+/* Contenedor principal centrado y horizontal */
+.ciclo-cultivo {
     display: flex;
+    flex-direction: row; /* horizontal */
     justify-content: center;
     align-items: center;
-    width: 100%;
-    flex-grow: 1;
-    padding-top: 6rem;
+    gap: 3rem; /* espacio entre imagen y formulario */
+    width: 90%;
+    max-width: 1200px; /* corregido de 120rem */
+    height: auto; /* altura automática según contenido */
+    max-height: 70vh; /* altura máxima para que no ocupe toda la pantalla */
+    background: url(/fronted/public/img/cultivos-de-cafe-morrones.jpg) center/cover no-repeat;
+    padding: 2.4rem;
+    border-radius: var(--radius);
+    box-shadow: var(--shadow);
 }
 
-.ciclo-cultivo {
-    border: 0.1rem solid var(--green);
-    width: 90%;
-    max-width: 1200px;
+/* Imagen izquierda */
+.ciclo-cultivo__imagen {
+    flex: 0 0 300px;
+    max-width: 55%;
+    height: 25rem;
+    border-radius: var(--radius);
+    background: url(/fronted/public/img/grid_2.jpg) center/cover no-repeat;
+    box-shadow: var(--shadow);
+    border: 0.1rem solid var(--light-green);
+}
+
+/* Formulario derecha */
+.ciclo-cultivo__form {
+    flex: 0 0 350px;
+    max-width: 40%;
+    background-color: rgba(255, 255, 255, 0.9);
+    border-radius: var(--radius);
+    padding: 2rem;
     display: flex;
     flex-direction: column;
     align-items: center;
-    justify-content: center;
-    gap: 2.4rem;
-    background: url(../IMG/istockphoto-1190429132-612x612.webp) no-repeat center;
-    background-size: cover;
-    padding: 2.4rem;
-    border-radius: 4px;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
-    height: calc(100vh - 6rem);
-}
-
-.ciclo-cultivo__imagen {
-    border: 0.1rem solid var(--ligth_green);
-    width: 80%;
-    max-width: 400px;
-    height: 25rem;
-    background: url(../IMG/istockphoto-926358082-612x612.webp) no-repeat center;
-    background-size: cover;
-    border-radius: 4px;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
-}
-
-.ciclo-cultivo__form {
-    background-color: rgba(117, 117, 117, 0.8);
-    width: 90%;
-    max-width: 600px;
-    border-radius: 4px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    gap: 1.2rem;
-    padding: 1.6rem;
-    flex-wrap: wrap;
+    gap: 1.6rem;
+    box-shadow: var(--shadow);
 }
 
 .ciclo-cultivo__label {
-    font-size: var(--font-size-label);
-    color: var(--Blanco);
     width: 100%;
     text-align: center;
+    font-size: var(--font-size-label);
+    font-weight: 600;
+    color: var(--dark-gray);
 }
 
 .ciclo-cultivo__input {
-    border-radius: 4px;
-    padding: 1.2rem 1.6rem;
-    font-size: 1.6rem;
-    border: 0.1rem solid var(--gray);
-    transition: border 0.3s ease;
     width: 100%;
     max-width: 30rem;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.1);
+    padding: 1.2rem 1.6rem;
+    font-size: 1.6rem;
+    border-radius: var(--radius);
+    border: 1px solid var(--gray);
+    box-shadow: var(--shadow);
+    transition: var(--transition);
 }
 
 .ciclo-cultivo__input:focus {
-    border: 0.2rem solid var(--green);
+    border-color: var(--green);
     outline: none;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+    box-shadow: 0 0 5px rgba(57, 169, 0, 0.4);
 }
 
 .ciclo-cultivo__button {
     background-color: var(--green);
-    min-width: 88px; /* Ancho mínimo recomendado */
-    height: 36px; /* Altura recomendada para botones */
-    padding: 0 16px; /* Padding para mantener el tamaño */
-    border-radius: 4px;
-    font-size: var(--font-size-button); /* Usar variable para el tamaño de fuente */
-    color: var(--Blanco);
+    color: var(--white);
+    font-size: var(--font-size-button);
+    padding: 1rem 2rem;
     border: none;
+    border-radius: var(--radius);
     cursor: pointer;
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, box-shadow 0.3s;
+    transition: var(--transition);
+    text-decoration: none;
+    box-shadow: var(--shadow);
     display: flex;
     justify-content: center;
     align-items: center;
 }
 
 .ciclo-cultivo__button:hover {
-    background-color: var(--ligth_green);
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
-}
-
-.ciclo-cultivo__button:active {
-    box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
-    transform: translateY(1px);
+    background-color: var(--light-green);
 }
 
 .ciclo-cultivo__link {
-    color: var(--Blanco);
+    color: var(--white);
     text-decoration: none;
 }
 
-/* Responsive */
-@media (max-width: 1200px) {
-    .ciclo-cultivo {
-        width: 95%;
-        padding: 2rem; /* Ajustar padding */
-    }
-
-    .ciclo-cultivo__imagen {
-        width: 90%; /* Ajustar ancho de la imagen */
-        height: 25rem; /* Ajustar alto de la imagen */
-    }
-
-    .ciclo-cultivo__form {
-        width: 95%;
-    }
-}
-
+/* Responsivo tablets 768px */
 @media (max-width: 768px) {
     .ciclo-cultivo {
-        flex-direction: column;
-        width: 100%; /* Ajustar ancho */
-        padding: 1.5rem; /* Ajustar padding */
-        gap: 1.5rem; /* Ajustar gap */
+        flex-direction: column; /* vertical en tablets */
+        width: 95%;
+        padding: 2rem;
+        gap: 2rem;
+    }
+
+    .ciclo-cultivo__imagen,
+    .ciclo-cultivo__form {
+        width: 90%;
+        max-width: 100%;
+        flex: none;
     }
 
     .ciclo-cultivo__imagen {
-        width: 100%; /* Ajustar ancho de la imagen */
-        height: 20rem; /* Ajustar alto de la imagen */
-    }
-
-    .ciclo-cultivo__form {
-        flex-direction: column;
-        width: 100%; /* Ajustar ancho */
-    }
-
-    .ciclo-cultivo__input {
-        width: 100%;
+        height: 20rem;
     }
 }
 
+/* Responsivo móviles 480px */
 @media (max-width: 480px) {
     .ciclo-cultivo {
-        width: 100%; /* Ajustar ancho */
-        padding: 1rem; /* Ajustar padding */
-        gap: 1rem; /* Ajustar gap */
+        padding: 1.5rem;
+        gap: 1.5rem;
     }
 
     .ciclo-cultivo__imagen {
-        width: 100%; /* Ajustar ancho de la imagen */
-        height: 15rem; /* Ajustar alto de la imagen */
+        width: 100%;
+        height: 15rem;
     }
 
     .ciclo-cultivo__form {
-        width: 100%; /* Ajustar ancho */
-        padding: 1rem; /* Ajustar padding */
+        width: 100%;
+        padding: 1rem;
     }
 
     .ciclo-cultivo__input {
@@ -210,12 +188,7 @@ body {
     }
 
     .ciclo-cultivo__button {
-        font-size: 1.2rem; /* Ajustar tamaño de fuente */
-        padding: 0.8rem 1.6rem; /* Ajustar padding */
-    }
-
-    .header__logo {
-        width: 15%;
-        min-width: 4rem;
+        font-size: 1.2rem;
+        padding: 0.8rem 1.5rem;
     }
 }
