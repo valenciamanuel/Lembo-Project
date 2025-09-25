@@ -13,38 +13,51 @@
     --transition: all 0.3s ease;
 }
 
-html {
+/* Reset y overflow */
+html, body {
     font-size: 62.5%;
     box-sizing: border-box;
-    overflow: hidden;
-}
-
-*, *::before, *::after {
-    box-sizing: inherit;
-}
-
-body {
     margin: 0;
     padding: 0;
-    min-height: 100vh;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: url(/fronted/public/img/fondocampo.jpg) center/cover no-repeat;
+    width: 100%;
+    height: 100%;
+    overflow: hidden; /* sin scroll */
     font-family: 'Poppins', sans-serif;
+    background: url(/fronted/public/img/cultivos-1.jpg) no-repeat center center/cover;
 }
 
-.header {
-    background-color: var(--green);
-    width: 100%;
-    height: 6rem;
+/* Barra GOV superior */
+.gov-top {
     position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 28px;
+    background-color: #0033A0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.gov-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Header verde */
+.header {
+    position: fixed;
+    top: 28px; /* debajo de GOV superior */
+    left: 0;
+    width: 100%;
+    height: 4.8rem;
+    background-color: var(--green);
     display: flex;
     align-items: center;
-    padding: 0 2rem;
-    z-index: 10;
+    padding-left: 2rem;
+    z-index: 15;
 }
 
 .header__logo {
@@ -52,21 +65,33 @@ body {
     width: auto;
 }
 
-/* Contenedor principal centrado y horizontal */
-.ciclo-cultivo {
+/* Contenedor principal centrado en pantalla */
+.main {
+    position: relative;
+    width: 100%;
+    height: 100%;
     display: flex;
-    flex-direction: row; /* horizontal */
     justify-content: center;
     align-items: center;
-    gap: 3rem; /* espacio entre imagen y formulario */
+    /* Padding para que no choque con header/footer */
+    padding-top: calc(28px + 4.8rem);
+    padding-bottom: calc(28px + 4.8rem);
+}
+
+/* Caja de formulario e imagen centrada */
+.ciclo-cultivo {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+    gap: 3rem;
     width: 90%;
-    max-width: 1200px; /* corregido de 120rem */
-    height: auto; /* altura automática según contenido */
-    max-height: 70vh; /* altura máxima para que no ocupe toda la pantalla */
-    background: url(/fronted/public/img/cultivos-de-cafe-morrones.jpg) center/cover no-repeat;
+    max-width: 100rem;
+    max-height: 70vh;
     padding: 2.4rem;
     border-radius: var(--radius);
     box-shadow: var(--shadow);
+    background: url(/fronted/public/img/cultivos-de-cafe-morrones.jpg) center/cover no-repeat;
 }
 
 /* Imagen izquierda */
@@ -94,6 +119,7 @@ body {
     box-shadow: var(--shadow);
 }
 
+/* Etiqueta e input */
 .ciclo-cultivo__label {
     width: 100%;
     text-align: center;
@@ -119,6 +145,7 @@ body {
     box-shadow: 0 0 5px rgba(57, 169, 0, 0.4);
 }
 
+/* Botón */
 .ciclo-cultivo__button {
     background-color: var(--green);
     color: var(--white);
@@ -139,15 +166,47 @@ body {
     background-color: var(--light-green);
 }
 
-.ciclo-cultivo__link {
+/* Footer verde */
+.footer {
+    position: fixed;
+    bottom: 28px; /* encima de GOV inferior */
+    left: 0;
+    width: 100%;
+    height: 4.8rem;
+    background-color: var(--green);
     color: var(--white);
-    text-decoration: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.4rem;
+    z-index: 15;
 }
 
-/* Responsivo tablets 768px */
+/* Barra GOV inferior */
+.gov-bottom {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 28px;
+    background-color: #0033A0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.gov-bottom img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* Responsivo */
 @media (max-width: 768px) {
     .ciclo-cultivo {
-        flex-direction: column; /* vertical en tablets */
+        flex-direction: column;
         width: 95%;
         padding: 2rem;
         gap: 2rem;
@@ -165,7 +224,6 @@ body {
     }
 }
 
-/* Responsivo móviles 480px */
 @media (max-width: 480px) {
     .ciclo-cultivo {
         padding: 1.5rem;

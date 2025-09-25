@@ -4,72 +4,93 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listar Ciclos de Cultivo</title>
+  
+  <!-- CSS -->
   <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-  <script src="/fronted/public/views/components/header.js" defer></script>
-  <link rel="stylesheet" href="../ciclo_cultivo/datos_ciclo_cultivo.html">
+
 </head>
 <body>
-  <header class="header"></header>
+  <!-- Barra GOV superior -->
+  <div class="gov-top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+  </div>
 
+  <!-- Header verde -->
+  <header class="header">
+    <img class="header__logo" src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA">
+  </header>
+
+  <!-- Contenido principal centrado y separado del header/footer -->
   <main class="content-container">
     <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
 
     <table class="styled-table">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Código</th>
-      <th>Nombre</th>
-      <th>Fecha Siembra</th>
-      <th>Fecha Cosecha</th>
-      <th>Novedades</th>
-      <th>Descripción</th>
-      <th>Estado</th>
-      <th>Imagen</th>
-      <th>Acciones</th> </tr>
-  </thead>
-  <tbody id="ciclos-table"></tbody>
-</table>
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Fecha Siembra</th>
+          <th>Fecha Cosecha</th>
+          <th>Novedades</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Imagen</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="ciclos-table"></tbody>
+    </table>
   </main>
 
+  <!-- Footer verde -->
+  <footer class="footer">
+    <p>© 2025 SENA - Todos los derechos reservados</p>
+  </footer>
+
+  <!-- Barra GOV inferior -->
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
+
+  <!-- JS para cargar datos de ciclos -->
   <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-    try {
-      const response = await fetch("http://localhost:3000/ciclocultivo");
-      if (!response.ok) throw new Error("Error al obtener ciclos");
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("http://localhost:3000/ciclocultivo");
+        if (!response.ok) throw new Error("Error al obtener ciclos");
 
-      const ciclos = await response.json();
-      const tableBody = document.getElementById("ciclos-table");
-      tableBody.innerHTML = "";
+        const ciclos = await response.json();
+        const tableBody = document.getElementById("ciclos-table");
+        tableBody.innerHTML = "";
 
-      if (ciclos.length === 0) {
-        tableBody.innerHTML = `<tr><td colspan="10">No hay ciclos de cultivo registrados</td></tr>`;
-        return;
+        if (ciclos.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="10">No hay ciclos de cultivo registrados</td></tr>`;
+          return;
+        }
+
+        ciclos.forEach(c => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${c.id}</td>
+            <td>${c.cicloID}</td>
+            <td>${c.cicloName}</td>
+            <td>${c.siembraDate}</td>
+            <td>${c.cosechaDate}</td>
+            <td>${c.news}</td>
+            <td>${c.description}</td>
+            <td>${c.state}</td>
+            <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
+            <td>
+              <a href="../ciclo_cultivo/datos_ciclo_cultivo.html?id=${c.id}" class="edit-link">Editar</a>
+            </td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando ciclos:", error);
       }
-
-      ciclos.forEach(c => {
-        const row = document.createElement("tr");
-        row.innerHTML = `
-          <td>${c.id}</td>
-          <td>${c.cicloID}</td>
-          <td>${c.cicloName}</td>
-          <td>${c.siembraDate}</td>
-          <td>${c.cosechaDate}</td>
-          <td>${c.news}</td>
-          <td>${c.description}</td>
-          <td>${c.state}</td>
-          <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
-          <td>
-            <a href="../ciclo_cultivo/datos_ciclo_cultivo.html?id=${c.id}" class="edit-link">Editar</a>
-          </td>
-        `;
-        
-        tableBody.appendChild(row);
-      });
-    } catch (error) {
-      console.error("❌ Error cargando ciclos:", error);
-    }
-  });
-</script>
+    });
+  </script>
 </body>
 </html>

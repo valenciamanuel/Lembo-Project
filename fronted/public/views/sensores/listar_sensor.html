@@ -9,8 +9,15 @@
   <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
 </head>
 <body>
+  <!-- GOV superior -->
+  <div class="gov-top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+  </div>
+
+  <!-- HEADER fijo debajo del GOV -->
   <header class="header"></header>
 
+  <!-- Contenido principal -->
   <main class="content-container">
     <h2 class="form__title">Sensores Registrados</h2>
 
@@ -34,6 +41,11 @@
     </table>
   </main>
 
+  <!-- GOV inferior -->
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
+
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       try {
@@ -45,7 +57,7 @@
         tableBody.innerHTML = "";
 
         if (sensores.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="6">No hay sensores registrados</td></tr>`;
+          tableBody.innerHTML = `<tr><td colspan="9">No hay sensores registrados</td></tr>`;
           return;
         }
 

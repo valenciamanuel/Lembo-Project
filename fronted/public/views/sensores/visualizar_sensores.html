@@ -7,11 +7,18 @@
   <link rel="stylesheet" href="/css/components/visualizar.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
   <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
-
 </head>
 <body>
+
+  <!-- GOV superior -->
+  <div class="gov-top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+  </div>
+
+  <!-- HEADER fijo debajo del GOV -->
   <header class="header"></header>
 
+  <!-- Contenido principal -->
   <main class="content-container">
     <h2 class="form__title">Sensores Registrados</h2>
 
@@ -20,11 +27,15 @@
     </div>
   </main>
 
+  <!-- GOV inferior -->
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
+
   <!-- ✅ JS embebido -->
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       try {
-        // ⚠️ Asegúrate que en server.js usaste /sensores
         const response = await fetch("http://localhost:3000/sensores");
         if (!response.ok) throw new Error("Error al obtener sensores");
 

@@ -4,23 +4,46 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Visualizar Ciclos de Cultivo</title>
-  <link rel="stylesheet" href="/css/components/visualizar.css">
-  <script src="/fronted/public/views/components/header.js" defer></script>
   <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
-
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 <body>
-  <header class="header"></header>
 
+  <!-- GOV superior -->
+  <div class="gov-top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+  </div>
+
+  <!-- Header verde -->
+  <header class="header">
+    <img src="/fronted/public/img/logo.png" alt="Logo" class="header__logo">
+    <nav class="header__nav">
+      <a href="#" class="header__link">Inicio</a>
+      <a href="#" class="header__link">Ciclos</a>
+      <a href="#" class="header__link">Contacto</a>
+    </nav>
+  </header>
+
+  <!-- Contenido principal -->
   <main class="content-container">
     <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
 
     <div id="ciclos-container" class="cards-container">
-      <!-- Aquí JS insertará cada card -->
+      <!-- JS insertará cada card -->
     </div>
   </main>
 
-  <!-- ✅ JS embebido -->
+  <!-- Footer verde -->
+  <footer class="footer">
+    &copy; 2025 Mi Plataforma Agro | Todos los derechos reservados
+  </footer>
+
+  <!-- GOV inferior -->
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
+
+  <!-- JS para cargar ciclos -->
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       try {
@@ -58,11 +81,10 @@
         });
       } catch (error) {
         console.error("❌ Error cargando ciclos de cultivo:", error);
-
-        const container = document.getElementById("ciclos-container");
-        container.innerHTML = `<p class="no-ciclos">Error al cargar ciclos de cultivo</p>`;
+        document.getElementById("ciclos-container").innerHTML = `<p class="no-ciclos">Error al cargar ciclos de cultivo</p>`;
       }
     });
   </script>
+
 </body>
 </html>

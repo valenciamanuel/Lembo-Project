@@ -26,6 +26,7 @@
     --borde-redondo-md: 0.8rem;
     --alto-cabecera: 5.6rem;
     --alto-cabecera-escritorio: 6.4rem;
+    --alto-gov: 28px;
 }
 
 *, *::before, *::after {
@@ -34,26 +35,20 @@
     padding: 0;
 }
 
-html {
+html, body {
     font-size: 62.5%;
     font-family: var(--fuente-principal);
-    scroll-behavior: smooth;
     height: 100%;
-    /* Permitir el scroll vertical cuando sea necesario */
-    overflow-y: auto;
-    /* Evitar el scroll horizontal a menos que el contenido lo requiera */
     overflow-x: hidden;
+    scroll-behavior: smooth;
 }
 
 body {
-    margin: 0;
     display: flex;
     flex-direction: column;
     min-height: 100vh;
-    /* Permitir el scroll vertical cuando sea necesario */
-    overflow-y: auto;
-    /* Evitar el scroll horizontal a menos que el contenido lo requiera */
-    overflow-x: hidden;
+    padding-top: calc(var(--alto-cabecera) + var(--alto-gov)); /* espacio para header y gov-top */
+    padding-bottom: var(--alto-gov); /* espacio para gov-bottom */
 }
 
 .pagina {
@@ -64,13 +59,7 @@ body {
     flex-direction: column;
 }
 
-.principal {
-    padding: var(--espacio-3);
-    flex-grow: 1;
-    /* Permitir el scroll dentro del contenido principal si es necesario */
-    overflow: auto;
-}
-
+/* Header fijo */
 .cabecera {
     background-color: var(--primario-950);
     color: var(--blanco);
@@ -80,8 +69,29 @@ body {
     align-items: center;
     text-align: center;
     padding: 0 var(--espacio-1);
-    flex-shrink: 0;
+    position: fixed;
+    top: var(--alto-gov); /* debajo del gov-top */
+    left: 0;
     width: 100%;
+    z-index: 100;
+}
+
+/* GOV superior e inferior */
+.gov-top, .gov-bottom {
+    position: fixed;
+    left: 0;
+    width: 100%;
+    height: var(--alto-gov);
+    z-index: 200;
+}
+
+.gov-top { top: 0; }
+.gov-bottom { bottom: 0; }
+
+.gov-top img, .gov-bottom img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
 }
 
 .cabecera__logo-img {
@@ -107,268 +117,27 @@ body {
     letter-spacing: 0.05rem;
 }
 
-
-.hero-sec__titulo, .tarjeta__titulo {
-    letter-spacing: 0.05rem;
-}
-
-.hero-sec__desc, .info-contenido__texto, .info-contenido__titulo-cosecha, .info-contenido__texto-cosecha {
-    letter-spacing: 0.02rem;
-}
-
-
 .cabecera__enlace:hover {
     background-color: var(--primario-400);
     color: var(--negro);
 }
 
-
+/* Main content ajustado */
 .principal {
     padding: var(--espacio-3);
     flex-grow: 1;
     overflow: auto;
+    margin-top: 0; /* header y gov-top ya están fijados */
 }
 
-.presentacion {
-    display: flex;
-    flex-direction: column;
-    gap: var(--espacio-3);
-    height: 100%;
-}
 
-.hero-sec {
-    background-color: var(--primario-950);
-    color: var(--blanco);
-    padding: var(--espacio-0);
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    border-radius: var(--borde-redondo-sm);
-    flex-shrink: 0;
-    margin-bottom: var(--espacio-3);
-}
-
-.hero-sec__izq {
-    flex: 1;
-    padding: var(--espacio-2);
-}
-
-.hero-sec__titulo {
-    font-size: 2rem;
-    margin-bottom: 0;
-}
-
-.hero-sec__subtitulo {
-    font-size: var(--tam-fuente-sm);
-    margin-bottom: var(--espacio-1);
-}
-
-.hero-sec__desc {
-    font-size: var(--tam-fuente-xs);
-}
-
-.hero-sec__der {
-    flex: 1;
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-}
-
-.hero-sec__img {
-    max-width: 40%;
-    height: auto;
-    border-radius: var(--borde-redondo-sm);
-    padding: var(--espacio-1);
-}
-
-/* Sección de Estilos */
-.estilos {
-    padding: var(--espacio-0) 0;
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: .6rem;
-    margin-top: 0.1rem;
-}
-
-.estilos__grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
-    gap: var(--espacio-2);
-    gap: 1.6rem;
-}
-
-.tarjeta {
-    background-color: var(--primary-500);
-    border-radius: var(--borde-redondo-sm);
-    box-shadow: 0 0.05rem 0.1rem rgba(0, 0, 0, 0.1);
-    padding: var(--espacio-1);
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-}
-
-.tarjeta__titulo {
-    font-size: var(--tam-fuente-sm);
-    color: var(--primario-950);
-    margin-bottom: var(--espacio-1);
-    text-align: center;
-}
-
-.tarjeta__contenedor-img {
-    margin-top: var(--espacio-2);
-    border-radius: var(--borde-redondo-sm);
-    overflow: hidden;
-    flex-grow: 1;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
-.tarjeta__img {
-    width: 60%;
-    height: auto;
-    display: block;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-/* Tarjeta de Estilo Infografía */
-.info-contenido {
-    display: flex;
-    gap: var(--espacio-1);
-    margin-bottom: var(--espacio-1);
-    flex-wrap: wrap;
-    align-items: flex-start;
-    justify-content: space-around;
-}
-
-.info-contenido__izq,
-.info-contenido__der {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    gap: 0.2rem;
-    font-size: var(--tam-fuente-xs);
-    text-align: center;
-    min-width: 45%;
-}
-
-.info-contenido__img {
-    max-width: 100%;
-    height: auto;
-    display: block;
-    margin: 0 auto 0.5rem;
-    max-height: 100%;
-    object-fit: contain;
-}
-
-.info-contenido__etiqueta {
-    font-size: var(--tam-fuente-xxs);
-    color: var(--gris-700);
-}
-
-.info-contenido__titulo-cosecha {
-    font-size: var(--tam-fuente-xs);
-    color: var(--primario-950);
-    font-weight: bold;
-}
-
-.info-contenido__texto-cosecha {
-    font-size: var(--tam-fuente-xxs);
-    color: var(--gris-600);
-}
-
-.info-contenido__texto {
-    font-size: var(--tam-fuente-xxs);
-}
-.formulario__mensaje-error {
-    color: red;
-    font-size: 0.8em; /* O un tamaño que prefieras */
-    margin-top: 0.2em; /* Espacio pequeño entre el input y el mensaje */
-}
-
-.formulario__entrada--error {
-    border: 1px solid red; /* O un estilo que prefieras para el borde con error */
-}
-
-/* Diseño Responsivo para Estilo Infografía */
+/* Responsive y ajustes generales */
 @media (max-width: 768px) {
-    .estilos__grid {
-        grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); /* Ajuste para tablets */
-    }
-
-    .info-contenido {
-        flex-direction: row; /* Asegura disposición horizontal en tablets */
-        justify-content: space-around;
-        align-items: flex-start;
-    }
-
-    .info-contenido__izq,
-    .info-contenido__der {
-        min-width: 48%; /* Ocupar casi la mitad en tablets */
-        text-align: left;
-    }
-
-    .info-contenido__img {
-        max-width: 60%; /* Ajuste para tablets */
-        max-height: none;
-        margin-left: 0;
-        margin-right: 0;
-        margin-bottom: 0.5rem;
-    }
+    .hero-sec { flex-direction: column; text-align: center; }
+    .hero-sec__der { justify-content: center; margin-top: var(--espacio-2); }
 }
 
 @media (max-width: 480px) {
-    .hero-sec__titulo {
-        font-size: var(--tam-fuente-xs);
-    }
-
-    .estilos__grid {
-        grid-template-columns: 1fr;
-    }
-
-    .info-contenido {
-        flex-direction: column; /* Apilar en móviles */
-        align-items: center;
-    }
-
-    .info-contenido__izq,
-    .info-contenido__der {
-        min-width: 95%;
-        text-align: center;
-    }
-
-    .info-contenido__img {
-        max-width: 90%; /* Ajuste para móviles pequeños */
-        max-height: none;
-        margin-left: auto;
-        margin-right: auto;
-    }
-}
-
-/* Diseño Responsivo General (manteniendo solo los ajustes para 780px que ya estaban) */
-@media (max-width: 780px) {
-    .hero-sec {
-        flex-direction: column;
-        text-align: center;
-        padding: var(--espacio-2);
-    }
-
-    .hero-sec__der {
-        justify-content: center;
-        margin-top: var(--espacio-2);
-    }
-
-    .hero-sec__img {
-        max-width: 70%;
-    }
-}
-
-.cabecera__nav a {
-    transition: background-color 0.3s ease, color 0.3s ease;
-}
-
-.cabecera__nav a:hover {
-    background-color: var(--primario-400);
-    color: var(--negro);
+    .hero-sec__titulo { font-size: var(--tam-fuente-xs); }
+    .info-contenido__izq, .info-contenido__der { text-align: center; min-width: 95%; }
 }

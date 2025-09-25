@@ -7,87 +7,89 @@
     --sombra-boton-hover: 0 3px 4px rgba(0, 0, 0, 0.24), 0 3px 4px rgba(0, 0, 0, 0.12);
 }
 
-html {
-    font-size: 62.5%;
-    box-sizing: border-box;
-    font-family: Arial, Helvetica, sans-serif;
-    height: 100%;
-    overflow: hidden;
-}
+* { box-sizing: border-box; }
 
-body {
+html, body {
     margin: 0;
     padding: 0;
-    min-height: 100vh;
+    width: 100%;
+    height: 100%;
+    font-family: Arial, Helvetica, sans-serif;
     display: flex;
     flex-direction: column;
-    overflow: hidden;
 }
 
-h1 {
-    font-size: 3.2rem;
-}
-
-h2 {
-    font-size: 2.4rem;
-}
-
-h3 {
-    font-size: 2rem;
-}
-
-h4 {
-    font-size: 1.6rem;
-}
-
-.header {
-    background-color: var(--green);
-    width: 100%;
-    height: 6rem;
-    margin: 0;
-    padding: 0;
+/* ================= BARRA GOV ARRIBA ================= */
+.gov-top {
     position: fixed;
     top: 0;
     left: 0;
+    width: 100%;
+    height: 40px;
+    background-color: #0033A0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.gov-top img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ================= HEADER ================= */
+.header {
+    position: fixed;
+    top: 40px; /* debajo del GOV */
+    left: 0;
+    width: 100%;
+    height: 6rem;
+    background-color: var(--green);
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    padding: 0 1rem;
+    z-index: 10;
 }
 
 .header__logo {
     width: 4%;
     height: 80%;
-    margin-top: 0.5rem;
-    margin-left: 1%;
+    object-fit: contain;
 }
 
 .header__link {
     font-size: 1.7rem;
-    text-decoration: none;
     color: var(--Blanco);
-    margin-left: 3%;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    margin-top: -3.5rem;
+    text-decoration: none;
     margin-left: 7%;
+    display: flex;
+    align-items: center;
 }
 
+/* ================= MAIN (Centrado verticalmente) ================= */
 .main {
-    margin-top: 6rem;
-    flex-grow: 1;
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
 }
 
 .main__content {
     border: 0.1rem solid var(--green);
-    margin-top: 10%;
     width: 80%;
-    margin-left: 10%;
     display: grid;
+    padding: 2rem;
+    background: #fff;
 }
 
+/* ================= FORMULARIO ================= */
 .main__content-img-form {
     border: 0.1rem solid var(--green);
-    margin-top: 6%;
-    width: 80%;
-    margin-left: 10%;
+    width: 100%;
     display: flex;
     flex-direction: row;
     align-items: flex-start;
@@ -203,59 +205,68 @@ h4 {
     text-align: center;
 }
 
-/* RESPONSIVE */
+/* ================= FOOTER ================= */
+.footer {
+    position: fixed;        /* fijo en la parte inferior */
+    bottom: 40px;           /* justo encima de la barra GOV inferior */
+    left: 0;
+    width: 100%;            /* ocupa todo el ancho */
+    height: 6rem;           /* altura similar al header */
+    background-color: var(--green);
+    color: var(--Blanco);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    font-size: 1.4rem;
+    padding: 0;
+    margin: 0;
+    z-index: 10;
+}
+
+/* ================= BAR GOV INFERIOR ================= */
+.gov-bottom {
+    position: fixed;        /* pegada al borde inferior */
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    height: 40px;           /* misma altura que GOV superior */
+    background-color: #0033A0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 20;
+}
+
+.gov-bottom img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+}
+
+/* ================= RESPONSIVE ================= */
+/* Tablets grandes */
+@media (max-width: 1024px) {
+    .footer { height: 5.5rem; bottom: 35px; }
+    .gov-bottom { height: 35px; }
+    .header { height: 5.5rem; top: 35px; }
+    .header__logo { width: 5%; }
+}
+
+/* Tablets y móviles medianos */
 @media (max-width: 768px) {
-    .main__content-img-form {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .main__content-img {
-        width: 90%;
-        max-width: 90%;
-        height: 18rem;
-    }
-
-    .form {
-        width: 100%;
-        grid-template-columns: 1fr;
-    }
-
-    .form__title {
-        text-align: center;
-    }
-
-    .main__buttons {
-        grid-column: 1 / -1;
-        justify-self: center;
-        margin-top: 1.6rem;
-    }
+    .footer { height: 5rem; bottom: 30px; }
+    .gov-bottom { height: 30px; }
+    .header { height: 5rem; top: 30px; padding: 0 0.8rem; }
+    .header__logo { width: 6%; }
 }
 
-@media (min-width: 768px) and (max-width: 1024px) {
-    .main__content-img-form {
-        flex-direction: column;
-        align-items: center;
-    }
-
-    .main__content-img {
-        width: 80%;
-        max-width: 80%;
-        height: 25rem;
-    }
-
-    .form {
-        width: 90%;
-        grid-template-columns: 1fr;
-    }
-}
-
+/* Móviles pequeños */
 @media (max-width: 480px) {
-    .header__logo {
-        width: 10%;
-    }
-
-    .header__link {
-        margin-left: 15%;
-    }
+    .footer { height: 4.5rem; bottom: 25px; }
+    .gov-bottom { height: 25px; }
+    .header { height: 4.5rem; top: 25px; padding: 0 0.5rem; }
+    .header__logo { width: 8%; }
+    .main__content-img { height: 15rem; }
 }
