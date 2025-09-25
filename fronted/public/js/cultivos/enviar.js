@@ -27,6 +27,10 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     });
 
+    imageInput.addEventListener('change', () => {
+        imageInput.classList.remove('form__input--error');
+    });
+
     // --- Envío del formulario ---
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
@@ -65,55 +69,46 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
-        // --- Datos como JSON (igual que insumo) ---
-        const formData = {
-            cultivoType: cultivoType.value,
-            cultivoName: cultivoName.value,
-            cultivoID: cultivoID.value,
-            size: size.value,
-            location: location.value,
-            description: description.value,
-            state: state.value,
-            image: imageInput.files[0].name // solo el nombre, si quieres base64 habría que convertir
-        };
+        const formData = new FormData();
+        formData.append('cultivoType', cultivoType.value);
+        formData.append('cultivoName', cultivoName.value);
+        formData.append('cultivoID', cultivoID.value);
+        formData.append('size', size.value);
+        formData.append('location', location.value);
+        formData.append('description', description.value);
+        formData.append('state', state.value);
+        formData.append('image', imageInput.files[0]);
+
+        // ✅ AÑADE ESTE BLOQUE DE CÓDIGO AQUÍ para ver los datos.
+        const dataForLog = {};
+        for (let [key, value] of formData.entries()) {
+            dataForLog[key] = value;
+        }
+        console.log('✅ Datos que se van a enviar:', dataForLog);
 
         try {
             const response = await fetch('http://localhost:3000/cultivo', {
                 method: 'POST',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify(formData)
+                body: formData
             });
 
             if (!response.ok) {
-                throw new Error('Error en la conexión con el servidor');
+                const errorData = await response.json();
+                console.error('Error al registrar el cultivo:', errorData);
+                throw new Error('Error en la conexión con el servidor o datos inválidos.');
             }
 
             const result = await response.json();
             console.log('Cultivo registrado', result);
-
-            if (window.opener && window.opener.postMessage) {
-                window.opener.postMessage({
-                    type: 'nuevoCultivoCreado',
-                    cultivo: {
-                        idCultivo: result.id,
-                        nombreCultivo: result.cultivoName
-                    }
-                }, '*');
-            }
+            alert('Cultivo creado exitosamente.');
 
             form.reset();
-            // Limpieza manual por si algún campo no se resetea
             imageInput.value = '';
             state.selectedIndex = 0;
             inputs.forEach(input => input.classList.remove('form__input--error'));
-            alert('Cultivo creado exitosamente.');
 
         } catch (error) {
             console.error('Error', error);
-            form.reset(); // <-- Limpia el formulario aunque haya error
-            imageInput.value = '';
-            state.selectedIndex = 0;
-            inputs.forEach(input => input.classList.remove('form__input--error'));
             alert('Error al crear el cultivo. Revisa la consola para más detalles.');
         }
     });

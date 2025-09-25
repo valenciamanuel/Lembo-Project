@@ -1,12 +1,23 @@
 const db = require('../config/db.js');
+const fs = require('fs');
+const path = require('path');
 
 // Insertar cultivo
 const insertarCultivo = async (req, res) => {
     try {
-        const { cultivoType, cultivoName, cultivoID, size, location, description, state, image } = req.body;
+        const { cultivoType, cultivoName, cultivoID, size, location, description, state } = req.body;
+        const image = req.file ? req.file.filename : null;
 
-        // Validación
-        if (!cultivoType || !cultivoName || !cultivoID || !size || !location || !description || !state || !image) {
+        // ✅ ESTA LÍNEA ES LA CLAVE. NOS DIRÁ QUÉ ESTÁ PASANDO.
+        console.log('✅ Valor REAL de cultivoID:', cultivoID);
+
+        if (!cultivoType || !cultivoName || !cultivoID || !size || !location || !description || !state) {
+            if (req.file) {
+                const filePath = path.join(__dirname, '..', 'fronted', 'public', 'uploads', req.file.filename);
+                if (fs.existsSync(filePath)) {
+                    fs.unlinkSync(filePath);
+                }
+            }
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
@@ -16,8 +27,6 @@ const insertarCultivo = async (req, res) => {
             VALUES (?, ?, ?, ?, ?, ?, ?, ?)
         `;
         const values = [cultivoType, cultivoName, cultivoID, size, location, description, state, image];
-
-        // Usar await porque db es un pool con promesas
         const [result] = await db.query(sql, values);
 
         const nuevoId = result.insertId;
@@ -36,6 +45,12 @@ const insertarCultivo = async (req, res) => {
         });
     } catch (err) {
         console.error('❌ Error al insertar el cultivo:', err);
+        if (req.file) {
+            const filePath = path.join(__dirname, '..', 'fronted', 'public', 'uploads', req.file.filename);
+            if (fs.existsSync(filePath)) {
+                fs.unlinkSync(filePath);
+            }
+        }
         res.status(500).json({ error: 'Error al insertar el cultivo' });
     }
 };
@@ -43,7 +58,7 @@ const insertarCultivo = async (req, res) => {
 // Obtener cultivos
 const obtenerCultivos = async (req, res) => {
     try {
-        const sql = 'SELECT * FROM cultivo'; // Traer todo
+        const sql = 'SELECT * FROM cultivo';
         const [results] = await db.query(sql);
         res.status(200).json(results);
     } catch (err) {
