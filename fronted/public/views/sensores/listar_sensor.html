@@ -25,6 +25,7 @@
           <th>Descripción</th>
           <th>Estado</th>
           <th>Imagen</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="sensores-table">
@@ -59,6 +60,9 @@
             <td>${s.descripcion}</td>
             <td>${s.estado}</td>
             <td>${s.imagen ? `<img src="/uploads/${s.imagen}" width="60">` : "Sin imagen"}</td>
+            <td>
+                <a href="../ciclo_cultivo/datos_ciclo_cultivo.html?id=${s.id}" class="edit-link">Editar</a>
+            </td>
           `;
           tableBody.appendChild(row);
         });

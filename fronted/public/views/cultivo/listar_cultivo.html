@@ -24,6 +24,7 @@
           <th>Ubicación</th>
           <th>Estado</th>
           <th>Imagen</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="cultivos-table"></tbody>
@@ -56,6 +57,9 @@
             <td>${c.location}</td>
             <td>${c.state}</td>
             <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
+            <td>
+                <a href="../cultivo/datos_cultivo.html?id=${c.id}" class="edit-link">Editar</a>
+            </td>
           `;
           tableBody.appendChild(row);
         });

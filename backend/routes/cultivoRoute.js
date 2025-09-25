@@ -1,8 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const { insertarCultivo, obtenerCultivos } = require('../controllers/cultivoController.js');
+const { insertarCultivo, obtenerCultivos, obtenerCultivoPorId, actualizarCultivo  } = require('../controllers/cultivoController.js');
 
 router.post('/', insertarCultivo);
 router.get('/', obtenerCultivos);
+
+router.get('/:id', obtenerCultivoPorId);
+router.put('/:id', actualizarCultivo);
 
 module.exports = router;

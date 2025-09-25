@@ -21,6 +21,7 @@
           <th>Descripción</th>
           <th>Cantidad</th>
           <th>Imagen</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="insumos-table"></tbody>
@@ -50,6 +51,9 @@
             <td>${i.descripcion}</td>
             <td>${i.cantidad}</td>
             <td>${i.image ? `<img src="/uploads/${i.image}" width="60">` : "Sin imagen"}</td>
+            <td>
+                <a href="../insumos/datos_inusomo.html?id=${i.i}" class="edit-link">Editar</a>
+            </td>
           `;
           tableBody.appendChild(row);
         });

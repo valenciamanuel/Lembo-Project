@@ -6,6 +6,7 @@
   <title>Listar Ciclos de Cultivo</title>
   <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
+  <link rel="stylesheet" href="../ciclo_cultivo/datos_ciclo_cultivo.html">
 </head>
 <body>
   <header class="header"></header>
@@ -14,57 +15,61 @@
     <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
 
     <table class="styled-table">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Código</th>
-          <th>Nombre</th>
-          <th>Fecha Siembra</th>
-          <th>Fecha Cosecha</th>
-          <th>Novedades</th>
-          <th>Descripción</th>
-          <th>Estado</th>
-          <th>Imagen</th>
-        </tr>
-      </thead>
-      <tbody id="ciclos-table"></tbody>
-    </table>
+  <thead>
+    <tr>
+      <th>ID</th>
+      <th>Código</th>
+      <th>Nombre</th>
+      <th>Fecha Siembra</th>
+      <th>Fecha Cosecha</th>
+      <th>Novedades</th>
+      <th>Descripción</th>
+      <th>Estado</th>
+      <th>Imagen</th>
+      <th>Acciones</th> </tr>
+  </thead>
+  <tbody id="ciclos-table"></tbody>
+</table>
   </main>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      try {
-        const response = await fetch("http://localhost:3000/ciclocultivo");
-        if (!response.ok) throw new Error("Error al obtener ciclos");
+  document.addEventListener("DOMContentLoaded", async () => {
+    try {
+      const response = await fetch("http://localhost:3000/ciclocultivo");
+      if (!response.ok) throw new Error("Error al obtener ciclos");
 
-        const ciclos = await response.json();
-        const tableBody = document.getElementById("ciclos-table");
-        tableBody.innerHTML = "";
+      const ciclos = await response.json();
+      const tableBody = document.getElementById("ciclos-table");
+      tableBody.innerHTML = "";
 
-        if (ciclos.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="9">No hay ciclos de cultivo registrados</td></tr>`;
-          return;
-        }
-
-        ciclos.forEach(c => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${c.id}</td>
-            <td>${c.cicloID}</td>
-            <td>${c.cicloName}</td>
-            <td>${c.siembraDate}</td>
-            <td>${c.cosechaDate}</td>
-            <td>${c.news}</td>
-            <td>${c.description}</td>
-            <td>${c.state}</td>
-            <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
-          `;
-          tableBody.appendChild(row);
-        });
-      } catch (error) {
-        console.error("❌ Error cargando ciclos:", error);
+      if (ciclos.length === 0) {
+        tableBody.innerHTML = `<tr><td colspan="10">No hay ciclos de cultivo registrados</td></tr>`;
+        return;
       }
-    });
-  </script>
+
+      ciclos.forEach(c => {
+        const row = document.createElement("tr");
+        row.innerHTML = `
+          <td>${c.id}</td>
+          <td>${c.cicloID}</td>
+          <td>${c.cicloName}</td>
+          <td>${c.siembraDate}</td>
+          <td>${c.cosechaDate}</td>
+          <td>${c.news}</td>
+          <td>${c.description}</td>
+          <td>${c.state}</td>
+          <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
+          <td>
+            <a href="../ciclo_cultivo/datos_ciclo_cultivo.html?id=${c.id}" class="edit-link">Editar</a>
+          </td>
+        `;
+        
+        tableBody.appendChild(row);
+      });
+    } catch (error) {
+      console.error("❌ Error cargando ciclos:", error);
+    }
+  });
+</script>
 </body>
 </html>

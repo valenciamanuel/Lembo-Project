@@ -3,52 +3,132 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datos del Sensor</title>
+    <title>Editar Sensor</title>
     <link rel="stylesheet" href="/fronted/public/css/main.css">
     <script src="/fronted/public/views/components/header.js"></script>
-    <script src="/fronted/public/js/sensores/enviar.js"></script>
 </head>
-<body> 
+<body>
     <header class="header"></header>
     <main class="form-container">
-        <form class="form" action="http://localhost:3000/sensores" method="POST" enctype="multipart/form-data">
-            <h2 class="form__title">Datos sensores</h2>
-    
+        <form class="form" id="edit-form">
+            <h2 class="form__title">Editar Sensor</h2>
+            <input type="hidden" id="sensorId">
+
             <div class="form__row">
                 <div class="form__column">
                     <label class="form__label">Cargar imagen</label>
                     <input class="form__input form__input--imagen" type="file" name="image" id="image">
+                    <div id="current-image-container"></div>
     
-                    <label class="form__label">Tipo sensor</label>
-                    <input class="form__input sensor__input--type" type="text" name="tipoSensor">
+                    <label class="form__label">Tipo Sensor</label>
+                    <input class="form__input" type="text" name="tipoSensor" id="tipoSensor">
     
-                    <label class="form__label">Nombre sensor</label>
-                    <input class="form__input sensor__input--name" type="text" name="nombreSensor">
+                    <label class="form__label">Nombre Sensor</label>
+                    <input class="form__input" type="text" name="nombreSensor" id="nombreSensor">
     
-                    <label class="form__label">Unidad de medida</label>
-                    <input class="form__input sensor__input--medida" type="text" name="unidadMedida">
+                    <label class="form__label">Ubicación</label>
+                    <input class="form__input" type="text" name="ubicacion" id="ubicacion">
                 </div>
     
                 <div class="form__column">
-                    <label class="form__label">Tiempo de escaneo</label>
-                    <input class="form__input sensor__input--escaneo" type="text" name="tiempoEscaneo">
+                    <label class="form__label">Tiempo de Escaneo</label>
+                    <input class="form__input" type="text" name="tiempoEscaneo" id="tiempoEscaneo">
     
                     <label class="form__label">Descripción</label>
-                    <input class="form__input sensor__input--descripcion" type="text" name="description">
+                    <textarea class="form__input" name="descripcion" id="descripcion" rows="3"></textarea>
     
-                    <label class="form__label">Estado (activo / inactivo)</label>
-                    <select name="state" class="form__input sensor__input--estado">
+                    <label class="form__label">Estado</label>
+                    <select name="estado" id="estado" class="form__input">
                         <option value="">Seleccione una opción</option>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
                     </select>
                 </div>
             </div>
+
             <div class="form__btn-group">
-                <button type="submit" class="form__btn form__btn--registrar"><a href="actualizar_sensor.html">Actualizar</a></button>
-                <a href="deshabilitar_sensor.html" class="btn__secundary">Deshabilitar</a>
+                <button type="submit" class="form__btn form__btn--registrar" id="submitBtn">Actualizar</button>
+                <a href="listar_sensores.html" class="btn__secundary">Cancelar</a>
             </div>
         </form>
     </main>
-    <script src="/fronted/public/js/sensores/validacion_datos.js"></script>
-</body
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const sensorId = urlParams.get('id');
+            const form = document.getElementById('edit-form');
+
+            if (!sensorId) {
+                console.error('No se encontró el ID del sensor en la URL.');
+                alert('Error: No se encontró el ID del sensor.');
+                return;
+            }
+
+            // Petición GET para obtener los datos del sensor
+            try {
+                const response = await fetch(`http://localhost:3000/sensores/${sensorId}`);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos del sensor.');
+                }
+                const data = await response.json();
+                
+                // Rellenar los campos del formulario con los datos
+                document.getElementById('sensorId').value = data.idSensor;
+                document.getElementById('tipoSensor').value = data.tipoSensor;
+                document.getElementById('nombreSensor').value = data.nombreSensor;
+                document.getElementById('ubicacion').value = data.ubicacion;
+                document.getElementById('tiempoEscaneo').value = data.tiempoEscaneo;
+                document.getElementById('descripcion').value = data.descripcion;
+                document.getElementById('estado').value = data.estado;
+
+                // Mostrar imagen actual si existe
+                const imageContainer = document.getElementById('current-image-container');
+                if (data.image) {
+                    imageContainer.innerHTML = `<img src="/uploads/${data.image}" alt="Imagen actual" width="150">`;
+                } else {
+                    imageContainer.innerHTML = '<span>No hay imagen</span>';
+                }
+            } catch (error) {
+                console.error("❌ Error cargando datos:", error);
+                alert(`Error al cargar los datos: ${error.message}`);
+            }
+
+            // Manejar el envío del formulario para actualizar
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const updatedData = {
+                    tipoSensor: document.getElementById('tipoSensor').value,
+                    nombreSensor: document.getElementById('nombreSensor').value,
+                    ubicacion: document.getElementById('ubicacion').value,
+                    tiempoEscaneo: document.getElementById('tiempoEscaneo').value,
+                    descripcion: document.getElementById('descripcion').value,
+                    estado: document.getElementById('estado').value
+                };
+
+                try {
+                    const response = await fetch(`http://localhost:3000/sensores/${sensorId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedData)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al actualizar el sensor.');
+                    }
+                    
+                    alert('✅ Sensor actualizado exitosamente.');
+                    window.location.href = 'listar_sensores.html';
+                } catch (error) {
+                    console.error("❌ Error al actualizar el sensor:", error);
+                    alert(`Error al actualizar: ${error.message}`);
+                }
+            });
+        });
+    </script>
+</body>
+</html>

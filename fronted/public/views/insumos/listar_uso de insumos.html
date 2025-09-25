@@ -24,6 +24,7 @@
           <th>Valor Unitario</th>
           <th>Valor Total</th>
           <th>Observaciones</th>
+          <th>Acciones</th>
         </tr>
       </thead>
       <tbody id="uso-table"></tbody>
@@ -56,6 +57,9 @@
             <td>${u.valor_unitario}</td>
             <td>${u.valor_total}</td>
             <td>${u.observaciones || "-"}</td>
+            <td>
+                <a href="../insumos/ver_datos_uso_insumo.html?id=${u.id}" class="edit-link">Editar</a>
+            </td>
           `;
           tableBody.appendChild(row);
         });

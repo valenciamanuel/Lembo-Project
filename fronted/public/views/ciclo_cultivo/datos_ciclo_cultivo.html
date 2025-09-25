@@ -1,48 +1,47 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datos Ciclo Cultivo</title>
+    <title>Editar Ciclo de Cultivo</title>
     <link rel="stylesheet" href="/fronted/public/css/main.css">
     <script src="/fronted/public/views/components/header.js"></script>
-    <link rel="stylesheet" href="/fronted/public/css/components/forms.css">
-    <script src="/fronted/public/js/ciclo_cultivo/enviar.js"></script>
 </head>
 <body>
     <header class="header"></header>
-
     <main class="form-container">
-        <form class="form" action="http://localhost:3000/CicloCultivo" method="POST" enctype="multipart/form-data">
-            <h2 class="form__title">Datos Ciclo Cultivo</h2>
-    
+        <form class="form" id="edit-form">
+            <h2 class="form__title">Editar Ciclo de Cultivo</h2>
+            <input type="hidden" id="cicloId">
+            
             <div class="form__row">
                 <div class="form__column">
                     <label class="form__label">Cargar imagen</label>
                     <input class="form__input form__input--imagen" type="file" name="image" id="image">
+                    <div id="current-image-container"></div>
     
-                    <label class="form__label">ID Ciclo Cultivo</label>
-                    <input class="form__input form__input--ID" type="text" name="cicloID">
+                    <label class="form__label">Código</label>
+                    <input class="form__input" type="text" name="cicloID" id="cicloID">
     
-                    <label class="form__label">Nombre Ciclo Cultivo</label>
-                    <input class="form__input form__input--name" type="text" name="cicloName">
+                    <label class="form__label">Nombre</label>
+                    <input class="form__input" type="text" name="cicloName" id="cicloName">
     
                     <label class="form__label">Fecha Siembra</label>
-                    <input class="form__input form__input--siembra" type="date" name="siembraDate">
+                    <input class="form__input" type="date" name="siembraDate" id="siembraDate">
                 </div>
     
                 <div class="form__column">
                     <label class="form__label">Fecha Cosecha</label>
-                    <input class="form__input form__input--cosecha" type="date" name="cosechaDate">
+                    <input class="form__input" type="date" name="cosechaDate" id="cosechaDate">
     
                     <label class="form__label">Novedades</label>
-                    <input class="form__input form__input--news" type="text" name="news">
+                    <textarea class="form__input" name="news" id="news" rows="3"></textarea>
     
                     <label class="form__label">Descripción</label>
-                    <input class="form__input form__input--description" type="text" name="description">
+                    <textarea class="form__input" name="description" id="description" rows="3"></textarea>
     
-                    <label class="form__label">Estado (activo / inactivo)</label>
-                    <select name="state" class="form__input form__input--state">
+                    <label class="form__label">Estado</label>
+                    <select name="state" id="state" class="form__input">
                         <option value="">Seleccione una opción</option>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
@@ -51,11 +50,93 @@
             </div>
     
             <div class="form__btn-group">
-                <button type="submit" class="form__btn form__btn--registrar"><a href="actualizar_ciclo_cultivo.html">Actualizar</a></button>
-                <a href="deshabilitar_ciclo_cultivo.html" class="btn__secundary">Deshabilitar</a>
+                <button type="submit" class="form__btn form__btn--registrar" id="submitBtn">Actualizar</button>
+                <a href="listar_ciclo_cultivo.html" class="btn__secundary">Cancelar</a>
             </div>
         </form>
     </main>
-    <script src="/fronted/public/js/ciclo_cultivo/validacion_datos.js"></script>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            const cicloId = urlParams.get('id');
+            const form = document.getElementById('edit-form');
+
+            if (!cicloId) {
+                console.error('No se encontró el ID del ciclo de cultivo en la URL.');
+                alert('Error: No se encontró el ID del ciclo de cultivo.');
+                return;
+            }
+
+            // Fetch the existing data to populate the form
+            try {
+                const response = await fetch(`http://localhost:3000/ciclocultivo/${cicloId}`);
+                if (!response.ok) {
+                    throw new Error('Error al obtener los datos del ciclo de cultivo.');
+                }
+                
+                const data = await response.json();
+                
+                // Populate the form fields with the fetched data
+                document.getElementById('cicloId').value = data.id;
+                document.getElementById('cicloID').value = data.cicloID;
+                document.getElementById('cicloName').value = data.cicloName;
+                document.getElementById('siembraDate').value = data.siembraDate.split('T')[0];
+                document.getElementById('cosechaDate').value = data.cosechaDate.split('T')[0];
+                document.getElementById('news').value = data.news;
+                document.getElementById('description').value = data.description;
+                document.getElementById('state').value = data.state;
+                
+                // Handle image display
+                const imageContainer = document.getElementById('current-image-container');
+                if (data.image) {
+                    imageContainer.innerHTML = `<img src="/uploads/${data.image}" alt="Imagen actual" width="150">`;
+                } else {
+                    imageContainer.innerHTML = '<span>No hay imagen</span>';
+                }
+            } catch (error) {
+                console.error("❌ Error cargando datos:", error);
+                alert(`Error al cargar los datos: ${error.message}`);
+            }
+
+            // Handle form submission to update the data
+            form.addEventListener('submit', async (e) => {
+                e.preventDefault();
+                
+                const updatedData = {
+                    id: document.getElementById('cicloId').value,
+                    cicloID: document.getElementById('cicloID').value,
+                    cicloName: document.getElementById('cicloName').value,
+                    siembraDate: document.getElementById('siembraDate').value,
+                    cosechaDate: document.getElementById('cosechaDate').value,
+                    news: document.getElementById('news').value,
+                    description: document.getElementById('description').value,
+                    state: document.getElementById('state').value
+                };
+
+                try {
+                    const response = await fetch(`http://localhost:3000/ciclocultivo/${cicloId}`, {
+                        method: 'PUT',
+                        headers: {
+                            'Content-Type': 'application/json'
+                        },
+                        body: JSON.stringify(updatedData)
+                    });
+
+                    if (!response.ok) {
+                        const errorData = await response.json();
+                        throw new Error(errorData.error || 'Error al actualizar el ciclo.');
+                    }
+                    
+                    alert('✅ Ciclo de cultivo actualizado exitosamente.');
+                    window.location.href = 'listar_ciclo_cultivo.html';
+
+                } catch (error) {
+                    console.error("❌ Error al actualizar el ciclo:", error);
+                    alert(`Error al actualizar: ${error.message}`);
+                }
+            });
+        });
+    </script>
 </body>
 </html>
