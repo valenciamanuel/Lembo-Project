@@ -3,8 +3,10 @@
     --Negro: #000000;
     --green: #39A900;
     --ligth_green: #81c85d;
+    --dark-overlay: rgba(0,0,0,0.3);
 }
 
+/* Reset básico */
 html, body {
     font-size: 62.5%;
     box-sizing: border-box;
@@ -13,14 +15,34 @@ html, body {
     width: 100%;
     height: 100vh;
     overflow: hidden;
+    font-family: 'Poppins', sans-serif;
+}
+
+/* Fondo de pantalla con overlay */
+body {
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    height: 100vh; /* asegura que ocupe toda la altura de la pantalla */
     display: flex;
-    flex-direction: column;
-    align-items: center;
     justify-content: center;
-    background-image: url(../IMG/granos.webp);
-    background-repeat: no-repeat;
-    background-size: 100% 100%;
-    background-position: center;
+    align-items: center;
+    position: relative;
+    background-image: url(/fronted/public/img/back_index.jpeg);
+    background-size: cover;       /* ocupa todo el espacio */
+    background-position: center;  /* centra la imagen */
+    background-repeat: no-repeat; /* evita que se repita */
+    font-family: 'Poppins', sans-serif;
+}
+
+body::after {
+    content: "";
+    position: absolute;
+    top:0; left:0;
+    width: 100%;
+    height: 100%;
+    background: var(--dark-overlay);
+    z-index: 0;
 }
 
 /* HEADER */
@@ -35,6 +57,7 @@ html, body {
     display: flex;
     align-items: center;
     padding-left: 2rem;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
 }
 
 .header__logo {
@@ -42,61 +65,56 @@ html, body {
     height: 80%;
 }
 
-/* MAIN CONTENT */
+/* TARJETA PRINCIPAL */
 .main {
+    position: relative;
+    z-index: 1; /* encima del overlay */
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: var(--ligth_green);
-    max-width: 100rem;
+    background-color: var(--Blanco);
+    max-width: 1000px;
     width: 90%;
-    height: 70vh;
+    height: 65vh;
     border-radius: 2rem;
-    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.16), 0 3px 6px rgba(0, 0, 0, 0.23);
+    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    flex-direction: column;
+    padding: 3rem;
+    text-align: center;
+    gap: 2rem;
+    transition: transform 0.3s, box-shadow 0.3s;
 }
 
-/* CONTENEDOR INTERNO */
-.main__content {
-    text-align: center;
-    width: 80%;
+.main:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.35);
 }
 
 /* TITULO */
 .main__title {
     font-size: 4rem;
     font-weight: bold;
-    text-align: center;
+    color: var(--green);
 }
 
-/* BOTÓN (Material Design) */
+/* BOTÓN */
 .main__button {
     background-color: var(--green);
-    width: 160px;
-    height: 48px;
-    border-radius: 8px;
+    width: 180px;
+    height: 50px;
+    border-radius: 10px;
     font-size: 1.6rem;
     border: none;
     cursor: pointer;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, transform 0.2s;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     display: flex;
     justify-content: center;
     align-items: center;
-    margin: 2rem auto 0;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
+    font-weight: 600;
 }
 
-/* QUITAR SUBRAYADO DEL BOTÓN */
-.main__button a {
-    text-decoration: none;
-    color: var(--Blanco);
-    width: 100%;
-    height: 100%;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-}
-
-/* EFECTOS HOVER & ACTIVE */
 .main__button:hover {
     background-color: var(--ligth_green);
     transform: scale(1.05);
@@ -107,24 +125,41 @@ html, body {
     transform: scale(0.95);
 }
 
-/* BOTÓN VOLVER (ABAJO A LA DERECHA) */
+.main__button a {
+    text-decoration: none;
+    color: var(--Blanco);
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+/* BOTÓN VOLVER DENTRO DE LA TARJETA */
 .volver {
-    position: fixed;
-    bottom: 2rem;
-    right: 2rem;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto;           /* centrado horizontal */
+    margin-top: 1.5rem;       /* espacio desde el botón principal o contenido */
 }
 
 .volver__button {
     background-color: var(--green);
-    padding: 1rem 1.5rem;
-    border-radius: 8px;
-    font-size: 1.6rem;
+    padding: 0.8rem 1.5rem;
+    font-size: 1.4rem;
+    font-weight: 600;
     color: var(--Blanco);
     text-decoration: none;
+    border-radius: 0.5rem;
+    border: none;
+    cursor: pointer;
+    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
     display: flex;
+    justify-content: center;
     align-items: center;
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
-    transition: background-color 0.3s, transform 0.2s;
+    transition: all 0.3s ease;
+    text-transform: uppercase;
 }
 
 .volver__button:hover {
@@ -136,59 +171,19 @@ html, body {
     transform: scale(0.95);
 }
 
-.volver__button i {
-    margin-right: 0.5rem;
-}
-
-/* MEDIA QUERIES */
-@media (max-width: 1200px) {
-    .main {
-        width: 95%;
-        height: 65vh;
-    }
-
-    .header__logo {
-        width: 6%;
-        height: 75%;
-    }
-}
-
+/* RESPONSIVE PARA EL BOTÓN VOLVER */
 @media (max-width: 768px) {
-    .main {
-        width: 90%;
-        height: 60vh;
-    }
-
-    .header__logo {
-        width: 8%;
-        height: 70%;
-    }
-
-    .main__button {
+    .volver__button {
         width: 140px;
-        height: 40px;
-        font-size: 1.4rem;
+        height: 45px;
+        font-size: 1.3rem;
     }
 }
 
 @media (max-width: 480px) {
-    .header__logo {
-        width: 12%;
-        height: 65%;
-    }
-
-    .main {
-        width: 95%;
-        height: 55vh;
-    }
-
-    .main__button {
+    .volver__button {
         width: 120px;
-        height: 36px;
-        font-size: 1.2rem;
-    }
-
-    .main__title {
-        font-size: 3rem;
+        height: 40px;
+        font-size: 1.1rem;
     }
 }

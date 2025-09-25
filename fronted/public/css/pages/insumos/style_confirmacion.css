@@ -16,7 +16,7 @@ html, body {
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    background-image: url(../IMG/granos.webp);
+    background-image: url(/fronted/public/img/fondocampo.jpg);
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
