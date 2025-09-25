@@ -1,92 +1,64 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Sensores</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Sensores</title>
+  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
-        </div>
-        <h1 class="header__title">SGL</h1>
-    </header>
+  <header class="header"></header>
 
-    <main>
-        <h1 class="page-title">Listado de Sensores</h1>
-        <p class="page-description">Monitorea y administra todos los sensores instalados en la granja</p>
+  <main class="content-container">
+    <h2 class="form__title">Sensores Registrados</h2>
 
-        <section class="table-container">
-            <table class="table-container__data-table">
-                <thead>
-                    <tr>
-                        <th class="table-container__data-table-header">ID / Código</th>
-                        <th class="table-container__data-table-header">Nombre</th>
-                        <th class="table-container__data-table-header">Tipo de Sensor</th>
-                        <th class="table-container__data-table-header">Valor Actual</th>
-                        <th class="table-container__data-table-header">Unidad</th>
-                        <th class="table-container__data-table-header">Estado</th>
-                        <th class="table-container__data-table-header">Ubicación</th>
-                        <th class="table-container__data-table-header">Última Lectura</th>
-                        <th class="table-container__data-table-header">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>001</td>
-                        <td>Sensor T-01</td>
-                        <td>Temperatura</td>
-                        <td>23.5</td>
-                        <td>°C</td>
-                        <td>Activo</td>
-                        <td>Invernadero 1</td>
-                        <td>2025-04-06 10:45</td>
-                        <td>
-                            <a href="datos_sensor.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>002</td>
-                        <td>Sensor H-01</td>
-                        <td>Humedad del Suelo</td>
-                        <td>35.2</td>
-                        <td>%</td>
-                        <td>Activo</td>
-                        <td>Parcela 2</td>
-                        <td>2025-04-06 10:42</td>
-                        <td>
-                            <a href="datos_sensor.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>003</td>
-                        <td>Sensor PH-01</td>
-                        <td>pH del Suelo</td>
-                        <td>6.8</td>
-                        <td>pH</td>
-                        <td>Activo</td>
-                        <td>Parcela 3</td>
-                        <td>2025-04-06 10:40</td>
-                        <td>
-                            <a href="datos_sensor.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Ubicación</th>
+          <th>Estado</th>
+          <th>Imagen</th>
+        </tr>
+      </thead>
+      <tbody id="sensores-table"></tbody>
+    </table>
+  </main>
 
-            <div class="table-container__button-container">
-                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
-                    <button class="btn-print">🖨️ Imprimir</button>
-                </a>    
-            </div>
-        </section>
-    </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("http://localhost:3000/sensores");
+        if (!response.ok) throw new Error("Error al obtener sensores");
+
+        const sensores = await response.json();
+        const tableBody = document.getElementById("sensores-table");
+        tableBody.innerHTML = "";
+
+        if (sensores.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="6">No hay sensores registrados</td></tr>`;
+          return;
+        }
+
+        sensores.forEach(s => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${s.id}</td>
+            <td>${s.nombre}</td>
+            <td>${s.tipo}</td>
+            <td>${s.ubicacion}</td>
+            <td>${s.estado}</td>
+            <td>${s.image ? `<img src="/uploads/${s.image}" width="60">` : "Sin imagen"}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando sensores:", error);
+      }
+    });
+  </script>
 </body>
 </html>

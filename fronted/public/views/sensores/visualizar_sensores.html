@@ -1,99 +1,66 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador de Sensores</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
-    <link rel="stylesheet" href="/fronted/public/css/main.css">
-    <script src="/fronted/public/views/components/header.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Sensores</title>
+  <link rel="stylesheet" href="/css/components/visualizar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
+  <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
+
 </head>
 <body>
-    <header class="header"></header>
-    
-    <div class="container">
-        <div class="dashboard__search">
-            <input type="text" class="dashboard__search-input" placeholder="Buscar sensores...">
-        </div>
-        
-        <div class="cards-grid">
-            <div class="card">
-                <div class="card__header">
-                    <div class="card__status-group">
-                        <span class="card__status card__status--online">Sensor 1</span>
-                    </div>
-                </div>
-                <div class="card__content">
-                    <h3 class="card__name">Sensor de Temperatura</h3>
-                    <p class="card__location">zona 1</p>
-                    <p class="card__states">Activo</p>
-                </div>
-                <div class="card__footer">
-                    <a href="datos_sensor.html">
-                        <button class="card__details-btn">Ver detalles</button>
-                    </a>
-                </div>
-            </div>
+  <header class="header"></header>
 
-            <!-- Card 2 -->
-            <div class="card">
-                <div class="card__header">
-                    <div class="card__status-group">
-                        <span class="card__status card__status--online">Sensor 2</span>
-                    </div>
-                </div>
-                <div class="card__content">
-                    <h3 class="card__name">Sensor de Humedad</h3>
-                    <p class="card__location">zona 2</p>
-                    <p class="card__states">Inactivo</p>
-                </div>
-                <div class="card__footer">
-                    <a href="datos_sensor.html">
-                        <button class="card__details-btn">Ver detalles</button>
-                    </a>
-                </div>
-            </div>
+  <main class="content-container">
+    <h2 class="form__title">Sensores Registrados</h2>
 
-            <!-- Card 3 -->
-            <div class="card">
-                <div class="card__header">
-                    <div class="card__status-group">
-                        <span class="card__status card__status--online">Sensor 3</span>
-                    </div>
-                </div>
-                <div class="card__content">
-                    <h3 class="card__name">Sensor de Temperatura</h3>
-                    <p class="card__location">zona 3</p>
-                    <p class="card__states">Activo</p>
-                </div>
-                <div class="card__footer">
-                    <a href="datos_sensor.html">
-                        <button class="card__details-btn">Ver detalles</button>
-                    </a>
-                </div>
-            </div>
-
-            <div class="card">
-                <div class="card__header">
-                    <div class="card__status-group">
-                        <span class="card__status card__status--online">Sensor 4</span>
-                    </div>
-                </div>
-                <div class="card__content">
-                    <h3 class="card__name">Sensor de Temperatura</h3>
-                    <p class="card__location">zona 3</p>
-                    <p class="card__states">Activo</p>
-                </div>
-                <div class="card__footer">
-                    <a href="datos_sensor.html">
-                        <button class="card__details-btn">Ver detalles</button>
-                    </a>
-                </div>
-            </div>
-
-            <!-- More cards (same structure) -->
-
-        </div>
+    <div id="sensores-container" class="cards-container">
+      <!-- Aquí JS insertará cada card -->
     </div>
+  </main>
+
+  <!-- ✅ JS embebido -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        // ⚠️ Asegúrate que en server.js usaste /sensores
+        const response = await fetch("http://localhost:3000/sensores");
+        if (!response.ok) throw new Error("Error al obtener sensores");
+
+        const sensores = await response.json();
+        const container = document.getElementById("sensores-container");
+        container.innerHTML = "";
+
+        if (sensores.length === 0) {
+          container.innerHTML = `<p class="no-sensores">No hay sensores registrados</p>`;
+          return;
+        }
+
+        sensores.forEach(s => {
+          const card = document.createElement("div");
+          card.classList.add("card");
+
+          card.innerHTML = `
+            <div class="card-image">
+              ${s.image ? `<img src="/uploads/${s.image}" alt="${s.nombre}">` : `<div class="no-image">Sin imagen</div>`}
+            </div>
+            <div class="card-content">
+              <h3>${s.nombre}</h3>
+              <p><strong>Tipo:</strong> ${s.tipo}</p>
+              <p><strong>Ubicación:</strong> ${s.ubicacion || "-"}</p>
+              <p><strong>Estado:</strong> ${s.estado || "Desconocido"}</p>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando sensores:", error);
+
+        const container = document.getElementById("sensores-container");
+        container.innerHTML = `<p class="no-sensores">Error al cargar sensores</p>`;
+      }
+    });
+  </script>
 </body>
 </html>

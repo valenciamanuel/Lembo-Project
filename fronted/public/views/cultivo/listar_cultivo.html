@@ -1,92 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Cultivos</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Cultivos</title>
+  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
-        </div>
-        <h1 class="header__title">SGL</h1>
-    </header>
+  <header class="header"></header>
 
-    <main>
-        <h1 class="page-title">Listado de Cultivos</h1>
-        <p class="page-description">Consulta y administra los cultivos activos en la granja</p>
+  <main class="content-container">
+    <h2 class="form__title">Cultivos Registrados</h2>
 
-        <section class="table-container">
-            <table class="table-container__data-table">
-                <thead>
-                    <tr>
-                        <th class="table-container__data-table-header">ID / Código</th>
-                        <th class="table-container__data-table-header">Nombre del Cultivo</th>
-                        <th class="table-container__data-table-header">Tipo</th>
-                        <th class="table-container__data-table-header">Fecha de Siembra</th>
-                        <th class="table-container__data-table-header">Área (m²)</th>
-                        <th class="table-container__data-table-header">Estado</th>
-                        <th class="table-container__data-table-header">Ubicación</th>
-                        <th class="table-container__data-table-header">Responsable</th>
-                        <th class="table-container__data-table-header">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>CUL-001</td>
-                        <td>Tomate Cherry</td>
-                        <td>Hortaliza</td>
-                        <td>2025-03-01</td>
-                        <td>500</td>
-                        <td>En crecimiento</td>
-                        <td>Invernadero 1</td>
-                        <td>Julián Pérez</td>
-                        <td>
-                            <a href="datos_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CUL-002</td>
-                        <td>Maíz Dulce</td>
-                        <td>Cereal</td>
-                        <td>2025-02-10</td>
-                        <td>1000</td>
-                        <td>Germinando</td>
-                        <td>Parcela 2</td>
-                        <td>Laura Gómez</td>
-                        <td>
-                            <a href="datos_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CUL-003</td>
-                        <td>Lechuga Romana</td>
-                        <td>Hortaliza</td>
-                        <td>2025-01-15</td>
-                        <td>300</td>
-                        <td>Listo para cosecha</td>
-                        <td>Parcela 3</td>
-                        <td>Andrés Torres</td>
-                        <td>
-                            <a href="datos_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Tipo</th>
+          <th>Código</th>
+          <th>Tamaño</th>
+          <th>Ubicación</th>
+          <th>Estado</th>
+          <th>Imagen</th>
+        </tr>
+      </thead>
+      <tbody id="cultivos-table"></tbody>
+    </table>
+  </main>
 
-            <div class="table-container__button-container">
-                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
-                    <button class="btn-print">🖨️ Imprimir</button>
-                </a>   
-            </div>
-        </section>
-    </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("http://localhost:3000/cultivo");
+        if (!response.ok) throw new Error("Error al obtener cultivos");
+
+        const cultivos = await response.json();
+        const tableBody = document.getElementById("cultivos-table");
+        tableBody.innerHTML = "";
+
+        if (cultivos.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="8">No hay cultivos registrados</td></tr>`;
+          return;
+        }
+
+        cultivos.forEach(c => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${c.id}</td>
+            <td>${c.cultivoName}</td>
+            <td>${c.cultivoType}</td>
+            <td>${c.cultivoID}</td>
+            <td>${c.size}</td>
+            <td>${c.location}</td>
+            <td>${c.state}</td>
+            <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando cultivos:", error);
+      }
+    });
+  </script>
 </body>
 </html>

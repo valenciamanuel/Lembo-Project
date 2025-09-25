@@ -17,6 +17,9 @@ app.get('/test', (req, res) => {
     res.status(200).json({ message: 'Conexión exitosa, sin DB' });
 });
 
+// // Servir la carpeta uploads
+// app.use("/uploads", express.static(path.join(__dirname, "fronted/public/uploads")));
+
 const cicloCultivoRoutes = require('./routes/cicloCultivoRoutes.js');
 const cultivoRoutes = require('./routes/cultivoRoute.js');
 const insumoRoutes = require('./routes/insumoRoute.js');
@@ -42,3 +45,6 @@ app.use('/api', apiasociaciones);
 app.listen(3000, () => {
     console.log('✅ Server is running on port 3000');
 });
+
+const path = require("path");
+

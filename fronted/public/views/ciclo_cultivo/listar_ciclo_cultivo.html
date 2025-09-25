@@ -1,88 +1,70 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Ciclos de Cultivo</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Ciclos de Cultivo</title>
+  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
-        </div>
-        <h1 class="header__title">SGL</h1>
-    </header>
+  <header class="header"></header>
 
-    <main>
-        <h1 class="page-title">Listado de Ciclos de Cultivo</h1>
-        <p class="page-description">Gestiona los diferentes ciclos asociados a cada cultivo de la granja</p>
+  <main class="content-container">
+    <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
 
-        <section class="table-container">
-            <table class="table-container__data-table">
-                <thead>
-                    <tr>
-                        <th class="table-container__data-table-header">ID / Código</th>
-                        <th class="table-container__data-table-header">Cultivo Asociado</th>
-                        <th class="table-container__data-table-header">Fecha de Inicio</th>
-                        <th class="table-container__data-table-header">Fecha de Fin</th>
-                        <th class="table-container__data-table-header">Duración (días)</th>
-                        <th class="table-container__data-table-header">Estado</th>
-                        <th class="table-container__data-table-header">Observaciones</th>
-                        <th class="table-container__data-table-header">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>CIC-001</td>
-                        <td>Tomate Cherry</td>
-                        <td>2025-03-01</td>
-                        <td>2025-06-01</td>
-                        <td>92</td>
-                        <td>Finalizado</td>
-                        <td>Buena producción, sin plagas.</td>
-                        <td>
-                            <a href="datos_ciclo_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CIC-002</td>
-                        <td>Maíz Dulce</td>
-                        <td>2025-02-10</td>
-                        <td>2025-05-10</td>
-                        <td>90</td>
-                        <td>En proceso</td>
-                        <td>Se aplicó fertilizante orgánico.</td>
-                        <td>
-                            <a href="datos_ciclo_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>CIC-003</td>
-                        <td>Lechuga Romana</td>
-                        <td>2025-01-15</td>
-                        <td>2025-03-15</td>
-                        <td>59</td>
-                        <td>Finalizado</td>
-                        <td>Resultados excelentes, sin contratiempos.</td>
-                        <td>
-                            <a href="datos_ciclo_cultivo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Código</th>
+          <th>Nombre</th>
+          <th>Fecha Siembra</th>
+          <th>Fecha Cosecha</th>
+          <th>Novedades</th>
+          <th>Descripción</th>
+          <th>Estado</th>
+          <th>Imagen</th>
+        </tr>
+      </thead>
+      <tbody id="ciclos-table"></tbody>
+    </table>
+  </main>
 
-            <div class="table-container__button-container">
-                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
-                    <button class="btn-print">🖨️ Imprimir</button>
-                </a>    
-            </div>
-        </section>
-    </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("http://localhost:3000/ciclocultivo");
+        if (!response.ok) throw new Error("Error al obtener ciclos");
+
+        const ciclos = await response.json();
+        const tableBody = document.getElementById("ciclos-table");
+        tableBody.innerHTML = "";
+
+        if (ciclos.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="9">No hay ciclos de cultivo registrados</td></tr>`;
+          return;
+        }
+
+        ciclos.forEach(c => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${c.id}</td>
+            <td>${c.cicloID}</td>
+            <td>${c.cicloName}</td>
+            <td>${c.siembraDate}</td>
+            <td>${c.cosechaDate}</td>
+            <td>${c.news}</td>
+            <td>${c.description}</td>
+            <td>${c.state}</td>
+            <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando ciclos:", error);
+      }
+    });
+  </script>
 </body>
 </html>

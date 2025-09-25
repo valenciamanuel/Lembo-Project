@@ -1,96 +1,62 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar Insumos</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Insumos</title>
+  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
-        </div>
-        <h1 class="header__title">SGL</h1>
-    </header>
+  <header class="header"></header>
 
-    <main>
-        <h1 class="page-title">Listado de Insumos</h1>
-        <p class="page-description">Controla y gestiona todos los insumos disponibles en la granja</p>
+  <main class="content-container">
+    <h2 class="form__title">Insumos Registrados</h2>
 
-        <section class="table-container">
-            <table class="table-container__data-table">
-                <thead>
-                    <tr>
-                        <th class="table-container__data-table-header">ID / Código</th>
-                        <th class="table-container__data-table-header">Nombre</th>
-                        <th class="table-container__data-table-header">Categoría</th>
-                        <th class="table-container__data-table-header">Cantidad Disponible</th>
-                        <th class="table-container__data-table-header">Unidad de Medida</th>
-                        <th class="table-container__data-table-header">Fecha de Ingreso</th>
-                        <th class="table-container__data-table-header">Fecha de Vencimiento</th>
-                        <th class="table-container__data-table-header">Proveedor</th>
-                        <th class="table-container__data-table-header">Estado</th>
-                        <th class="table-container__data-table-header">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>INS-001</td>
-                        <td>Fertilizante Nitrofoska</td>
-                        <td>Fertilizante</td>
-                        <td>20</td>
-                        <td>kg</td>
-                        <td>2025-03-01</td>
-                        <td>2026-03-01</td>
-                        <td>AgroColombia S.A.</td>
-                        <td>Disponible</td>
-                        <td>
-                            <a href="datos_inusomo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>INS-002</td>
-                        <td>Semillas de Maíz</td>
-                        <td>Semilla</td>
-                        <td>100</td>
-                        <td>kg</td>
-                        <td>2025-02-15</td>
-                        <td>2026-02-15</td>
-                        <td>Semillas del Valle</td>
-                        <td>Disponible</td>
-                        <td>
-                            <a href="datos_inusomo.html"></a><button class="btn btn-outline btn-sm">Editar</button>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>INS-003</td>
-                        <td>Pesticida Orgánico</td>
-                        <td>Pesticida</td>
-                        <td>10</td>
-                        <td>litros</td>
-                        <td>2025-01-10</td>
-                        <td>2025-12-10</td>
-                        <td>EcoProtect Ltda.</td>
-                        <td>Disponible</td>
-                        <td>
-                            <a href="datos_inusomo.html"></a><button class="btn btn-outline btn-sm">Editar</button>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Nombre</th>
+          <th>Descripción</th>
+          <th>Cantidad</th>
+          <th>Imagen</th>
+        </tr>
+      </thead>
+      <tbody id="insumos-table"></tbody>
+    </table>
+  </main>
 
-            <div class="table-container__button-container">
-                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
-                    <button class="btn-print">🖨️ Imprimir</button>
-                </a> 
-            </div>
-        </section>
-    </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("http://localhost:3000/insumo");
+        if (!response.ok) throw new Error("Error al obtener insumos");
+
+        const insumos = await response.json();
+        const tableBody = document.getElementById("insumos-table");
+        tableBody.innerHTML = "";
+
+        if (insumos.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="5">No hay insumos registrados</td></tr>`;
+          return;
+        }
+
+        insumos.forEach(i => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${i.id}</td>
+            <td>${i.nombre}</td>
+            <td>${i.descripcion}</td>
+            <td>${i.cantidad}</td>
+            <td>${i.image ? `<img src="/uploads/${i.image}" width="60">` : "Sin imagen"}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando insumos:", error);
+      }
+    });
+  </script>
 </body>
 </html>

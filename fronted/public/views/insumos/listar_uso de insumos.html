@@ -1,84 +1,68 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Listar uso de Insumos</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-    <link rel="stylesheet" href="/fronted/public/css/components/header.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Uso de Insumos</title>
+  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 <body>
-    <!-- Header -->
-    <header class="header">
-        <div class="header__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo" class="header__logo-image">
-        </div>
-        <h1 class="header__title">SGL</h1>
-    </header>
+  <header class="header"></header>
 
-    <main>
-        <h1 class="page-title">Listado de uso de Insumos</h1>
-        <p class="page-description">Registra y muestra el historial de uso de todos los insumos aplicados en la granja, facilitando su control y seguimiento</p>
+  <main class="content-container">
+    <h2 class="form__title">Uso de Insumos Registrados</h2>
 
-        <section class="table-container">
-            <table class="table-container__data-table">
-                <thead>
-                    <tr>
-                        <th class="table-container__data-table-header">Fecha uso </th>
-                        <th class="table-container__data-table-header">Cantidad</th>
-                        <th class="table-container__data-table-header">Responsable</th>
-                        <th class="table-container__data-table-header">Valor Unitario</th>
-                        <th class="table-container__data-table-header">Valor Total</th>
-                        <th class="table-container__data-table-header">Observaciones</th>
-                        <th class="table-container__data-table-header">Acciones</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    <tr>
-                        <td>2025-04-01</td> 
-                        <td>20 kg</td> 
-                        <td>Juan Pérez</td> 
-                        <td>$15.00</td> 
-                        <td>$300.00</td> 
-                        <td>Aplicado en el lote 1</td> 
-                        <td>
-                            <a href="ver_datos_uso_insumo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2025-03-15</td> 
-                        <td>100 kg</td> 
-                        <td>María López</td> 
-                        <td>$10.00</td> 
-                        <td>$1,000.00</td> 
-                        <td>Sembrado en el lote 2</td> 
-                        <td>
-                            <a href="ver_datos_uso_insumo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>2025-01-10</td> 
-                        <td>10 litros</td> 
-                        <td>Carlos Gómez</td> 
-                        <td>$25.00</td> 
-                        <td>$250.00</td> 
-                        <td>Usado para control de plagas</td> 
-                        <td>
-                            <a href="ver_datos_uso_insumo.html"><button class="btn btn-outline btn-sm">Editar</button></a>
-                            <button class="btn btn-danger btn-sm">Eliminar</button>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
+    <table class="styled-table">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Insumo</th>
+          <th>Fecha Uso</th>
+          <th>Cantidad</th>
+          <th>Responsable</th>
+          <th>Valor Unitario</th>
+          <th>Valor Total</th>
+          <th>Observaciones</th>
+        </tr>
+      </thead>
+      <tbody id="uso-table"></tbody>
+    </table>
+  </main>
 
-            <div class="table-container__button-container">
-                <a href="/fronted/public/views/components/imprimir.html" class="table-container__button-container-link">
-                    <button class="btn-print">🖨️ Imprimir</button>
-                </a> 
-            </div>
-        </section>
-    </main>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        const response = await fetch("http://localhost:3000/uso_insumo");
+        if (!response.ok) throw new Error("Error al obtener uso de insumos");
+
+        const usos = await response.json();
+        const tableBody = document.getElementById("uso-table");
+        tableBody.innerHTML = "";
+
+        if (usos.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="8">No hay registros de uso de insumos</td></tr>`;
+          return;
+        }
+
+        usos.forEach(u => {
+          const row = document.createElement("tr");
+          row.innerHTML = `
+            <td>${u.id}</td>
+            <td>${u.insumo}</td>
+            <td>${u.fecha_uso}</td>
+            <td>${u.cantidad}</td>
+            <td>${u.responsable}</td>
+            <td>${u.valor_unitario}</td>
+            <td>${u.valor_total}</td>
+            <td>${u.observaciones || "-"}</td>
+          `;
+          tableBody.appendChild(row);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando uso de insumos:", error);
+      }
+    });
+  </script>
 </body>
 </html>

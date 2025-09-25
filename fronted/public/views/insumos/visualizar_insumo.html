@@ -1,122 +1,65 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador de Insumo</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
-    <link rel="stylesheet" href="/fronted/public/css/main.css">
-    <script src="/fronted/public/views/components/header.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Insumos</title>
+  <link rel="stylesheet" href="/css/components/visualizar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
+  <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
 
 </head>
 <body>
-    <header class="header"></header>
-    
-    <div class="container">
-            
-            <div class="dashboard__search">
-                <input type="text" class="dashboard__search-input" placeholder="Buscar Insumo...">
-            </div>
-            
-            <div class="cards-grid">
+  <header class="header"></header>
 
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Insumo 1</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Insumo de cafe</h3>
-                        <p class="card__location">zona 1</p>
-                        <p class="card__states">Activo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_inusomo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Insumo 2</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Insumo de platano</h3>
-                        <p class="card__location">zona 2</p>
-                        <p class="card__states">Inactivo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_inusomo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
+  <main class="content-container">
+    <h2 class="form__title">Insumos Registrados</h2>
 
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Insumo 3</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Insumo de cacao</h3>
-                        <p class="card__location">zona 3</p>
-                        <p class="card__states">Activo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_inusomo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Insumo 4</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Insumo de maiz</h3>
-                        <p class="card__location">zona 4</p>
-                        <p class="card__states">Inactivo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_inusomo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Insumo 5</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Insumo de cafe</h3>
-                        <p class="card__location">zona 5</p>
-                        <p class="card__states">Activo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_inusomo.html"><button class="card__details-btn">Ver detalles</button></a>                
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Insumo 6</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Insumo de maiz</h3>
-                        <p class="card__location">zona 6</p>
-                        <p class="card__states">Inactivo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_inusomo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="insumos-container" class="cards-container">
+      <!-- Aquí JS insertará cada card -->
     </div>
+  </main>
+
+  <!-- ✅ JS embebido -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        // ⚠️ Usa /insumo o /insumos según tu server.js
+        const response = await fetch("http://localhost:3000/insumo");
+        if (!response.ok) throw new Error("Error al obtener insumos");
+
+        const insumos = await response.json();
+        const container = document.getElementById("insumos-container");
+        container.innerHTML = "";
+
+        if (insumos.length === 0) {
+          container.innerHTML = `<p class="no-insumos">No hay insumos registrados</p>`;
+          return;
+        }
+
+        insumos.forEach(i => {
+          const card = document.createElement("div");
+          card.classList.add("card");
+
+          card.innerHTML = `
+            <div class="card-image">
+              ${i.image ? `<img src="/uploads/${i.image}" alt="${i.nombre}">` : `<div class="no-image">Sin imagen</div>`}
+            </div>
+            <div class="card-content">
+              <h3>${i.nombre}</h3>
+              <p><strong>Descripción:</strong> ${i.descripcion}</p>
+              <p><strong>Cantidad:</strong> ${i.cantidad}</p>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando insumos:", error);
+
+        const container = document.getElementById("insumos-container");
+        container.innerHTML = `<p class="no-insumos">Error al cargar insumos</p>`;
+      }
+    });
+  </script>
 </body>
 </html>

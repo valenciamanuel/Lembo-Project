@@ -43,16 +43,9 @@ const insertarCultivo = async (req, res) => {
 // Obtener cultivos
 const obtenerCultivos = async (req, res) => {
     try {
-        const sql = 'SELECT id, cultivoName, image FROM cultivo';
+        const sql = 'SELECT * FROM cultivo'; // Traer todo
         const [results] = await db.query(sql);
-
-        const cultivos = results.map(({ id, cultivoName, image }) => ({
-            id,
-            cultivoName,
-            image   
-        }));
-
-        res.status(200).json(cultivos);
+        res.status(200).json(results);
     } catch (err) {
         console.error('❌ Error al obtener los cultivos:', err);
         res.status(500).json({ error: 'Error al obtener los cultivos' });

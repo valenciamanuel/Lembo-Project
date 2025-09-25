@@ -51,7 +51,10 @@ const obtenerCiclosCultivo = async (req, res) => {
     let connection;
     try {
         connection = await db.getConnection();
-        const [rows] = await connection.execute('SELECT id, cicloName, image FROM ciclocultivo');
+        const [rows] = await connection.execute(`
+            SELECT id, cicloID, cicloName, siembraDate, cosechaDate, news, description, state, image 
+            FROM ciclocultivo
+        `);
         console.log(`✅ ${rows.length} ciclos de cultivo obtenidos`);
         return res.status(200).json(rows);
     } catch (err) {
@@ -59,10 +62,11 @@ const obtenerCiclosCultivo = async (req, res) => {
         return res.status(500).json({ error: 'Error al obtener los ciclos de cultivo' });
     } finally {
         if (connection) {
-            connection.release(); // ✅ Siempre libera la conexión
+            connection.release();
         }
     }
 };
+
 
 module.exports = {
     insertarCicloCultivo,

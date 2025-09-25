@@ -1,122 +1,67 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizador de Cultivos</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
-    <link rel="stylesheet" href="/fronted/public/css/main.css">
-    <script src="/fronted/public/views/components/header.js"></script>
-
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Cultivos</title>
+  <link rel="stylesheet" href="/css/components/visualizar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
+  <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
 </head>
 <body>
-    <header class="header"></header>
-    
-    <div class="container">
-            
-            <div class="dashboard__search">
-                <input type="text" class="dashboard__search-input" placeholder="Buscar Cultivo...">
-            </div>
-            
-            <div class="cards-grid">
+  <header class="header"></header>
 
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Cultivo 1</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Cultivo de cafe</h3>
-                        <p class="card__location">zona 1</p>
-                        <p class="card__states">Activo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_cultivo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Cultivo 2</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Cultivo de Platano</h3>
-                        <p class="card__location">zona 2</p>
-                        <p class="card__states">Inactivo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_cultivo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
+  <main class="content-container">
+    <h2 class="form__title">Cultivos Registrados</h2>
 
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Cultivo 3</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Cultivo de cacao</h3>
-                        <p class="card__location">zona 3</p>
-                        <p class="card__states">Activo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_cultivo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Cultivo 4</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Cultivo de maiz</h3>
-                        <p class="card__location">zona 4</p>
-                        <p class="card__states">Inactivo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_cultivo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Cultivo 5</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Cultivo de cafe</h3>
-                        <p class="card__location">zona 5</p>
-                        <p class="card__states">Activo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_cultivo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-                
-                <div class="card">
-                    <div class="card__header">
-                        <div class="card__status-group">
-                            <span class="card__status card__status--online">Cultivo 6</span>
-                        </div>
-                    </div>
-                    <div class="card__content">
-                        <h3 class="card__name">Cultivo de maiz</h3>
-                        <p class="card__location">zona 6</p>
-                        <p class="card__states">Inactivo</p>
-                    </div>
-                    <div class="card__footer">
-                        <a href="datos_cultivo.html"><button class="card__details-btn">Ver detalles</button></a>
-                    </div>
-                </div>
-            </div>
-        </div>
+    <div id="cultivos-container" class="cards-container">
+      <!-- Aquí JS insertará cada card -->
     </div>
+  </main>
+
+  <!-- ✅ JS embebido -->
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      try {
+        // ⚠️ Verifica si en tu server.js usaste /cultivo o /cultivos
+        const response = await fetch("http://localhost:3000/cultivo");
+        if (!response.ok) throw new Error("Error al obtener cultivos");
+
+        const cultivos = await response.json();
+        const container = document.getElementById("cultivos-container");
+        container.innerHTML = "";
+
+        if (cultivos.length === 0) {
+          container.innerHTML = `<p class="no-cultivos">No hay cultivos registrados</p>`;
+          return;
+        }
+
+        cultivos.forEach(c => {
+          const card = document.createElement("div");
+          card.classList.add("card");
+
+          card.innerHTML = `
+            <div class="card-image">
+              ${c.image ? `<img src="/uploads/${c.image}" alt="${c.cultivoName}">` : `<div class="no-image">Sin imagen</div>`}
+            </div>
+            <div class="card-content">
+              <h3>${c.cultivoName}</h3>
+              <p><strong>Tipo:</strong> ${c.cultivoType}</p>
+              <p><strong>Código:</strong> ${c.cultivoID}</p>
+              <p><strong>Tamaño:</strong> ${c.size || "-"}</p>
+              <p><strong>Ubicación:</strong> ${c.location || "-"}</p>
+              <p><strong>Estado:</strong> <span class="estado ${c.state.toLowerCase()}">${c.state}</span></p>
+            </div>
+          `;
+          container.appendChild(card);
+        });
+      } catch (error) {
+        console.error("❌ Error cargando cultivos:", error);
+
+        const container = document.getElementById("cultivos-container");
+        container.innerHTML = `<p class="no-cultivos">Error al cargar cultivos</p>`;
+      }
+    });
+  </script>
 </body>
 </html>
