@@ -4,8 +4,9 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listar Sensores</title>
-  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <link rel="stylesheet" href="/css/components/listar.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
+  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
 </head>
 <body>
   <header class="header"></header>
@@ -17,21 +18,25 @@
       <thead>
         <tr>
           <th>ID</th>
-          <th>Nombre</th>
           <th>Tipo</th>
+          <th>Nombre</th>
           <th>Ubicación</th>
+          <th>Tiempo de Escaneo</th>
+          <th>Descripción</th>
           <th>Estado</th>
           <th>Imagen</th>
         </tr>
       </thead>
-      <tbody id="sensores-table"></tbody>
+      <tbody id="sensores-table">
+        <!-- Filas dinámicas -->
+      </tbody>
     </table>
   </main>
 
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       try {
-        const response = await fetch("http://localhost:3000/sensores");
+        const response = await fetch("http://localhost:3000/sensores"); 
         if (!response.ok) throw new Error("Error al obtener sensores");
 
         const sensores = await response.json();
@@ -46,12 +51,14 @@
         sensores.forEach(s => {
           const row = document.createElement("tr");
           row.innerHTML = `
-            <td>${s.id}</td>
-            <td>${s.nombre}</td>
-            <td>${s.tipo}</td>
-            <td>${s.ubicacion}</td>
+            <td>${s.idSensor}</td>
+            <td>${s.tipoSensor}</td>
+            <td>${s.nombreSensor}</td>
+            <td>${s.unidadMedida}</td>
+            <td>${s.tiempoEscaneo}</td>
+            <td>${s.descripcion}</td>
             <td>${s.estado}</td>
-            <td>${s.image ? `<img src="/uploads/${s.image}" width="60">` : "Sin imagen"}</td>
+            <td>${s.imagen ? `<img src="/uploads/${s.imagen}" width="60">` : "Sin imagen"}</td>
           `;
           tableBody.appendChild(row);
         });

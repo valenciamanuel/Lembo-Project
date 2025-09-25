@@ -28,7 +28,7 @@ const insertarSensor = async (req, res) => {
 
 const obtenerSensores = async (req, res) => {
     try {
-        const sql = 'SELECT idSensor, nombreSensor FROM sensores';
+        const sql = 'SELECT * FROM sensores';
         const [results] = await db.query(sql);
         res.status(200).json(results);
     } catch (err) {

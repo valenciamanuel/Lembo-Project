@@ -19,6 +19,18 @@ const insertarUso = (req, res) => {
     });
 };  
 
+const obtenerUsos = async (req, res) => {
+    try {
+        const sql = 'SELECT * FROM uso_insumo';
+        const [results] = await db.query(sql); // Use await with the Promise-based query
+        res.status(200).json(results);
+    } catch (err) {
+        console.error('Error al obtener usos de insumo:', err);
+        res.status(500).json({ error: 'Error al obtener usos de insumo' });
+    }
+};;
+
 module.exports = {
     insertarUso,
+    obtenerUsos,
 };

@@ -46,9 +46,9 @@
               ${s.image ? `<img src="/uploads/${s.image}" alt="${s.nombre}">` : `<div class="no-image">Sin imagen</div>`}
             </div>
             <div class="card-content">
-              <h3>${s.nombre}</h3>
-              <p><strong>Tipo:</strong> ${s.tipo}</p>
-              <p><strong>Ubicación:</strong> ${s.ubicacion || "-"}</p>
+              <h3>${s.nombreSensor}</h3>
+              <p><strong>Tipo:</strong> ${s.tipoSensor}</p>
+              <p><strong>unidad_medida:</strong> ${s.unidadMedida || "-"}</p>
               <p><strong>Estado:</strong> ${s.estado || "Desconocido"}</p>
             </div>
           `;

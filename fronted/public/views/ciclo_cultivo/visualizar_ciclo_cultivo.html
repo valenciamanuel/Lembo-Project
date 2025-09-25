@@ -6,6 +6,8 @@
   <title>Visualizar Ciclos de Cultivo</title>
   <link rel="stylesheet" href="/css/components/visualizar.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
+  <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
+
 </head>
 <body>
   <header class="header"></header>
@@ -22,7 +24,6 @@
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       try {
-        // ⚠️ Usa la misma ruta que registraste en server.js (app.use('/ciclocultivo', ...))
         const response = await fetch("http://localhost:3000/ciclocultivo");
         if (!response.ok) throw new Error("Error al obtener ciclos de cultivo");
 

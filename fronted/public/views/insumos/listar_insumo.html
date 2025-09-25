@@ -45,8 +45,8 @@
         insumos.forEach(i => {
           const row = document.createElement("tr");
           row.innerHTML = `
-            <td>${i.id}</td>
-            <td>${i.nombre}</td>
+            <td>${i.idInsumo}</td>
+            <td>${i.nombreInsumo}</td>
             <td>${i.descripcion}</td>
             <td>${i.cantidad}</td>
             <td>${i.image ? `<img src="/uploads/${i.image}" width="60">` : "Sin imagen"}</td>
