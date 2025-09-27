@@ -11,30 +11,38 @@
 <body>
   <header class="header"></header>
   <main class="form-container">
-    <form class="form" action="http://localhost:3000/insumo" method="POST">
+    <form class="form" id="crear-insumo-form">
       <h2 class="form__title">Datos Insumos</h2>
       <div class="form__row">
         <div class="form__column">
-          <label class="form__label">Cargar imagen</label>
-          <input class="form__input form__input--imagen" type="file">
-          <label class="form__label">Tipo insumo</label>
-          <input class="form__input insumo__input--type" type="text">
-          <label class="form__label">Nombre insumo</label>
-          <input class="form__input insumo__input--nombre" type="text">
-          <label class="form__label">Unidad de medida</label>
-          <input class="form__input insumo__input--unidad" type="text">
-          <label class="form__label">Cantidad</label>
-          <input class="form__input insumo__input--cantidad" type="number">
+          <label class="form__label" for="image">Cargar imagen</label>
+          <input class="form__input form__input--imagen" type="file" id="image" name="image" accept="image/*">
+
+          <label class="form__label" for="tipoInsumo">Tipo insumo</label>
+          <input class="form__input insumo__input--type" type="text" id="tipoInsumo" name="tipoInsumo">
+
+          <label class="form__label" for="nombreInsumo">Nombre insumo</label>
+          <input class="form__input insumo__input--nombre" type="text" id="nombreInsumo" name="nombreInsumo">
+
+          <label class="form__label" for="unidadMedida">Unidad de medida</label>
+          <input class="form__input insumo__input--unidad" type="text" id="unidadMedida" name="unidadMedida">
+
+          <label class="form__label" for="cantidad">Cantidad</label>
+          <input class="form__input insumo__input--cantidad" type="number" id="cantidad" name="cantidad">
         </div>
+
         <div class="form__column">
-          <label class="form__label">Valor unitario</label>
-          <input class="form__input insumo__input--unitario" type="number">
-          <label class="form__label">Valor Total</label>
-          <input class="form__input insumo__input--total" type="number">
-          <label class="form__label">Descripción</label>
-          <input class="form__input insumo__input--descripcion" type="text">
-          <label class="form__label">Estado (activo / inactivo)</label>
-          <select name="estado" class="form__input insumo__input--estado">
+          <label class="form__label" for="valorUnitario">Valor unitario</label>
+          <input class="form__input insumo__input--unitario" type="number" id="valorUnitario" name="valorUnitario">
+
+          <label class="form__label" for="valorTotal">Valor Total</label>
+          <input class="form__input insumo__input--total" type="number" id="valorTotal" name="valorTotal">
+          
+          <label class="form__label" for="descripcion">Descripción</label>
+          <input class="form__input insumo__input--descripcion" type="text" id="descripcion" name="descripcion">
+          
+          <label class="form__label" for="estado">Estado (activo / inactivo)</label>
+          <select name="estado" id="estado" class="form__input insumo__input--estado">
             <option value="">Seleccione una opción</option>
             <option value="Activo">Activo</option>
             <option value="Inactivo">Inactivo</option>

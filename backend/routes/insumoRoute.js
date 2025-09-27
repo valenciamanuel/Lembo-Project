@@ -2,89 +2,34 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db.js'); // pool mysql2/promise
-const { obtenerInsumoPorId, actualizarInsumo } = require('../controllers/insumoController.js');
 
-// ✅ Obtener todos los insumos
+// ✅ 1. Importar Multer (asumo que usaremos la misma configuración)
+const upload = require('../config/multerConfig'); 
+// ✅ 2. Importar el controlador de insumo (lo moveremos allí para limpiar la ruta)
+const { insertarInsumo, obtenerInsumoPorId, actualizarInsumo } = require('../controllers/insumoController.js');
+
+
+// ✅ 3. Insertar un insumo (image opcional)
+// Usamos upload.single('image') como middleware
+// NOTA: Es mejor mover la lógica de inserción al controlador.
+router.post('/', upload.single('image'), insertarInsumo); // Ahora llama al controlador
+
+// ✅ Obtener todos los insumos (Mantenemos la ruta de obtención simple aquí)
 router.get('/', async (req, res) => {
-  try {
-    const [results] = await db.query('SELECT * FROM insumo');
-    return res.json(results);
-  } catch (err) {
-    console.error('❌ Error al obtener insumos:', err);
-    return res.status(500).json({ error: 'Error al obtener insumos' });
-  }
-});
-
-// ✅ Insertar un insumo (image opcional)
-router.post('/', async (req, res) => {
-  try {
-    const {
-      tipoInsumo,
-      nombreInsumo,
-      unidadMedida,
-      cantidad,
-      valorUnitario,
-      valorTotal,
-      descripcion,
-      estado,
-      image // opcional
-    } = req.body;
-
-    // Validación mínima
-    if (
-      !tipoInsumo ||
-      !nombreInsumo ||
-      !unidadMedida ||
-      cantidad == null ||
-      valorUnitario == null ||
-      valorTotal == null ||
-      !descripcion ||
-      !estado
-    ) {
-      return res.status(400).json({ error: 'Todos los campos son obligatorios (image opcional)' });
+    try {
+        const [results] = await db.query('SELECT * FROM insumo');
+        return res.json(results);
+    } catch (err) {
+        console.error('❌ Error al obtener insumos:', err);
+        return res.status(500).json({ error: 'Error al obtener insumos' });
     }
-
-    const sql = `
-      INSERT INTO insumo
-      (tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image)
-      VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-    `;
-    const values = [
-      tipoInsumo,
-      nombreInsumo,
-      unidadMedida,
-      cantidad,
-      valorUnitario,
-      valorTotal,
-      descripcion,
-      estado,
-      image || null
-    ];
-
-    const [result] = await db.query(sql, values);
-
-    return res.status(201).json({
-      idInsumo: result.insertId,
-      tipoInsumo,
-      nombreInsumo,
-      unidadMedida,
-      cantidad,
-      valorUnitario,
-      valorTotal,
-      descripcion,
-      estado,
-      image: image || null
-    });
-  } catch (err) {
-    console.error('❌ Error al insertar el insumo:', err);
-    return res.status(500).json({ error: 'Error al insertar el insumo' });
-  }
 });
+
 
 // ✅ Obtener un insumo por ID
 router.get('/:id', obtenerInsumoPorId);
 
-// ✅ Actualizar un insumo
-router.put('/:id', actualizarInsumo);
+// ✅ Actualizar un insumo (Agregamos Multer también)
+router.put('/:id', upload.single('image'), actualizarInsumo);
 
 module.exports = router;

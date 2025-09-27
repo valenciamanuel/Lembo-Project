@@ -1,45 +1,52 @@
 document.addEventListener('DOMContentLoaded', () => {
-    const form = document.querySelector('.form');
+    // Usamos el ID del formulario si lo añadiste, o el selector de clase
+    const form = document.querySelector('.form'); 
+    // Si usaste el ID 'crear-insumo-form' en el HTML, usa: const form = document.getElementById('crear-insumo-form');
 
+    // --- Referencias a los campos ---
+    // ✅ CLAVE: Referencia al input de tipo file (debe tener el ID 'image' en el HTML)
+    const imageInput = document.getElementById('image');
+    
     const tipoInsumo = document.querySelector('.insumo__input--type');
     const nombreInsumo = document.querySelector('.insumo__input--nombre');
-    const unidadMedida = document.querySelector('.insumo__input--unidad'); // OJO: Revisa este selector, ¿es correcto?
+    const unidadMedida = document.querySelector('.insumo__input--unidad');
     const cantidad = document.querySelector('.insumo__input--cantidad');
     const valorUnitario = document.querySelector('.insumo__input--unitario');
     const valorTotal = document.querySelector('.insumo__input--total');
     const descripcion = document.querySelector('.insumo__input--descripcion');
     const estado = document.querySelector('.insumo__input--estado');
 
-    const inputs = [tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion];
+    // Incluimos la imagen en la lista de inputs para limpieza de errores
+    const inputs = [imageInput, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion];
     const selects = [estado];
 
-    // Escucha para inputs: quitar rojo al escribir
-    inputs.forEach(input => {
-        input.addEventListener('input', () => {
+    // --- Quitar clase de error al escribir o cambiar ---
+    [...inputs, ...selects].forEach(input => {
+        input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'input', () => {
             input.classList.remove('form__input--error');
-            input.placeholder = '';
+            // Limpia placeholder solo si no es un SELECT o FILE
+            if (input.tagName !== 'SELECT' && input.type !== 'file') input.placeholder = '';
         });
     });
 
-    // Escucha para selects: quitar rojo al cambiar
-    selects.forEach(select => {
-        select.addEventListener('change', () => {
-            select.classList.remove('form__input--error');
-        });
-    });
-
+    // --- Envío del formulario ---
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
         // Limpiar errores anteriores
         [...inputs, ...selects].forEach(input => {
             input.classList.remove('form__input--error');
-            if (input.tagName !== 'SELECT') input.placeholder = '';
+            if (input.tagName !== 'SELECT' && input.type !== 'file') input.placeholder = '';
         });
 
         let valido = true;
 
         const validarCampo = (input, mensaje) => {
+            if (input.type === 'file') {
+                // Validación de imagen (opcional)
+                return;
+            }
+            
             if (!input.value.trim()) {
                 valido = false;
                 input.classList.add('form__input--error');
@@ -61,28 +68,19 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
-        const formData = {
-            tipoInsumo: tipoInsumo.value,
-            nombreInsumo: nombreInsumo.value,
-            unidadMedida: unidadMedida.value,
-            cantidad: cantidad.value,
-            valorUnitario: valorUnitario.value,
-            valorTotal: valorTotal.value,
-            descripcion: descripcion.value,
-            estado: estado.value
-        };
+        // ✅ CORRECCIÓN CLAVE: Usar FormData para enviar archivos y datos
+        const formData = new FormData(form);
 
         try {
             const response = await fetch('http://localhost:3000/insumo', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json'
-                },
-                body: JSON.stringify(formData)
+                // ✅ IMPORTANTE: Se ELIMINA 'Content-Type': 'application/json' 
+                body: formData // Enviamos el objeto FormData
             });
 
             if (!response.ok) {
-                throw new Error('Error en la conexión con el servidor');
+                const errorData = await response.json().catch(() => ({ error: 'Error desconocido' }));
+                throw new Error('Error al enviar datos: ' + (errorData.error || 'Problema de conexión'));
             }
 
             const result = await response.json();
@@ -92,13 +90,15 @@ document.addEventListener('DOMContentLoaded', () => {
             if (window.opener && window.opener.postMessage) {
                 window.opener.postMessage({
                     type: 'nuevoInsumoCreado',
-                    insumo: result // Asegúrate de que 'result' contenga { idInsumo: ..., nombreInsumo: ... }
+                    insumo: { idInsumo: result.idInsumo, nombreInsumo: result.nombreInsumo }
                 }, '*');
             }
 
             form.reset();
+            alert('✅ Insumo creado exitosamente.');
         } catch (error) {
-            console.error('Error', error);
+            console.error('❌ Error', error);
+            alert('Error al crear el insumo. Revisa la consola para más detalles.');
         }
     });
 });
