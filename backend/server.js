@@ -2,6 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const path = require("path");
+const db = require('./config/db.js'); // Asegúrate de que este archivo exista y se conecte
+
+// --- Conexión a la Base de Datos (Opcional, pero recomendado aquí) ---
+db.getConnection()
+    .then(() => console.log('✅ Conexión exitosa al pool de la base de datos.'))
+    .catch(err => console.error('❌ Error al conectar a la base de datos:', err));
 
 // --- Configuración CORS ---
 app.use(cors({
@@ -20,10 +26,9 @@ app.options('*', cors());
 // Esto permite acceder a '/fronted/public/js/...' directamente desde '/'
 app.use(express.static(path.join(__dirname, '..', 'fronted', 'public')));
 
-// ✅ CORRECCIÓN CLAVE: Middleware específico para servir la carpeta 'uploads'
-// Esto APUNTA A LA RAÍZ del proyecto, donde Multer guarda los archivos.
-// Ahora, si el frontend pide http://localhost:3000/uploads/imagen.jpg, funcionará.
-app.use("/uploads", express.static(path.join(__dirname, "..", "uploads"))); 
+// ✅ CORRECTO: Configuración para servir la carpeta 'uploads'
+// Esto permite que el frontend acceda a las imágenes en /uploads/nombre_archivo.jpg
+app.use("/uploads", express.static(path.join(__dirname, "..", "fronted", "public", "uploads"))); 
 
 
 // RUTA DE PRUEBA:
@@ -44,8 +49,11 @@ const asociacionDetalleRoute = require('./routes/asociacionDetalleRoute.js');
 const apiasociaciones = require('./routes/api.js');
 
 // Uso de rutas
-app.use('/ciclocultivo', cicloCultivoRoutes);
-app.use('/cultivo', cultivoRoutes);
+// ✅ CORRECCIÓN CLAVE: Usamos la ruta /ciclocultivo según tu preferencia
+app.use('/ciclocultivo', cicloCultivoRoutes); // Rutas de Ciclo Cultivo
+app.use('/cultivo', cultivoRoutes); // Rutas de Cultivo (Asumiendo que es una tabla diferente)
+
+// ... el resto de rutas se mantienen
 app.use('/insumo', insumoRoutes);
 app.use('/sensores', sensorRoutes);
 app.use('/register', regsiterRoutes);
@@ -55,6 +63,12 @@ app.use('/asociaciones/listar', asociacionListRoutes);
 app.use('/asociaciones', asociacionDetalleRoute);
 app.use('/api', apiasociaciones);
 
-app.listen(3000, () => {
-    console.log('✅ Server is running on port 3000');
+// Manejo de error 404 (Si ninguna ruta coincide)
+app.use((req, res) => {
+    res.status(404).json({ error: "Ruta no encontrada" });
+});
+
+const PORT = process.env.PORT || 3000;
+app.listen(PORT, () => {
+    console.log(`✅ Server is running on port ${PORT}`);
 });
