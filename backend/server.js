@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
 const app = express();
-const path = require("path"); // ✅ 1. IMPORTAR PATH AL INICIO
+const path = require("path");
 
 app.use(cors({
     origin: ["http://localhost:5501", "http://127.0.0.1:5501"],
@@ -10,12 +10,19 @@ app.use(cors({
     credentials: true,
     optionsSuccessStatus: 200
 }));
+
 app.use(express.json());
-app.use(express.urlencoded({ extended: true })); // ✅ 2. AGREGAR ESTA LÍNEA PARA PROCESAR FORMULARIOS
+app.use(express.urlencoded({ extended: true }));
 app.options('*', cors());
 
-// ✅ 3. DESCOMENTAR Y AJUSTAR LA RUTA PARA SERVIR LA CARPETA 'uploads'
-app.use("/uploads", express.static(path.resolve(__dirname, "..", "fronted", "public", "uploads")));
+// Middleware para servir archivos estáticos públicos (CSS, JS, imágenes generales)
+// Esto permite acceder a '/fronted/public/js/...' directamente desde '/'
+app.use(express.static(path.join(__dirname, '..', 'fronted', 'public')));
+
+// ✅ CORRECCIÓN: Middleware específico para servir la carpeta 'uploads'
+// Esto permite acceder a http://localhost:3000/uploads/nombre_archivo.jpg
+app.use("/uploads", express.static(path.join(__dirname, "..", "fronted", "public", "uploads")));
+
 
 // RUTA DE PRUEBA:
 app.get('/test', (req, res) => {

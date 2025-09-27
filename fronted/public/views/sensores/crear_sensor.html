@@ -11,7 +11,7 @@
 <body> 
     <header class="header"></header>
     <main class="form-container">
-        <form class="form" action="http://localhost:3000/api/sensores" method="POST">
+        <form class="form" id="crear-sensor-form" enctype="multipart/form-data">
             <h2 class="form__title">Datos sensores</h2>
     
             <div class="form__row">
@@ -34,7 +34,7 @@
                     <input class="form__input sensor__input--escaneo" type="text" name="tiempoEscaneo">
     
                     <label class="form__label">Descripción</label>
-                    <input class="form__input sensor__input--descripcion" type="text" name="descripcion">   
+                    <input class="form__input sensor__input--descripcion" type="text" name="descripcion"> 
     
                     <label class="form__label">Estado (activo / inactivo)</label>
                     <select name="estado" class="form__input sensor__input--estado">
@@ -51,6 +51,5 @@
             </div>
         </form>
     </main>
-    <!-- <script src="/fronted/public/js/sensores/validacion_datos.js"></script> -->
-</body>
+    </body>
 </html>
