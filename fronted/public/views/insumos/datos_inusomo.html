@@ -1,63 +1,146 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Datos Insumo</title>
-    <link rel="stylesheet" href="/fronted/public/css/main.css">
-    <script src="/fronted/public/views/components/header.js"></script>
-    <script src="/fronted/public/js/insumo/enviar.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Insumo</title>
+  <link rel="stylesheet" href="/fronted/public/css/main.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
-<body> 
-    <header class="header"></header>
-    <main class="form-container">
-        <form class="form" action="http://localhost:3000/insumos" method="POST" enctype="multipart/form-data">
-            <h2 class="form__title">Datos Insumos</h2>
-    
-            <div class="form__row">
-                <div class="form__column">
-                    <label class="form__label">Cargar imagen</label>
-                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
-    
-                    <label class="form__label">ID insumo</label>
-                    <input class="form__input insumo__input--ID" type="text" name="idInsumo">
-    
-                    <label class="form__label">Tipo insumo</label>
-                    <input class="form__input insumo__input--type" type="text" name="tipoInsumo">
-    
-                    <label class="form__label">Nombre insumo</label>
-                    <input class="form__input insumo__input--nombre" type="text" name="nombreInsumo">
+<body>
+  <header class="header"></header>
 
-                    <label class="form__label">Unidad de medida</label>
-                    <input class="form__input cultivo__input--size" type="text" name="unidadMedida">
-                </div>
-    
-                <div class="form__column">
-    
-                    <label class="form__label">Cantidad</label>
-                    <input class="form__input insumo__input--cantidad" type="text" name="cantidad">
+  <main class="form-container">
+    <form class="form" id="edit-insumo-form">
+      <h2 class="form__title">Editar Insumo</h2>
+      <input type="hidden" id="idInsumo">
 
-                    <label class="form__label">Valor unitario</label>
-                    <input class="form__input insumo__input--unitario" type="text" name="valorUnitario">
-    
-                    <label class="form__label">Descripción</label>
-                    <input class="form__input insumo__input--descripcion" type="text" name="description">
-    
-                    <label class="form__label">Estado (activo / inactivo)</label>
-                    <select name="state" class="form__input insumo__input--estado">
-                        <option value="">Seleccione una opción</option>
-                        <option value="Activo">Activo</option>
-                        <option value="Inactivo">Inactivo</option>
-                    </select>
-                </div>
-            </div>
-    
-            <div class="form__btn-group">
-                <button type="submit" class="form__btn form__btn--registrar"><a href="actualizar_insumo.html">Actualizar</a></button>
-                <a href="deshabilitar_insumo.html" class="btn__secundary">Deshabilitar</a>
-            </div>
-        </form>
-    </main>
-    <script src="/fronted/public/js/insumo/validacion_datos.js"></script>
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Nombre del Insumo</label>
+          <input class="form__input" type="text" id="nombreInsumo">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Unidad de Medida</label>
+          <input class="form__input" type="text" id="unidadMedida">
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Tipo de Insumo</label>
+          <input class="form__input" type="text" id="tipoInsumo">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Valor Unitario</label>
+          <input class="form__input" type="number" id="valorUnitario" step="0.01">
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Cantidad</label>
+          <input class="form__input" type="number" id="cantidad" step="0.01">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Valor Total</label>
+          <input class="form__input" type="number" id="valorTotal" step="0.01">
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Descripción</label>
+          <textarea class="form__input" id="descripcion"></textarea>
+        </div>
+        <div class="form__column">
+          <label class="form__label">Estado</label>
+          <select class="form__input" id="estado">
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Imagen (nombre archivo o URL)</label>
+          <input class="form__input" type="text" id="image">
+        </div>
+        <div class="form__column"></div>
+      </div>
+
+      <div class="form__btn-group">
+        <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+        <a href="listar_insumo.html" class="btn__secundary">Cancelar</a>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const idInsumo = urlParams.get('id');
+      const form = document.getElementById('edit-insumo-form');
+
+      if (!idInsumo) {
+        alert("Error: No se encontró el ID del insumo en la URL.");
+        return;
+      }
+
+      // ✅ Cargar datos existentes
+      try {
+        const res = await fetch(`http://localhost:3000/insumo/${idInsumo}`);
+        if (!res.ok) throw new Error("Error al obtener los datos del insumo.");
+        const data = await res.json();
+
+        document.getElementById('idInsumo').value = data.idInsumo;
+        document.getElementById('nombreInsumo').value = data.nombreInsumo || "";
+        document.getElementById('tipoInsumo').value = data.tipoInsumo || "";
+        document.getElementById('cantidad').value = data.cantidad || 0;
+        document.getElementById('unidadMedida').value = data.unidadMedida || "";
+        document.getElementById('valorUnitario').value = data.valorUnitario || 0;
+        document.getElementById('valorTotal').value = data.valorTotal || 0;
+        document.getElementById('descripcion').value = data.descripcion || "";
+        document.getElementById('estado').value = data.estado || "Activo";
+        document.getElementById('image').value = data.image || "";
+      } catch (error) {
+        console.error("❌ Error cargando datos:", error);
+        alert("Error al cargar los datos del insumo.");
+      }
+
+      // ✅ Guardar cambios
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const updatedData = {
+          nombreInsumo: document.getElementById('nombreInsumo').value,
+          tipoInsumo: document.getElementById('tipoInsumo').value,
+          cantidad: document.getElementById('cantidad').value,
+          unidadMedida: document.getElementById('unidadMedida').value,
+          valorUnitario: document.getElementById('valorUnitario').value,
+          valorTotal: document.getElementById('valorTotal').value,
+          descripcion: document.getElementById('descripcion').value,
+          estado: document.getElementById('estado').value || "Activo", // 👈 evita vacío
+          image: document.getElementById('image').value || null
+        };
+
+        try {
+          const res = await fetch(`http://localhost:3000/insumo/${idInsumo}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+          });
+
+          if (!res.ok) throw new Error("Error al actualizar el insumo.");
+          alert("✅ Insumo actualizado exitosamente.");
+          window.location.href = "listar_insumo.html";
+        } catch (error) {
+          console.error("❌ Error al actualizar:", error);
+          alert("Error al actualizar insumo.");
+        }
+      });
+    });
+  </script>
 </body>
 </html>

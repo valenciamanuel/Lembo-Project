@@ -2,19 +2,20 @@
 const express = require('express');
 const router = express.Router();
 const db = require('../config/db.js'); // pool mysql2/promise
+const { obtenerInsumoPorId, actualizarInsumo } = require('../controllers/insumoController.js');
 
-// Obtener todos los insumos
+// ✅ Obtener todos los insumos
 router.get('/', async (req, res) => {
   try {
     const [results] = await db.query('SELECT * FROM insumo');
     return res.json(results);
   } catch (err) {
-    console.error('Error al obtener insumos:', err);
+    console.error('❌ Error al obtener insumos:', err);
     return res.status(500).json({ error: 'Error al obtener insumos' });
   }
 });
 
-// Insertar un insumo (image opcional, se envía como string/URL/base64)
+// ✅ Insertar un insumo (image opcional)
 router.post('/', async (req, res) => {
   try {
     const {
@@ -75,9 +76,15 @@ router.post('/', async (req, res) => {
       image: image || null
     });
   } catch (err) {
-    console.error('Error al insertar el insumo:', err);
+    console.error('❌ Error al insertar el insumo:', err);
     return res.status(500).json({ error: 'Error al insertar el insumo' });
   }
 });
+
+// ✅ Obtener un insumo por ID
+router.get('/:id', obtenerInsumoPorId);
+
+// ✅ Actualizar un insumo
+router.put('/:id', actualizarInsumo);
 
 module.exports = router;

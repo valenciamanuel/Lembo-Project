@@ -27,7 +27,7 @@
           <th>ID</th>
           <th>Tipo</th>
           <th>Nombre</th>
-          <th>Ubicación</th>
+          <th>Unidad de Medida</th>
           <th>Tiempo de Escaneo</th>
           <th>Descripción</th>
           <th>Estado</th>
@@ -73,7 +73,7 @@
             <td>${s.estado}</td>
             <td>${s.imagen ? `<img src="/uploads/${s.imagen}" width="60">` : "Sin imagen"}</td>
             <td>
-                <a href="../ciclo_cultivo/datos_ciclo_cultivo.html?id=${s.id}" class="edit-link">Editar</a>
+                <a href="../sensores/datos_sensor.html?id=${s.idSensor}" class="edit-link">Editar</a>
             </td>
           `;
           tableBody.appendChild(row);
