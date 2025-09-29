@@ -1,4 +1,4 @@
-// controllers/registerController.js
+// contusertypelers/registerContusertypeler.js
 const db = require('../config/db.js');
 
 const insertarRegister = async (req, res) => {
@@ -69,6 +69,62 @@ const insertarRegister = async (req, res) => {
     }
 };
 
+const obtenerUsuarios = async (req, res) => {
+  try {
+    const [rows] = await db.query("SELECT id, name, email, usertype FROM register");
+    res.json(rows);
+  } catch (err) {
+    console.error("❌ Error al obtener usuarios:", err);
+    res.status(500).json({ error: "Error al obtener usuarios" });
+  }
+};
+
+// Obtener usuario por ID
+const obtenerUsuarioPorId = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const [rows] = await db.query("SELECT * FROM register WHERE id = ?", [id]);
+
+    if (rows.length === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json(rows[0]);
+  } catch (err) {
+    console.error("❌ Error al obtener usuario:", err);
+    res.status(500).json({ error: "Error al obtener usuario" });
+  }
+};
+
+// Actualizar usuario
+const actualizarUsuario = async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { name, email, password, usertype } = req.body;
+
+    const sql = `
+      UPDATE register 
+      SET name = ?, email = ?, password = IFNULL(?, password), usertype = ?
+      WHERE id = ?
+    `;
+    const values = [name, email, password || null, usertype, id];
+
+    const [result] = await db.query(sql, values);
+
+    if (result.affectedRows === 0) {
+      return res.status(404).json({ error: "Usuario no encontrado" });
+    }
+
+    res.json({ message: "✅ Usuario actualizado correctamente" });
+  } catch (err) {
+    console.error("❌ Error al actualizar usuario:", err);
+    res.status(500).json({ error: "Error al actualizar usuario" });
+  }
+};
+
 module.exports = {
     insertarRegister,
+    obtenerUsuarios,
+    obtenerUsuarioPorId,
+    actualizarUsuario,
 };

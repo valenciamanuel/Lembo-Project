@@ -1,82 +1,150 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Actualización Perfil</title>
-    <link rel="stylesheet" href="/fronted/public/css/main.css">
-    <script src="/fronted/public/views/components/header.js"></script>
-    <script src="/fronted/public/js/usuarios/registrar/enviar.js"></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Usuario</title>
+  <link rel="stylesheet" href="/fronted/public/css/main.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 <body>
+  <header class="header"></header>
+    <!-- Barra GOV superior -->
+  <div class="gov-top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+  </div>
 
-    <header class="header"></header>
-    
-    <main class="form-container">
-        <form class="form" id="registroForm" action="http://localhost:3000/register" method="POST">
-            <h2 class="form-title">Actualizar Usuario</h2>
-    
-            <div class="form__row">
-                <div class="form__column">
-                    <label class="form__label" for="tipoUsuario">Tipo de Usuario</label>
-                    <select id="tipoUsuario" name="tipoUsuario" class="form__select form__select--user">
-                        <option value="">Seleccione una opción</option>
-                        <option value="admin">ADMIN</option>
-                        <option value="personal">Personal de Apoyo</option>
-                        <option value="visitante">Visitante</option>
-                    </select>
-    
-                    <label class="form__label" for="tipoDocumento">Tipo de Documento</label>
-                    <select id="tipoDocumento" name="tipoDocumento" class="form__select form__select--id">
-                        <option value="">Seleccione una opción</option>
-                        <option value="RC">Cedula de Extranjeria</option>
-                        <option value="TI">Tarjeta de Identidad</option>
-                        <option value="CC">Cedula de Ciudadania</option>
-                        <option value="PASAPORTE">Pasaporte</option>
-                        <option value="PEP">Permiso por Proteccion Personal</option>
-                    </select>
-    
-                    <label class="form__label" for="numeroDocumento">Número del Documento</label>
-                    <input type="text" id="numeroDocumento" name="numeroDocumento" class="form__input form__input--id" required>
-    
-                    <label class="form__label" for="nombre">Nombre</label>
-                    <input type="text" id="nombre" name="nombre" class="form__input form__input--name" required>
-    
-                    <label class="form__label" for="correo">Correo Electrónico</label>
-                    <input type="email" id="correo" name="correo" class="form__input form__input--email" required>
-    
-                </div>
-    
-                <div class="form__column">
-    
-                    <label class="form__label" for="confirmarCorreo">Confirmar Correo</label>
-                    <input type="email" id="confirmarCorreo" name="confirmarCorreo" class="form__input form__input--email" required>
-    
-                    <label class="form__label" for="telefono">Número de Teléfono</label>
-                    <input type="tel" id="telefono" name="telefono" class="form__input form__input--phone">
-    
-                    <label class="form__label" for="contraseña">Contraseña</label>
-                    <input type="password" id="contraseña" name="contraseña" class="form__input form__input--password">
-    
-                    <label class="form__label" for="confirmarContraseña">Confirmar Contraseña</label>
-                    <input type="password" id="confirmarContraseña" name="confirmarContraseña" class="form__input form__input--password">
-    
-                    <label class="form__label" for="estado">Estado</label>
-                    <select id="" name="" class="form__select">
-                        <option value="">Habilitado</option>
-                        <option value="">Deshabilitado</option>
-                    </select>
-                </div>
-            </div>
-    
-            <div id="mensajeValidacion" class="form__message"></div>
-            <div class="form__btn-group">
-                <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
-            </div>        
-        </form>
-    
-    </main>
-    
-    <script src="/fronted/public/js/usuarios/registrar/script.js"></script>
-    </body>
+  <main class="form-container">
+    <form class="form" id="edit-user-form">
+      <h2 class="form__title">Editar Usuario</h2>
+      <input type="hidden" id="id">
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Tipo de Usuario</label>
+          <select class="form__input" id="usertype">
+            <option value="superadmin">Super Administrador</option>
+            <option value="admin">Administrador</option>
+            <option value="user">Usuario</option>
+          </select>
+        </div>
+        <div class="form__column">
+          <label class="form__label">Tipo de Documento</label>
+          <select class="form__input" id="IDtype">
+            <option value="RC">RC</option>
+            <option value="TI">TI</option>
+            <option value="CC">CC</option>
+            <option value="CE">CE</option>
+          </select>
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Número de Documento</label>
+          <input class="form__input" type="text" id="IDnum">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Nombre</label>
+          <input class="form__input" type="text" id="name">
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Correo</label>
+          <input class="form__input" type="email" id="email">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Teléfono</label>
+          <input class="form__input" type="text" id="phone">
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Contraseña</label>
+          <input class="form__input" type="password" id="password" placeholder="••••••">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Fecha Registro</label>
+          <input class="form__input" type="text" id="fecha_registro" disabled>
+        </div>
+      </div>
+
+      <div class="form__btn-group">
+        <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+        <a href="listar.html" class="btn__secundary">Cancelar</a>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const id = urlParams.get("id");
+      const form = document.getElementById("edit-user-form");
+
+      if (!id) {
+        alert("Error: No se encontró el ID del usuario en la URL.");
+        return;
+      }
+      console.log("Editando usuario con ID:", id);
+
+      // ✅ Cargar datos existentes
+      try {
+        const res = await fetch(`http://localhost:3000/register/${id}`);
+        if (!res.ok) throw new Error("Error al obtener los datos del usuario.");
+        const data = await res.json();
+
+        document.getElementById("id").value = data.id;
+        document.getElementById("usertype").value = data.usertype || "user";
+        document.getElementById("IDtype").value = data.IDtype || "CC";
+        document.getElementById("IDnum").value = data.IDnum || "";
+        document.getElementById("name").value = data.name || "";
+        document.getElementById("email").value = data.email || "";
+        document.getElementById("phone").value = data.phone || "";
+        document.getElementById("password").value = ""; // vacío por seguridad
+        document.getElementById("fecha_registro").value = data.fecha_registro || "";
+      } catch (error) {
+        console.error("❌ Error cargando datos:", error);
+        alert("Error al cargar los datos del usuario.");
+      }
+
+      // ✅ Guardar cambios
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const updatedData = {
+          usertype: document.getElementById("usertype").value,
+          IDtype: document.getElementById("IDtype").value,
+          IDnum: document.getElementById("IDnum").value,
+          name: document.getElementById("name").value,
+          email: document.getElementById("email").value,
+          phone: document.getElementById("phone").value,
+          password: document.getElementById("password").value || null
+        };
+
+        try {
+          const res = await fetch(`http://localhost:3000/register/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+          });
+
+          if (!res.ok) throw new Error("Error al actualizar el usuario.");
+          alert("✅ Usuario actualizado exitosamente.");
+          window.location.href = "listar.html";
+        } catch (error) {
+          console.error("❌ Error al actualizar:", error);
+          alert("Error al actualizar usuario.");
+        }
+      });
+    });
+  </script>
+</body>
 </html>
+<!-- Barra GOV inferior -->
+    <div class="gov-bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+    </div>
