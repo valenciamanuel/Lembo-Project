@@ -4,6 +4,9 @@
     --green: #39A900;
     --ligth_green: #81c85d;
     --dark-overlay: rgba(0,0,0,0.3);
+    --shadow-md: 0 2px 6px rgba(0,0,0,0.2);
+    --shadow-lg: 0 8px 20px rgba(0,0,0,0.3);
+    --radius: 1rem;
 }
 
 /* Reset básico */
@@ -13,11 +16,12 @@
     padding: 0;
 }
 
-html, body {
+html,
+body {
     width: 100%;
     height: 100%;
     font-family: 'Poppins', sans-serif;
-    overflow-x: hidden; /* evita scroll horizontal */
+    overflow-x: hidden;
 }
 
 /* Fondo */
@@ -35,7 +39,8 @@ body {
 body::after {
     content: "";
     position: absolute;
-    top:0; left:0;
+    top: 0;
+    left: 0;
     width: 100%;
     height: 100%;
     background: var(--dark-overlay);
@@ -48,12 +53,13 @@ body::after {
     top: 0;
     left: 0;
     width: 100%;
-    height: 28px; /* ajustado */
+    height: 28px;
     background-color: #0033A0;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 20;
+    box-shadow: var(--shadow-md);
 }
 
 .gov-top img {
@@ -65,15 +71,16 @@ body::after {
 /* ================= HEADER ================= */
 .header {
     position: fixed;
-    top: 28px; /* justo debajo de GOV superior */
+    top: 28px;
     left: 0;
     width: 100%;
-    height: 2.8rem; /* barra verde menos gruesa */
+    height: 2.8rem;
     background-color: var(--green);
     display: flex;
     align-items: center;
     padding-left: 2rem;
     z-index: 15;
+    box-shadow: var(--shadow-md);
 }
 
 .header__logo {
@@ -90,58 +97,59 @@ body::after {
     justify-content: center;
     align-items: center;
     background-color: var(--Blanco);
-    width: 50%;      /* caja centrada */
+    width: 50%;
     height: 50%;
-    border-radius: 2rem;
+    border-radius: var(--radius);
     flex-direction: column;
     padding: 2rem;
     text-align: center;
     gap: 2rem;
-    box-shadow: 0 8px 20px rgba(0,0,0,0.3);
+    box-shadow: var(--shadow-lg);
+    transition: transform 0.3s ease;
 }
 
-/* Ajuste padding para que la tarjeta quede centrada */
+.main:hover {
+    transform: translateY(-5px);
+}
+
 .main-container {
     width: 100%;
     display: flex;
     justify-content: center;
     align-items: center;
     flex-direction: column;
-    padding-top: calc(28px + 4.8rem); /* GOV + Header */
-    padding-bottom: calc(28px + 4.8rem); /* Footer + GOV inferior */
+    padding-top: calc(28px + 4.8rem);
+    padding-bottom: calc(28px + 4.8rem);
 }
 
-/* Título y botón */
+/* Título */
 .main__title {
-    font-size: 4rem;
+    font-size: 3.5rem;
     font-weight: bold;
     color: var(--green);
+    text-transform: uppercase;
+    letter-spacing: 2px;
 }
 
+/* ================= BOTÓN VOLVER (Material Design) ================= */
 .main__button {
+    position: relative;
+    overflow: hidden;
     background-color: var(--green);
-    width: 180px;
-    height: 50px;
-    border-radius: 10px;
-    font-size: 1.6rem;
+    min-width: 150px;
+    height: 44px;
+    border-radius: 0.5rem;
+    font-size: 1.4rem; /* Tamaño material */
     border: none;
     cursor: pointer;
     display: flex;
     justify-content: center;
     align-items: center;
-    transition: all 0.3s ease;
+    transition: background 0.3s ease, transform 0.2s ease, box-shadow 0.2s ease;
     text-transform: uppercase;
-    font-weight: 600;
-}
-
-.main__button:hover {
-    background-color: var(--ligth_green);
-    transform: scale(1.05);
-}
-
-.main__button:active {
-    background-color: var(--green);
-    transform: scale(0.95);
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    box-shadow: var(--shadow-md);
 }
 
 .main__button a {
@@ -154,13 +162,45 @@ body::after {
     align-items: center;
 }
 
+/* Hover con elevación */
+.main__button:hover {
+    background-color: var(--ligth_green);
+    transform: translateY(-2px);
+    box-shadow: var(--shadow-lg);
+}
+
+/* Active con efecto presión */
+.main__button:active {
+    transform: scale(0.97);
+    box-shadow: var(--shadow-md);
+}
+
+/* Ripple efecto */
+.main__button::after {
+    content: "";
+    position: absolute;
+    border-radius: 50%;
+    width: 0;
+    height: 0;
+    background: rgba(255, 255, 255, 0.35);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    transition: width 0.45s ease, height 0.45s ease;
+}
+
+.main__button:active::after {
+    width: 250%;
+    height: 250%;
+}
+
 /* ================= FOOTER ================= */
 .footer {
     position: fixed;
-    bottom: 28px; /* justo encima de GOV inferior */
+    bottom: 28px;
     left: 0;
     width: 100%;
-    height: 2.8rem; /* barra verde menos gruesa */
+    height: 2.8rem;
     background-color: var(--green);
     color: var(--Blanco);
     display: flex;
@@ -169,6 +209,7 @@ body::after {
     text-align: center;
     font-size: 1.4rem;
     z-index: 15;
+    box-shadow: var(--shadow-md);
 }
 
 /* ================= BARRA GOV INFERIOR ================= */
@@ -177,12 +218,13 @@ body::after {
     bottom: 0;
     left: 0;
     width: 100%;
-    height: 28px; /* ajustado */
+    height: 28px;
     background-color: #0033A0;
     display: flex;
     justify-content: center;
     align-items: center;
     z-index: 20;
+    box-shadow: var(--shadow-md);
 }
 
 .gov-bottom img {
@@ -193,28 +235,81 @@ body::after {
 
 /* ================= RESPONSIVE ================= */
 @media (max-width: 1024px) {
-    .header { height: 4.5rem; top: 25px; }
-    .footer { height: 4.5rem; bottom: 25px; }
-    .gov-top, .gov-bottom { height: 25px; }
-    .header__logo { width: 5%; }
-    .main { width: 60%; height: 55%; }
-    .main-container { padding-top: calc(25px + 4.5rem); padding-bottom: calc(25px + 4.5rem); }
+    .header {
+        height: 4.5rem;
+        top: 25px;
+    }
+    .footer {
+        height: 4.5rem;
+        bottom: 25px;
+    }
+    .gov-top,
+    .gov-bottom {
+        height: 25px;
+    }
+    .header__logo {
+        width: 5%;
+    }
+    .main {
+        width: 60%;
+        height: 55%;
+    }
+    .main-container {
+        padding-top: calc(25px + 4.5rem);
+        padding-bottom: calc(25px + 4.5rem);
+    }
 }
 
 @media (max-width: 768px) {
-    .header { height: 4rem; top: 20px; padding-left: 1rem; }
-    .footer { height: 4rem; bottom: 20px; }
-    .gov-top, .gov-bottom { height: 20px; }
-    .header__logo { width: 6%; }
-    .main { width: 70%; height: 50%; }
-    .main-container { padding-top: calc(20px + 4rem); padding-bottom: calc(20px + 4rem); }
+    .header {
+        height: 4rem;
+        top: 20px;
+        padding-left: 1rem;
+    }
+    .footer {
+        height: 4rem;
+        bottom: 20px;
+    }
+    .gov-top,
+    .gov-bottom {
+        height: 20px;
+    }
+    .header__logo {
+        width: 6%;
+    }
+    .main {
+        width: 70%;
+        height: 50%;
+    }
+    .main-container {
+        padding-top: calc(20px + 4rem);
+        padding-bottom: calc(20px + 4rem);
+    }
 }
 
 @media (max-width: 480px) {
-    .header { height: 3.5rem; top: 15px; padding-left: 0.5rem; }
-    .footer { height: 3.5rem; bottom: 15px; }
-    .gov-top, .gov-bottom { height: 15px; }
-    .header__logo { width: 8%; }
-    .main { width: 85%; height: 50%; }
-    .main-container { padding-top: calc(15px + 3.5rem); padding-bottom: calc(15px + 3.5rem); }
+    .header {
+        height: 3.5rem;
+        top: 15px;
+        padding-left: 0.5rem;
+    }
+    .footer {
+        height: 3.5rem;
+        bottom: 15px;
+    }
+    .gov-top,
+    .gov-bottom {
+        height: 15px;
+    }
+    .header__logo {
+        width: 8%;
+    }
+    .main {
+        width: 85%;
+        height: 50%;
+    }
+    .main-container {
+        padding-top: calc(15px + 3.5rem);
+        padding-bottom: calc(15px + 3.5rem);
+    }
 }
