@@ -1,25 +1,44 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Usuarios Registrados</title>
   <link rel="stylesheet" href="/css/components/listar.css">
-  <script src="/fronted/public/views/components/header.js" defer></script>
+  <script src="/fronted/public/views/components/header.js" defer></script> <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <!-- CDN para exportar PDF y Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
-<body>
-      <!-- Barra GOV superior -->
-  <div class="gov-top">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-  </div>
-  <header class="header"></header>
-  
 
+<body> <!-- GOV superior -->
+  <div class="gov-top"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top"> </div>
+  <!-- HEADER fijo debajo del GOV -->
+  <header class="header"></header> <!-- Contenido principal -->
   <main class="content-container">
     <h2 class="form__title">Usuarios Registrados</h2>
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+      <button class="btn btn-success" onclick="exportToPDF()">
+        <i class="material-icons">picture_as_pdf</i>
+        Descargar PDF
+      </button>
+      <button class="btn btn-success" onclick="exportToExcel()">
+        <i class="material-icons">table_chart</i>
+        Descargar Excel
+      </button>
+    </div>
 
-    <table class="styled-table">
+    <!-- Loader -->
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+    </div>
+
+    <table class="styled-table" id="usuarios-table-container">
       <thead>
         <tr>
           <th>ID</th>
@@ -33,56 +52,124 @@
           <th>Acciones</th>
         </tr>
       </thead>
-      <tbody id="usuarios-table-body">
-        <tr><td colspan="9">Cargando usuarios...</td></tr>
+      <tbody id="usuarios-table">
+        <!-- Filas dinámicas -->
       </tbody>
     </table>
-  </main>
-
+  </main> <!-- Footer verde -->
+  <footer class="footer">
+    <p>Sistema de Gestión Agrícola - LEMBO &copy; 2025</p>
+  </footer> <!-- GOV inferior -->
+  <div class="gov-bottom"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"> </div>
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
+    let usuariosData = [];
+
+    document.addEventListener("DOMContentLoaded", () => {
+      loadUsuarios();
+    });
+
+    async function loadUsuarios() {
+      const loader = document.getElementById("loader");
+      const tableContainer = document.getElementById("usuarios-table-container");
+      loader.classList.add("show");
+      tableContainer.style.display = "none";
       try {
-        // 👇 Aquí usas tu endpoint real
-        const res = await fetch("http://localhost:3000/register");
-        if (!res.ok) throw new Error("Error al obtener usuarios");
+        const response = await fetch("http://localhost:3000/register");
+        if (!response.ok) throw new Error("Error al obtener usuarios");
+        usuariosData = await response.json();
 
-        const usuarios = await res.json();
-        const tbody = document.getElementById("usuarios-table-body");
-        tbody.innerHTML = "";
+        const tableBody = document.getElementById("usuarios-table");
+        tableBody.innerHTML = "";
 
-        if (usuarios.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="9">No hay usuarios registrados</td></tr>`;
-          return;
+        if (usuariosData.length === 0) {
+          tableBody.innerHTML = `<tr><td colspan="9">No hay usuarios registrados</td></tr>`;
+        } else {
+          usuariosData.forEach(u => {
+            const row = document.createElement("tr");
+            console.log(u)
+            row.innerHTML = `
+              <td>${u.id}</td>
+              <td>${u.usertype}</td>
+              <td>${u.IDtype}</td>
+              <td>${u.IDnum}</td>
+              <td>${u.name}</td>
+              <td>${u.email}</td>
+              <td>${u.phone}</td>
+              <td>${u.fecha_registro ? new Date(u.fecha_registro).toLocaleDateString() : '-'}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" onclick="editUsuario(${u.id})" title="Editar">
+                  <i class="material-icons">edit</i>
+                </button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
         }
-
-        usuarios.forEach(u => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${u.id}</td>
-            <td>${u.usertype}</td>
-            <td>${u.IDtype}</td>
-            <td>${u.IDnum}</td>
-            <td>${u.name}</td>
-            <td>${u.email}</td>
-            <td>${u.phone}</td>
-            <td>${u.fecha_registro ? new Date(u.fecha_registro).toLocaleDateString() : "-"}</td>
-            <td>
-              <a href="actualizar_perfil.html?id=${u.id}" class="edit-link">Editar</a>
-            </td>
-          `;
-          tbody.appendChild(row);
-        });
       } catch (error) {
         console.error("❌ Error cargando usuarios:", error);
-        document.getElementById("usuarios-table-body").innerHTML = `
-          <tr><td colspan="9">Error al cargar usuarios</td></tr>
+        document.getElementById("usuarios-table").innerHTML = `
+          <tr><td colspan="9" style="color:#dc3545;">Error al cargar usuarios. Por favor, intente nuevamente.</td></tr>
         `;
+      } finally {
+        loader.classList.remove("show");
+        tableContainer.style.display = "table";
       }
-    });
+    }
+
+    function editUsuario(id) {
+      window.location.href = `actualizar_perfil.html?id=${id}`;
+    }
+
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(18);
+      doc.text('Usuarios Registrados', 14, 22);
+      doc.setFontSize(12);
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 30);
+
+      const rows = usuariosData.map(u => [
+        u.id,
+        u.usertype,
+        u.IDtype,
+        u.IDnum,
+        u.name,
+        u.email,
+        u.phone,
+        u.fecha_registro ? new Date(u.fecha_registro).toLocaleDateString() : '-'
+      ]);
+
+      doc.autoTable({
+        head: [[
+          'ID', 'Tipo Usuario', 'Tipo Doc', 'Núm. Doc', 'Nombre', 'Email', 'Teléfono', 'F. Registro'
+        ]],
+        body: rows,
+        startY: 40,
+        theme: 'grid',
+        headStyles: { fillColor: [46, 125, 50], textColor: 255, halign: 'center' },
+        styles: { fontSize: 10 }
+      });
+
+      doc.save('usuarios.pdf');
+    }
+
+    function exportToExcel() {
+      const data = usuariosData.map(u => ({
+        ID: u.id,
+        TipoUsuario: u.usertype,
+        TipoDoc: u.IDtype,
+        NumeroDoc: u.IDnum,
+        Nombre: u.name,
+        Email: u.email,
+        Telefono: u.phone,
+        FechaRegistro: u.fecha_registro ? new Date(u.fecha_registro).toLocaleDateString() : '-'
+      }));
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'Usuarios');
+      XLSX.writeFile(wb, 'usuarios.xlsx');
+    }
   </script>
 </body>
+
 </html>
-    <!-- Barra GOV inferior -->
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>

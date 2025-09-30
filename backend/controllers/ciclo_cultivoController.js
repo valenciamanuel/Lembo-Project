@@ -101,39 +101,63 @@ const obtenerCicloPorId = async (req, res) => {
         if (connection) connection.release();
     }
 };
-
 const actualizarCicloCultivo = async (req, res) => {
-    const { id } = req.params; 
-    let { cicloID, cicloName, siembraDate, cosechaDate, news, description, state } = req.body;
-    const newImage = req.file ? req.file.filename : null; 
+    const { id } = req.params;
+    let { cicloID, cicloName, siembraDate, cosechaDate, news, description, state } = req.body;
+    const newImage = req.file ? req.file.filename : null;
 
-    if (!cicloID || !cicloName || !siembraDate || !cosechaDate || !news || !description || !state) {
-        return res.status(400).json({ error: 'Todos los campos son obligatorios' });
-    }
+    if (!cicloID || !cicloName || !siembraDate || !cosechaDate || !news || !description || !state) {
+        return res.status(400).json({ error: 'Todos los campos son obligatorios' });
+    }
 
-    // Corrección: Convertir 'state' a minúsculas para coincidir con el ENUM de MySQL
+    // Convertir estado a minúsculas
     state = state.toLowerCase();
 
-    let connection;
-    try {
-        // Consulta en una sola línea para evitar el error de sintaxis
-        const sql = "UPDATE ciclocultivo SET cicloID = ?, cicloName = ?, siembraDate = ?, cosechaDate = ?, news = ?, description = ?, state = ?, image = IFNULL(?, image) WHERE id = ?";
-        const values = [cicloID, cicloName, siembraDate, cosechaDate, news, description, state, newImage, id];
-        
-        connection = await db.getConnection();
-        const [result] = await connection.execute(sql, values);
+    // Formatear fechas para quitar zona horaria
+    // Si viene ISO string: "2025-09-16T05:00:00.000Z" → "2025-09-16"
+    siembraDate  = siembraDate.split('T')[0];
+    cosechaDate = cosechaDate.split('T')[0];
 
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Ciclo de cultivo no encontrado' });
-        }
+    let connection;
+    try {
+        const sql = `
+            UPDATE ciclocultivo
+            SET cicloID     = ?,
+                cicloName   = ?,
+                siembraDate = ?,
+                cosechaDate = ?,
+                news        = ?,
+                description = ?,
+                state       = ?,
+                image       = IFNULL(?, image)
+            WHERE id = ?
+        `;
+        const values = [
+            cicloID,
+            cicloName,
+            siembraDate,
+            cosechaDate,
+            news,
+            description,
+            state,
+            newImage,
+            id
+        ];
 
-        res.status(200).json({ message: 'Ciclo de cultivo actualizado exitosamente' });
-    } catch (err) {
-        console.error('❌ Error al actualizar el ciclo de cultivo:', err.message || err);
-        res.status(500).json({ error: 'Error al actualizar el ciclo de cultivo', details: err.message });
-    } finally {
-        if (connection) connection.release();
-    }
+        connection = await db.getConnection();
+        const [result] = await connection.execute(sql, values);
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Ciclo de cultivo no encontrado' });
+        }
+
+        res.status(200).json({ message: 'Ciclo de cultivo actualizado exitosamente' });
+    } catch (err) {
+        console.error('❌ Error al actualizar el ciclo de cultivo:', err.message || err);
+        res.status(500).json({ error: 'Error al actualizar el ciclo de cultivo', details: err.message });
+    } finally {
+        if (connection) connection.release();
+    }
 };
 
 

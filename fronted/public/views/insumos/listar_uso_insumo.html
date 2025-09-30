@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Listar Uso de Insumos</title>
+  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
+  <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- CDN para PDF y Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+</head>
+<body>
+  <div class="gov-top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+  </div>
+
+  <header class="header"></header>
+
+  <main class="content-container">
+    <h2 class="form__title">Uso de Insumos Registrados</h2>
+
+    <div class="action-buttons">
+      <a href="./crear_uso_insumo.html" class="btn btn-primary">
+        <i class="material-icons">add</i> Agregar Uso
+      </a>
+      <button class="btn btn-success" onclick="exportToPDF()">
+        <i class="material-icons">picture_as_pdf</i> Descargar PDF
+      </button>
+      <button class="btn btn-success" onclick="exportToExcel()">
+        <i class="material-icons">table_chart</i> Descargar Excel
+      </button>
+    </div>
+
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+    </div>
+
+    <table class="styled-table" id="uso-table-container">
+      <thead>
+        <tr>
+          <th>ID</th>
+          <th>Insumo</th>
+          <th>Fecha Uso</th>
+          <th>Cantidad</th>
+          <th>Responsable</th>
+          <th>Valor Unitario</th>
+          <th>Valor Total</th>
+          <th>Observaciones</th>
+          <th>Acciones</th>
+        </tr>
+      </thead>
+      <tbody id="uso-table"></tbody>
+    </table>
+  </main>
+
+  <footer class="footer">
+    <p>Sistema de Gestión Agrícola - LEMBO &copy; 2025</p>
+  </footer>
+
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
+
+  <script>
+    let usosData = [];
+
+    document.addEventListener("DOMContentLoaded", loadUsos);
+
+    async function loadUsos() {
+      const loader = document.getElementById("loader");
+      const tableContainer = document.getElementById("uso-table-container");
+      loader.classList.add("show");
+      tableContainer.style.display = "none";
+
+      try {
+        const res = await fetch("http://localhost:3000/uso_insumo");
+        if (!res.ok) throw new Error("Error al obtener uso de insumos");
+        usosData = await res.json();
+        const tbody = document.getElementById("uso-table");
+        tbody.innerHTML = "";
+
+        if (usosData.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="9">No hay registros de uso de insumos</td></tr>`;
+        } else {
+          usosData.forEach(u => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${u.id}</td>
+              <td>${u.insumo}</td>
+              <td>${u.fecha_uso}</td>
+              <td>${u.cantidad}</td>
+              <td>${u.responsable}</td>
+              <td>${u.valor_unitario}</td>
+              <td>${u.valor_total}</td>
+              <td>${u.observaciones || '-'}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" onclick="editUso(${u.id})" title="Editar">
+                  <i class="material-icons">edit</i>
+                </button>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
+        }
+      } catch (e) {
+        console.error(e);
+        document.getElementById("uso-table").innerHTML =
+          `<tr><td colspan="9" style="color:#dc3545;">Error cargando registros</td></tr>`;
+      } finally {
+        loader.classList.remove("show");
+        tableContainer.style.display = "table";
+      }
+    }
+
+    function editUso(id) {
+      window.location.href = `./actualizar_uso_insumo.html?id=${id}`;
+    }
+
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(18);
+      doc.text('Uso de Insumos', 14, 20);
+      doc.setFontSize(11);
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 28);
+
+      const rows = usosData.map(u => [
+        u.id, u.insumo, u.fecha_uso, u.cantidad,
+        u.responsable, u.valor_unitario, u.valor_total,
+        u.observaciones || '-'
+      ]);
+
+      doc.autoTable({
+        head: [['ID','Insumo','Fecha','Cant.','Responsable','V. Unit.','V. Total','Obs.']],
+        body: rows,
+        startY: 35,
+        theme: 'grid',
+        headStyles: { fillColor: [57,169,0] },
+        styles: { fontSize: 9 }
+      });
+
+      doc.save('uso_insumos.pdf');
+    }
+
+    function exportToExcel() {
+      const data = usosData.map(u => ({
+        ID: u.id,
+        Insumo: u.insumo,
+        Fecha: u.fecha_uso,
+        Cantidad: u.cantidad,
+        Responsable: u.responsable,
+        ValorUnitario: u.valor_unitario,
+        ValorTotal: u.valor_total,
+        Observaciones: u.observaciones || '-'
+      }));
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'UsoInsumos');
+      XLSX.writeFile(wb, 'uso_insumos.xlsx');
+    }
+  </script>
+</body>
+</html>

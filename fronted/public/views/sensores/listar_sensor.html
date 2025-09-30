@@ -7,6 +7,13 @@
   <link rel="stylesheet" href="/css/components/listar.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
   <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+  <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- CDN para exportar a PDF y Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+
 </head>
 <body>
   <!-- GOV superior -->
@@ -21,14 +28,35 @@
   <main class="content-container">
     <h2 class="form__title">Sensores Registrados</h2>
 
-    <table class="styled-table">
+    <!-- Botones de acción -->
+    <div class="action-buttons">
+      <a href="../sensores/crear_sensor.html" class="btn btn-primary">
+        <i class="material-icons">add</i>
+        Agregar Sensor
+      </a>
+      <button class="btn btn-success" onclick="exportToPDF()">
+        <i class="material-icons">picture_as_pdf</i>
+        Descargar PDF
+      </button>
+      <button class="btn btn-success" onclick="exportToExcel()">
+        <i class="material-icons">table_chart</i>
+        Descargar Excel
+      </button>
+    </div>
+
+    <!-- Loader -->
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+    </div>
+
+    <table class="styled-table" id="sensores-table-container">
       <thead>
         <tr>
           <th>ID</th>
           <th>Tipo</th>
           <th>Nombre</th>
           <th>Unidad de Medida</th>
-          <th>Tiempo de Escaneo</th>
+          <th>Tiempo de Escaneo (seg)</th>
           <th>Descripción</th>
           <th>Estado</th>
           <th>Imagen</th>
@@ -41,51 +69,179 @@
     </table>
   </main>
 
+  <!-- Footer verde -->
+  <footer class="footer">
+    <p>Sistema de Gestión Agrícola - LEMBO &copy; 2025</p>
+  </footer>
+
   <!-- GOV inferior -->
   <div class="gov-bottom">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
   </div>
 
   <script>
+    let sensoresData = [];
+
     document.addEventListener("DOMContentLoaded", async () => {
+      await loadSensores();
+    });
+
+    async function loadSensores() {
+      const loader = document.getElementById("loader");
+      const tableContainer = document.getElementById("sensores-table-container");
+      
       try {
+        loader.classList.add("show");
+        tableContainer.style.display = "none";
+
         const response = await fetch("http://localhost:3000/sensores"); 
         if (!response.ok) throw new Error("Error al obtener sensores");
 
-        const sensores = await response.json();
+        sensoresData = await response.json();
         const tableBody = document.getElementById("sensores-table");
         tableBody.innerHTML = "";
 
-        if (sensores.length === 0) {
+        if (sensoresData.length === 0) {
           tableBody.innerHTML = `<tr><td colspan="9">No hay sensores registrados</td></tr>`;
-          return;
+        } else {
+          sensoresData.forEach(s => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${s.idSensor}</td>
+              <td>${s.tipoSensor}</td>
+              <td>${s.nombreSensor}</td>
+              <td>${s.unidadMedida}</td>
+              <td>${s.tiempoEscaneo}</td>
+              <td>${s.descripcion || 'Sin descripción'}</td>
+              <td>
+                <span class="status-badge ${s.estado === 'Activo' ? 'status-activo' : 'status-inactivo'}">
+                  ${s.estado}
+                </span>
+              </td>
+              <td>${s.image ? `<img src="/uploads/${s.image}" width="60" style="border-radius: 6px;">` : "Sin imagen"}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" onclick="editSensor(${s.idSensor})" title="Editar">
+                  <i class="material-icons">edit</i>
+                </button>
+                <button class="btn ${s.estado === 'Activo' ? 'btn-danger' : 'btn-success'} btn-sm" 
+                        onclick="toggleSensorStatus(${s.idSensor}, '${s.estado}')" 
+                        title="${s.estado === 'Activo' ? 'Desactivar' : 'Activar'}">
+                  <i class="material-icons">${s.estado === 'Activo' ? 'visibility_off' : 'visibility'}</i>
+                </button>
+              </td>
+            `;
+            tableBody.appendChild(row);
+          });
         }
-
-        sensores.forEach(s => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${s.idSensor}</td>
-            <td>${s.tipoSensor}</td>
-            <td>${s.nombreSensor}</td>
-            <td>${s.unidadMedida}</td>
-            <td>${s.tiempoEscaneo}</td>
-            <td>${s.descripcion}</td>
-            <td>${s.estado}</td>
-            <td>${s.imagen ? `<img src="/uploads/${s.imagen}" width="60">` : "Sin imagen"}</td>
-            <td>
-                <a href="../sensores/datos_sensor.html?id=${s.idSensor}" class="edit-link">Editar</a>
-            </td>
-          `;
-          tableBody.appendChild(row);
-        });
       } catch (error) {
         console.error("❌ Error cargando sensores:", error);
+        document.getElementById("sensores-table").innerHTML = `
+          <tr><td colspan="9" style="color: #dc3545;">Error al cargar los sensores. Por favor, intente nuevamente.</td></tr>
+        `;
+      } finally {
+        loader.classList.remove("show");
+        tableContainer.style.display = "table";
       }
-    });
+    }
+
+    function editSensor(id) {
+      window.location.href = `../sensores/datos_sensor.html?id=${id}`;
+    }
+
+    async function toggleSensorStatus(id, currentStatus) {
+      try {
+        const newStatus = currentStatus === 'Activo' ? 'Inactivo' : 'Activo';
+        
+        // Buscar el sensor actual
+        const sensor = sensoresData.find(s => s.idSensor === id);
+        if (!sensor) {
+          throw new Error('Sensor no encontrado');
+        }
+
+        const response = await fetch(`http://localhost:3000/sensores/${id}`, {
+          method: 'PUT',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            tipoSensor: sensor.tipoSensor,
+            nombreSensor: sensor.nombreSensor,
+            unidadMedida: sensor.unidadMedida,
+            tiempoEscaneo: sensor.tiempoEscaneo,
+            descripcion: sensor.descripcion,
+            estado: newStatus
+          })
+        });
+
+        if (!response.ok) {
+          throw new Error('Error al actualizar el estado del sensor');
+        }
+
+        // Recargar la tabla
+        await loadSensores();
+        
+        alert(`Sensor ${newStatus === 'Activo' ? 'activado' : 'desactivado'} correctamente`);
+      } catch (error) {
+        console.error('❌ Error al cambiar estado:', error);
+        alert('Error al cambiar el estado del sensor. Por favor, intente nuevamente.');
+      }
+    }
+
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      
+      // Título
+      doc.setFontSize(20);
+      doc.text('Lista de Sensores', 14, 22);
+      
+      // Fecha
+      doc.setFontSize(12);
+      doc.text(`Fecha de generación: ${new Date().toLocaleDateString()}`, 14, 30);
+      
+      // Preparar datos para la tabla
+      const tableData = sensoresData.map(sensor => [
+        sensor.idSensor,
+        sensor.tipoSensor,
+        sensor.nombreSensor,
+        sensor.unidadMedida,
+        sensor.tiempoEscaneo,
+        sensor.descripcion || 'Sin descripción',
+        sensor.estado
+      ]);
+      
+      // Generar tabla
+      doc.autoTable({
+        head: [['ID', 'Tipo', 'Nombre', 'Unidad', 'Tiempo', 'Descripción', 'Estado']],
+        body: tableData,
+        startY: 40,
+        theme: 'grid',
+        headStyles: { fillColor: [57, 169, 0] },
+        styles: { fontSize: 10 }
+      });
+      
+      doc.save('sensores.pdf');
+    }
+
+    function exportToExcel() {
+      const worksheet = XLSX.utils.json_to_sheet(
+        sensoresData.map(sensor => ({
+          'ID': sensor.idSensor,
+          'Tipo': sensor.tipoSensor,
+          'Nombre': sensor.nombreSensor,
+          'Unidad de Medida': sensor.unidadMedida,
+          'Tiempo de Escaneo (seg)': sensor.tiempoEscaneo,
+          'Descripción': sensor.descripcion || 'Sin descripción',
+          'Estado': sensor.estado,
+          'Imagen': sensor.image || 'Sin imagen'
+        }))
+      );
+      
+      const workbook = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(workbook, worksheet, 'Sensores');
+      
+      XLSX.writeFile(workbook, 'sensores.xlsx');
+    }
   </script>
 </body>
 </html>
-<!-- Barra GOV inferior -->
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>

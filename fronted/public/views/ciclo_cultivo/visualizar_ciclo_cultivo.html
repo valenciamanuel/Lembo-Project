@@ -2,48 +2,38 @@
 <html lang="es">
 
 <head>
-     
     <meta charset="UTF-8">
-     
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-      <title>Visualizar Ciclos de Cultivo</title>
-     
+    <title>Visualizar Ciclos de Cultivo</title>
     <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
-     
     <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 
 <body>
-    <!-- GOV superior -->
-      <div class="gov-top">
-            <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-          </div>
+    <div class="gov-top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+    </div>
+
+    <header class="header"></header>
+
+    <main class="content-container">
+        <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
+
+        <div id="ciclos-container" class="cards-container">
+             <!-- JS insertará cada card -->
+             </div>
+        
+    </main>
 
 
-      <!-- Header verde -->
-      <header class="header"></header>
 
-      <!-- Contenido principal -->
-      <main class="content-container">
-            <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
+    <!-- GOV inferior -->
+     <div class="gov-bottom">
+      <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+         </div>
 
-            <div id="ciclos-container" class="cards-container">
-                  <!-- JS insertará cada card -->
-                </div>
-          </main>
-
-      <!-- Footer verde -->
-      <footer class="footer">
-            &copy; 2025 Mi Plataforma Agro | Todos los derechos reservados
-          </footer>
-
-      <!-- GOV inferior -->
-      <div class="gov-bottom">
-            <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-          </div>
-
-      <!-- JS para cargar ciclos -->
-     
+     <!-- JS para cargar ciclos -->
+    
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             try {

@@ -6,18 +6,41 @@
   <title>Listar Cultivos</title>
   <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
+  <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- CDN para PDF y Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
   <!-- Barra GOV superior -->
   <div class="gov-top">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
   </div>
+
   <header class="header"></header>
 
   <main class="content-container">
     <h2 class="form__title">Cultivos Registrados</h2>
 
-    <table class="styled-table">
+    <div class="action-buttons">
+      <a href="../cultivo/crear_cultivo.html" class="btn btn-primary">
+        <i class="material-icons">add</i> Agregar Cultivo
+      </a>
+      <button class="btn btn-success" onclick="exportToPDF()">
+        <i class="material-icons">picture_as_pdf</i> Descargar PDF
+      </button>
+      <button class="btn btn-success" onclick="exportToExcel()">
+        <i class="material-icons">table_chart</i> Descargar Excel
+      </button>
+    </div>
+
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+    </div>
+
+    <table class="styled-table" id="cultivos-table-container">
       <thead>
         <tr>
           <th>ID</th>
@@ -34,51 +57,138 @@
       <tbody id="cultivos-table"></tbody>
     </table>
   </main>
+
   <!-- Barra GOV inferior -->
   <div class="gov-bottom">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
   </div>
 
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
+    let cultivosData = [];
+
+    document.addEventListener("DOMContentLoaded", loadCultivos);
+
+    async function loadCultivos() {
+      const loader = document.getElementById("loader");
+      const tableContainer = document.getElementById("cultivos-table-container");
+      loader.classList.add("show");
+      tableContainer.style.display = "none";
+
       try {
-        const response = await fetch("http://localhost:3000/cultivo");
-        if (!response.ok) throw new Error("Error al obtener cultivos");
+        const res = await fetch("http://localhost:3000/cultivo");
+        if (!res.ok) throw new Error();
+        cultivosData = await res.json();
+        const tbody = document.getElementById("cultivos-table");
+        tbody.innerHTML = "";
 
-        const cultivos = await response.json();
-        const tableBody = document.getElementById("cultivos-table");
-        tableBody.innerHTML = "";
-
-        if (cultivos.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="8">No hay cultivos registrados</td></tr>`;
-          return;
+        if (cultivosData.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="9">No hay cultivos registrados</td></tr>`;
+        } else {
+          cultivosData.forEach(c => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${c.id}</td>
+              <td>${c.cultivoName}</td>
+              <td>${c.cultivoType}</td>
+              <td>${c.cultivoID}</td>
+              <td>${c.size}</td>
+              <td>${c.location}</td>
+              <td>
+                <span class="status-badge ${c.state==='Activo'?'status-activo':'status-inactivo'}">
+                  ${c.state}
+                </span>
+              </td>
+              <td>${c.image?`<img src="/uploads/${c.image}" width="60">`:'Sin imagen'}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" onclick="editCultivo(${c.id})" title="Editar">
+                  <i class="material-icons">edit</i>
+                </button>
+                <button class="btn ${c.state==='Activo'?'btn-danger':'btn-success'} btn-sm"
+                        onclick="toggleCultivo(${c.id},'${c.state}')"
+                        title="${c.state==='Activo'?'Desactivar':'Activar'}">
+                  <i class="material-icons">${c.state==='Activo'?'visibility_off':'visibility'}</i>
+                </button>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
         }
-
-        cultivos.forEach(c => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${c.id}</td>
-            <td>${c.cultivoName}</td>
-            <td>${c.cultivoType}</td>
-            <td>${c.cultivoID}</td>
-            <td>${c.size}</td>
-            <td>${c.location}</td>
-            <td>${c.state}</td>
-            <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
-            <td>
-                <a href="../cultivo/datos_cultivo.html?id=${c.id}" class="edit-link">Editar</a>
-            </td>
-          `;
-          tableBody.appendChild(row);
-        });
-      } catch (error) {
-        console.error("❌ Error cargando cultivos:", error);
+      } catch {
+        document.getElementById("cultivos-table").innerHTML =
+          `<tr><td colspan="9" style="color:#dc3545;">Error cargando cultivos</td></tr>`;
+      } finally {
+        loader.classList.remove("show");
+        tableContainer.style.display = "table";
       }
-    });
+    }
+
+    function editCultivo(id) {
+      window.location.href = `../cultivo/datos_cultivo.html?id=${id}`;
+    }
+
+    async function toggleCultivo(id, current) {
+      try {
+        const cultivo = cultivosData.find(x=>x.id===id);
+        const newState = current==='Activo'?'Inactivo':'Activo';
+        const body = {
+          cultivoType: cultivo.cultivoType,
+          cultivoName: cultivo.cultivoName,
+          cultivoID: cultivo.cultivoID,
+          size: cultivo.size,
+          location: cultivo.location,
+          description: cultivo.description,
+          state: newState
+        };
+        const res = await fetch(`http://localhost:3000/cultivo/${id}`, {
+          method:'PUT',
+          headers:{'Content-Type':'application/json'},
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) throw new Error();
+        await loadCultivos();
+        alert(`Cultivo ${newState==='Activo'?'activado':'desactivado'} correctamente`);
+      } catch {
+        alert('Error al cambiar estado');
+      }
+    }
+
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(18);
+      doc.text('Cultivos Registrados',14,20);
+      doc.setFontSize(11);
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`,14,28);
+
+      const rows = cultivosData.map(c=>[
+        c.id, c.cultivoName, c.cultivoType,
+        c.cultivoID, c.size, c.location, c.state
+      ]);
+
+      doc.autoTable({
+        head:[['ID','Nombre','Tipo','Código','Tamaño','Ubicación','Estado']],
+        body:rows, startY:35, theme:'grid',
+        headStyles:{fillColor:[57,169,0]}, styles:{fontSize:9}
+      });
+
+      doc.save('cultivos.pdf');
+    }
+
+    function exportToExcel() {
+      const data = cultivosData.map(c=>({
+        ID:c.id,
+        Nombre:c.cultivoName,
+        Tipo:c.cultivoType,
+        Código:c.cultivoID,
+        Tamaño:c.size,
+        Ubicación:c.location,
+        Estado:c.state
+      }));
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb,ws,'Cultivos');
+      XLSX.writeFile(wb,'cultivos.xlsx');
+    }
   </script>
 </body>
 </html>
-<!-- Barra GOV inferior -->
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>

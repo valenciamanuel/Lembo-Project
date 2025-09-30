@@ -1,89 +1,158 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Actualizar Uso de Insumo</title>
-    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/styleprac.css" />
-    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/crear-asociacion.css" />
-    <script src="/fronted/public/js/insumo/enviaruso.js" defer></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Editar Uso de Insumo</title>
+  <link rel="stylesheet" href="/fronted/public/css/main.css" />
+  <link rel="stylesheet" href="/fronted/public/css/pages/editar.css" />
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
+<body>
+  <!-- Barra GOV superior -->
+  <div class="gov-top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+  </div>
+  <header class="header"></header>
 
-<body class="pagina">
-    <div class="gov-top">
-     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-    </div>
-    <header class="cabecera">
-        <div class="cabecera__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="cabecera__logo-img" />
+  <main class="form-container">
+    <form class="form" id="edit-uso-form">
+      <h2 class="form__title">Editar Uso de Insumo</h2>
+      <input type="hidden" id="usoId">
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Fecha de Uso</label>
+          <input class="form__input" type="date" id="fechaUso" required>
         </div>
-        <nav class="cabecera__nav">
-            <a href="/fronted/public/views/homes/index.html" class="cabecera__enlace">Inicio</a>
-            <a href="crear_asociacion.html" class="cabecera__enlace">Crear Asociación</a>
-            <a href="visualizar_asociacion.html" class="cabecera__enlace">Visualizar Asociación</a>
-            <a href="actualizar_asociacion.html" class="cabecera__enlace">Actualizar Asociación</a>
-            <a href="habilitar_deshabilitar.html" class="cabecera__enlace">Habilitar</a>
-            <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
-            <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
-        </nav>
-    </header>
+        <div class="form__column">
+          <label class="form__label">Cantidad</label>
+          <input class="form__input" type="number" id="cantidad" step="0.01" required>
+        </div>
+      </div>
 
-    <main class="asociacion">
-        <form class="formulario" action="http://localhost:3000/uso_insumo" method="POST">
-            <h1 class="asociacion__titulo">Actualizar Uso de Insumo</h1>
-            <p class="asociacion__descripcion">
-                Modifique la información necesaria para actualizar el uso del insumo
-            </p>
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Responsable</label>
+          <input class="form__input" type="text" id="responsable" required>
+        </div>
+        <div class="form__column">
+          <label class="form__label">Valor Unitario</label>
+          <input class="form__input" type="number" id="valorUnitario" step="0.01" required>
+        </div>
+      </div>
 
-            <div class="formulario__grid">
-                <div class="formulario__columna">
-                    <label class="formulario__etiqueta">Fecha Uso</label>
-                    <input type="date" name="fecha-uso" class="formulario__entrada formulario__entrada--fecha" required />
-                </div>
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Valor Total</label>
+          <input class="form__input" type="number" id="valorTotal" step="0.01" required>
+        </div>
+        <div class="form__column">
+          <label class="form__label">Observaciones</label>
+          <textarea class="form__input" id="observaciones"></textarea>
+        </div>
+      </div>
 
-                <div class="formulario__columna">
-                    <label class="formulario__etiqueta">Cantidad</label>
-                    <input type="number" name="cantidad" class="formulario__entrada formulario__entrada--cantidad" required min="1" />
-                </div>
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Insumo</label>
+          <select class="form__input" id="insumoSelect" required>
+            <option value="">-- Seleccione insumo --</option>
+          </select>
+        </div>
+        <div class="form__column"></div>
+      </div>
 
-                <div class="formulario__columna">
-                    <label class="formulario__etiqueta">Responsable</label>
-                    <input type="text" name="responsable" class="formulario__entrada formulario__entrada--responsable" required />
-                </div>
+      <div class="form__btn-group">
+        <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+        <a href="listar_uso_insumo.html" class="btn__secundary">Cancelar</a>
+      </div>
+    </form>
+  </main>
 
-                <div class="formulario__columna">
-                    <label class="formulario__etiqueta">Valor Unitario</label>
-                    <input type="number" name="valor-unitario" class="formulario__entrada formulario__entrada--valorUnitario" step="0.01" required />
-                </div>
+  <!-- Barra GOV inferior -->
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
 
-                <div class="formulario__columna">
-                    <label class="formulario__etiqueta">Valor Total</label>
-                    <input type="number" name="valor-total" class="formulario__entrada formulario__entrada--valorTotal" step="0.01" required />
-                </div>
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get("id");
+      if (!id) {
+        alert("ID de uso de insumo no proporcionado.");
+        return;
+      }
 
-                <div class="formulario__columna">
-                    <label class="formulario__etiqueta">Observaciones</label>
-                    <input type="text" name="observaciones" class="formulario__entrada formulario__entrada--observaciones" />
-                </div>
+      const form = document.getElementById("edit-uso-form");
+      const usoId = document.getElementById("usoId");
+      const fechaInput = document.getElementById("fechaUso");
+      const cantidadInput = document.getElementById("cantidad");
+      const responsableInput = document.getElementById("responsable");
+      const valorUnitInput = document.getElementById("valorUnitario");
+      const valorTotalInput = document.getElementById("valorTotal");
+      const obsInput = document.getElementById("observaciones");
+      const insumoSelect = document.getElementById("insumoSelect");
 
-                <div class="formulario__columna">
-                    <label class="formulario__etiqueta">Insumos</label>
-                    <select name="insumo" class="formulario__selector formulario__selector--insumo" required>
-                        <option value="">Seleccione un insumo</option>
-                        <option value="insumo1">Insumo 1</option>
-                        <option value="insumo2">Insumo 2</option>
-                        <option value="insumo3">Insumo 3</option>
-                    </select>
-                    <a href="/fronted/public/views/insumos/crear_uso_insumo.html" class="formulario__boton formulario__boton--crear" style="margin-top: 1rem; display: inline-block;">+ Crear Insumo</a>
-                </div>
-            </div>
+      // Cargar lista de insumos
+      try {
+        const resInsumos = await fetch("http://localhost:3000/insumo");
+        const insumos = await resInsumos.json();
+        insumos.forEach(i => {
+          const opt = document.createElement("option");
+          opt.value = i.nombreInsumo;
+          opt.textContent = i.nombreInsumo;
+          insumoSelect.appendChild(opt);
+        });
+      } catch (e) {
+        console.error("Error cargando insumos:", e);
+      }
 
-            <button class="formulario__boton" type="submit"><a href="/fronted/public/views/insumos/ver_datos_uso_insumo.html">Actualizar Uso de Insumo</a></button>
-            
-        </form>
-    </main>
-    <div class="gov-bottom">
-     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>
+      // Cargar datos existentes
+      try {
+        const res = await fetch(`http://localhost:3000/uso_insumo/${id}`);
+        if (!res.ok) throw new Error();
+        const data = await res.json();
+        usoId.value = data.id;
+        fechaInput.value = data.fecha_uso;
+        cantidadInput.value = data.cantidad;
+        responsableInput.value = data.responsable;
+        valorUnitInput.value = data.valor_unitario;
+        valorTotalInput.value = data.valor_total;
+        obsInput.value = data.observaciones || "";
+        insumoSelect.value = data.insumo;
+      } catch (e) {
+        console.error("Error cargando uso:", e);
+        alert("No se pudo cargar el registro.");
+      }
+
+      // Guardar cambios
+      form.addEventListener("submit", async e => {
+        e.preventDefault();
+        const updated = {
+          fecha_uso: fechaInput.value,
+          cantidad: parseFloat(cantidadInput.value),
+          responsable: responsableInput.value,
+          valor_unitario: parseFloat(valorUnitInput.value),
+          valor_total: parseFloat(valorTotalInput.value),
+          observaciones: obsInput.value,
+          insumo: insumoSelect.value
+        };
+        try {
+          const res = await fetch(`http://localhost:3000/uso_insumo/${id}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updated)
+          });
+          if (!res.ok) throw new Error();
+          alert("✅ Uso de insumo actualizado.");
+          window.location.href = "listar_uso_insumo.html";
+        } catch (err) {
+          console.error("Error al actualizar uso:", err);
+          alert("Error al actualizar.");
+        }
+      });
+    });
+  </script>
 </body>
 </html>

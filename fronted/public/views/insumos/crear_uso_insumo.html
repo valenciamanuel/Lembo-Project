@@ -1,93 +1,124 @@
+<!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Crear Uso de Insumo</title>
-    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/styleprac.css">
-    <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/crear-asociacion.css">
-    <script src="/fronted/public/js/insumo/enviaruso.js"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Crear Uso de Insumo</title>
+  <link rel="stylesheet" href="/fronted/public/css/main.css"/>
+  <link rel="stylesheet" href="/fronted/public/css/pages/crear.css"/>
+  <script src="/fronted/public/views/components/header.js" defer></script>
+  <script src="/fronted/public/js/insumo/enviaruso.js" defer></script>
 </head>
+<body>
+  <!-- Barra GOV superior -->
+  <div class="gov-top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top"/>
+  </div>
+  <header class="header" style="top: 5rem;"></header>
 
-<body class="pagina">
-    <div class="gov-top">
-     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-    </div>
-    <header class="cabecera">
-        <div class="cabecera__logo">
-            <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="cabecera__logo-img">
+  <main class="form-container">
+    <form class="form" id="crear-uso-form">
+      <h2 class="form__title">Crear Uso de Insumo</h2>
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label" for="fechaUso">Fecha de Uso</label>
+          <input class="form__input" type="date" id="fechaUso" name="fecha_uso" required/>
         </div>
-        <nav class="cabecera__nav">
-            <a href="/fronted/public/views/homes/index.html" class="cabecera__enlace">Inicio</a>
-            <a href="crear_asociacion.html" class="cabecera__enlace">Crear Asociación</a>
-            <a href="visualizar_asociacion.html" class="cabecera__enlace">Visualizar Asociación</a>
-            <a href="actualizar_asociacion.html" class="cabecera__enlace">Actualizar Asociación</a>
-            <a href="habilitar_deshabilitar.html" class="cabecera__enlace">Habilitar</a>
-            <a href="listar_asociaciones.html" class="cabecera__enlace">Listar Asociaciones</a>
-            <a href="generar_reporte.html" class="cabecera__enlace">Generar Reporte</a>
-        </nav>
-        
-    </header>
-    
-    <nav class="cabecera__nav">
-       
-        <main class="asociacion">
-            <form class="formulario" action="http://localhost:3000/uso_insumo" method="POST"> <h1 class="asociacion__titulo">Crear Uso de Insumo</h1>
-                <p class="asociacion__descripcion">
-                    Ingrese la información para crear un nuevo uso de insumo
-                </p>
-    
-                <div class="formulario__grid">
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">fecha Uso</label>
-                        <input type="date" class="formulario__entrada formulario__entrada--fecha" placeholder="Fecha Uso">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Cantidad</label>
-                        <input type="number" class="formulario__entrada formulario__entrada--cantidad" placeholder="Cantidad">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Responsable</label>
-                        <input type="text" class="formulario__entrada formulario__entrada--responsable" placeholder="Responsable">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Valor Unitario</label>
-                        <input type="number" class="formulario__entrada formulario__entrada--valorUnitario" placeholder="Valor Unitario">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Valor Total</label>
-                        <input type="number" class="formulario__entrada formulario__entrada--valorTotal" placeholder="Valor Total">
-                    </div>
-    
-                    <div class="formulario__columna">
-                        <label class="formulario__etiqueta">Observaciones</label>
-                        <input type="text" class="formulario__entrada formulario__entrada--observaciones" placeholder="Observaciones">
-                    </div>
-    
-                    <div class="formulario__columna">
-    
-                        <label class="formulario__etiqueta">Insumos</label>
-                        <select class="formulario__selector formulario__selector--insumo">
-                            <option value="">Agregar Insumos</option>
-                            <option value="insumo1">Insumo 1</option>
-                            <option value="insumo2">Insumo 2</option>
-                            <option value="insumo3">Insumo 3</option>
-                        </select>
-                        <button><a href="/fronted/public/views/insumos/crear_inusomo.html">+ Crear Insumo</a></button>
-                    </div> 
-    
-                </div> <button class="formulario__boton" type="submit">Crear Uso Insumo </button>
-            </form>
-        </main> 
-        </main>
-        <div class="gov-bottom">
-          <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+        <div class="form__column">
+          <label class="form__label" for="cantidad">Cantidad</label>
+          <input class="form__input" type="number" id="cantidad" name="cantidad" step="0.01" required/>
         </div>
-    
-    </body>
-    
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label" for="responsable">Responsable</label>
+          <input class="form__input" type="text" id="responsable" name="responsable" required/>
+        </div>
+        <div class="form__column">
+          <label class="form__label" for="valorUnitario">Valor Unitario</label>
+          <input class="form__input" type="number" id="valorUnitario" name="valor_unitario" step="0.01" required/>
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label" for="valorTotal">Valor Total</label>
+          <input class="form__input" type="number" id="valorTotal" name="valor_total" step="0.01" required/>
+        </div>
+        <div class="form__column">
+          <label class="form__label" for="observaciones">Observaciones</label>
+          <textarea class="form__input" id="observaciones" name="observaciones"></textarea>
+        </div>
+      </div>
+
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label" for="insumo">Insumo</label>
+          <select class="form__input" id="insumo" name="insumo" required>
+            <option value="">-- Seleccione insumo --</option>
+          </select>
+        </div>
+        <div class="form__column">
+          <a href="crear_inusomo.html" class="btn btn-secondary" style="margin-top:2rem;">
+            + Crear Insumo
+          </a>
+        </div>
+      </div>
+
+      <div class="form__btn-group">
+        <button type="submit" class="form__btn form__btn--registrar">Crear</button>
+        <a href="listar_uso_insumo.html" class="btn__secundary">Cancelar</a>
+      </div>
+    </form>
+  </main>
+
+  <!-- Barra GOV inferior -->
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"/>
+  </div>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const insumoSelect = document.getElementById("insumo");
+      try {
+        const res = await fetch("http://localhost:3000/insumo");
+        const data = await res.json();
+        data.forEach(i => {
+          const opt = document.createElement("option");
+          opt.value = i.nombreInsumo;
+          opt.textContent = i.nombreInsumo;
+          insumoSelect.appendChild(opt);
+        });
+      } catch (e) {
+        console.error("Error cargando insumos:", e);
+      }
+
+      document.getElementById("crear-uso-form").addEventListener("submit", async e => {
+        e.preventDefault();
+        const payload = {
+          fecha_uso: document.getElementById("fechaUso").value,
+          cantidad: parseFloat(document.getElementById("cantidad").value),
+          responsable: document.getElementById("responsable").value,
+          valor_unitario: parseFloat(document.getElementById("valorUnitario").value),
+          valor_total: parseFloat(document.getElementById("valorTotal").value),
+          observaciones: document.getElementById("observaciones").value,
+          insumo: document.getElementById("insumo").value
+        };
+        try {
+          const resp = await fetch("http://localhost:3000/uso_insumo", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(payload)
+          });
+          if (!resp.ok) throw new Error();
+          alert("✅ Uso de insumo creado exitosamente");
+          window.location.href = "listar_uso_insumo.html";
+        } catch {
+          alert("Error al crear uso de insumo");
+        }
+      });
+    });
+  </script>
+</body>
 </html>

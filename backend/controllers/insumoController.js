@@ -1,5 +1,6 @@
 const db = require('../config/db.js');
 const fs = require('fs/promises'); // Para manejar archivos (útil en actualización/eliminación)
+const multer = require('../../fronted/public/uploads');
 const path = require('path');
 
 // --- Función de utilidad para obtener la ruta de uploads ---

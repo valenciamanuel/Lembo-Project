@@ -4,10 +4,14 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Listar Ciclos de Cultivo</title>
-  
-  <!-- CSS -->
   <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-
+  <script src="/fronted/public/views/components/header.js" defer></script>
+  <!-- Material Design Icons -->
+  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+  <!-- CDN para PDF y Excel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 <body>
   <!-- Barra GOV superior -->
@@ -20,11 +24,26 @@
     <img class="header__logo" src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA">
   </header>
 
-  <!-- Contenido principal centrado y separado del header/footer -->
   <main class="content-container">
     <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
 
-    <table class="styled-table">
+    <div class="action-buttons">
+      <a href="../ciclo_cultivo/crear_ciclo_cultivo.html" class="btn btn-primary">
+        <i class="material-icons">add</i> Agregar Ciclo
+      </a>
+      <button class="btn btn-success" onclick="exportToPDF()">
+        <i class="material-icons">picture_as_pdf</i> Descargar PDF
+      </button>
+      <button class="btn btn-success" onclick="exportToExcel()">
+        <i class="material-icons">table_chart</i> Descargar Excel
+      </button>
+    </div>
+
+    <div class="loader" id="loader">
+      <div class="spinner"></div>
+    </div>
+
+    <table class="styled-table" id="ciclos-table-container">
       <thead>
         <tr>
           <th>ID</th>
@@ -53,48 +72,139 @@
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
   </div>
 
-  <!-- JS para cargar datos de ciclos -->
   <script>
-    document.addEventListener("DOMContentLoaded", async () => {
+    let ciclosData = [];
+
+    document.addEventListener("DOMContentLoaded", loadCiclos);
+
+    async function loadCiclos() {
+      const loader = document.getElementById("loader");
+      const tableContainer = document.getElementById("ciclos-table-container");
+      loader.classList.add("show");
+      tableContainer.style.display = "none";
+
       try {
-        const response = await fetch("http://localhost:3000/ciclocultivo");
-        if (!response.ok) throw new Error("Error al obtener ciclos");
+        const res = await fetch("http://localhost:3000/ciclocultivo");
+        if (!res.ok) throw new Error("Error al obtener ciclos");
+        ciclosData = await res.json();
+        const tbody = document.getElementById("ciclos-table");
+        tbody.innerHTML = "";
 
-        const ciclos = await response.json();
-        const tableBody = document.getElementById("ciclos-table");
-        tableBody.innerHTML = "";
-
-        if (ciclos.length === 0) {
-          tableBody.innerHTML = `<tr><td colspan="10">No hay ciclos de cultivo registrados</td></tr>`;
-          return;
+        if (ciclosData.length === 0) {
+          tbody.innerHTML = `<tr><td colspan="10">No hay ciclos de cultivo registrados</td></tr>`;
+        } else {
+          ciclosData.forEach(c => {
+            const row = document.createElement("tr");
+            row.innerHTML = `
+              <td>${c.id}</td>
+              <td>${c.cicloID}</td>
+              <td>${c.cicloName}</td>
+              <td>${c.siembraDate}</td>
+              <td>${c.cosechaDate}</td>
+              <td>${c.news}</td>
+              <td>${c.description}</td>
+              <td>
+                <span class="status-badge ${c.state==='activo'?'status-activo':'status-inactivo'}">
+                  ${c.state}
+                </span>
+              </td>
+              <td>${c.image?`<img src="/uploads/${c.image}" width="60">`:'Sin imagen'}</td>
+              <td>
+                <button class="btn btn-warning btn-sm" onclick="editCiclo(${c.id})" title="Editar">
+                  <i class="material-icons">edit</i>
+                </button>
+                <button class="btn ${c.state==='activo'?'btn-danger':'btn-success'} btn-sm"
+                        onclick="toggleCicloState(${c.id},'${c.state}')"
+                        title="${c.state==='activo'?'Desactivar':'Activar'}">
+                  <i class="material-icons">${c.state==='activo'?'visibility_off':'visibility'}</i>
+                </button>
+              </td>
+            `;
+            tbody.appendChild(row);
+          });
         }
-
-        ciclos.forEach(c => {
-          const row = document.createElement("tr");
-          row.innerHTML = `
-            <td>${c.id}</td>
-            <td>${c.cicloID}</td>
-            <td>${c.cicloName}</td>
-            <td>${c.siembraDate}</td>
-            <td>${c.cosechaDate}</td>
-            <td>${c.news}</td>
-            <td>${c.description}</td>
-            <td>${c.state}</td>
-            <td>${c.image ? `<img src="/uploads/${c.image}" width="60">` : "Sin imagen"}</td>
-            <td>
-              <a href="../ciclo_cultivo/datos_ciclo_cultivo.html?id=${c.id}" class="edit-link">Editar</a>
-            </td>
-          `;
-          tableBody.appendChild(row);
-        });
-      } catch (error) {
-        console.error("❌ Error cargando ciclos:", error);
+      } catch (e) {
+        console.error(e);
+        document.getElementById("ciclos-table").innerHTML =
+          `<tr><td colspan="10" style="color:#dc3545;">Error cargando ciclos</td></tr>`;
+      } finally {
+        loader.classList.remove("show");
+        tableContainer.style.display = "table";
       }
-    });
+    }
+
+    function editCiclo(id) {
+      window.location.href = `../ciclo_cultivo/datos_ciclo_cultivo.html?id=${id}`;
+    }
+
+    async function toggleCicloState(id, current) {
+      try {
+        const ciclo = ciclosData.find(x => x.id === id);
+        const newState = current==='activo'?'inactivo':'activo';
+        const body = {
+          cicloID: ciclo.cicloID,
+          cicloName: ciclo.cicloName,
+          siembraDate: ciclo.siembraDate,
+          cosechaDate: ciclo.cosechaDate,
+          news: ciclo.news,
+          description: ciclo.description,
+          state: newState,
+          image: ciclo.image
+        };
+        const res = await fetch(`http://localhost:3000/ciclocultivo/${id}`, {
+          method: 'PUT',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify(body)
+        });
+        if (!res.ok) throw new Error();
+        await loadCiclos();
+        alert(`Ciclo ${newState==='activo'?'activado':'desactivado'} correctamente`);
+      } catch {
+        alert('Error al cambiar estado');
+      }
+    }
+
+    function exportToPDF() {
+      const { jsPDF } = window.jspdf;
+      const doc = new jsPDF();
+      doc.setFontSize(18);
+      doc.text('Ciclos de Cultivo', 14, 20);
+      doc.setFontSize(11);
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 28);
+
+      const rows = ciclosData.map(c => [
+        c.id, c.cicloID, c.cicloName, c.siembraDate,
+        c.cosechaDate, c.news, c.description, c.state
+      ]);
+
+      doc.autoTable({
+        head: [['ID','Código','Nombre','Siembra','Cosecha','Novedades','Descripción','Estado']],
+        body: rows,
+        startY: 35,
+        theme: 'grid',
+        headStyles: { fillColor: [57,169,0] },
+        styles: { fontSize: 9 }
+      });
+
+      doc.save('ciclos_cultivo.pdf');
+    }
+
+    function exportToExcel() {
+      const data = ciclosData.map(c => ({
+        ID: c.id,
+        Código: c.cicloID,
+        Nombre: c.cicloName,
+        FechaSiembra: c.siembraDate,
+        FechaCosecha: c.cosechaDate,
+        Novedades: c.news,
+        Descripción: c.description,
+        Estado: c.state
+      }));
+      const ws = XLSX.utils.json_to_sheet(data);
+      const wb = XLSX.utils.book_new();
+      XLSX.utils.book_append_sheet(wb, ws, 'CiclosCultivo');
+      XLSX.writeFile(wb, 'ciclos_cultivo.xlsx');
+    }
   </script>
 </body>
 </html>
-<!-- Barra GOV inferior -->
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>

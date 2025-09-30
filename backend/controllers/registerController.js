@@ -71,7 +71,7 @@ const insertarRegister = async (req, res) => {
 
 const obtenerUsuarios = async (req, res) => {
   try {
-    const [rows] = await db.query("SELECT id, name, email, usertype FROM register");
+    const [rows] = await db.query("SELECT * FROM register");
     res.json(rows);
   } catch (err) {
     console.error("❌ Error al obtener usuarios:", err);
