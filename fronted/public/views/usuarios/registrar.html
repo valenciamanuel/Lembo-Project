@@ -2,14 +2,16 @@
 <html lang="es">
 <head>
   <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>Registro de Usuario</title>
   <link rel="stylesheet" href="/fronted/public/css/main.css">
   <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
+  <style>
+    .form__message.error { color: #dc3545; margin-bottom: 1rem; font-size:1.2rem; }
+  </style>
 </head>
 <body>
-  <!-- Banner superior -->
   <div class="page__banner--top">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
   </div>
@@ -50,16 +52,13 @@
           <input type="email" id="email" name="email" class="form__input" required>
 
           <label class="form__label" for="phone">Número de Teléfono</label>
-          <input type="tel" id="phone" name="phone" class="form__input"
-                 pattern="\\d{7,15}" required>
+          <input type="tel" id="phone" name="phone" class="form__input" pattern="\\d{7,15}" required>
 
           <label class="form__label" for="password">Contraseña</label>
-          <input type="password" id="password" name="password" class="form__input"
-                 minlength="6" required>
+          <input type="password" id="password" name="password" class="form__input" minlength="6" required>
 
           <label class="form__label" for="confirmPassword">Confirmar Contraseña</label>
-          <input type="password" id="confirmPassword" name="confirmPassword"
-                 class="form__input" required>
+          <input type="password" id="confirmPassword" name="confirmPassword" class="form__input" required>
         </div>
       </div>
 
@@ -72,75 +71,87 @@
     </form>
   </main>
 
-  <!-- Banner inferior -->
   <div class="page__banner--bottom">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="page__banner__img">
   </div>
 
   <script>
-    document.getElementById('registro-form').addEventListener('submit', function(e) {
+    const showError = text => {
+      const msg = document.getElementById('mensajeValidacion');
+      msg.textContent = text;
+      msg.classList.add('error');
+    };
+
+    document.getElementById('registro-form').addEventListener('submit', async function(e) {
       e.preventDefault();
       const msg = document.getElementById('mensajeValidacion');
       msg.textContent = '';
       msg.classList.remove('error');
 
       const form = e.target;
-      const usertype = form.usertype.value.trim();
-      const IDtype = form.IDtype.value.trim();
-      const IDnum = form.IDnum.value.trim();
-      const name = form.name.value.trim();
-      const email = form.email.value.trim();
-      const phone = form.phone.value.trim();
-      const password = form.password.value;
-      const confirmPassword = form.confirmPassword.value;
+      const data = {
+        usertype: form.usertype.value.trim(),
+        IDtype: form.IDtype.value.trim(),
+        IDnum: form.IDnum.value.trim(),
+        name: form.name.value.trim(),
+        email: form.email.value.trim(),
+        phone: form.phone.value.trim(),
+        password: form.password.value,
+        confirmPassword: form.confirmPassword.value
+      };
 
       // validaciones
-      if (!usertype || !IDtype || !IDnum || !name || !email || !phone || !password || !confirmPassword) {
-        showError('Todos los campos son obligatorios');
-        return;
+      if (!data.usertype || !data.IDtype || !data.IDnum || !data.name || !data.email || !data.phone || !data.password || !data.confirmPassword) {
+        return showError('Todos los campos son obligatorios');
       }
-      if(IDnum < 0){
-        showError('El número de documento debe ser mayor a 0');
-        return;
+      if (isNaN(data.IDnum) || parseInt(data.IDnum,10) < 0) {
+        return showError('El número de documento debe ser numérico y mayor a 0');
       }
-      if(IDnum.length < 7){
-        showError('El número de documento debe tener al menos 7 dígitos');
-        return;
+      if (data.IDnum.length < 7) {
+        return showError('El número de documento debe tener al menos 7 dígitos');
       }
-      // email
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(email)) {
-        showError('Correo electrónico no válido');
-        return;
+      if (!emailRegex.test(data.email)) {
+        return showError('Correo electrónico no válido');
       }
-      // teléfono
-      if (!/^\d{7,15}$/.test(phone)) {
-        showError('El teléfono debe tener entre 7 y 15 dígitos numéricos');
-        return;
+      if (!/^\d{7,15}$/.test(data.phone)) {
+        return showError('El teléfono debe tener entre 7 y 15 dígitos numéricos');
       }
-      // contraseña
-      if (password.length < 6) {
-        showError('La contraseña debe tener al menos 6 caracteres');
-        return;
+      if (data.password.length < 6) {
+        return showError('La contraseña debe tener al menos 6 caracteres');
       }
-      if (password !== confirmPassword) {
-        showError('Las contraseñas no coinciden');
-        return;
+      if (data.password !== data.confirmPassword) {
+        return showError('Las contraseñas no coinciden');
       }
 
-      // todo ok → enviar
-      form.action = 'http://localhost:3000/register';
-      form.method = 'POST';
-      form.submit();
+      // petición AJAX
+      try {
+        const res = await fetch('http://localhost:3000/register', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({
+            usertype: data.usertype,
+            IDtype: data.IDtype,
+            IDnum: data.IDnum,
+            name: data.name,
+            email: data.email,
+            phone: data.phone,
+            password: data.password
+          })
+        });
+        const result = await res.json();
+        if (!res.ok) {
+          // mostrar mensaje de error sin redirigir
+          showError(result.error || result.message || 'Error al registrar');
+          return;
+        }
+        alert('✅ Usuario registrado exitosamente');
+        window.location.href = '../homes/index.html';
+      } catch (err) {
+        console.error(err);
+        showError('Error en la conexión');
+      }
     });
-
-    function showError(text) {
-      const msg = document.getElementById('mensajeValidacion');
-      msg.textContent = text;
-      msg.classList.add('error');
-      //haz la letra mas grande
-      msg.style.fontSize = '1.2rem';
-    }
   </script>
 </body>
 </html>
