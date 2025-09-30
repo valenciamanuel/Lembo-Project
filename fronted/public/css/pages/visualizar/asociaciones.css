@@ -85,7 +85,14 @@ a {
   flex-direction: column;
   min-height: 100vh;
 }
-
+.gov-top{
+  margin-bottom: -0.5rem;
+}
+.gov-bottom{
+  display:flex;
+  margin-bottom: -0.5rem;
+  min-width: 150%;
+}
 .header {
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-green));
   padding: 0.75rem 2rem;

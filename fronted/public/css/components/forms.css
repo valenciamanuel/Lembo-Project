@@ -16,7 +16,6 @@ html, body {
     text-align: center;
     border: solid 0.1rem var(--primary-950);
     color: black;
-    margin-top: 10%;
 }
 
 .form-title {
@@ -51,6 +50,7 @@ html, body {
 
 .form__input {
     padding: 8px;
+    font-size:1.2rem;
     margin-bottom: 15px;
     border: 1px solid #ccc;
     border-radius: 5px;

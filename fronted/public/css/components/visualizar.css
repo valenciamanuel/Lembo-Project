@@ -372,7 +372,7 @@ body {
     background-color: #39a900;
     width: 100%;
     height: 5rem;
-    position: absolute;
+    position: relative;
     top: 0;
     left: 0;
     display: flex;
@@ -437,7 +437,29 @@ body {
 h1{
   color: white;
 }
+/* Barras GOV superior e inferior */
+.gov-top, 
+.gov-bottom {
+    display: flex;
+  width: 100%;
+  height: 30px;
+}
 
+.gov-top img, .gov-bottom img {
+    width: 100%;
+    height: auto;
+    object-fit: contain; /* o cover según se prefiera */
+    display: block;
+    max-height: 150px; /* ajustar según diseño */
+}
+
+/* Para que no se encimen con el header */
+
+
+/* GOV bottom siempre abajo */
+.gov-bottom {
+  margin-top: 3rem;
+}
 a{
   text-decoration: none;
 }
