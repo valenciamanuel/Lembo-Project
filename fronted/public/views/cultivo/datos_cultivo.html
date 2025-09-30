@@ -5,133 +5,199 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Editar Cultivo</title>
     <link rel="stylesheet" href="/fronted/public/css/main.css">
-    <script src="/fronted/public/views/components/header.js"></script>
+    <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
+    <script src="/fronted/public/views/components/header.js" defer></script>
+    <style>
+        .form__message.error {
+            color: #dc3545;
+            margin-bottom: 1rem;
+            font-size: 1rem;
+        }
+    </style>
 </head>
 <body>
-      <!-- Barra GOV superior -->
-  <div class="gov-top">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-  </div>
-    <header class="header"></header>
+    <div class="gov-top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+    </div>
+    <header class="header"style="top: 5rem;"></header>
+
     <main class="form-container">
-        <form class="form" id="edit-form">
+        <form class="form" id="edit-form" enctype="multipart/form-data" novalidate>
             <h2 class="form__title">Editar Cultivo</h2>
+            <div id="mensajeValidacion" class="form__message"></div>
             <input type="hidden" id="cultivoId">
 
             <div class="form__row">
                 <div class="form__column">
-                    <label class="form__label">Cargar imagen</label>
-                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
-    
-                    <label class="form__label">Tipo cultivo</label>
-                    <input class="form__input cultivo__input--type" type="text" name="cultivoType" id="cultivoType">
-    
-                    <label class="form__label">Nombre Cultivo</label>
-                    <input class="form__input cultivo__input--name" type="text" name="cultivoName" id="cultivoName">
-    
-                    <label class="form__label">Identificador cultivo</label>
-                    <input class="form__input cultivo__input--ID" type="text" name="cultivoID" id="cultivoID">
+                    <label class="form__label" for="image">Imagen</label>
+                    <input class="form__input" type="file" name="image" id="image" accept="image/*">
+
+                    <label class="form__label" for="cultivoType">Tipo cultivo</label>
+                    <input class="form__input" type="text" id="cultivoType" name="cultivoType" required>
+
+                    <label class="form__label" for="cultivoName">Nombre Cultivo</label>
+                    <input class="form__input" type="text" id="cultivoName" name="cultivoName" required>
+
+                    <label class="form__label" for="cultivoID">Identificador cultivo</label>
+                    <input class="form__input" type="text" id="cultivoID" name="cultivoID" required>
                 </div>
-    
                 <div class="form__column">
-                    <label class="form__label">Tamaño</label>
-                    <input class="form__input cultivo__input--size" type="text" name="size" id="size">
-    
-                    <label class="form__label">Ubicacion</label>
-                    <input class="form__input cultivo__input--location" type="text" name="location" id="location">
-    
-                    <label class="form__label">Descripción</label>
-                    <textarea class="form__input cultivo__input--description" name="description" id="description"></textarea>
-    
-                    <label class="form__label">Estado (activo / inactivo)</label>
-                    <select name="state" class="form__input cultivo__input--state" id="state">
-                        <option value="">Seleccione una opción</option>
-                        <option value="Activo">Activo</option>
-                        <option value="Inactivo">Inactivo</option>
+                    <label class="form__label" for="size">Tamaño</label>
+                    <input class="form__input" type="text" id="size" name="size" required>
+
+                    <label class="form__label" for="location">Ubicación</label>
+                    <input class="form__input" type="text" id="location" name="location" required>
+
+                    <label class="form__label" for="description">Descripción</label>
+                    <textarea class="form__input" id="description" name="description" required></textarea>
+
+                    <label class="form__label" for="state">Estado</label>
+                    <select class="form__input" id="state" name="state" required>
+                        <option value="">Seleccione</option>
+                        <option value="activo">Activo</option>
+                        <option value="inactivo">Inactivo</option>
                     </select>
                 </div>
             </div>
-    
+
             <div class="form__btn-group">
-                <button type="submit" class="form__btn form__btn--registrar" id="submitBtn">Actualizar</button>
-                <a href="listar_cultivos.html" class="btn__secundary">Cancelar</a>
+                <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+                <a href="listar_cultivo.html" class="btn__secundary">Cancelar</a>
             </div>
         </form>
     </main>
 
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const cultivoId = urlParams.get('id');
-            const form = document.getElementById('edit-form');
+    <div class="gov-bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+    </div>
 
-            if (!cultivoId) {
-                console.error('No se encontró el ID del cultivo en la URL.');
-                alert('Error: No se encontró el ID del cultivo.');
+    <script>
+        const showError = msg => {
+            const el = document.getElementById('mensajeValidacion');
+            el.textContent = msg;
+            el.classList.add('error');
+        };
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const params = new URLSearchParams(window.location.search);
+            const cultivoId = params.get('id'); // Variable con el ID correcto
+            
+            if (!cultivoId) { 
+                alert('ID no proporcionado'); 
+                return; 
+            }
+
+            const form = document.getElementById('edit-form');
+            const fields = ['cultivoType', 'cultivoName', 'cultivoID', 'size', 'location', 'description', 'state'];
+            let currentImage = ''; // Variable para guardar la imagen actual
+            
+            // Cargar datos existentes
+            try {
+                const res = await fetch(`http://localhost:3000/cultivo/${cultivoId}`);
+                if (!res.ok) throw new Error('Error al cargar datos');
+                const data = await res.json();
+                
+                document.getElementById('cultivoId').value = data.id;
+                currentImage = data.image || ''; // Guardar imagen actual
+                
+                fields.forEach(f => {
+                    const element = document.getElementById(f);
+                    if (element) {
+                        element.value = data[f] || '';
+                    }
+                });
+            } catch (error) {
+                console.error(error);
+                alert('Error al cargar datos del cultivo');
                 return;
             }
 
-            // Fetch existing data
-            try {
-                const response = await fetch(`http://localhost:3000/cultivo/${cultivoId}`);
-                if (!response.ok) {
-                    throw new Error('Error al obtener los datos del cultivo.');
-                }
-                const data = await response.json();
-                
-                // Populate form fields
-                document.getElementById('cultivoId').value = data.id;
-                document.getElementById('cultivoType').value = data.cultivoType;
-                document.getElementById('cultivoName').value = data.cultivoName;
-                document.getElementById('cultivoID').value = data.cultivoID;
-                document.getElementById('size').value = data.size;
-                document.getElementById('location').value = data.location;
-                document.getElementById('description').value = data.description;
-                document.getElementById('state').value = data.state;
-            } catch (error) {
-                console.error("❌ Error cargando datos:", error);
-                alert(`Error al cargar los datos: ${error.message}`);
-            }
-
-            // Handle form submission
-            form.addEventListener('submit', async (e) => {
+            // Manejar envío del formulario
+            form.addEventListener('submit', async e => {
                 e.preventDefault();
+                document.getElementById('mensajeValidacion').textContent = '';
+
+                // Validaciones
+                const vals = {};
+                for (const f of fields) {
+                    vals[f] = document.getElementById(f).value.trim();
+                    if (!vals[f]) { 
+                        showError('Todos los campos obligatorios deben llenarse'); 
+                        return; 
+                    }
+                }
                 
-                const updatedData = {
-                    id: document.getElementById('cultivoId').value,
-                    cultivoType: document.getElementById('cultivoType').value,
-                    cultivoName: document.getElementById('cultivoName').value,
-                    cultivoID: document.getElementById('cultivoID').value,
-                    size: document.getElementById('size').value,
-                    location: document.getElementById('location').value,
-                    description: document.getElementById('description').value,
-                    state: document.getElementById('state').value
-                };
+                if (vals.cultivoType.length < 3) { 
+                    showError('Tipo de cultivo mínimo 3 caracteres'); 
+                    return; 
+                }
+                if (vals.cultivoName.length < 3) { 
+                    showError('Nombre de cultivo mínimo 3 caracteres'); 
+                    return; 
+                }
+                if (!/^[A-Za-z0-9_-]+$/.test(vals.cultivoID)) {
+                    showError('Identificador solo puede contener letras, números, guiones o _'); 
+                    return;
+                }
+                if (vals.cultivoID.length < 3) { 
+                    showError('ID cultivo mínimo 3 caracteres'); 
+                    return; 
+                }
+                if (vals.size.length < 1) { 
+                    showError('Tamaño no puede estar vacío'); 
+                    return; 
+                }
+                if (vals.location.length < 3) { 
+                    showError('Ubicación mínimo 3 caracteres'); 
+                    return; 
+                }
+                if (vals.description.length < 5) { 
+                    showError('Descripción mínimo 5 caracteres'); 
+                    return; 
+                }
+
+                // Crear FormData
+                const formData = new FormData();
+                formData.append('cultivoType', vals.cultivoType);
+                formData.append('cultivoName', vals.cultivoName);
+                formData.append('cultivoID', vals.cultivoID);
+                formData.append('size', vals.size);
+                formData.append('location', vals.location);
+                formData.append('description', vals.description);
+                formData.append('state', vals.state);
+                
+                // Manejar imagen
+                const fileInput = document.getElementById('image');
+                const newFile = fileInput.files[0];
+                
+                if (newFile) {
+                    // Si hay nueva imagen, agregarla
+                    formData.append('image', newFile);
+                } else {
+                    // Si no hay nueva imagen, mantener la actual
+                    formData.append('image', currentImage);
+                }
 
                 try {
                     const response = await fetch(`http://localhost:3000/cultivo/${cultivoId}`, {
                         method: 'PUT',
-                        headers: { 'Content-Type': 'application/json' },
-                        body: JSON.stringify(updatedData)
+                        body: formData
                     });
-
+                    
                     if (!response.ok) {
                         const errorData = await response.json();
-                        throw new Error(errorData.error || 'Error al actualizar el cultivo.');
+                        throw new Error(errorData.error || 'Error al actualizar cultivo');
                     }
                     
-                    alert('✅ Cultivo actualizado exitosamente.');
+                    alert('✅ Cultivo actualizado exitosamente');
                     window.location.href = 'listar_cultivo.html';
+                    
                 } catch (error) {
-                    console.error("❌ Error al actualizar el cultivo:", error);
-                    alert(`Error al actualizar: ${error.message}`);
+                    console.error('Error:', error);
+                    showError(error.message);
                 }
             });
         });
     </script>
 </body>
 </html>
-<!-- Barra GOV inferior -->
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>

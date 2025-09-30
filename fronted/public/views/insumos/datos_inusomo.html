@@ -7,72 +7,66 @@
   <link rel="stylesheet" href="/fronted/public/css/main.css">
   <link rel="stylesheet" href="/fronted/public/css/pages/editar.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
+  <style>
+    .form__message.error { color: #dc3545; margin-bottom: 1rem; font-size: 1rem; }
+  </style>
 </head>
 <body>
-    <!-- Barra GOV superior -->
   <div class="gov-top">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
   </div>
   <header class="header"></header>
 
   <main class="form-container">
-    <form class="form" id="edit-insumo-form">
+    <form class="form" id="edit-insumo-form" enctype="multipart/form-data" novalidate>
       <h2 class="form__title">Editar Insumo</h2>
+      <div id="mensajeValidacion" class="form__message"></div>
       <input type="hidden" id="idInsumo">
 
       <div class="form__row">
         <div class="form__column">
-          <label class="form__label">Nombre del Insumo</label>
-          <input class="form__input" type="text" id="nombreInsumo">
+          <label class="form__label" for="imageFile">Imagen</label>
+          <input class="form__input" type="file" id="imageFile" name="image" accept="image/*">
+
+          <label class="form__label" for="tipoInsumo">Tipo de Insumo</label>
+          <input class="form__input" type="text" id="tipoInsumo" name="tipoInsumo" required>
+
+          <label class="form__label" for="nombreInsumo">Nombre del Insumo</label>
+          <input class="form__input" type="text" id="nombreInsumo" name="nombreInsumo" required>
         </div>
         <div class="form__column">
-          <label class="form__label">Unidad de Medida</label>
-          <input class="form__input" type="text" id="unidadMedida">
+          <label class="form__label" for="unidadMedida">Unidad de Medida</label>
+          <input class="form__input" type="text" id="unidadMedida" name="unidadMedida" required>
+
+          <label class="form__label" for="cantidad">Cantidad</label>
+          <input class="form__input" type="number" id="cantidad" name="cantidad" step="0.01" required>
         </div>
       </div>
 
       <div class="form__row">
         <div class="form__column">
-          <label class="form__label">Tipo de Insumo</label>
-          <input class="form__input" type="text" id="tipoInsumo">
+          <label class="form__label" for="valorUnitario">Valor Unitario</label>
+          <input class="form__input" type="number" id="valorUnitario" name="valorUnitario" step="0.01" required>
         </div>
         <div class="form__column">
-          <label class="form__label">Valor Unitario</label>
-          <input class="form__input" type="number" id="valorUnitario" step="0.01">
-        </div>
-      </div>
-
-      <div class="form__row">
-        <div class="form__column">
-          <label class="form__label">Cantidad</label>
-          <input class="form__input" type="number" id="cantidad" step="0.01">
-        </div>
-        <div class="form__column">
-          <label class="form__label">Valor Total</label>
-          <input class="form__input" type="number" id="valorTotal" step="0.01">
+          <label class="form__label" for="valorTotal">Valor Total</label>
+          <input class="form__input" type="number" id="valorTotal" name="valorTotal" step="0.01" required>
         </div>
       </div>
 
       <div class="form__row">
         <div class="form__column">
-          <label class="form__label">Descripción</label>
-          <textarea class="form__input" id="descripcion"></textarea>
+          <label class="form__label" for="descripcion">Descripción</label>
+          <textarea class="form__input" id="descripcion" name="descripcion" required></textarea>
         </div>
         <div class="form__column">
-          <label class="form__label">Estado</label>
-          <select class="form__input" id="estado">
+          <label class="form__label" for="estado">Estado</label>
+          <select class="form__input" id="estado" name="estado" required>
+            <option value="">Seleccione</option>
             <option value="Activo">Activo</option>
             <option value="Inactivo">Inactivo</option>
           </select>
         </div>
-      </div>
-
-      <div class="form__row">
-        <div class="form__column">
-          <label class="form__label">Imagen (nombre archivo o URL)</label>
-          <input class="form__input" type="text" id="image">
-        </div>
-        <div class="form__column"></div>
       </div>
 
       <div class="form__btn-group">
@@ -82,74 +76,87 @@
     </form>
   </main>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const idInsumo = urlParams.get('id');
-      const form = document.getElementById('edit-insumo-form');
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
 
-      if (!idInsumo) {
-        alert("Error: No se encontró el ID del insumo en la URL.");
+  <script>
+    const showError = text => {
+      const msg = document.getElementById('mensajeValidacion');
+      msg.textContent = text;
+      msg.classList.add('error');
+    };
+
+    document.addEventListener("DOMContentLoaded", async () => {
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id');
+      if (!id) { alert('ID no proporcionado'); return; }
+
+      const form = document.getElementById('edit-insumo-form');
+      const fields = ['tipoInsumo','nombreInsumo','unidadMedida','cantidad','valorUnitario','valorTotal','descripcion','estado'];
+      // Cargar datos
+      try {
+        const res = await fetch(`http://localhost:3000/insumo/${id}`);
+        if (!res.ok) throw Error();
+        const data = await res.json();
+        document.getElementById('idInsumo').value = data.idInsumo;
+        fields.forEach(f => {
+          const el = document.getElementById(f);
+          if (el) el.value = data[f] ?? '';
+        });
+      } catch {
+        alert('Error cargando datos');
         return;
       }
 
-      // ✅ Cargar datos existentes
-      try {
-        const res = await fetch(`http://localhost:3000/insumo/${idInsumo}`);
-        if (!res.ok) throw new Error("Error al obtener los datos del insumo.");
-        const data = await res.json();
-
-        document.getElementById('idInsumo').value = data.idInsumo;
-        document.getElementById('nombreInsumo').value = data.nombreInsumo || "";
-        document.getElementById('tipoInsumo').value = data.tipoInsumo || "";
-        document.getElementById('cantidad').value = data.cantidad || 0;
-        document.getElementById('unidadMedida').value = data.unidadMedida || "";
-        document.getElementById('valorUnitario').value = data.valorUnitario || 0;
-        document.getElementById('valorTotal').value = data.valorTotal || 0;
-        document.getElementById('descripcion').value = data.descripcion || "";
-        document.getElementById('estado').value = data.estado || "Activo";
-        document.getElementById('image').value = data.image || "";
-      } catch (error) {
-        console.error("❌ Error cargando datos:", error);
-        alert("Error al cargar los datos del insumo.");
-      }
-
-      // ✅ Guardar cambios
-      form.addEventListener("submit", async (e) => {
+      form.addEventListener('submit', async e => {
         e.preventDefault();
+        document.getElementById('mensajeValidacion').textContent='';
 
-        const updatedData = {
-          nombreInsumo: document.getElementById('nombreInsumo').value,
-          tipoInsumo: document.getElementById('tipoInsumo').value,
-          cantidad: document.getElementById('cantidad').value,
-          unidadMedida: document.getElementById('unidadMedida').value,
-          valorUnitario: document.getElementById('valorUnitario').value,
-          valorTotal: document.getElementById('valorTotal').value,
-          descripcion: document.getElementById('descripcion').value,
-          estado: document.getElementById('estado').value || "Activo", // 👈 evita vacío
-          image: document.getElementById('image').value || null
-        };
+        // Validaciones
+        for (const f of fields) {
+          const el = document.getElementById(f);
+          if (!el.value.trim()) { showError('Todos los campos obligatorios deben llenarse'); return; }
+        }
+        const num = parseFloat(document.getElementById('cantidad').value);
+        if (isNaN(num) || num<=0) { showError('Cantidad > 0'); return; }
+        const vu = parseFloat(document.getElementById('valorUnitario').value);
+        if (isNaN(vu) || vu<0) { showError('Valor unitario >= 0'); return; }
+        const vt = parseFloat(document.getElementById('valorTotal').value);
+        if (isNaN(vt) || vt<0) { showError('Valor total >= 0'); return; }
+        if (document.getElementById('descripcion').value.trim().length<3) {
+          showError('Descripción muy corta'); return;
+        }
+
+        // FormData
+        const formData = new FormData();
+        formData.append('tipoInsumo', document.getElementById('tipoInsumo').value);
+        formData.append('nombreInsumo', document.getElementById('nombreInsumo').value);
+        formData.append('unidadMedida', document.getElementById('unidadMedida').value);
+        formData.append('cantidad', document.getElementById('cantidad').value);
+        formData.append('valorUnitario', document.getElementById('valorUnitario').value);
+        formData.append('valorTotal', document.getElementById('valorTotal').value);
+        formData.append('descripcion', document.getElementById('descripcion').value);
+        formData.append('estado', document.getElementById('estado').value);
+        const file = document.getElementById('imageFile').files[0];
+        if (file) formData.append('image', file);
 
         try {
-          const res = await fetch(`http://localhost:3000/insumo/${idInsumo}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedData)
+          const resp = await fetch(`http://localhost:3000/insumo/${id}`, {
+            method:'PUT',
+            body: formData
           });
-
-          if (!res.ok) throw new Error("Error al actualizar el insumo.");
-          alert("✅ Insumo actualizado exitosamente.");
-          window.location.href = "listar_insumo.html";
-        } catch (error) {
-          console.error("❌ Error al actualizar:", error);
-          alert("Error al actualizar insumo.");
+          if (!resp.ok) {
+            const e = await resp.json();
+            throw new Error(e.error||'Error al actualizar');
+          }
+          alert('✅ Insumo actualizado');
+          window.location.href='listar_insumo.html';
+        } catch (err) {
+          showError(err.message);
         }
       });
     });
   </script>
 </body>
 </html>
-<!-- Barra GOV inferior -->
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>

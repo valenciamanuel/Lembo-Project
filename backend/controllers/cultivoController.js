@@ -1,131 +1,117 @@
-const pool = require('../config/db'); 
-const fs = require('fs');
+// controllers/cultivoController.js
+const pool = require('../config/db');
+const fs = require('fs/promises');
 const path = require('path');
+const multer = require('multer');
 
-// --- Función de utilidad para eliminar el archivo ---
-const deleteFileIfExist = (filename) => {
-    if (filename) {
-        // Aseguramos la ruta correcta a la carpeta 'uploads'
-        const filePath = path.join(__dirname, '..', '..', 'uploads', filename); 
-        if (fs.existsSync(filePath)) {
-            try {
-                fs.unlinkSync(filePath);
-                console.log(`🗑️ Archivo ${filename} eliminado.`);
-            } catch (err) {
-                console.error(`❌ Error al eliminar el archivo ${filename}:`, err);
-            }
-        }
-    }
+// Ruta de uploads en frontend
+const UPLOADS_PATH = path.join(__dirname, '..', '..', 'fronted', 'public', 'uploads');
+
+// Multer config
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => cb(null, UPLOADS_PATH),
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = `${Date.now()}-${Math.round(Math.random()*1e9)}${ext}`;
+    cb(null, name);
+  }
+});
+const upload = multer({ storage });
+
+// Borrar archivo si existe
+const deleteFileIfExist = async filename => {
+  if (!filename) return;
+  const filePath = path.join(UPLOADS_PATH, filename);
+  try { await fs.unlink(filePath); } catch {}
 };
 
 // Insertar cultivo
 const insertarCultivo = async (req, res) => {
-    const { cultivoType, cultivoName, cultivoID, size, location, description, state } = req.body;
-    const image = req.file ? req.file.filename : null; 
-
-    try {
-        // ✅ CORRECCIÓN CLAVE: `description` fue eliminada de la validación
-        if (!cultivoType || !cultivoName || !cultivoID || !size || !location || !state) {
-            deleteFileIfExist(image);
-            return res.status(400).json({ error: 'Faltan campos obligatorios para el registro del cultivo: Tipo, Nombre, ID, Tamaño, Ubicación y Estado.' });
-        }
-
-        const sql = `
-            INSERT INTO cultivo 
-            (cultivoType, cultivoName, cultivoID, size, location, description, state, image) 
-            VALUES (?, ?, ?, ?, ?, ?, ?, ?)
-        `;
-        
-        // ✅ AJUSTE: Si description está vacío o solo tiene espacios, lo convertimos a NULL para la DB
-        const descriptionValue = description && description.trim() !== '' ? description : null;
-
-        const values = [cultivoType, cultivoName, cultivoID, size, location, descriptionValue, state, image]; 
-        
-        const [result] = await pool.query(sql, values);
-
-        const nuevoId = result.insertId;
-        console.log('✅ Cultivo insertado correctamente:', nuevoId);
-
-        res.status(201).json({
-            id: nuevoId,
-            cultivoName,
-            cultivoID,
-            image
-        });
-    } catch (err) {
-        console.error('❌ Error al insertar el cultivo en la BD:', err);
-        deleteFileIfExist(image); 
-        res.status(500).json({ error: 'Error al insertar el cultivo. Revisa si el ID es duplicado o la DB está desconectada.' });
-    }
+  const { cultivoType, cultivoName, cultivoID, size, location, description, state } = req.body;
+  const image = req.file ? req.file.filename : null;
+  if (!cultivoType || !cultivoName || !cultivoID || !size || !location || !state) {
+    await deleteFileIfExist(image);
+    return res.status(400).json({ error: 'Faltan campos obligatorios.' });
+  }
+  const descVal = description?.trim() ? description : null;
+  try {
+    const sql = `
+      INSERT INTO cultivo
+      (cultivoType,cultivoName,cultivoID,size,location,description,state,image)
+      VALUES(?,?,?,?,?,?,?,?)
+    `;
+    const vals = [cultivoType, cultivoName, cultivoID, size, location, descVal, state.toLowerCase(), image];
+    const [resDB] = await pool.query(sql, vals);
+    res.status(201).json({ id: resDB.insertId, cultivoName, cultivoID, image });
+  } catch (err) {
+    await deleteFileIfExist(image);
+    console.error(err);
+    res.status(500).json({ error: 'Error al insertar cultivo' });
+  }
 };
 
-// Obtener cultivos
+// Obtener todos
 const obtenerCultivos = async (req, res) => {
-    try {
-        const sql = 'SELECT * FROM cultivo';
-        const [results] = await pool.query(sql); 
-        res.status(200).json(results);
-    } catch (err) {
-        console.error('❌ Error al obtener los cultivos:', err);
-        res.status(500).json({ error: 'Error al obtener los cultivos' });
-    }
+  try {
+    const [rows] = await pool.query('SELECT * FROM cultivo');
+    res.json(rows);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al obtener cultivos' });
+  }
 };
 
-// Obtener un solo cultivo por su ID
+// Obtener por ID
 const obtenerCultivoPorId = async (req, res) => {
-    const { id } = req.params;
-    try {
-        const sql = 'SELECT * FROM cultivo WHERE id = ?'; 
-        const [rows] = await pool.query(sql, [id]); 
-        
-        if (rows.length === 0) {
-            return res.status(404).json({ error: 'Cultivo no encontrado' });
-        }
-        
-        res.status(200).json(rows[0]);
-    } catch (err) {
-        console.error('❌ Error al obtener el cultivo:', err.message || err);
-        res.status(500).json({ error: 'Error al obtener el cultivo' });
-    }
+  try {
+    const [rows] = await pool.query('SELECT * FROM cultivo WHERE id = ?', [req.params.id]);
+    if (!rows.length) return res.status(404).json({ error: 'No encontrado' });
+    res.json(rows[0]);
+  } catch (err) {
+    console.error(err);
+    res.status(500).json({ error: 'Error al obtener cultivo' });
+  }
 };
 
-// Actualizar un cultivo
+// Actualizar cultivo
 const actualizarCultivo = async (req, res) => {
-    const { id } = req.params;
-    const { cultivoType, cultivoName, cultivoID, size, location, description, state } = req.body;
-    
-    // ✅ CORRECCIÓN CLAVE: `description` fue eliminada de la validación
-    if (!cultivoType || !cultivoName || !cultivoID || !size || !location || !state) {
-        return res.status(400).json({ error: 'Todos los campos obligatorios deben estar llenos.' });
+    console.log(req.body);
+  const { id } = req.params;
+  const { cultivoType, cultivoName, cultivoID, size, location, description, state, image: oldImage } = req.body;
+  let newImage = req.file ? req.file.filename : oldImage;
+  if (req.file && oldImage && oldImage !== newImage) {
+    await deleteFileIfExist(oldImage);
+  }
+  if (!cultivoType || !cultivoName || !cultivoID || !size || !location || !state) {
+    if (req.file) await deleteFileIfExist(newImage);
+    return res.status(400).json({ error: 'Campos obligatorios faltantes.' });
+  }
+  const descVal = description?.trim() ? description : null;
+  try {
+    const sql = `
+      UPDATE cultivo SET
+      cultivoType=?, cultivoName=?, cultivoID=?, size=?, location=?,
+      description=?, state=?, image=?
+      WHERE id=?
+    `;
+    const vals = [cultivoType, cultivoName, cultivoID, size, location, descVal, state.toLowerCase(), newImage, id];
+    const [result] = await pool.query(sql, vals);
+    if (!result.affectedRows) {
+      if (req.file) await deleteFileIfExist(newImage);
+      return res.status(404).json({ error: 'Cultivo no encontrado' });
     }
-
-    try {
-        // ✅ AJUSTE: Si description está vacío o solo tiene espacios, lo convertimos a NULL para la DB.
-        const descriptionValue = description && description.trim() !== '' ? description : null;
-
-        const sql = `
-            UPDATE cultivo 
-            SET cultivoType = ?, cultivoName = ?, cultivoID = ?, size = ?, location = ?, description = ?, state = ?
-            WHERE id = ?
-        `;
-        const values = [cultivoType, cultivoName, cultivoID, size, location, descriptionValue, state, id];
-        
-        const [result] = await pool.query(sql, values); 
-
-        if (result.affectedRows === 0) {
-            return res.status(404).json({ error: 'Cultivo no encontrado' });
-        }
-
-        res.status(200).json({ message: 'Cultivo actualizado exitosamente' });
-    } catch (err) {
-        console.error('❌ Error al actualizar el cultivo:', err.message || err);
-        res.status(500).json({ error: 'Error al actualizar el cultivo' });
-    }
+    res.json({ message: '✅ Cultivo actualizado', image: newImage });
+  } catch (err) {
+    if (req.file) await deleteFileIfExist(newImage);
+    console.error(err);
+    res.status(500).json({ error: 'Error al actualizar cultivo' });
+  }
 };
 
 module.exports = {
-    insertarCultivo,
-    obtenerCultivos,
-    obtenerCultivoPorId,
-    actualizarCultivo,
+  upload,
+  insertarCultivo,
+  obtenerCultivos,
+  obtenerCultivoPorId,
+  actualizarCultivo
 };

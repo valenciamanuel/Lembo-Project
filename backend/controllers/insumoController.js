@@ -1,69 +1,57 @@
 const db = require('../config/db.js');
-const fs = require('fs/promises'); // Para manejar archivos (útil en actualización/eliminación)
-const multer = require('../../fronted/public/uploads');
+const fs = require('fs/promises');
 const path = require('path');
+const multer = require('multer');
 
-// --- Función de utilidad para obtener la ruta de uploads ---
-// Asumiendo que MulterConfig guarda en: 
-// backend/../fronted/public/uploads
+// Directorio de uploads en el frontend
 const UPLOADS_PATH = path.join(__dirname, '..', '..', 'fronted', 'public', 'uploads');
 
+// Configuración de Multer
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, UPLOADS_PATH);
+  },
+  filename: (req, file, cb) => {
+    const ext = path.extname(file.originalname);
+    const name = `${Date.now()}-${Math.round(Math.random()*1E9)}${ext}`;
+    cb(null, name);
+  }
+});
+const upload = multer({ storage });
 
-// Insertar insumo
+// Middleware para rutas que suben archivos
+// Ejemplo: router.post('/insumo', upload.single('image'), insertarInsumo);
+
 const insertarInsumo = async (req, res) => {
-  // El nombre de la imagen viene de req.file si se subió algo.
-  // req.body contiene los campos de texto.
   const { tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado } = req.body;
-  
-  // ✅ CORRECCIÓN: Usar req.file.filename si existe, si no, es NULL.
-  const image = req.file ? req.file.filename : null; 
+  const image = req.file ? req.file.filename : null;
 
-  // Validación mínima
-  if (!tipoInsumo || !nombreInsumo || !unidadMedida || cantidad == null || valorUnitario == null || valorTotal == null || !descripcion || !estado) {
-    // Si la validación falla, y se subió un archivo, debemos ELIMINARLO.
+  if (!tipoInsumo || !nombreInsumo || !unidadMedida || cantidad == null ||
+      valorUnitario == null || valorTotal == null || !descripcion || !estado) {
     if (req.file) {
-        await fs.unlink(req.file.path).catch(err => console.error("Error al eliminar archivo fallido:", err));
+      await fs.unlink(path.join(UPLOADS_PATH, req.file.filename)).catch(console.error);
     }
     return res.status(400).json({ error: 'Todos los campos son obligatorios (image opcional)' });
   }
 
   try {
     const sql = `
-      INSERT INTO insumo 
-      (tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image) 
+      INSERT INTO insumo
+      (tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image)
       VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
     `;
     const values = [tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image];
-
     const [result] = await db.query(sql, values);
-
-    res.status(201).json({
-      idInsumo: result.insertId,
-      tipoInsumo,
-      nombreInsumo,
-      unidadMedida,
-      cantidad,
-      valorUnitario,
-      valorTotal,
-      descripcion,
-      estado,
-      image
-    });
+    res.status(201).json({ idInsumo: result.insertId, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image });
   } catch (err) {
-    // Si falla la DB, eliminar el archivo subido.
-    if (req.file) {
-        await fs.unlink(req.file.path).catch(err => console.error("Error al eliminar archivo después de fallo DB:", err));
-    }
+    if (req.file) await fs.unlink(path.join(UPLOADS_PATH, req.file.filename)).catch(console.error);
     console.error('❌ Error al insertar el insumo:', err);
     res.status(500).json({ error: 'Error al insertar el insumo' });
   }
 };
 
-// Obtener todos los insumos
-// (Esta función estaba en el router, pero la ponemos aquí si la necesitas en el futuro)
 const obtenerInsumos = async (req, res) => {
   try {
-    // Si la usas desde el router, es mejor obtener *todos* los campos necesarios para visualizar
     const sql = 'SELECT idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image FROM insumo';
     const [results] = await db.query(sql);
     res.status(200).json(results);
@@ -73,16 +61,11 @@ const obtenerInsumos = async (req, res) => {
   }
 };
 
-// Obtener insumo por ID
 const obtenerInsumoPorId = async (req, res) => {
   try {
     const { id } = req.params;
     const [rows] = await db.query("SELECT * FROM insumo WHERE idInsumo = ?", [id]);
-
-    if (rows.length === 0) {
-      return res.status(404).json({ error: "Insumo no encontrado" });
-    }
-
+    if (rows.length === 0) return res.status(404).json({ error: "Insumo no encontrado" });
     res.json(rows[0]);
   } catch (err) {
     console.error("❌ Error al obtener insumo:", err);
@@ -90,64 +73,40 @@ const obtenerInsumoPorId = async (req, res) => {
   }
 };
 
-// Actualizar insumo
 const actualizarInsumo = async (req, res) => {
   const { id } = req.params;
-  // Los datos de texto están en req.body
   let { nombreInsumo, tipoInsumo, cantidad, unidadMedida, valorUnitario, valorTotal, descripcion, estado, image: oldImage } = req.body;
-  
-  // 1. Determinar la imagen a guardar: 
-  // Si Multer subió una nueva imagen, usamos esa. Si no, usamos la que ya venía en el body (oldImage).
-  const newImageName = req.file ? req.file.filename : oldImage;
-  
-  // 2. Si se subió un nuevo archivo, eliminar el archivo antiguo si es diferente
-  if (req.file && oldImage && req.file.filename !== oldImage) {
-      const oldImagePath = path.join(UPLOADS_PATH, oldImage);
-      await fs.unlink(oldImagePath).catch(err => console.error("Advertencia: No se pudo eliminar la imagen antigua:", oldImage, err));
+  const newImage = req.file ? req.file.filename : oldImage;
+
+  if (req.file && oldImage && newImage !== oldImage) {
+    await fs.unlink(path.join(UPLOADS_PATH, oldImage)).catch(console.error);
   }
-  
-  // 3. Normalizar valores (Esto ya lo tenías, lo mantengo)
-  nombreInsumo = nombreInsumo ?? null;
-  tipoInsumo = tipoInsumo ?? null;
-  cantidad = cantidad ?? null;
-  unidadMedida = unidadMedida ?? null;
-  valorUnitario = valorUnitario ?? null;
-  valorTotal = valorTotal ?? null;
-  descripcion = descripcion ?? null;
-  estado = estado ?? null;
-  
+
   try {
     const sql = `
       UPDATE insumo
-      SET nombreInsumo = ?, tipoInsumo = ?, cantidad = ?, unidadMedida = ?, valorUnitario = ?, valorTotal = ?, descripcion = ?, estado = ?, image = ?
-      WHERE idInsumo = ?
+      SET nombreInsumo=?, tipoInsumo=?, cantidad=?, unidadMedida=?, valorUnitario=?, valorTotal=?, descripcion=?, estado=?, image=?
+      WHERE idInsumo=?
     `;
-    const values = [nombreInsumo, tipoInsumo, cantidad, unidadMedida, valorUnitario, valorTotal, descripcion, estado, newImageName, id];
-
+    const values = [nombreInsumo, tipoInsumo, cantidad, unidadMedida, valorUnitario, valorTotal, descripcion, estado, newImage, id];
     const [result] = await db.query(sql, values);
 
     if (result.affectedRows === 0) {
-      // Si la actualización falla, y se subió un archivo nuevo, eliminarlo.
-      if (req.file) {
-          await fs.unlink(req.file.path).catch(err => console.error("Error al eliminar nuevo archivo después de fallo UPDATE:", err));
-      }
-      return res.status(404).json({ error: "Insumo no encontrado o no se realizaron cambios" });
+      if (req.file) await fs.unlink(path.join(UPLOADS_PATH, newImage)).catch(console.error);
+      return res.status(404).json({ error: "Insumo no encontrado o sin cambios" });
     }
-
-    res.json({ message: "✅ Insumo actualizado correctamente", newImage: newImageName });
+    res.json({ message: "✅ Insumo actualizado correctamente", image: newImage });
   } catch (err) {
-    // Si falla la DB, eliminar el archivo subido.
-    if (req.file) {
-        await fs.unlink(req.file.path).catch(err => console.error("Error al eliminar archivo después de fallo DB:", err));
-    }
+    if (req.file) await fs.unlink(path.join(UPLOADS_PATH, req.file.filename)).catch(console.error);
     console.error("❌ Error al actualizar insumo:", err);
     res.status(500).json({ error: "Error al actualizar insumo" });
   }
 };
 
 module.exports = {
+  upload,
   insertarInsumo,
-  obtenerInsumos, // Exportamos esta función aunque no se use en el router actual.
+  obtenerInsumos,
   obtenerInsumoPorId,
-  actualizarInsumo,
+  actualizarInsumo
 };

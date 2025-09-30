@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -13,6 +14,7 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
+
 <body>
   <!-- GOV superior -->
   <div class="gov-top">
@@ -100,19 +102,22 @@
               <td>${i.valorUnitario}</td>
               <td>${i.valorTotal}</td>
               <td>
-                <span class="status-badge ${i.estado==='activo'?'status-activo':'status-inactivo'}">
+                <span class="status-badge ${i.estado === 'activo' ? 'status-activo' : 'status-inactivo'}">
                   ${i.estado}
                 </span>
               </td>
-              <td>${i.image?`<img src="/uploads/${i.image}" width="60">`:'Sin imagen'}</td>
               <td>
+                ${i.image
+                ? `<img src="/fronted/public/uploads/${i.image}" alt="Imagen de ${i.nombreInsumo}" width="60" style="border-radius:6px; object-fit:cover;">`
+                : 'Sin imagen'}
+              </td>
                 <button class="btn btn-warning btn-sm" onclick="editInsumo(${i.idInsumo})" title="Editar">
                   <i class="material-icons">edit</i>
                 </button>
-                <button class="btn ${i.estado==='activo'?'btn-danger':'btn-success'} btn-sm"
+                <button class="btn ${i.estado === 'activo' ? 'btn-danger' : 'btn-success'} btn-sm"
                         onclick="toggleInsumoStatus(${i.idInsumo},'${i.estado}')"
-                        title="${i.estado==='activo'?'Desactivar':'Activar'}">
-                  <i class="material-icons">${i.estado==='activo'?'visibility_off':'visibility'}</i>
+                        title="${i.estado === 'activo' ? 'Desactivar' : 'Activar'}">
+                  <i class="material-icons">${i.estado === 'activo' ? 'visibility_off' : 'visibility'}</i>
                 </button>
               </td>
             `;
@@ -135,8 +140,8 @@
 
     async function toggleInsumoStatus(id, current) {
       try {
-        const insumo = insumosData.find(x=>x.idInsumo===id);
-        const newEstado = current==='activo'?'inactivo':'activo';
+        const insumo = insumosData.find(x => x.idInsumo === id);
+        const newEstado = current === 'activo' ? 'inactivo' : 'activo';
         const body = {
           tipoInsumo: insumo.tipoInsumo,
           nombreInsumo: insumo.nombreInsumo,
@@ -148,13 +153,13 @@
           estado: newEstado
         };
         const res = await fetch(`http://localhost:3000/insumo/${id}`, {
-          method:'PUT',
-          headers:{'Content-Type':'application/json'},
+          method: 'PUT',
+          headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify(body)
         });
-        if(!res.ok) throw new Error();
+        if (!res.ok) throw new Error();
         await loadInsumos();
-        alert(`Insumo ${newEstado==='activo'?'activado':'desactivado'}`);
+        alert(`Insumo ${newEstado === 'activo' ? 'activado' : 'desactivado'}`);
       } catch {
         alert('Error al cambiar estado');
       }
@@ -164,32 +169,33 @@
       const { jsPDF } = window.jspdf;
       const doc = new jsPDF();
       doc.setFontSize(18);
-      doc.text('Lista de Insumos',14,20);
+      doc.text('Lista de Insumos', 14, 20);
       doc.setFontSize(11);
-      doc.text(`Fecha: ${new Date().toLocaleDateString()}`,14,28);
-      const rows = insumosData.map(i=>[
+      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 28);
+      const rows = insumosData.map(i => [
         i.idInsumo, i.tipoInsumo, i.nombreInsumo,
         i.cantidad, i.valorUnitario, i.valorTotal, i.estado
       ]);
       doc.autoTable({
-        head:[['ID','Tipo','Nombre','Cantidad','Valor U.','Valor T.','Estado']],
-        body:rows, startY:35, theme:'grid',
-        headStyles:{fillColor:[57,169,0]},styles:{fontSize:9}
+        head: [['ID', 'Tipo', 'Nombre', 'Cantidad', 'Valor U.', 'Valor T.', 'Estado']],
+        body: rows, startY: 35, theme: 'grid',
+        headStyles: { fillColor: [57, 169, 0] }, styles: { fontSize: 9 }
       });
       doc.save('insumos.pdf');
     }
 
     function exportToExcel() {
-      const data = insumosData.map(i=>({
-        ID:i.idInsumo, Tipo:i.tipoInsumo, Nombre:i.nombreInsumo,
-        Cantidad:i.cantidad, ValorUnitario:i.valorUnitario,
-        ValorTotal:i.valorTotal, Estado:i.estado
+      const data = insumosData.map(i => ({
+        ID: i.idInsumo, Tipo: i.tipoInsumo, Nombre: i.nombreInsumo,
+        Cantidad: i.cantidad, ValorUnitario: i.valorUnitario,
+        ValorTotal: i.valorTotal, Estado: i.estado
       }));
       const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb,ws,'Insumos');
-      XLSX.writeFile(wb,'insumos.xlsx');
+      XLSX.utils.book_append_sheet(wb, ws, 'Insumos');
+      XLSX.writeFile(wb, 'insumos.xlsx');
     }
   </script>
 </body>
+
 </html>

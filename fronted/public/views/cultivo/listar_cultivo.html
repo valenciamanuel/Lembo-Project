@@ -98,8 +98,11 @@
                   ${c.state}
                 </span>
               </td>
-              <td>${c.image?`<img src="/uploads/${c.image}" width="60">`:'Sin imagen'}</td>
               <td>
+                ${c.image
+                ? `<img src="/fronted/public/uploads/${c.image}" alt="Imagen de ${c.cultivoName}" width="60" style="border-radius:6px; object-fit:cover;">`
+                : 'Sin imagen'}
+              </td>
                 <button class="btn btn-warning btn-sm" onclick="editCultivo(${c.id})" title="Editar">
                   <i class="material-icons">edit</i>
                 </button>

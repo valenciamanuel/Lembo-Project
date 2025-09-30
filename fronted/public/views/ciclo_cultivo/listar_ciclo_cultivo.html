@@ -54,7 +54,6 @@
           <th>Novedades</th>
           <th>Descripción</th>
           <th>Estado</th>
-          <th>Imagen</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -108,8 +107,7 @@
                   ${c.state}
                 </span>
               </td>
-              <td>${c.image?`<img src="/uploads/${c.image}" width="60">`:'Sin imagen'}</td>
-              <td>
+              
                 <button class="btn btn-warning btn-sm" onclick="editCiclo(${c.id})" title="Editar">
                   <i class="material-icons">edit</i>
                 </button>
