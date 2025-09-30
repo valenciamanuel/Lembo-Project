@@ -1,45 +1,37 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home cultivo</title>
-    <!-- <link rel="stylesheet" href="../CSS/stylieshome-cultivo.css"> -->
-    <link rel="stylesheet" href="/fronted/public/css/pages/homes/stylieshome-cultivo.css">
+    <title>Home Cultivo</title>
+    <link rel="stylesheet" href="/fronted/public/css/pages/homes/stylieshome-insumos-sensores.css">
     <script src="/fronted/public/views/components/grid.js"></script>
-    
 </head>
-<body>
 
-    <header class="header">
-        <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="header__logo">
+<body> <!-- Banner superior -->
+    <div class="header-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img">
+    </div> <!-- Header -->
+    <header class="header"> <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA"
+            class="header__logo">
         <nav class="header__nav">
-            <h2 class="header__title">SGL</h2>
-            <a class="header__link" href="home-ciclo.html">Ciclo cultivo</a>
-            <a class="header__link" href="home-insumos.html">Insumos</a>
-            <a class="header__link" href="home-sensores.html">Sensores</a>
-            <a class="header__link" href="index.html">Inicio</a>
+             <a href="home-ciclo.html" class="header__link">Ciclo cultivo</a> <a
+                href="home-insumos.html" class="header__link">Insumos</a> <a href="home-sensores.html"
+                class="header__link">Sensores</a> <a href="index.html" class="header__link">Inicio</a> <a id="btnLogout"
+                class="header__link" style="cursor:pointer">Cerrar Sesión</a>
         </nav>
     </header>
-
-    <div class="background">
+    <main class="background">
         <div class="top-boxes">
-            <div class="top-boxes__item">
-                <p><a href="../cultivo/crear_cultivo.html">Crear cultivo</a></p>
-            </div>
-            <div class="top-boxes__item">
-                <p class="top-boxes__text"><a href="../cultivo/visualizar_cultivo.html">Visualizar cultivo</a></p>
-            </div>
-            <div class="top-boxes__item">
-                <p><a href="../cultivo/listar_cultivo.html">Listar cultivo</a></p>
-            </div>
+            <div class="top-boxes__item"><a href="../cultivo/crear_cultivo.html">Crear cultivo</a></div>
+            <div class="top-boxes__item"><a href="../cultivo/visualizar_cultivo.html">Visualizar cultivo</a></div>
+            <div class="top-boxes__item"><a href="../cultivo/listar_cultivo.html">Listar cultivo</a></div>
         </div>
         <div class="grid"></div>
-    </div>
-
-    <footer class="footer">
-        <button class="footer__button button--primary">Enviar</button>
-    </footer>
-
+    </main> <!-- Banner inferior -->
+    <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
+            class="footer-banner__img"> </div>
+    <script> (function () { const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); if (!user) { window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; return; } const role = user.role; const rules = { visitante: ['Ciclo cultivo', 'Sensores', 'Insumos','Visualizar cultivo'], personal: ['Sensores'], admin: ['SGL', 'Ciclo cultivo', 'Insumos', 'Sensores', 'Inicio', 'Crear cultivo', 'Visualizar cultivo', 'Listar cultivo'], superadmin: ['SGL'] }; document.querySelectorAll('.header__link, .header__title').forEach(el => { const txt = el.textContent.trim(); if (txt === 'Cerrar Sesión') return; if (!rules[role] || !rules[role].includes(txt)) el.remove(); }); document.querySelectorAll('.top-boxes__item a').forEach(a => { const txt = a.textContent.trim(); if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove(); }); document.getElementById('btnLogout').onclick = function () { localStorage.removeItem('lembo_user_data'); window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; }; })(); </script>
 </body>
+
 </html>

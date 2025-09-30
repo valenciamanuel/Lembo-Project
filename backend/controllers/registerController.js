@@ -121,10 +121,43 @@ const actualizarUsuario = async (req, res) => {
     res.status(500).json({ error: "Error al actualizar usuario" });
   }
 };
+const insertarLogin = async (req, res) => {
+  try {
+    const { email, password } = req.body;
 
+    if (!email || !password) {
+      return res.status(400).json({ message: 'Correo y contraseña son obligatorios' });
+    }
+
+    // Buscar usuario por email y password sin hashing ni encriptación
+    const [rows] = await db.query(
+      'SELECT id, usertype, name, email FROM register WHERE email = ? AND password = ?',
+      [email, password]
+    );
+
+    if (rows.length === 0) {
+      return res.status(401).json({ message: 'Credenciales inválidas' });
+    }
+
+    const user = rows[0];
+
+    // Retornar info básica del usuario para almacenar en localStorage
+    res.json({
+      id: user.id,
+      usertype: user.usertype,
+      name: user.name,
+      email: user.email
+    });
+
+  } catch (error) {
+    console.error('Error en login:', error);
+    res.status(500).json({ message: 'Error interno del servidor', error: error.message });
+  }
+};
 module.exports = {
     insertarRegister,
     obtenerUsuarios,
     obtenerUsuarioPorId,
     actualizarUsuario,
+    insertarLogin
 };

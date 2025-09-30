@@ -1,33 +1,35 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Home Sensores</title>
-    <!-- <link rel="stylesheet" href="../CSS/stylieshome-insumos-sensores.css"> -->
-    <link rel="stylesheet" href="/fronted/public/css/pages/homes/stylieshome-insumos-sensores.css">
+    <link rel="stylesheet" href="/fronted/public/css/pages/homes/stylieshome-insumos-sensores.css" />
     <script src="/fronted/public/views/components/grid.js"></script>
-
+    
 </head>
-<body>
-    <header class="header">
-        <!-- <img src="/imagenes proyecto/loso_SENA.png" alt="Logo SENA" class="header__logo"> -->
-        <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="header__logo">
-        <nav class="header__nav">
-            <a href="index.html" class="header__link">Inicio</a>
-            <a href="home-insumos.html" class="header__link">Insumos</a>
-            <a href="home-cultivo-3.html" class="header__link">Cultivos</a>
-        </nav>
-    </header>
 
+<body>
+    <header class="header"> <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA"
+            class="header__logo">
+        <nav class="header__nav"> <a href="index.html" class="header__link">Inicio</a> <a href="home-insumos.html"
+                class="header__link">Insumos</a> <a href="home-cultivo-3.html" class="header__link">Cultivos</a> <a
+                id="btnLogout" class="header__link" style="cursor:pointer">Cerrar Sesión</a> </nav>
+    </header>
+    <div class="header-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img">
+    </div>
     <main class="background">
         <section class="top-boxes">
             <div class="top-boxes__item"><a href="../sensores/crear_sensor.html">Crear sensor</a></div>
             <div class="top-boxes__item"><a href="../sensores/visualizar_sensores.html">Visualizar sensor</a></div>
             <div class="top-boxes__item"><a href="../sensores/listar_sensor.html">Listar sensor</a></div>
         </section>
-
         <div class="grid"></div>
     </main>
+    <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
+            class="footer-banner__img"> </div>
+    <script> (function () { const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); if (!user) { window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; return; } const role = user.role; const rules = { visitante: ['Inicio','Sensores','Visualizar sensor','Insumos', 'Cultivos'], personal: ['Sensores','Crear sensor','Visualizar sensor','Listar sensor'], admin: ['Inicio', 'Insumos', 'Cultivos', 'Crear sensor', 'Visualizar sensor', 'Listar sensor'], superadmin: [] }; document.querySelectorAll('.header__link').forEach(link => { const txt = link.textContent.trim(); if (txt === 'Cerrar Sesión') return; if (!rules[role] || !rules[role].includes(txt)) link.remove(); }); document.querySelectorAll('.top-boxes__item a').forEach(a => { const txt = a.textContent.trim(); if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove(); }); document.getElementById('btnLogout').onclick = () => { localStorage.removeItem('lembo_user_data'); window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; }; })(); </script>
 </body>
+
 </html>

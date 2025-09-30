@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -7,49 +8,186 @@
     <link rel="stylesheet" href="/fronted/public/css/main.css">
     <script src="/fronted/public/views/components/header.js"></script>
     <script src="/fronted/public/js/sensores/enviar.js"></script>
+    <style>
+        .page__banner--top,
+        .page__banner--bottom {
+            position: fixed;
+            left: 0;
+            width: 100vw;
+            z-index: 1000;
+        }
+
+        .page__banner--top {
+            top: 0;
+        }
+
+        .page__banner--bottom {
+            bottom: 0;
+        }
+
+        .page__banner__img {
+            width: 100%;
+            height: auto;
+            object-fit: cover;
+        }
+
+        header.header {
+            position: fixed;
+            top: 6rem;
+            left: 0;
+            width: 100%;
+            margin-top: -2.4rem;
+            z-index: 900;
+        }
+
+        main.form-container {
+            margin: calc(6rem + 6rem + 2rem) auto 6rem;
+            padding: 2rem;
+            max-width: 700px;
+            background: rgba(255, 255, 255, 0.95);
+            border: 1px solid #4DB100;
+            border-radius: 8px;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+        }
+
+        .form__title {
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            text-align: center;
+            color: #222;
+        }
+
+        .form__row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.6rem;
+        }
+
+        .form__column {
+            flex: 1 1 45%;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .form__label {
+            margin-bottom: .5rem;
+            font-size: 1.4rem;
+            color: #222;
+            text-align: left;
+        }
+
+        .form__input,
+        .form__input--imagen {
+            padding: .75rem 1rem;
+            font-size: 1.4rem;
+            border: 1px solid #ccc;
+            border-radius: 4px;
+            background: #fff;
+            margin-bottom: 1rem;
+        }
+
+        .form__input:focus {
+            outline: none;
+            border-color: #2d8500;
+            box-shadow: 0 0 0 3px rgba(57, 169, 0, 0.2);
+        }
+
+        .form__btn-group {
+            display: flex;
+            justify-content: flex-end;
+            gap: 1.6rem;
+            margin-top: 2rem;
+        }
+
+        .form__btn {
+            padding: .75rem 2rem;
+            font-size: 1.6rem;
+            background: #39a900;
+            color: #fff;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background .2s, box-shadow .2s;
+        }
+
+        .form__btn:hover {
+            background: #2d8500;
+            box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+        }
+
+        .btn__secundary {
+            padding: .75rem 2rem;
+            font-size: 1.6rem;
+            background: #555;
+            color: #fff;
+            text-decoration: none;
+            border-radius: 4px;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            transition: background .2s;
+        }
+
+        .btn__secundary:hover {
+            background: #333;
+        }
+
+        @media(max-width:768px) {
+            main.form-container {
+                margin: calc(6rem+6rem+1rem)1rem1rem;
+                padding: 1rem;
+            }
+
+            .form__column {
+                flex: 1 1100%;
+            }
+        }
+    </style>
 </head>
-<body> 
+
+<body>
+    <div class="page__banner--top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
+    </div>
     <header class="header"></header>
     <main class="form-container">
         <form class="form" id="crear-sensor-form" enctype="multipart/form-data">
             <h2 class="form__title">Datos sensores</h2>
-    
             <div class="form__row">
                 <div class="form__column">
-                    <label class="form__label">Cargar imagen</label>
-                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
-    
-                    <label class="form__label">Tipo sensor</label>
-                    <input class="form__input sensor__input--type" type="text" name="tipoSensor">
-    
-                    <label class="form__label">Nombre sensor</label>
-                    <input class="form__input sensor__input--name" type="text" name="nombreSensor">
-    
-                    <label class="form__label">Unidad de medida</label>
-                    <input class="form__input sensor__input--medida" type="text" name="unidadMedida">
+                    <label class="form__label" for="image">Cargar imagen</label>
+                    <input type="file" id="image" name="image" class="form__input form__input--imagen">
+                    <label class="form__label" for="tipoSensor">Tipo sensor</label>
+                    <input type="text" id="tipoSensor" name="tipoSensor" class="form__input sensor__input--type">
+                    <label class="form__label" for="nombreSensor">Nombre sensor</label>
+                    <input type="text" id="nombreSensor" name="nombreSensor" class="form__input sensor__input--name">
+                    <label class="form__label" for="unidadMedida">Unidad de medida</label>
+                    <input type="text" id="unidadMedida" name="unidadMedida" class="form__input sensor__input--medida">
                 </div>
-    
                 <div class="form__column">
-                    <label class="form__label">Tiempo de escaneo</label>
-                    <input class="form__input sensor__input--escaneo" type="text" name="tiempoEscaneo">
-    
-                    <label class="form__label">Descripción</label>
-                    <input class="form__input sensor__input--descripcion" type="text" name="descripcion"> 
-    
-                    <label class="form__label">Estado (activo / inactivo)</label>
-                    <select name="estado" class="form__input sensor__input--estado">
+                    <label class="form__label" for="tiempoEscaneo">Tiempo de escaneo</label>
+                    <input type="text" id="tiempoEscaneo" name="tiempoEscaneo"
+                        class="form__input sensor__input--escaneo">
+                    <label class="form__label" for="descripcion">Descripción</label>
+                    <input type="text" id="descripcion" name="descripcion"
+                        class="form__input sensor__input--descripcion">
+                    <label class="form__label" for="estado">Estado (activo / inactivo)</label>
+                    <select id="estado" name="estado" class="form__input sensor__input--estado">
                         <option value="">Seleccione una opción</option>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
                     </select>
                 </div>
             </div>
-    
             <div class="form__btn-group">
-                <button type="submit" class="form__btn form__btn--registrar">Crear</button>
+                <button type="submit" class="form__btn">Crear</button>
                 <a href="../homes/home-sensores.html" class="btn__secundary">Cancelar</a>
             </div>
         </form>
     </main>
-    </body>
+    <div class="page__banner--bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="page__banner__img">
+    </div>
+</body>
+
 </html>

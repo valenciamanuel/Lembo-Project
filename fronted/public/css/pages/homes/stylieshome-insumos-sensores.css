@@ -44,6 +44,34 @@
     font-weight: bold;
     color: var(--texto-titulos);
   }
+
+.header-banner {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+}
+.header {
+  position: absolute;
+  left: 0;
+  margin-top: 3rem;
+}
+
+.footer-banner {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  z-index: 20;
+  object-fit: cover;
+}
+.top-boxes__item {
+  margin-top: 4rem;
+}
+.header-banner, .footer-banner { width:100%; overflow:hidden; }
+      .header-banner__img, .footer-banner__img { display:block; width:100%; height:auto; }
+
   
   /* Subtítulos */
   h4, h5, h6, .subtitulo {
