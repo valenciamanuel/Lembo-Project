@@ -94,7 +94,7 @@
       
       document.querySelectorAll('.header__link').forEach(link => {
         const txt = link.textContent.trim();
-        if (txt === 'Cerrar Sesión' || txt === 'Mi Perfil') return;
+        if (txt === 'Cerrar Sesión') return;
         if (!rules[role] || !rules[role].includes(txt)) link.remove();
       });
       
