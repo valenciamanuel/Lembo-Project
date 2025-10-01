@@ -1,7 +1,18 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.form'); 
+    const messageContainer = document.getElementById('message-container');
 
-    // --- Referencias a los campos ---
+    const showMessage = (message, type) => {
+        if (!messageContainer) return;
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', type);
+        msgDiv.textContent = message;
+        messageContainer.innerHTML = '';
+        messageContainer.appendChild(msgDiv);
+        setTimeout(() => msgDiv.classList.add('show'), 10);
+        setTimeout(() => { msgDiv.classList.remove('show'); setTimeout(() => msgDiv.remove(), 500); }, 4000);
+    };
+
     const imageInput = document.getElementById('image'); 
     const tipoSensor = document.querySelector('.sensor__input--type');
     const nombreSensor = document.querySelector('.sensor__input--name');
@@ -17,16 +28,13 @@ document.addEventListener('DOMContentLoaded', () => {
     [...inputs, ...selects, imageInput].forEach(input => {
         input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'input', () => {
             input.classList.remove('form__input--error');
-            // La condición para placeholder evita error en el input de tipo file
             if (input.tagName !== 'SELECT' && input.type !== 'file') input.placeholder = ''; 
         });
     });
 
-    // --- Envío del formulario ---
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // Limpiar errores
         [...inputs, ...selects, imageInput].forEach(input => {
             input.classList.remove('form__input--error');
             if (input.tagName !== 'SELECT' && input.type !== 'file') input.placeholder = '';
@@ -41,6 +49,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (input.tagName !== 'SELECT') {
                     input.placeholder = mensaje;
                     input.value = '';
+                } else {
+                    showMessage(mensaje, 'error');
                 }
             }
         };
@@ -53,9 +63,9 @@ document.addEventListener('DOMContentLoaded', () => {
         validarCampo(estado, 'Seleccionar estado');
         
         if (!imageInput.files[0]) {
-             valido = false;
-             imageInput.classList.add('form__input--error');
-             alert('Por favor, selecciona una imagen del sensor.');
+            valido = false;
+            imageInput.classList.add('form__input--error');
+            showMessage('Por favor, selecciona una imagen del sensor.', 'error');
         }
 
         if (!valido) return;
@@ -69,9 +79,10 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                // Leer el error del servidor para debug más fácil
                 const errorData = await response.json().catch(() => ({ error: 'Error desconocido' }));
-                throw new Error('Error al enviar datos: ' + (errorData.error || 'Problema de conexión'));
+                console.error('Error al enviar datos:', errorData);
+                showMessage('Error al enviar datos: ' + (errorData.error || 'Problema de conexión'), 'error');
+                return;
             }
 
             const result = await response.json();
@@ -85,10 +96,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             form.reset();
-            alert('✅ Sensor creado exitosamente.');
+            showMessage('Sensor creado exitosamente.', 'success');
         } catch (error) {
-            console.error('❌ Error', error);
-            alert('Error al crear el sensor. Revisa la consola para más detalles.');
+            console.error('Error', error);
+            showMessage('Error al crear el sensor. Revisa la consola para más detalles.', 'error');
         }
     });
 });

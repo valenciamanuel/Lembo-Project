@@ -1,5 +1,17 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.form');
+    const messageContainer = document.getElementById('message-container');
+
+    const showMessage = (message, type) => {
+        if (!messageContainer) return;
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', type);
+        msgDiv.textContent = message;
+        messageContainer.innerHTML = '';
+        messageContainer.appendChild(msgDiv);
+        setTimeout(() => msgDiv.classList.add('show'), 10);
+        setTimeout(() => { msgDiv.classList.remove('show'); setTimeout(() => msgDiv.remove(), 500); }, 4000);
+    };
 
     const cultivoType = document.querySelector('.cultivo__input--type');
     const cultivoName = document.querySelector('.cultivo__input--name');
@@ -30,7 +42,16 @@ document.addEventListener('DOMContentLoaded', () => {
         imageInput.classList.remove('form__input--error');
     });
 
-    // --- Envío del formulario ---
+    const validarNumeroPositivo = (inputElement, mensaje) => {
+        const value = Number(inputElement.value);
+        if (isNaN(value) || value <= 0) {
+            inputElement.classList.add('form__input--error');
+            showMessage(mensaje, 'error');
+            return false;
+        }
+        return true;
+    };
+
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
@@ -48,6 +69,8 @@ document.addEventListener('DOMContentLoaded', () => {
                 if (input.tagName !== 'SELECT') {
                     input.placeholder = mensaje;
                     input.value = '';
+                } else {
+                    showMessage(mensaje, 'error');
                 }
             }
         };
@@ -59,14 +82,18 @@ document.addEventListener('DOMContentLoaded', () => {
         validarCampo(location, 'Ubicación obligatoria');
         validarCampo(description, 'Descripción obligatoria');
         validarCampo(state, 'Seleccionar estado');
-
+        
         if (!imageInput.files[0]) {
             valido = false;
             imageInput.classList.add('form__input--error');
-            alert('Por favor, selecciona una imagen.');
+            showMessage('Por favor, selecciona una imagen.', 'error');
         }
 
         if (!valido) return;
+        
+        // Validación de IDs y números positivos para cultivoID y size
+        if (!validarNumeroPositivo(cultivoID, 'El ID del cultivo debe ser un número entero positivo.')) return;
+        if (!validarNumeroPositivo(size, 'El tamaño del cultivo debe ser un número positivo.')) return;
 
         const formData = new FormData();
         formData.append('cultivoType', cultivoType.value);
@@ -78,7 +105,7 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('state', state.value);
         formData.append('image', imageInput.files[0]);
 
-    
+        
         const dataForLog = {};
         for (let [key, value] of formData.entries()) {
             dataForLog[key] = value;
@@ -92,14 +119,15 @@ document.addEventListener('DOMContentLoaded', () => {
             });
 
             if (!response.ok) {
-                const errorData = await response.json();
+                const errorData = await response.json().catch(() => ({ error: 'Error desconocido' }));
                 console.error('Error al registrar el cultivo:', errorData);
-                throw new Error('Error en la conexión con el servidor o datos inválidos.');
+                showMessage(errorData.error || 'Error en la conexión con el servidor o datos inválidos.', 'error');
+                return;
             }
 
             const result = await response.json();
             console.log('Cultivo registrado', result);
-            alert('Cultivo creado exitosamente.');
+            showMessage('Cultivo creado exitosamente.', 'success');
 
             form.reset();
             imageInput.value = '';
@@ -108,7 +136,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         } catch (error) {
             console.error('Error', error);
-            alert('Error al crear el cultivo. Revisa la consola para más detalles.');
+            showMessage('Error al crear el cultivo. Revisa la consola para más detalles.', 'error');
         }
     });
 });
