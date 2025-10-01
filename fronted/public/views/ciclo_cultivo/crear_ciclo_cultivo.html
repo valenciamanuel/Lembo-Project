@@ -9,7 +9,8 @@
     <script src="/fronted/public/views/components/header.js"></script>
     <link rel="stylesheet" href="/fronted/public/css/components/forms.css">
     <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
-    <script src="/fronted/public/js/ciclo_cultivo/enviar.js"></script>
+    
+    <script src="/fronted/public/js/ciclo_cultivo/enviar.js" defer></script>
 </head>
 
 <body>
@@ -18,6 +19,9 @@
     </div>
     <header class="header"></header>
     <main class="form-container">
+        
+        <div id="message-container"></div>
+        
         <form class="form">
             <h2 class="form__title">Datos Ciclo Cultivo</h2>
 
@@ -64,7 +68,6 @@
     <div class="page__banner--bottom">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="page__banner__img">
     </div>
-    <!-- <script src="/fronted/public/js/ciclo_cultivo/validacion_datos.js"></script> -->
 </body>
 
 </html>
