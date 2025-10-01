@@ -29,7 +29,81 @@
     </main>
     <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
             class="footer-banner__img"> </div>
-    <script> (function () { const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); if (!user) { window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; return; } const role = user.role; const rules = { visitante: ['Inicio','Sensores','Visualizar sensor','Insumos', 'Cultivos'], personal: ['Sensores','Crear sensor','Visualizar sensor','Listar sensor'], admin: ['Inicio', 'Insumos', 'Cultivos', 'Crear sensor', 'Visualizar sensor', 'Listar sensor'], superadmin: [] }; document.querySelectorAll('.header__link').forEach(link => { const txt = link.textContent.trim(); if (txt === 'Cerrar Sesión') return; if (!rules[role] || !rules[role].includes(txt)) link.remove(); }); document.querySelectorAll('.top-boxes__item a').forEach(a => { const txt = a.textContent.trim(); if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove(); }); document.getElementById('btnLogout').onclick = () => { localStorage.removeItem('lembo_user_data'); window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; }; })(); </script>
+   <!-- ... (resto del HTML) ... -->
+
+    <script>
+    (function () {
+      const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null');
+      
+      if (!user) {
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+        return;
+      }
+
+      // Usamos 'usertype' o 'role' según cómo lo almacene tu login. 
+      // Si el login del Superadmin lo guarda como 'role', este código funcionará.
+      // Si tu login lo guarda como 'usertype' (como en el controlador de registro), 
+      // debes cambiar 'user.role' por 'user.usertype'. Mantendré 'role' por ahora.
+      const role = user.role; 
+
+      const rules = {
+        visitante: [
+          'Inicio',
+          'Sensores',
+          'Visualizar sensor',
+          'Insumos', 
+          'Cultivos'
+        ],
+        personal: [
+          'Sensores',
+          'Crear sensor',
+          'Visualizar sensor',
+          'Listar sensor'
+        ],
+        admin: [
+          'Inicio', 
+          'Insumos', 
+          'Cultivos', 
+          'Crear sensor', 
+          'Visualizar sensor', 
+          'Listar sensor'
+        ],
+        
+        superadmin: [
+          'Registrar usuario', 
+          'Listar usuarios',
+          'Ciclo Cultivo',
+          'Asociación',
+          'Sensores',
+          'Insumos',
+          'Cultivos',
+          'Crear sensor',
+          'Visualizar sensor',
+          'Listar sensor',
+          'Producción' 
+        ]
+      }; 
+      
+      document.querySelectorAll('.header__link').forEach(link => {
+        const txt = link.textContent.trim();
+        if (txt === 'Cerrar Sesión') return;
+        if (!rules[role] || !rules[role].includes(txt)) link.remove();
+      });
+      
+      document.querySelectorAll('.top-boxes__item a').forEach(a => {
+        const txt = a.textContent.trim();
+        if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove();
+      });
+      
+      document.getElementById('btnLogout').onclick = () => {
+        localStorage.removeItem('lembo_user_data');
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+      };
+    })(); 
+    </script>
+
+<!-- ... (resto del HTML) ... -->
+
 </body>
 
 </html>

@@ -30,7 +30,75 @@
     </main> <!-- Banner inferior -->
     <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
             class="footer-banner__img"> </div>
-    <script> (function () { const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); if (!user) { window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; return; } const role = user.role; const rules = { visitante: ['Sensores', 'Insumos', 'Inicio'], personal: ['Sensores', 'Inicio'], admin: ['Inicio', 'Insumos', 'Sensores', 'Crear ciclo cultivo', 'Visualizar ciclo cultivo', 'Listar ciclo cultivo'], superadmin: [] }; document.querySelectorAll('.header__link').forEach(link => { const txt = link.textContent.trim(); if (txt === 'Cerrar Sesión') return; if (!rules[role] || !rules[role].includes(txt)) link.remove(); }); document.querySelectorAll('.top-boxes__item a').forEach(a => { const txt = a.textContent.trim(); if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove(); }); document.getElementById('btnLogout').onclick = function () { localStorage.removeItem('lembo_user_data'); window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; }; })(); </script>
+    <script>
+(function () { 
+    const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); 
+    
+    if (!user) { 
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+        return; 
+    } 
+    
+    const role = user.role; 
+    
+    const rules = { 
+        visitante: [
+            'Sensores', 
+            'Insumos', 
+            'Inicio',
+            'Visualizar cultivo'
+        ], 
+        personal: [
+            'Sensores', 
+            'Inicio'
+        ], 
+        admin: [
+            'Inicio', 
+            'Insumos', 
+            'Sensores', 
+            'Crear ciclo cultivo', 
+            'Visualizar ciclo cultivo', 
+            'Listar ciclo cultivo'
+        ], 
+        
+        // ¡CORRECCIÓN CLAVE AQUÍ! Superadmin ahora tiene todos los permisos de admin y de navegación.
+        superadmin: [
+            // Permisos de navegación global (de otros homes)
+            'Registrar usuario',
+            'Listar usuarios',
+            'Asociación',
+            'Cultivos',
+            'Producción',
+            'SGL',
+
+            // Permisos del módulo Ciclo Cultivo (los que tenía el admin)
+            'Inicio', 
+            'Insumos', 
+            'Sensores', 
+            'Crear ciclo cultivo', 
+            'Visualizar ciclo cultivo', 
+            'Listar ciclo cultivo'
+        ] 
+    }; 
+
+    document.querySelectorAll('.header__link, .header__title').forEach(el => { 
+        const txt = el.textContent.trim(); 
+        if (txt === 'Cerrar Sesión') return; 
+        if (!rules[role] || !rules[role].includes(txt)) el.remove(); 
+    }); 
+
+    document.querySelectorAll('.top-boxes__item a').forEach(a => { 
+        const txt = a.textContent.trim(); 
+        if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove(); 
+    }); 
+
+    document.getElementById('btnLogout').onclick = function () { 
+        localStorage.removeItem('lembo_user_data'); 
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+    }; 
+})();
+</script>
+
 </body>
 
 </html>

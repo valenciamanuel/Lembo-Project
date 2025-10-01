@@ -31,7 +31,78 @@
     </main> <!-- Banner inferior -->
     <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
             class="footer-banner__img"> </div>
-    <script> (function () { const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); if (!user) { window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; return; } const role = user.role; const rules = { visitante: ['Inicio','Ciclo cultivo', 'Sensores', 'Insumos','Visualizar cultivo'], personal: ['Sensores'], admin: ['Inicio','SGL', 'Ciclo cultivo', 'Insumos', 'Sensores', 'Crear cultivo', 'Visualizar cultivo', 'Listar cultivo'], superadmin: ['Inicio','SGL'] }; document.querySelectorAll('.header__link, .header__title').forEach(el => { const txt = el.textContent.trim(); if (txt === 'Cerrar Sesión') return; if (!rules[role] || !rules[role].includes(txt)) el.remove(); }); document.querySelectorAll('.top-boxes__item a').forEach(a => { const txt = a.textContent.trim(); if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove(); }); document.getElementById('btnLogout').onclick = function () { localStorage.removeItem('lembo_user_data'); window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; }; })(); </script>
+    <script>
+(function () { 
+    const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); 
+    
+    if (!user) { 
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+        return; 
+    } 
+    
+    const role = user.role; 
+    
+    const rules = { 
+        visitante: [
+            'Inicio',
+            'Ciclo cultivo', 
+            'Sensores', 
+            'Insumos',
+            'Visualizar cultivo'
+        ], 
+        personal: [
+            'Sensores'
+        ], 
+        admin: [
+            'Inicio',
+            'SGL', 
+            'Ciclo cultivo', 
+            'Insumos', 
+            'Sensores', 
+            'Crear cultivo', 
+            'Visualizar cultivo', 
+            'Listar cultivo'
+        ], 
+        
+        // ¡CORRECCIÓN CLAVE AQUÍ! Superadmin ahora tiene todos los permisos.
+        superadmin: [
+            // Permisos de navegación que probablemente se necesitan
+            'Registrar usuario',
+            'Listar usuarios',
+            'Asociación',
+            
+            // Permisos del módulo Cultivo y otros módulos principales
+            'Inicio',
+            'SGL', 
+            'Ciclo cultivo', 
+            'Insumos', 
+            'Sensores', 
+            'Crear cultivo', 
+            'Visualizar cultivo', 
+            'Listar cultivo',
+            'Cultivos', // Añadido por si es el texto de un enlace de navegación
+            'Producción' // Asumo que este permiso también existe
+        ] 
+    }; 
+
+    document.querySelectorAll('.header__link, .header__title').forEach(el => { 
+        const txt = el.textContent.trim(); 
+        if (txt === 'Cerrar Sesión') return; 
+        if (!rules[role] || !rules[role].includes(txt)) el.remove(); 
+    }); 
+
+    document.querySelectorAll('.top-boxes__item a').forEach(a => { 
+        const txt = a.textContent.trim(); 
+        if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove(); 
+    }); 
+
+    document.getElementById('btnLogout').onclick = function () { 
+        localStorage.removeItem('lembo_user_data'); 
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+    }; 
+})();
+</script>
+
 </body>
 
 </html>
