@@ -58,7 +58,7 @@ html, body {
 
 .header__logo {
     width: 4%;
-    height: auto;
+    margin-right: auto;
 }
 
 .header__nav {
