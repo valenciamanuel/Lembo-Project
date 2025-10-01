@@ -96,7 +96,7 @@
                     imageContainer.innerHTML = '<span>No hay imagen</span>';
                 }
             } catch (error) {
-                console.error("❌ Error cargando datos:", error);
+                console.error(" Error cargando datos:", error);
                 alert(`Error al cargar los datos: ${error.message}`);
             }
 
@@ -127,12 +127,12 @@
                         const errorData = await response.json();
                         throw new Error(errorData.error || 'Error al actualizar el ciclo.');
                     }
-                    
-                    alert('✅ Ciclo de cultivo actualizado exitosamente.');
+                
+                    alert('Ciclo de cultivo actualizado exitosamente.');
                     window.location.href = 'listar_ciclo_cultivo.html';
 
                 } catch (error) {
-                    console.error("❌ Error al actualizar el ciclo:", error);
+                    console.error(" Error al actualizar el ciclo:", error);
                     alert(`Error al actualizar: ${error.message}`);
                 }
             });
