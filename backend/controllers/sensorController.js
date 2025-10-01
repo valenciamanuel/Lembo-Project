@@ -1,23 +1,38 @@
 const db = require('../config/db.js');
 
+// --- Nueva Función de Validación ---
+const validarTiempoPositivo = (value) => {
+    const numericValue = Number(value);
+    // Debe ser un número válido y mayor o igual a cero.
+    return !isNaN(numericValue) && numericValue >= 0; 
+};
+// ------------------------------------
+
 const insertarSensor = async (req, res) => {
     try {
         const { tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado } = req.body;
         const image = req.file ? req.file.filename : null; 
 
-        if (!tipoSensor || !nombreSensor || !unidadMedida || !tiempoEscaneo || !descripcion || !estado) {
+        if (!tipoSensor || !nombreSensor || !unidadMedida || tiempoEscaneo == null || !descripcion || !estado) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
+        
+        // --- Validación Backend para tiempoEscaneo ---
+        if (!validarTiempoPositivo(tiempoEscaneo)) {
+            return res.status(400).json({ error: 'El tiempo de escaneo debe ser un número positivo o cero.' });
+        }
+        const numericTiempoEscaneo = Number(tiempoEscaneo);
+        // ----------------------------------------------
 
         const sql = 'INSERT INTO sensores (tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
-        const [result] = await db.query(sql, [tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado, image]);
+        const [result] = await db.query(sql, [tipoSensor, nombreSensor, unidadMedida, numericTiempoEscaneo, descripcion, estado, image]);
 
         res.status(201).json({
             id: result.insertId,
             tipoSensor,
             nombreSensor,
             unidadMedida,
-            tiempoEscaneo,
+            tiempoEscaneo: numericTiempoEscaneo,
             descripcion,
             estado,
             image 
@@ -77,9 +92,17 @@ const actualizarSensor = async (req, res) => {
         tipoSensor = tipoSensor ?? null;
         nombreSensor = nombreSensor ?? null;
         unidadMedida = unidadMedida ?? null;
-        tiempoEscaneo = tiempoEscaneo ?? null;
         descripcion = descripcion ?? null;
         estado = estado ?? null;
+
+        // --- Validación Backend para tiempoEscaneo en actualización ---
+        if (tiempoEscaneo !== null && tiempoEscaneo !== undefined) {
+             if (!validarTiempoPositivo(tiempoEscaneo)) {
+                return res.status(400).json({ error: 'El tiempo de escaneo debe ser un número positivo o cero.' });
+            }
+            tiempoEscaneo = Number(tiempoEscaneo);
+        }
+        // -------------------------------------------------------------
 
         const sql = `
             UPDATE sensores
