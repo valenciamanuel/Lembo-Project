@@ -52,31 +52,66 @@
     <script>
     (function(){
       const user = JSON.parse(localStorage.getItem('lembo_user_data')||'null');
+      
       if (!user) {
         window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
         return;
       }
+      
       const role = user.role;
+      
       const rules = {
-        visitante: ['Ciclo Cultivo','Sensores','Insumos'],
-        personal: ['Sensores'],
-        admin: ['Listar usuarios','Ciclo Cultivo','Asociación','Sensores','Insumos','Cultivos'],
-        superadmin: ['Registrar usuario','Listar usuarios']
+        visitante: [
+          'Ciclo Cultivo',
+          'Sensores',
+          'Cultivos'
+        ],
+        
+        personal: [
+          'Sensores'
+        ],
+        
+        admin: [
+          'Listar usuarios',
+          'Ciclo Cultivo',
+          'Insumos',
+          'Cultivos',
+          'Sensores',
+          'Producción',
+          'Asociación'
+        ],
+        
+        superadmin: [
+          'Registrar usuario',
+          'Listar usuarios',
+          'Ciclo Cultivo',
+          'Insumos',
+          'Cultivos',
+          'Sensores',
+          'Producción',
+          'Asociación'        ]
       };
+      
       document.querySelectorAll('.header__link').forEach(link => {
         const txt = link.textContent.trim();
-        if (txt==='Cerrar Sesión') return;
+        if (txt === 'Cerrar Sesión' || txt === 'Mi Perfil') return;
         if (!rules[role] || !rules[role].includes(txt)) link.remove();
       });
-      document.querySelectorAll('.top-boxes__item a').forEach(a=>{
-        const txt=a.textContent.trim();
-        if (!rules[role]||!rules[role].includes(txt)) a.parentElement.remove();
+      
+      document.querySelectorAll('.top-boxes__item a').forEach(a => {
+        const txt = a.textContent.trim();
+        if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove();
       });
-      document.getElementById('btnLogout').onclick = function(){
-        localStorage.removeItem('lembo_user_data');
-        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
-      };
+      
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+          btnLogout.onclick = function(){
+              localStorage.removeItem('lembo_user_data');
+              window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+          };
+      }
     })();
     </script>
+
 </body>
 </html>
