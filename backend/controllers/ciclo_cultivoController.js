@@ -11,9 +11,9 @@ const deleteFileIfExist = (filename) => {
     if (fs.existsSync(filePath)) {
       try {
         fs.unlinkSync(filePath);
-        console.log(`🗑️ Archivo de ciclo ${filename} eliminado.`);
+        console.log(` Archivo de ciclo ${filename} eliminado.`);
       } catch (err) {
-        console.error(`❌ Error al eliminar el archivo ${filename}:`, err);
+        console.error(` Error al eliminar el archivo ${filename}:`, err);
       }
     }
   }
@@ -23,7 +23,7 @@ const insertarCicloCultivo = async (req, res) => {
   let { cicloID, cicloName, siembraDate, cosechaDate, news, description, state } = req.body;
   const image = req.file ? req.file.filename : null; 
   
-  console.log("📩 Body recibido:", req.body);
+  console.log(" Body recibido:", req.body);
 
   if (!cicloID || !cicloName || !siembraDate || !cosechaDate || !news || !state) {
     deleteFileIfExist(image);
@@ -39,11 +39,11 @@ const insertarCicloCultivo = async (req, res) => {
 
   let connection;
   try {
-    console.log('✅ Preparando para ejecutar la consulta SQL.'); 
+    console.log(' Preparando para ejecutar la consulta SQL.'); 
     connection = await db.getConnection();
     const [result] = await connection.execute(sql, values);
     
-    console.log('✅ Ciclo de cultivo insertado con ID:', result.insertId);
+    console.log(' Ciclo de cultivo insertado con ID:', result.insertId);
     
     return res.status(201).json({ 
       message: 'Ciclo de cultivo creado exitosamente',
@@ -52,7 +52,7 @@ const insertarCicloCultivo = async (req, res) => {
     });
 
   } catch (err) {
-    console.error('❌ Error al insertar el ciclo de cultivo:', err.message || err);
+    console.error(' Error al insertar el ciclo de cultivo:', err.message || err);
     deleteFileIfExist(image);
     return res.status(500).json({ error: 'Error al insertar el ciclo de cultivo', details: err.message });
   } finally {
@@ -70,10 +70,10 @@ const obtenerCiclosCultivo = async (req, res) => {
     const sql = "SELECT id, cicloID, cicloName, siembraDate, cosechaDate, news, description, state, image FROM ciclocultivo";
     const [rows] = await connection.execute(sql);
 
-    console.log(`✅ ${rows.length} ciclos de cultivo obtenidos`);
+    console.log(` ${rows.length} ciclos de cultivo obtenidos`);
     return res.status(200).json(rows);
   } catch (err) {
-    console.error('❌ Error al obtener los ciclos de cultivo:', err.message || err);
+    console.error(' Error al obtener los ciclos de cultivo:', err.message || err);
     return res.status(500).json({ error: 'Error al obtener los ciclos de cultivo' });
   } finally {
     if (connection) {
@@ -95,7 +95,7 @@ const obtenerCicloPorId = async (req, res) => {
     
     res.status(200).json(rows[0]); 
   } catch (err) {
-    console.error('❌ Error al obtener el ciclo de cultivo:', err.message || err);
+    console.error(' Error al obtener el ciclo de cultivo:', err.message || err);
     res.status(500).json({ error: 'Error al obtener el ciclo de cultivo' });
   } finally {
     if (connection) connection.release();
@@ -152,7 +152,7 @@ const actualizarCicloCultivo = async (req, res) => {
 
         res.status(200).json({ message: 'Ciclo de cultivo actualizado exitosamente' });
     } catch (err) {
-        console.error('❌ Error al actualizar el ciclo de cultivo:', err.message || err);
+        console.error(' Error al actualizar el ciclo de cultivo:', err.message || err);
         res.status(500).json({ error: 'Error al actualizar el ciclo de cultivo', details: err.message });
     } finally {
         if (connection) connection.release();
@@ -185,7 +185,7 @@ const toggleCicloEstado = async (req, res) => {
 
     res.status(200).json({ message: `Ciclo de cultivo ${state} exitosamente.` });
   } catch (err) {
-    console.error('❌ Error al cambiar el estado del ciclo:', err.message || err);
+    console.error(' Error al cambiar el estado del ciclo:', err.message || err);
     res.status(500).json({ error: 'Error al cambiar el estado del ciclo' });
   } finally {
     if (connection) connection.release();
