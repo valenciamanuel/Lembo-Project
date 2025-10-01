@@ -11,11 +11,11 @@ db.getConnection()
 
 // --- Configuración CORS ---
 app.use(cors({
-    origin: ["http://localhost:5501", "http://127.0.0.1:5501"],
-    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-    allowedHeaders: ["Content-Type", "Authorization"],
-    credentials: true,
-    optionsSuccessStatus: 200
+  origin: ["http://localhost:5501", "http://127.0.0.1:5501"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
@@ -33,7 +33,7 @@ app.use("/uploads", express.static(path.join(__dirname, "..", "fronted", "public
 
 // RUTA DE PRUEBA:
 app.get('/test', (req, res) => {
-    res.status(200).json({ message: 'Conexión exitosa, sin DB' });
+  res.status(200).json({ message: 'Conexión exitosa, sin DB' });
 });
 
 // Importación de rutas
@@ -62,10 +62,10 @@ app.use('/api', apiasociaciones);
 
 // Manejo de error 404 (Si ninguna ruta coincide)
 app.use((req, res) => {
-    res.status(404).json({ error: "Ruta no encontrada" });
+  res.status(404).json({ error: "Ruta no encontrada" });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-    console.log(`✅ Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
 });
