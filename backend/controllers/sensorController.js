@@ -3,14 +3,12 @@ const db = require('../config/db.js');
 const insertarSensor = async (req, res) => {
     try {
         const { tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado } = req.body;
-        //  CORRECCIÓN: Obtener el nombre del archivo de req.file
         const image = req.file ? req.file.filename : null; 
 
         if (!tipoSensor || !nombreSensor || !unidadMedida || !tiempoEscaneo || !descripcion || !estado) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
-        // CORRECCIÓN: Incluir la columna 'image' en el SQL
         const sql = 'INSERT INTO sensores (tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
         const [result] = await db.query(sql, [tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado, image]);
 
@@ -41,10 +39,15 @@ const obtenerSensores = async (req, res) => {
     }
 };
 
-// Obtener un sensor por ID (esta función ya estaba correcta)
 const obtenerSensorPorId = async (req, res) => {
     try {
-        const { id } = req.params; // viene de la URL
+        const { id } = req.params;
+        
+        const numericId = Number(id);
+        if (isNaN(numericId) || !Number.isInteger(numericId) || numericId <= 0) {
+            return res.status(400).json({ error: "El ID del sensor debe ser un número entero positivo." });
+        }
+        
         const [rows] = await db.query("SELECT * FROM sensores WHERE idSensor = ?", [id]);
 
         if (rows.length === 0) {
@@ -53,7 +56,7 @@ const obtenerSensorPorId = async (req, res) => {
 
         res.json(rows[0]);
     } catch (err) {
-        console.error("❌ Error al obtener sensor:", err);
+        console.error(" Error al obtener sensor:", err);
         res.status(500).json({ error: "Error al obtener sensor" });
     }
 };
@@ -64,10 +67,13 @@ const actualizarSensor = async (req, res) => {
         const { id } = req.params;
         let { tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado } = req.body;
         
+        const numericId = Number(id);
+        if (isNaN(numericId) || !Number.isInteger(numericId) || numericId <= 0) {
+            return res.status(400).json({ error: "El ID del sensor a actualizar debe ser un número entero positivo." });
+        }
+        
         const image = req.file ? req.file.filename : (req.body.image ?? null);
 
-
-        // Normalizar: undefined → null
         tipoSensor = tipoSensor ?? null;
         nombreSensor = nombreSensor ?? null;
         unidadMedida = unidadMedida ?? null;
@@ -91,9 +97,9 @@ const actualizarSensor = async (req, res) => {
             return res.status(404).json({ error: "Sensor no encontrado" });
         }
 
-        res.json({ message: "✅ Sensor actualizado correctamente" });
+        res.json({ message: "Sensor actualizado correctamente" });
     } catch (err) {
-        console.error("❌ Error al actualizar el sensor:", err.message || err);
+        console.error(" Error al actualizar el sensor:", err.message || err);
         res.status(500).json({ error: "Error al actualizar el sensor" });
     }
 };

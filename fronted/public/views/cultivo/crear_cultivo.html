@@ -8,7 +8,12 @@
   <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
   <script src="/fronted/public/views/components/header.js" defer></script>
   <style>
-    .form__message.error { color: #dc3545; margin-bottom: 1rem; }
+    /* Estilos necesarios para mostrar mensajes de error */
+    .form__message.error { 
+        color: #dc3545; 
+        margin-bottom: 1rem; 
+        font-weight: bold;
+    }
   </style>
 </head>
 <body>
@@ -77,27 +82,17 @@
       const fileInput = document.getElementById('image');
 
       if (!tipo || !nombre || !id || !size || !loc || !desc || !state) {
-        showError('Todos los campos (excepto imagen) son obligatorios');
+        showError('Todos los campos son obligatorios');
         return;
       }
+      
+      // --- VALIDACIONES DE LONGITUD PARA CAMPOS DE TEXTO ---
       if (tipo.length < 3) {
         showError('El tipo de cultivo debe tener al menos 3 caracteres');
         return;
       }
       if (nombre.length < 3) {
         showError('El nombre del cultivo debe tener al menos 3 caracteres');
-        return;
-      }
-      if (!/^[A-Za-z0-9_-]+$/.test(id)) {
-        showError('El identificador solo puede contener letras, números, guiones o guion bajo');
-        return;
-      }
-      if (id.length < 3) {
-        showError('El identificador debe tener al menos 3 caracteres');
-        return;
-      }
-      if (size.length < 1) {
-        showError('El tamaño no puede estar vacío');
         return;
       }
       if (loc.length < 3) {
@@ -108,13 +103,33 @@
         showError('La descripción debe tener al menos 5 caracteres');
         return;
       }
+      
+      // --- VALIDACIONES NUMÉRICAS Y DE FORMATO PARA ID Y TAMAÑO ---
+      const numericId = Number(id);
+      
+      if (isNaN(numericId) || !Number.isInteger(numericId) || numericId <= 0) {
+        showError('El Identificador de cultivo (ID) debe ser un número entero positivo.');
+        return;
+      }
+      
+      const numericSize = Number(size);
+      if (isNaN(numericSize) || numericSize <= 0) {
+        showError('El tamaño debe ser un número positivo (mayor a 0).');
+        return;
+      }
+      
+      if (!/^[A-Za-z0-9_-]+$/.test(id)) {
+         showError('El identificador solo puede contener letras, números, guiones o guion bajo');
+         return;
+      }
 
       // Construir FormData
       const formData = new FormData();
       formData.append('cultivoType', tipo);
       formData.append('cultivoName', nombre);
-      formData.append('cultivoID', id);
-      formData.append('size', size);
+      // Enviamos los valores numéricos ya validados al backend
+      formData.append('cultivoID', numericId); 
+      formData.append('size', numericSize); 
       formData.append('location', loc);
       formData.append('description', desc);
       formData.append('state', state);
@@ -131,8 +146,12 @@
           const err = await res.json();
           throw new Error(err.error || 'Error al crear cultivo');
         }
-        alert('Cultivo creado exitosamente');
-        window.location.href = 'listar_cultivo.html';
+        // No usar 'alert()', usar un mensaje en el contenedor
+        document.getElementById('mensajeValidacion').textContent = ' Cultivo creado exitosamente.';
+        document.getElementById('mensajeValidacion').classList.remove('error');
+        // Redirigir o limpiar el formulario
+        setTimeout(() => window.location.href = 'listar_cultivo.html', 1500); 
+
       } catch (error) {
         showError(error.message);
       }

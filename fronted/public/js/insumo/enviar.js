@@ -1,7 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.form'); 
- 
-
     const imageInput = document.getElementById('image');
     
     const tipoInsumo = document.querySelector('.insumo__input--type');
@@ -86,9 +84,9 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             form.reset();
-            alert('✅ Insumo creado exitosamente.');
+            alert(' Insumo creado exitosamente.');
         } catch (error) {
-            console.error('❌ Error', error);
+            console.error(' Error', error);
             alert('Error al crear el insumo. Revisa la consola para más detalles.');
         }
     });
