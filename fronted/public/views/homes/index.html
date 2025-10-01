@@ -8,7 +8,6 @@
     <script src="/fronted/public/views/components/grid.js"></script>
 </head>
 <body>
-    <!-- Encabezado -->
     <header class="header">
         <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="header__logo">
         <nav class="header__nav">
@@ -16,22 +15,19 @@
             <a href="../usuarios/listar.html" class="header__link">Listar usuarios</a>
             <a href="../homes/home-ciclo.html" class="header__link">Ciclo Cultivo</a>
             <a href="../vizualisar/html/asocciaciones.html" class="header__link">Asociación</a>
+            <a href="../sensores/crear_sensor.html" class="header__link">Crear Sensor</a>
+            <a href="../sensores/visualizar_sensores.html" class="header__link">Visualizar Sensores</a>
             <a id="btnLogout" class="header__link" style="cursor: pointer;">Cerrar Sesión</a>
         </nav>
     </header>
 
-    <!-- Imagen superior -->
     <div class="header-banner">
       <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img">
     </div>
 
-    <!-- Imagen de fondo -->
     <div class="background">
-        <!-- Botones superiores -->
         <div class="top-boxes">
-            <div class="top-boxes__item">
-                <p><a href="../homes/home-sensores.html">Sensores</a></p>
-            </div>
+            <!-- Se eliminó el enlace "Sensores" de aquí y se movió al encabezado como acciones específicas -->
             <div class="top-boxes__item">
                 <p><a href="../homes/home-insumos.html">Insumos</a></p>
             </div>
@@ -40,11 +36,9 @@
             </div>
         </div>
 
-        <!-- Contenedor de cuadros -->
         <div class="grid"></div>
     </div>
 
-    <!-- Imagen inferior -->
     <div class="footer-banner">
       <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="footer-banner__img">
     </div>
@@ -63,12 +57,13 @@
       const rules = {
         visitante: [
           'Ciclo Cultivo',
-          'Sensores',
+          'Visualizar Sensores', 
           'Cultivos'
         ],
         
         personal: [
-          'Sensores'
+          'Crear Sensor',
+          'Visualizar Sensores' 
         ],
         
         admin: [
@@ -76,7 +71,8 @@
           'Ciclo Cultivo',
           'Insumos',
           'Cultivos',
-          'Sensores',
+          'Crear Sensor', 
+          'Visualizar Sensores', 
           'Producción',
           'Asociación'
         ],
@@ -87,9 +83,10 @@
           'Ciclo Cultivo',
           'Insumos',
           'Cultivos',
-          'Sensores',
+          'Crear Sensor',
+          'Visualizar Sensores', 
           'Producción',
-          'Asociación'        ]
+          'Asociación'        ]
       };
       
       document.querySelectorAll('.header__link').forEach(link => {
@@ -100,7 +97,7 @@
       
       document.querySelectorAll('.top-boxes__item a').forEach(a => {
         const txt = a.textContent.trim();
-        if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove();
+        if (!rules[role] || !rules[role].includes(txt)) a.closest('.top-boxes__item').remove();
       });
       
       const btnLogout = document.getElementById('btnLogout');

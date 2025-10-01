@@ -1,5 +1,5 @@
 const db = require('../config/db.js');
-const bcrypt = require('bcrypt');
+const bcrypt = require('bcryptjs');
 
 const SALT_ROUNDS = 10;
 const BCRYPT_PATTERN = /^\$2[aby]\$.{56}$/;
@@ -64,13 +64,10 @@ const insertarLogin = async (req, res) => {
 
         let valid = false;
         if (BCRYPT_PATTERN.test(stored)) {
-            // contraseña cifrada
             valid = await bcrypt.compare(password, stored);
         } else {
-            // contraseña en texto plano (legacy)
             valid = password === stored;
             if (valid) {
-                // opcional: re-hashear y actualizar a cifrado
                 const newHash = await bcrypt.hash(password, SALT_ROUNDS);
                 await db.query('UPDATE register SET password = ? WHERE id = ?', [newHash, user.id]);
             }

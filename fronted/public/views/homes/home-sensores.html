@@ -29,7 +29,6 @@
     </main>
     <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
             class="footer-banner__img"> </div>
-   <!-- ... (resto del HTML) ... -->
 
     <script>
     (function () {
@@ -40,10 +39,6 @@
         return;
       }
 
-      // Usamos 'usertype' o 'role' según cómo lo almacene tu login. 
-      // Si el login del Superadmin lo guarda como 'role', este código funcionará.
-      // Si tu login lo guarda como 'usertype' (como en el controlador de registro), 
-      // debes cambiar 'user.role' por 'user.usertype'. Mantendré 'role' por ahora.
       const role = user.role; 
 
       const rules = {
@@ -55,10 +50,7 @@
           'Cultivos'
         ],
         personal: [
-          'Sensores',
-          'Crear sensor',
-          'Visualizar sensor',
-          'Listar sensor'
+          'Sensores'
         ],
         admin: [
           'Inicio', 
@@ -102,7 +94,6 @@
     })(); 
     </script>
 
-<!-- ... (resto del HTML) ... -->
 
 </body>
 

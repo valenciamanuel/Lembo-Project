@@ -9,9 +9,9 @@
     <script src="/fronted/public/views/components/grid.js"></script>
 </head>
 
-<body> <!-- Banner superior -->
+<body> 
     <div class="header-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img">
-    </div> <!-- Header -->
+    </div> 
     <header class="header"> <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA"
             class="header__logo">
         <nav class="header__nav">
@@ -28,7 +28,7 @@
             <div class="top-boxes__item"><a href="../cultivo/listar_cultivo.html">Listar cultivo</a></div>
         </div>
         <div class="grid"></div>
-    </main> <!-- Banner inferior -->
+    </main> 
     <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
             class="footer-banner__img"> </div>
     <script>
@@ -64,14 +64,12 @@
             'Listar cultivo'
         ], 
         
-        // ¡CORRECCIÓN CLAVE AQUÍ! Superadmin ahora tiene todos los permisos.
+      
         superadmin: [
-            // Permisos de navegación que probablemente se necesitan
+            
             'Registrar usuario',
             'Listar usuarios',
             'Asociación',
-            
-            // Permisos del módulo Cultivo y otros módulos principales
             'Inicio',
             'SGL', 
             'Ciclo cultivo', 
@@ -80,8 +78,8 @@
             'Crear cultivo', 
             'Visualizar cultivo', 
             'Listar cultivo',
-            'Cultivos', // Añadido por si es el texto de un enlace de navegación
-            'Producción' // Asumo que este permiso también existe
+            'Cultivos', 
+            'Producción' 
         ] 
     }; 
 
