@@ -65,7 +65,12 @@ document.addEventListener('DOMContentLoaded', () => {
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
 
-        // ... Validación de campos obligatorios (se mantiene igual) ...
+        // Limpiar errores visuales
+        [...inputs].forEach(input => {
+            input.classList.remove('form__input--error');
+            if (input.tagName !== 'SELECT') input.placeholder = '';
+        });
+        imageInput.classList.remove('form__input--error');
 
         let valido = true;
         
@@ -96,17 +101,26 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
+        // ✅ NUEVA VALIDACIÓN: ID Positivo
+        const numericCicloID = Number(cicloID.value.trim());
+        if (isNaN(numericCicloID) || numericCicloID <= 0) {
+            valido = false;
+            cicloID.classList.add('form__input--error');
+            showMessage('El ID del ciclo debe ser un número positivo (mayor a cero).', 'error');
+        }
+
+        if (!valido) return;
+
         const siembraStr = siembraDate.value;
         const cosechaStr = cosechaDate.value;
 
-        // Validación 1: Siembra debe ser hoy o futura (Validación por string)
+        // Validación de fechas
         if (!isValidFutureDateOrToday(siembraStr)) {
             valido = false;
             siembraDate.classList.add('form__input--error');
             showMessage('La fecha de siembra no puede ser anterior al día de hoy.', 'error');
         }
         
-        // Validación 2: Cosecha debe ser hoy o futura (Validación por string)
         if (!isValidFutureDateOrToday(cosechaStr)) {
             valido = false;
             cosechaDate.classList.add('form__input--error');
@@ -145,7 +159,6 @@ document.addEventListener('DOMContentLoaded', () => {
                 method: 'POST',
                 body: formData 
             });
-            // ... (Manejo de respuesta) ...
 
             if (!response.ok) {
                 const errorData = await response.json();

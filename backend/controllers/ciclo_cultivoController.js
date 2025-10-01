@@ -16,7 +16,7 @@ const deleteFileIfExist = (filename) => {
     }
 };
 
-
+// Función auxiliar: Obtiene la fecha de hoy en formato YYYY-MM-DD (string)
 const getTodayString = () => {
     const d = new Date();
     // Creamos un nuevo objeto Date fijado a las 00:00:00 local del servidor.
@@ -37,27 +37,34 @@ const insertarCicloCultivo = async (req, res) => {
         return res.status(400).json({ error: 'Faltan campos obligatorios para el ciclo: ID, Nombre, Fechas, Novedades y Estado.' });
     }
 
+    // ✅ VALIDACIÓN 1: El ID debe ser un número positivo
+    const numericCicloID = Number(cicloID);
+    if (isNaN(numericCicloID) || numericCicloID <= 0) {
+        deleteFileIfExist(image);
+        return res.status(400).json({ error: 'El ID del ciclo debe ser un número positivo (mayor a cero).' });
+    }
     
     const todayString = getTodayString();
     const siembraStr = siembraDate.split('T')[0];
     const cosechaStr = cosechaDate.split('T')[0];
 
-    
-    if (siembraStr !== todayString) {
+    // ✅ VALIDACIÓN 2: Siembra debe ser HOY o FUTURA (siembra >= today).
+    // Usamos comparación de strings para evitar problemas de hora/zona horaria.
+    if (siembraStr < todayString) {
         deleteFileIfExist(image);
-        return res.status(400).json({ error: 'La fecha de siembra debe ser la fecha de hoy (el día actual).' });
+        return res.status(400).json({ error: 'La fecha de siembra no puede ser anterior al día de hoy.' });
     }
     
-    
+    // Convertimos a objetos Date limpios (medianoche) para la comparación lógica siembra vs. cosecha
     const siembra = new Date(siembraStr);
     const cosecha = new Date(cosechaStr);
     siembra.setHours(0, 0, 0, 0); 
     cosecha.setHours(0, 0, 0, 0);
 
-    
+    // ✅ VALIDACIÓN 3: Cosecha debe ser estrictamente posterior a siembra.
     if (cosecha <= siembra) {
         deleteFileIfExist(image);
-        return res.status(400).json({ error: 'La fecha de cosecha debe ser posterior a la fecha de siembra (mañana o después).' });
+        return res.status(400).json({ error: 'La fecha de cosecha debe ser posterior a la fecha de siembra.' });
     }
 
     state = state.toLowerCase();
@@ -82,6 +89,7 @@ const insertarCicloCultivo = async (req, res) => {
     } catch (err) {
         console.error(' Error al insertar el ciclo de cultivo:', err.message || err);
         deleteFileIfExist(image);
+        // Puedes agregar más manejo de errores SQL si el ID ya existe, por ejemplo.
         return res.status(500).json({ error: 'Error al insertar el ciclo de cultivo', details: err.message });
     } finally {
         if (connection) {
@@ -138,24 +146,30 @@ const actualizarCicloCultivo = async (req, res) => {
         return res.status(400).json({ error: 'Todos los campos son obligatorios' });
     }
     
+    // ✅ VALIDACIÓN 1: El ID debe ser un número positivo
+    const numericCicloID = Number(cicloID);
+    if (isNaN(numericCicloID) || numericCicloID <= 0) {
+        return res.status(400).json({ error: 'El ID del ciclo debe ser un número positivo (mayor a cero).' });
+    }
+
     const todayString = getTodayString();
     const siembraStr = siembraDate.split('T')[0];
     const cosechaStr = cosechaDate.split('T')[0];
 
-  
-    if (siembraStr !== todayString) {
-        return res.status(400).json({ error: 'La fecha de siembra debe ser la fecha de hoy (el día actual).' });
+    // ✅ VALIDACIÓN 2: Siembra debe ser HOY o FUTURA (siembra >= today).
+    if (siembraStr < todayString) {
+        return res.status(400).json({ error: 'La fecha de siembra no puede ser anterior al día de hoy.' });
     }
     
-   
+    // Convertimos a objetos Date limpios (medianoche) para la comparación lógica siembra vs. cosecha
     const siembra = new Date(siembraStr);
     const cosecha = new Date(cosechaStr);
     siembra.setHours(0, 0, 0, 0); 
     cosecha.setHours(0, 0, 0, 0);
     
-  
+    // ✅ VALIDACIÓN 3: Cosecha debe ser estrictamente posterior a siembra.
     if (cosecha <= siembra) {
-        return res.status(400).json({ error: 'La fecha de cosecha debe ser posterior a la fecha de siembra (mañana o después).' });
+        return res.status(400).json({ error: 'La fecha de cosecha debe ser posterior a la fecha de siembra.' });
     }
 
     state = state.toLowerCase();
