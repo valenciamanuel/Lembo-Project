@@ -25,7 +25,7 @@
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             try {
-                // Ruta de Fetch: http://localhost:3000/sensores
+
                 const response = await fetch("http://localhost:3000/sensores");
                 if (!response.ok) throw new Error("Error al obtener sensores");
 
@@ -38,7 +38,6 @@
                     return;
                 }
 
-                // ✅ NUEVA LÍNEA: Definimos la URL base de nuestro servidor Express
                 const BASE_URL = "http://localhost:3000";
 
                 sensores.forEach(s => {
@@ -47,7 +46,7 @@
 
                     card.innerHTML = `
                         <div class="card-image">
-                            <!-- ✅ CORRECCIÓN EN ESTA LÍNEA: Usamos la URL completa para evitar el error 404 del puerto 5501 -->
+                            <!--  CORRECCIÓN EN ESTA LÍNEA: Usamos la URL completa para evitar el error 404 del puerto 5501 -->
                             ${s.image ? `<img src="${BASE_URL}/uploads/${s.image}" alt="${s.nombreSensor}">` : `<div class="no-image">Sin imagen</div>`}
                         </div>
                         <div class="card-content">
@@ -61,7 +60,7 @@
                     container.appendChild(card);
                 });
             } catch (error) {
-                console.error("❌ Error cargando sensores:", error);
+                console.error("Error cargando sensores:", error);
 
                 const container = document.getElementById("sensores-container");
                 container.innerHTML = `<p class="no-sensores">Error al cargar sensores. Verifique que el servidor esté corriendo.</p>`;

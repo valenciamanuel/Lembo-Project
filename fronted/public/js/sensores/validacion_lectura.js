@@ -24,7 +24,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     function leerDatosSensor(sensor) {
         return new Promise((resolve, reject) => {
-            // Simulación de lectura del sensor
             const valorSimulado = Math.random() * 100;
             const timestamp = new Date().toLocaleTimeString();
             resolve({ sensor, valor: valorSimulado.toFixed(2), timestamp });
@@ -32,7 +31,7 @@ document.addEventListener('DOMContentLoaded', () => {
     }
 
     function mostrarDato(dato) {
-        console.log("Dato a mostrar:", dato); // <---- ¡AQUÍ ESTÁ EL PRIMER console.log!
+        console.log("Dato a mostrar:", dato);
         const listItem = document.createElement('li');
         listItem.textContent = `${dato.sensor}: ${dato.valor} (${dato.timestamp})`;
         datosSensorList.insertBefore(listItem, datosSensorList.firstChild);
@@ -54,7 +53,6 @@ document.addEventListener('DOMContentLoaded', () => {
         mensajeMuestreoDiv.className = 'mensaje-muestreo'; // Resetear clases
         mensajeMuestreoDiv.classList.add(`mensaje-muestreo--${tipo}`);
 
-        // Opcional: Si quieres que el mensaje desaparezca después de un tiempo
         setTimeout(() => {
             mensajeMuestreoDiv.textContent = '';
             mensajeMuestreoDiv.className = 'mensaje-muestreo'; // Resetear clases
@@ -85,7 +83,7 @@ document.addEventListener('DOMContentLoaded', () => {
                     }
                 }, tiempoEnMilisegundos);
 
-                mostrarMensaje('Lectura iniciada.', 'success'); // <---- MENSAJE DE INICIO (VERDE)
+                mostrarMensaje('Lectura iniciada.', 'success'); 
 
             } else {
                 mostrarMensaje('Por favor, selecciona un sensor antes de iniciar la lectura.', 'error');

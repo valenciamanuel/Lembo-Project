@@ -1,4 +1,3 @@
-// Simple JavaScript to show/hide production details
 document.querySelectorAll('.table__button').forEach(button => {
     button.addEventListener('click', () => {
         document.getElementById('production-detail').classList.remove('detail--hidden');

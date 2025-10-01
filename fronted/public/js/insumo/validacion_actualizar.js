@@ -27,7 +27,7 @@ document.addEventListener("DOMContentLoaded", function () {
         mensaje.innerHTML = `<span style="color: green;">Datos actualizados correctamente.</span>`;
 
         setTimeout(() => {
-            // Aquí puedes agregar la lógica para enviar los datos a la base de datos
+            
             alert("Insumo actualizado con éxito.");
         }, 2000);
     }

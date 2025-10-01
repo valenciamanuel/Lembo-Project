@@ -1,10 +1,8 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // ✅ CORRECCIÓN: Usar el ID del formulario si lo tienes, o querySelector como estaba.
-    // Asumo que el formulario ya tiene el ID 'crear-sensor-form' o que usas la clase '.form'
     const form = document.querySelector('.form'); 
 
     // --- Referencias a los campos ---
-    const imageInput = document.getElementById('image'); // Referencia al input de tipo file
+    const imageInput = document.getElementById('image'); 
     const tipoSensor = document.querySelector('.sensor__input--type');
     const nombreSensor = document.querySelector('.sensor__input--name');
     const unidadMedida = document.querySelector('.sensor__input--medida');
@@ -15,8 +13,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputs = [tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion];
     const selects = [estado];
 
-    // --- Quitar clase de error al escribir o cambiar ---
-    // Incluimos la imagen en la limpieza
+
     [...inputs, ...selects, imageInput].forEach(input => {
         input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'input', () => {
             input.classList.remove('form__input--error');
@@ -38,7 +35,6 @@ document.addEventListener('DOMContentLoaded', () => {
         let valido = true;
 
         const validarCampo = (input, mensaje) => {
-            // Validación normal para campos de texto y select
             if (!input.value.trim()) {
                 valido = false;
                 input.classList.add('form__input--error');
@@ -56,7 +52,6 @@ document.addEventListener('DOMContentLoaded', () => {
         validarCampo(descripcion, 'Descripción obligatoria');
         validarCampo(estado, 'Seleccionar estado');
         
-        // Puedes hacer la imagen opcional. Si no lo es, deja esta validación:
         if (!imageInput.files[0]) {
              valido = false;
              imageInput.classList.add('form__input--error');
@@ -65,14 +60,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
-        // ✅ CORRECCIÓN CLAVE: Usar FormData para enviar archivos y datos de formulario
         const formData = new FormData(form);
 
         try {
             const response = await fetch('http://localhost:3000/sensores', {
                 method: 'POST',
-                // ✅ IMPORTANTE: Se elimina 'Content-Type': 'application/json' 
-                // El navegador lo establece automáticamente para FormData (multipart/form-data)
                 body: formData 
             });
 
@@ -85,7 +77,6 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             console.log('Sensor registrado', result);
 
-            // --- Mensaje a la ventana que abrió este formulario ---
             if (window.opener && window.opener.postMessage) {
                 window.opener.postMessage({
                     type: 'nuevoSensorCreado',

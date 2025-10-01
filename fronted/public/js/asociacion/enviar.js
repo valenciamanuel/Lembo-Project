@@ -1,4 +1,3 @@
-// /fronted/public/js/asociacion/enviar.js
 document.addEventListener('DOMContentLoaded', () => {
     const formAsociacion = document.querySelector('.formulario');
     const nombreAsociacionInput = document.querySelector('.formulario__entrada--nombre');
@@ -54,8 +53,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const nuevoCultivo = event.data.cultivo;
                     if (cultivoSelect) {
                         const nuevaOpcion = document.createElement('option');
-                        nuevaOpcion.value = nuevoCultivo.idCultivo; // Asegúrate de que tu backend devuelva 'idCultivo'
-                        nuevaOpcion.textContent = nuevoCultivo.nombreCultivo; // Asegúrate de que tu backend devuelva 'nombreCultivo'
+                        nuevaOpcion.value = nuevoCultivo.idCultivo; 
+                        nuevaOpcion.textContent = nuevoCultivo.nombreCultivo; 
                         cultivoSelect.appendChild(nuevaOpcion);
                         nuevaOpcion.selected = true;
                     }
@@ -64,8 +63,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const nuevoInsumo = event.data.insumo;
                     if (insumosSelect) {
                         const nuevaOpcion = document.createElement('option');
-                        nuevaOpcion.value = nuevoInsumo.idInsumo; // Asegúrate de que tu backend devuelva 'idInsumo'
-                        nuevaOpcion.textContent = nuevoInsumo.nombreInsumo; // Asegúrate de que tu backend devuelva 'nombreInsumo'
+                        nuevaOpcion.value = nuevoInsumo.idInsumo; 
+                        nuevaOpcion.textContent = nuevoInsumo.nombreInsumo;
                         insumosSelect.appendChild(nuevaOpcion);
                         nuevaOpcion.selected = true;
                     }
@@ -74,8 +73,8 @@ document.addEventListener('DOMContentLoaded', () => {
                     const nuevoCicloCultivo = event.data.cicloCultivo;
                     if (cicloCultivoSelect) {
                         const nuevaOpcion = document.createElement('option');
-                        nuevaOpcion.value = nuevoCicloCultivo.id; // Asegúrate de que tu backend devuelva 'id'
-                        nuevaOpcion.textContent = nuevoCicloCultivo.cicloName; // Asegúrate de que tu backend devuelva 'cicloName'
+                        nuevaOpcion.value = nuevoCicloCultivo.id; 
+                        nuevaOpcion.textContent = nuevoCicloCultivo.cicloName; 
                         cicloCultivoSelect.appendChild(nuevaOpcion);
                         nuevaOpcion.selected = true;
                     }

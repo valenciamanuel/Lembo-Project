@@ -80,7 +80,7 @@
 
         document.addEventListener('DOMContentLoaded', async () => {
             const params = new URLSearchParams(window.location.search);
-            const cultivoId = params.get('id'); // Variable con el ID correcto
+            const cultivoId = params.get('id');
             
             if (!cultivoId) { 
                 alert('ID no proporcionado'); 
@@ -89,7 +89,7 @@
 
             const form = document.getElementById('edit-form');
             const fields = ['cultivoType', 'cultivoName', 'cultivoID', 'size', 'location', 'description', 'state'];
-            let currentImage = ''; // Variable para guardar la imagen actual
+            let currentImage = '';
             
             // Cargar datos existentes
             try {

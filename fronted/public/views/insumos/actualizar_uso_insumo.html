@@ -145,7 +145,7 @@
             body: JSON.stringify(updated)
           });
           if (!res.ok) throw new Error();
-          alert("✅ Uso de insumo actualizado.");
+          alert("Uso de insumo actualizado.");
           window.location.href = "listar_uso_insumo.html";
         } catch (err) {
           console.error("Error al actualizar uso:", err);

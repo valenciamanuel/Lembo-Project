@@ -20,7 +20,6 @@
         <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
 
         <div id="ciclos-container" class="cards-container">
-             <!-- JS insertará cada card -->
              </div>
         
     </main>
@@ -32,12 +31,10 @@
       <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
          </div>
 
-     <!-- JS para cargar ciclos -->
     
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             try {
-                // La URL de la API ya apunta correctamente al puerto 3000
                 const response = await fetch("http://localhost:3000/ciclocultivo");
                 if (!response.ok) throw new Error("Error al obtener ciclos de cultivo");
 
@@ -54,27 +51,26 @@
                     const card = document.createElement("div");
                     card.classList.add("card");
 
-                    // *** CORRECCIÓN CLAVE AQUÍ: Se añade el prefijo http://localhost:3000 ***
                     const imageUrl = c.image ? `http://localhost:3000/uploads/${c.image}` : null;
 
                     card.innerHTML = `
-            <div class="card-image">
-              ${c.image ? `<img src="${imageUrl}" alt="${c.cicloName}">` : `<div class="no-image">Sin imagen</div>`}
-            </div>
-            <div class="card-content">
-              <h3>🌱 ${c.cicloName}</h3>
-              <p><strong>Código:</strong> ${c.cicloID}</p>
-              <p><strong>Fecha Siembra:</strong> ${c.siembraDate}</p>
-              <p><strong>Fecha Cosecha:</strong> ${c.cosechaDate}</p>
-              <p><strong>Novedades:</strong> ${c.news}</p>
-              <p><strong>Descripción:</strong> ${c.description}</p>
-              <p><strong>Estado:</strong> <span class="estado ${c.state ? c.state.toLowerCase() : ''}">${c.state || "Sin estado"}</span></p>
-            </div>
-          `;
+      <div class="card-image">
+       ${c.image ? `<img src="${imageUrl}" alt="${c.cicloName}">` : `<div class="no-image">Sin imagen</div>`}
+      </div>
+      <div class="card-content">
+       <h3>🌱 ${c.cicloName}</h3>
+       <p><strong>Código:</strong> ${c.cicloID}</p>
+       <p><strong>Fecha Siembra:</strong> ${c.siembraDate}</p>
+       <p><strong>Fecha Cosecha:</strong> ${c.cosechaDate}</p>
+       <p><strong>Novedades:</strong> ${c.news}</p>
+       <p><strong>Descripción:</strong> ${c.description}</p>
+       <p><strong>Estado:</strong> <span class="estado ${c.state ? c.state.toLowerCase() : ''}">${c.state || "Sin estado"}</span></p>
+      </div>
+     `;
                     container.appendChild(card);
                 });
             } catch (error) {
-                console.error("❌ Error cargando ciclos de cultivo:", error);
+                console.error(" Error cargando ciclos de cultivo:", error);
                 document.getElementById("ciclos-container").innerHTML = `<p class="no-ciclos">Error al cargar ciclos de cultivo</p>`;
             }
         });

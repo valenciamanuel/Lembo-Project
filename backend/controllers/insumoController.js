@@ -20,7 +20,6 @@ const storage = multer.diskStorage({
 const upload = multer({ storage });
 
 // Middleware para rutas que suben archivos
-// Ejemplo: router.post('/insumo', upload.single('image'), insertarInsumo);
 
 const insertarInsumo = async (req, res) => {
   const { tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado } = req.body;

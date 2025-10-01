@@ -2,12 +2,12 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const path = require("path");
-const db = require('./config/db.js'); // Asegúrate de que este archivo exista y se conecte
+const db = require('./config/db.js'); // Asegurar de que este archivo exista y se conecte
 
 // --- Conexión a la Base de Datos (Opcional, pero recomendado aquí) ---
 db.getConnection()
-    .then(() => console.log('✅ Conexión exitosa al pool de la base de datos.'))
-    .catch(err => console.error('❌ Error al conectar a la base de datos:', err));
+    .then(() => console.log(' Conexión exitosa al pool de la base de datos.'))
+    .catch(err => console.error(' Error al conectar a la base de datos:', err));
 
 // --- Configuración CORS ---
 app.use(cors({
@@ -26,7 +26,7 @@ app.options('*', cors());
 // Esto permite acceder a '/fronted/public/js/...' directamente desde '/'
 app.use(express.static(path.join(__dirname, '..', 'fronted', 'public')));
 
-// ✅ CORRECTO: Configuración para servir la carpeta 'uploads'
+// CORRECTO: Configuración para servir la carpeta 'uploads'
 // Esto permite que el frontend acceda a las imágenes en /uploads/nombre_archivo.jpg
 app.use("/uploads", express.static(path.join(__dirname, "..", "fronted", "public", "uploads"))); 
 
@@ -49,11 +49,8 @@ const asociacionDetalleRoute = require('./routes/asociacionDetalleRoute.js');
 const apiasociaciones = require('./routes/api.js');
 
 // Uso de rutas
-// ✅ CORRECCIÓN CLAVE: Usamos la ruta /ciclocultivo según tu preferencia
-app.use('/ciclocultivo', cicloCultivoRoutes); // Rutas de Ciclo Cultivo
-app.use('/cultivo', cultivoRoutes); // Rutas de Cultivo (Asumiendo que es una tabla diferente)
-
-// ... el resto de rutas se mantienen
+app.use('/ciclocultivo', cicloCultivoRoutes); 
+app.use('/cultivo', cultivoRoutes); 
 app.use('/insumo', insumoRoutes);
 app.use('/sensores', sensorRoutes);
 app.use('/register', regsiterRoutes);

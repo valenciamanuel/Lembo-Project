@@ -1,10 +1,7 @@
 document.addEventListener('DOMContentLoaded', () => {
-    // Usamos el ID del formulario si lo añadiste, o el selector de clase
     const form = document.querySelector('.form'); 
-    // Si usaste el ID 'crear-insumo-form' en el HTML, usa: const form = document.getElementById('crear-insumo-form');
+ 
 
-    // --- Referencias a los campos ---
-    // ✅ CLAVE: Referencia al input de tipo file (debe tener el ID 'image' en el HTML)
     const imageInput = document.getElementById('image');
     
     const tipoInsumo = document.querySelector('.insumo__input--type');
@@ -16,15 +13,12 @@ document.addEventListener('DOMContentLoaded', () => {
     const descripcion = document.querySelector('.insumo__input--descripcion');
     const estado = document.querySelector('.insumo__input--estado');
 
-    // Incluimos la imagen en la lista de inputs para limpieza de errores
     const inputs = [imageInput, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion];
     const selects = [estado];
 
-    // --- Quitar clase de error al escribir o cambiar ---
     [...inputs, ...selects].forEach(input => {
         input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'input', () => {
             input.classList.remove('form__input--error');
-            // Limpia placeholder solo si no es un SELECT o FILE
             if (input.tagName !== 'SELECT' && input.type !== 'file') input.placeholder = '';
         });
     });
@@ -43,7 +37,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
         const validarCampo = (input, mensaje) => {
             if (input.type === 'file') {
-                // Validación de imagen (opcional)
                 return;
             }
             
@@ -68,13 +61,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
-        // ✅ CORRECCIÓN CLAVE: Usar FormData para enviar archivos y datos
         const formData = new FormData(form);
 
         try {
             const response = await fetch('http://localhost:3000/insumo', {
                 method: 'POST',
-                // ✅ IMPORTANTE: Se ELIMINA 'Content-Type': 'application/json' 
                 body: formData // Enviamos el objeto FormData
             });
 

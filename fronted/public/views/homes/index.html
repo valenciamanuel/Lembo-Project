@@ -15,7 +15,6 @@
             <a href="../usuarios/listar.html" class="header__link">Listar usuarios</a>
             <a href="../homes/home-ciclo.html" class="header__link">Ciclo Cultivo</a>
             <a href="../vizualisar/html/asocciaciones.html" class="header__link">Asociación</a>
-            <!-- Enlaces de Sensores movidos al menú principal -->
             <a href="../sensores/crear_sensor.html" class="header__link">Crear Sensor</a>
             <a href="../sensores/visualizar_sensores.html" class="header__link">Visualizar Sensores</a>
             <a id="btnLogout" class="header__link" style="cursor: pointer;">Cerrar Sesión</a>
@@ -27,7 +26,7 @@
     </div>
 
     <div class="background">
-        <!-- Los cuadros inferiores ahora incluyen Sensores de nuevo -->
+        
         <div class="top-boxes">
             <div class="top-boxes__item">
                 <p><a href="../homes/home-insumos.html">Insumos</a></p>
@@ -35,7 +34,7 @@
             <div class="top-boxes__item">
                 <p><a href="../homes/home-cultivo-3.html">Cultivos</a></p>
             </div>
-            <!-- ✅ CUADRO DE SENSORES RE-AÑADIDO -->
+            
             <div class="top-boxes__item">
                 <p><a href="../homes/home-sensores.html">Sensores</a></p>
             </div>
@@ -59,25 +58,25 @@
       
       const role = user.role;
       
-      // ✅ REGLAS DE ACCESO ACTUALIZADAS (Se añadió 'Sensores' para admin y superadmin)
+      // ✅ 
       const rules = {
         visitante: [
           'Ciclo Cultivo',
           'Cultivos',
-          'Visualizar Sensores' // Solo ver listado (en el header)
+          'Visualizar Sensores' 
         ],
         
         personal: [
           'Crear Sensor',
-          'Visualizar Sensores' // Crear y Listar (en el header)
+          'Visualizar Sensores' 
         ],
         
         admin: [
           'Listar usuarios',
           'Ciclo Cultivo',
-          'Insumos', // Cuadro inferior
-          'Cultivos', // Cuadro inferior
-          'Sensores', // ✅ Cuadro inferior
+          'Insumos', 
+          'Cultivos', 
+          'Sensores', 
           'Crear Sensor', 
           'Visualizar Sensores',
           'Producción',
@@ -88,29 +87,26 @@
           'Registrar usuario',
           'Listar usuarios',
           'Ciclo Cultivo',
-          'Insumos', // Cuadro inferior
-          'Cultivos', // Cuadro inferior
-          'Sensores', // ✅ Cuadro inferior
+          'Insumos', 
+          'Cultivos', 
+          'Sensores', 
           'Crear Sensor',
           'Visualizar Sensores',
           'Producción',
-          'Asociación'        ]
+          'Asociación']
       };
       
-      // Lógica para el menú de navegación (header)
       document.querySelectorAll('.header__link').forEach(link => {
         const txt = link.textContent.trim();
         if (txt === 'Cerrar Sesión') return;
         if (!rules[role] || !rules[role].includes(txt)) link.remove();
       });
-      
-      // Lógica para los cuadros superiores (top-boxes)
+
       document.querySelectorAll('.top-boxes__item a').forEach(a => {
         const txt = a.textContent.trim();
         if (!rules[role] || !rules[role].includes(txt)) a.closest('.top-boxes__item').remove();
       });
       
-      // Lógica de Cerrar Sesión
       const btnLogout = document.getElementById('btnLogout');
       if (btnLogout) {
           btnLogout.onclick = function(){

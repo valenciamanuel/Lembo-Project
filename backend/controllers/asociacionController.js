@@ -12,10 +12,10 @@ const insertarAsociacion = async (req, res) => {
     sensores,
     insumos,
     ciclo_cultivo,
-    insumos_detalle, // Nueva información detallada de insumos
+    insumos_detalle,
   } = req.body
 
-  // Validaciones básicas
+
   if (
     !responsable ||
     !nombre_asociacion ||
@@ -160,7 +160,7 @@ const actualizarAsociacion = async (req, res) => {
     sensores,
     insumos,
     ciclo_cultivo,
-    insumos_detalle, // Nueva información detallada de insumos
+    insumos_detalle, 
   } = req.body
 
   if (!id) {
@@ -245,7 +245,7 @@ const actualizarAsociacion = async (req, res) => {
 
         const insumo = insumoInfo[0]
 
-        // Registrar uso del insumo (para auditoría)
+        // Registrar uso del insumo 
         await connection.query(
           `INSERT INTO uso_insumo 
                     (fecha_uso, cantidad, responsable, valor_unitario, valor_total, observaciones, insumo) 
