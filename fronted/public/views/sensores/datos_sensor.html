@@ -78,7 +78,6 @@
         }
         const data = await response.json();
 
-        // Rellenar el formulario
         document.getElementById('sensorId').value = data.idSensor;
         document.getElementById('nombreSensor').value = data.nombreSensor || "";
         document.getElementById('tipoSensor').value = data.tipoSensor || "";
@@ -88,7 +87,7 @@
         document.getElementById('estado').value = data.estado || "";
         document.getElementById('imagen').value = data.imagen || "";
       } catch (error) {
-        console.error("❌ Error cargando datos:", error);
+        console.error("❌Error cargando datos:", error);
         alert(`Error al cargar los datos: ${error.message}`);
       }
 
@@ -118,10 +117,10 @@
             throw new Error(errorData.error || 'Error al actualizar el sensor.');
           }
 
-          alert('✅ Sensor actualizado exitosamente.');
+          alert(' Sensor actualizado exitosamente.');
           window.location.href = 'listar_sensor.html';
         } catch (error) {
-          console.error("❌ Error al actualizar el sensor:", error);
+          console.error(" Error al actualizar el sensor:", error);
           alert(`Error al actualizar: ${error.message}`);
         }
       });

@@ -1,4 +1,3 @@
-
 // Variables globales
 const API_URL = "http://localhost:3000/api"
 let asociacionesData = []

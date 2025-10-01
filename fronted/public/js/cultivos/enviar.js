@@ -13,7 +13,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputs = [cultivoType, cultivoName, cultivoID, size, location, description];
     const selects = [state];
 
-    // --- Quitar rojo al escribir/cambiar ---
     inputs.forEach(input => {
         input.addEventListener('input', () => {
             input.classList.remove('form__input--error');
@@ -79,12 +78,12 @@ document.addEventListener('DOMContentLoaded', () => {
         formData.append('state', state.value);
         formData.append('image', imageInput.files[0]);
 
-        // ✅ AÑADE ESTE BLOQUE DE CÓDIGO AQUÍ para ver los datos.
+    
         const dataForLog = {};
         for (let [key, value] of formData.entries()) {
             dataForLog[key] = value;
         }
-        console.log('✅ Datos que se van a enviar:', dataForLog);
+        console.log('Datos que se van a enviar:', dataForLog);
 
         try {
             const response = await fetch('http://localhost:3000/cultivo', {

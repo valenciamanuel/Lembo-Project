@@ -134,7 +134,7 @@
           });
         }
       } catch (error) {
-        console.error("❌ Error cargando sensores:", error);
+        console.error(" Error cargando sensores:", error);
         document.getElementById("sensores-table").innerHTML = `
           <tr><td colspan="9" style="color: #dc3545;">Error al cargar los sensores. Por favor, intente nuevamente.</td></tr>
         `;
@@ -182,7 +182,7 @@
         
         alert(`Sensor ${newStatus === 'Activo' ? 'activado' : 'desactivado'} correctamente`);
       } catch (error) {
-        console.error('❌ Error al cambiar estado:', error);
+        console.error(' Error al cambiar estado:', error);
         alert('Error al cambiar el estado del sensor. Por favor, intente nuevamente.');
       }
     }

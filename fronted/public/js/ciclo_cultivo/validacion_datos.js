@@ -4,7 +4,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const btnActualizar = document.getElementById("btnActualizar");
     const mensaje = document.createElement("p");
     mensaje.style.textAlign = "center";
-    form.appendChild(mensaje); // Agrega el mensaje debajo del formulario
+    form.appendChild(mensaje);
 
     function validarFormulario(event, redireccion) {
         event.preventDefault(); // Evita la acción predeterminada del enlace

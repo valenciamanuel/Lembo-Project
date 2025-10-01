@@ -28,7 +28,7 @@ document.addEventListener('DOMContentLoaded', () => {
         // Limpiar errores anteriores
         [...inputs].forEach(input => {
             input.classList.remove('form__input--error');
-            if (input.tagName !== 'SELECT') input.placeholder = ''; // Limpiar errores anteriores
+            if (input.tagName !== 'SELECT') input.placeholder = '';
         });
 
         let valido = true;

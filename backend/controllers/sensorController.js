@@ -3,14 +3,14 @@ const db = require('../config/db.js');
 const insertarSensor = async (req, res) => {
     try {
         const { tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado } = req.body;
-        // ✅ CORRECCIÓN: Obtener el nombre del archivo de req.file
+        //  CORRECCIÓN: Obtener el nombre del archivo de req.file
         const image = req.file ? req.file.filename : null; 
 
         if (!tipoSensor || !nombreSensor || !unidadMedida || !tiempoEscaneo || !descripcion || !estado) {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
 
-        // ✅ CORRECCIÓN: Incluir la columna 'image' en el SQL
+        // CORRECCIÓN: Incluir la columna 'image' en el SQL
         const sql = 'INSERT INTO sensores (tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
         const [result] = await db.query(sql, [tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado, image]);
 
@@ -22,7 +22,7 @@ const insertarSensor = async (req, res) => {
             tiempoEscaneo,
             descripcion,
             estado,
-            image // Devolver el nombre de la imagen al frontend
+            image 
         });
     } catch (err) {
         console.error('Error al insertar el sensor:', err);
@@ -41,7 +41,7 @@ const obtenerSensores = async (req, res) => {
     }
 };
 
-// ✅ Obtener un sensor por ID (esta función ya estaba correcta)
+// Obtener un sensor por ID (esta función ya estaba correcta)
 const obtenerSensorPorId = async (req, res) => {
     try {
         const { id } = req.params; // viene de la URL
@@ -64,8 +64,6 @@ const actualizarSensor = async (req, res) => {
         const { id } = req.params;
         let { tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado } = req.body;
         
-        // ✅ CORRECCIÓN: Usar req.file.filename si se subió una nueva imagen;
-        // de lo contrario, usar la imagen que viene en el body (si se envió, si no null)
         const image = req.file ? req.file.filename : (req.body.image ?? null);
 
 

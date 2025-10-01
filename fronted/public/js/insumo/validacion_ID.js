@@ -2,8 +2,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const inputID = document.getElementById("idInsumo");
     const mensaje = document.getElementById("mensaje");
     const enviarBtn = document.getElementById("enviarBtn");
-
-    // Estilos del mensaje (directamente en JS)
+    
     mensaje.style.marginTop = "10px";
     mensaje.style.fontSize = "1rem";
     mensaje.style.fontWeight = "bold";

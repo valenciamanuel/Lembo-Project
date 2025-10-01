@@ -125,7 +125,7 @@
           const err = await res.json();
           throw new Error(err.error || 'Error al crear insumo');
         }
-        alert('✅ Insumo creado exitosamente');
+        alert(' Insumo creado exitosamente');
         window.location.href = 'listar_insumo.html';
       } catch (error) {
         showError(error.message);

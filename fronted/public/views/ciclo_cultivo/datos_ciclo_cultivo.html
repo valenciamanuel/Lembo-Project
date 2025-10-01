@@ -72,7 +72,6 @@
                 return;
             }
 
-            // Fetch the existing data to populate the form
             try {
                 const response = await fetch(`http://localhost:3000/ciclocultivo/${cicloId}`);
                 if (!response.ok) {
@@ -81,7 +80,6 @@
                 
                 const data = await response.json();
                 
-                // Populate the form fields with the fetched data
                 document.getElementById('cicloId').value = data.id;
                 document.getElementById('cicloID').value = data.cicloID;
                 document.getElementById('cicloName').value = data.cicloName;
@@ -91,7 +89,6 @@
                 document.getElementById('description').value = data.description;
                 document.getElementById('state').value = data.state;
                 
-                // Handle image display
                 const imageContainer = document.getElementById('current-image-container');
                 if (data.image) {
                     imageContainer.innerHTML = `<img src="/uploads/${data.image}" alt="Imagen actual" width="150">`;
@@ -103,7 +100,6 @@
                 alert(`Error al cargar los datos: ${error.message}`);
             }
 
-            // Handle form submission to update the data
             form.addEventListener('submit', async (e) => {
                 e.preventDefault();
                 

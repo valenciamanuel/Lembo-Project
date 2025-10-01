@@ -78,7 +78,7 @@
         return;
       }
 
-      // ✅ Cargar datos existentes
+      // Cargar datos existentes
       try {
         const res = await fetch(`http://localhost:3000/uso_insumo/${idUso}`);
         if (!res.ok) throw new Error("Error al obtener los datos.");
@@ -93,11 +93,11 @@
         document.getElementById('observaciones').value = data.observaciones || "";
         document.getElementById('insumo').value = data.insumo || "";
       } catch (error) {
-        console.error("❌ Error cargando datos:", error);
+        console.error(" Error cargando datos:", error);
         alert("Error al cargar los datos del uso de insumo.");
       }
 
-      // ✅ Guardar cambios
+      //  Guardar cambios
       form.addEventListener("submit", async (e) => {
         e.preventDefault();
 
@@ -123,10 +123,10 @@
             throw new Error(errData.error || "Error al actualizar uso de insumo");
           }
 
-          alert("✅ Uso de insumo actualizado exitosamente.");
+          alert(" Uso de insumo actualizado exitosamente.");
           window.location.href = "listar_uso de insumos.html";
         } catch (error) {
-          console.error("❌ Error al actualizar:", error);
+          console.error(" Error al actualizar:", error);
           alert("Error al actualizar uso de insumo.");
         }
       });

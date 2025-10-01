@@ -29,7 +29,7 @@ document.addEventListener("DOMContentLoaded", function () {
             form.insertBefore(contenedor, form.firstChild);
         }
         contenedor.textContent = mensaje;
-        window.scrollTo({ top: 0, behavior: "smooth" }); // Mover hacia arriba para que lo vea
+        window.scrollTo({ top: 0, behavior: "smooth" }); 
     }
 
     form.addEventListener("submit", function (event) {

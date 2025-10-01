@@ -131,7 +131,7 @@
           const err = await res.json();
           throw new Error(err.error || 'Error al crear cultivo');
         }
-        alert('✅ Cultivo creado exitosamente');
+        alert('Cultivo creado exitosamente');
         window.location.href = 'listar_cultivo.html';
       } catch (error) {
         showError(error.message);

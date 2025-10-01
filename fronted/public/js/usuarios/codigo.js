@@ -25,7 +25,6 @@ document.addEventListener("DOMContentLoaded", function () {
         message.className = "message " + type;
     }
 
-    // Mover el foco automáticamente entre inputs
     inputs.forEach((input, index) => {
         input.addEventListener("input", (e) => {
             if (e.target.value && index < inputs.length - 1) {

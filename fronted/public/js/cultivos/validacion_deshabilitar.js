@@ -5,7 +5,7 @@ document.addEventListener("DOMContentLoaded", function () {
         if (validarFormulario()) {
             if (confirm("¿Está seguro de deshabilitar este cultivo? Esta acción no se puede deshacer.")) {
                 alert("Cultivo deshabilitado con éxito.");
-                // Aquí puedes agregar la lógica para deshabilitar el cultivo en la base de datos
+            
             }
         }
     });

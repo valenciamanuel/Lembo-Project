@@ -27,11 +27,9 @@
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
   </div> 
 
-  <!-- ✅ JS embebido -->
   <script>
     document.addEventListener("DOMContentLoaded", async () => {
       try {
-        // ⚠️ Verifica si en tu server.js usaste /cultivo o /cultivos
         const response = await fetch("http://localhost:3000/cultivo");
         if (!response.ok) throw new Error("Error al obtener cultivos");
 
@@ -64,7 +62,7 @@
           container.appendChild(card);
         });
       } catch (error) {
-        console.error("❌ Error cargando cultivos:", error);
+        console.error(" Error cargando cultivos:", error);
 
         const container = document.getElementById("cultivos-container");
         container.innerHTML = `<p class="no-cultivos">Error al cargar cultivos</p>`;

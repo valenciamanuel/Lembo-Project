@@ -622,7 +622,6 @@ router.put("/asociaciones/:id", (req, res) => {
               })
             })
           } else {
-            // Si no hay cambios en insumos, solo confirmar la transacción
             db.commit((err) => {
               if (err) {
                 return db.rollback(() => {
@@ -653,7 +652,7 @@ router.put("/asociaciones/:id", (req, res) => {
   })
 })
 
-// Ruta DELETE (sin cambios significativos)
+// Ruta DELETE 
 router.delete("/asociaciones/:id", (req, res) => {
   // Iniciar transacción
   db.beginTransaction((err) => {
@@ -705,10 +704,7 @@ router.delete("/asociaciones/:id", (req, res) => {
   })
 })
 
-// Las demás rutas permanecen igual (cultivo, ciclocultivo, sensores, insumo, responsables, uso-insumo)
-// ... [resto del código sin cambios] ...
-
-// Rutas para cultivos (sin cambios)
+// Rutas para cultivos 
 router.get("/cultivo", (req, res) => {
   db.query("SELECT * FROM cultivo", (err, results) => {
     if (err) {
@@ -763,7 +759,7 @@ router.post("/cultivo", (req, res) => {
   })
 })
 
-// Rutas para ciclos de cultivo (sin cambios)
+// Rutas para ciclos de cultivo 
 router.get("/ciclocultivo", (req, res) => {
   db.query("SELECT * FROM ciclocultivo", (err, results) => {
     if (err) {
@@ -806,7 +802,7 @@ router.post("/ciclocultivo", (req, res) => {
   )
 })
 
-// Rutas para sensores (sin cambios)
+// Rutas para sensores 
 router.get("/sensores", (req, res) => {
   db.query("SELECT * FROM sensores", (err, results) => {
     if (err) {
@@ -817,7 +813,7 @@ router.get("/sensores", (req, res) => {
   })
 })
 
-// Rutas para insumos (sin cambios)
+// Rutas para insumos 
 router.get("/insumo", (req, res) => {
   db.query("SELECT * FROM insumo ORDER BY nombreInsumo", (err, results) => {
     if (err) {

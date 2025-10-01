@@ -29,7 +29,6 @@ document.addEventListener("DOMContentLoaded", function () {
         message.textContent = "Contraseña actualizada correctamente.";
         message.style.color = "green";
 
-        // Simular envío del formulario después de validación exitosa
         setTimeout(() => form.submit(), 2000);
     });
 });

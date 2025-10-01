@@ -192,7 +192,7 @@
             body: JSON.stringify(payload)
           });
           if (!res.ok) throw new Error();
-          alert("✅ Usuario actualizado exitosamente");
+          alert("Usuario actualizado exitosamente");
           window.location.href = "listar.html";
         } catch {
           showError("Error al actualizar usuario");

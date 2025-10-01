@@ -6,10 +6,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Usuarios Registrados</title>
   <link rel="stylesheet" href="/css/components/listar.css">
-  <script src="/fronted/public/views/components/header.js" defer></script> <!-- Material Design Icons -->
+  <script src="/fronted/public/views/components/header.js" defer></script> 
   <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
   <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-  <!-- CDN para exportar PDF y Excel -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
@@ -106,7 +105,7 @@
           });
         }
       } catch (error) {
-        console.error("❌ Error cargando usuarios:", error);
+        console.error(" Error cargando usuarios:", error);
         document.getElementById("usuarios-table").innerHTML = `
           <tr><td colspan="9" style="color:#dc3545;">Error al cargar usuarios. Por favor, intente nuevamente.</td></tr>
         `;

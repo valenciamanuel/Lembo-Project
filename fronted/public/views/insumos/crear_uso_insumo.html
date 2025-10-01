@@ -112,7 +112,7 @@
             body: JSON.stringify(payload)
           });
           if (!resp.ok) throw new Error();
-          alert("✅ Uso de insumo creado exitosamente");
+          alert("Uso de insumo creado exitosamente");
           window.location.href = "listar_uso_insumo.html";
         } catch {
           alert("Error al crear uso de insumo");
