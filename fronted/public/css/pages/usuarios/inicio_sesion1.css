@@ -35,6 +35,7 @@ html, body {
     overflow: hidden; /* 🔹 evita scroll */
 }
 
+
 /* === GOV superior e inferior === */
 .gov-top,
 .gov-bottom {
