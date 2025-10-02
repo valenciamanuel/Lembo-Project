@@ -12,7 +12,7 @@ const pool = mysql.createPool({
   port: 3306
 });
 
-// ✅ Añade esto
+// Conection
 pool.getConnection()
     .then(connection => {
         console.log("✅ Conexión exitosa al pool de la base de datos.");
