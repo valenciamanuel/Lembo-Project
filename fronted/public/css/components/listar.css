@@ -55,6 +55,13 @@ html, body {
     padding: 0 2rem;
     z-index: 15;
 }
+h1 {
+  color: white;
+  font-size: 2rem;  /* aquí ya controlas */
+  font-weight: bold;
+  text-decoration: none;
+}
+
 
 .header__logo {
     width: 4%;

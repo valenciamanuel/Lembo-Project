@@ -85,15 +85,44 @@ a {
   flex-direction: column;
   min-height: 100vh;
 }
-.gov-top{
-  margin-bottom: -0.5rem;
+/* ==== BANNERS GOV.CO ==== */
+.gov-top,
+.gov-bottom {
+  position: fixed;     /* siempre visibles */
+  left: 0;
+  width: 100%;
+  z-index: 1000;
 }
-.gov-bottom{
-  display:flex;
-  margin-bottom: -0.5rem;
-  min-width: 150%;
+
+.gov-top {
+  top: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 }
+
+.gov-bottom {
+  bottom: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+/* Imagen o contenido dentro del banner */
+.gov-top img,
+.gov-bottom img {
+  display: block;
+  height: 28px;        /* altura estándar GOV */
+  min-width: 100%;
+  object-fit: cover;
+}
+
+/* ==== HEADER ==== */
 .header {
+  position: fixed;          /* fijo debajo del gov-top */
+  top: 28px;                /* arranca justo después del banner gov-top */
+  left: 0;
+  width: 100%;
   background: linear-gradient(135deg, var(--primary-color), var(--secondary-green));
   padding: 0.75rem 2rem;
   box-shadow: var(--shadow);
@@ -101,7 +130,14 @@ a {
   justify-content: space-between;
   align-items: center;
   color: var(--white);
+  z-index: 999;             /* debajo del gov pero sobre el contenido */
 }
+
+/* ==== CONTENIDO (ajuste para que no se esconda debajo del header) ==== */
+main {
+  margin-top: calc(28px + 4.5rem); /* banner GOV + altura del header */
+}
+
 
 .header__logo {
   display: flex;
@@ -119,7 +155,7 @@ a {
   font-family: "Inter", sans-serif;
   font-weight: 700;
   color: var(--white);
-  font-size: 1.5rem;
+  font-size: 2rem;
   letter-spacing: 0.5px;
 }
 

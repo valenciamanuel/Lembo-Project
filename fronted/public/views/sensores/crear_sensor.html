@@ -7,7 +7,6 @@
     <title>Datos del Sensor</title>
     <link rel="stylesheet" href="/fronted/public/css/main.css">
     <script src="/fronted/public/views/components/header.js"></script>
-    <!-- Ruta corregida a 'sensores' -->
     <script src="/fronted/public/js/sensores/enviar.js"></script>
     <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
 </head>
@@ -16,32 +15,58 @@
     <div class="page__banner--top">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
     </div>
+
     <header class="header"></header>
+
     <main class="form-container">
         <form class="form" id="crear-sensor-form" enctype="multipart/form-data">
             <h2 class="form__title">Datos sensores</h2>
-            
-            <!-- CONTENEDOR DE MENSAJES AÑADIDO (message-container) -->
-            <div id="message-container"></div> 
-            
+
+            <div id="message-container"></div>
+
             <div class="form__row">
                 <div class="form__column">
                     <label class="form__label" for="image">Cargar imagen</label>
                     <input type="file" id="image" name="image" class="form__input form__input--imagen">
+
+                    <!-- CAMBIO: select en lugar de texto -->
                     <label class="form__label" for="tipoSensor">Tipo sensor</label>
-                    <input type="text" id="tipoSensor" name="tipoSensor" class="form__input sensor__input--type">
+                    <select id="tipoSensor" name="tipoSensor" class="form__input sensor__input--type">
+                        <option value="">Seleccione un sensor</option>
+                        <option value="Temperatura">Sensor de Temperatura</option>
+                        <option value="Humedad">Sensor de Humedad</option>
+                        <option value="PH">Sensor de pH</option>
+                        <option value="Luminosidad">Sensor de Luminosidad</option>
+                        <option value="Presion">Sensor de Presión</option>
+                        <option value="Movimiento">Sensor de Movimiento</option>
+                        <option value="Proximidad">Sensor de Proximidad</option>
+                        <option value="Nivel">Sensor de Nivel</option>
+                    </select>
+
                     <label class="form__label" for="nombreSensor">Nombre sensor</label>
                     <input type="text" id="nombreSensor" name="nombreSensor" class="form__input sensor__input--name">
+
                     <label class="form__label" for="unidadMedida">Unidad de medida</label>
                     <input type="text" id="unidadMedida" name="unidadMedida" class="form__input sensor__input--medida">
                 </div>
+
                 <div class="form__column">
+                    <!-- CAMBIO: número + unidad de tiempo -->
                     <label class="form__label" for="tiempoEscaneo">Tiempo de escaneo</label>
-                    <input type="text" id="tiempoEscaneo" name="tiempoEscaneo"
-                        class="form__input sensor__input--escaneo">
+                    <div style="display:flex; gap:0.5rem;">
+                        <input type="number" id="tiempoEscaneo" name="tiempoEscaneo" 
+                               class="form__input sensor__input--escaneo" min="1" placeholder="Cantidad">
+                        <select id="unidadTiempo" name="unidadTiempo" class="form__input sensor__input--escaneo">
+                            <option value="segundos">Segundos</option>
+                            <option value="minutos">Minutos</option>
+                            <option value="horas">Horas</option>
+                        </select>
+                    </div>
+
                     <label class="form__label" for="descripcion">Descripción</label>
                     <input type="text" id="descripcion" name="descripcion"
-                        class="form__input sensor__input--descripcion">
+                           class="form__input sensor__input--descripcion">
+
                     <label class="form__label" for="estado">Estado (activo / inactivo)</label>
                     <select id="estado" name="estado" class="form__input sensor__input--estado">
                         <option value="">Seleccione una opción</option>
@@ -50,12 +75,14 @@
                     </select>
                 </div>
             </div>
+
             <div class="form__btn-group">
                 <button type="submit" class="form__btn">Crear</button>
                 <a href="../homes/home-sensores.html" class="btn__secundary">Cancelar</a>
             </div>
         </form>
     </main>
+
     <div class="page__banner--bottom">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="page__banner__img">
     </div>
