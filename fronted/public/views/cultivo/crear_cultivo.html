@@ -21,20 +21,8 @@
         <div class="form__column">
           <label class="form__label" for="image">Cargar imagen</label>
           <input class="form__input cultivo__input--imagen" type="file" name="image" id="image" accept="image/*">
-          
           <label class="form__label" for="cultivoType">Tipo cultivo</label>
-          <select class="form__input cultivo__input--type" name="cultivoType" id="cultivoType" required>
-            <option value="">Seleccione un tipo</option>
-            <option value="Granos">Granos (maíz, arroz, trigo, cebada)</option>
-            <option value="Hortalizas">Hortalizas (tomate, cebolla, zanahoria, lechuga)</option>
-            <option value="Frutales">Frutales (mango, papaya, banano, naranja)</option>
-            <option value="Tubérculos">Tubérculos (papa, yuca, batata)</option>
-            <option value="Leguminosas">Leguminosas (frijol, lenteja, garbanzo)</option>
-            <option value="Forrajes">Forrajes (pasto, alfalfa)</option>
-            <option value="Aromáticas">Plantas aromáticas (menta, albahaca, orégano)</option>
-            <option value="Medicinales">Plantas medicinales (manzanilla, sábila)</option>
-          </select>
-
+          <input class="form__input cultivo__input--type" type="text" name="cultivoType" id="cultivoType" required>
           <label class="form__label" for="cultivoName">Nombre Cultivo</label>
           <input class="form__input cultivo__input--name" type="text" name="cultivoName" id="cultivoName" required>
           <label class="form__label" for="cultivoID">Identificador cultivo</label>
