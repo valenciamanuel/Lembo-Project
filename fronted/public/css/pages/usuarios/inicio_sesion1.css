@@ -72,6 +72,12 @@ header.header {
     font-weight: bold;
 }
 
+.logo-sena {
+    height: 50px;
+    margin: 5px auto;
+    display: block;
+}
+
 /* === FOOTER === */
 footer.footer {
     height: 60px;
