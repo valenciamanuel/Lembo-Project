@@ -8,8 +8,8 @@ const BCRYPT_PATTERN = /^\$2[aby]\$.{56}$/;
 const transporter = nodemailer.createTransport({
   service: 'gmail',
   auth: {
-    user: 'jordan.valencia@utp.edu.co',//modifique esta linea
-    pass: 'tamz hlan xtbd kvjh',//modifique esta linea
+    user: 'joseobregon270@gmail.com',
+    pass: '16121424',
   },
 });
 
@@ -49,7 +49,7 @@ const recuperarContrasena = async (req, res) => {
 
     // Prepare email
     const mailOptions = {
-      from: 'jordan.valencia@utp.edu.co',///modifique esta linea
+      from: 'joseobregon270@gmail.com',
       to: user.email,
       subject: 'Password recovery / Temporary password',
       text: `Hello ${user.name},\n\nA temporary password has been generated for your account. Use the password below to log in, then change your password immediately.\n\nTemporary password: ${tempPassword}\n\nIf you did not request this, please contact support.\n\nRegards.`,
