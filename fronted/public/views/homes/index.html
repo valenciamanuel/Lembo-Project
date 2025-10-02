@@ -17,6 +17,9 @@
             <a href="../vizualisar/html/asocciaciones.html" class="header__link">Asociación</a>
             <a href="../sensores/crear_sensor.html" class="header__link">Crear Sensor</a>
             <a href="../sensores/visualizar_sensores.html" class="header__link">Visualizar Sensores</a>
+            <a href="../sensores/listar_sensor.html" class="header__link">Listar Sensores</a>
+            <a href="../cultivo/visualizar_cultivo.html" class="header__link">Visualizar Cultivos</a>
+            <a href="../ciclo_cultivo/visualizar_ciclo_cultivo.html" class="header__link">Visualizar Ciclo Cultivo</a>
             <a id="btnLogout" class="header__link" style="cursor: pointer;">Cerrar Sesión</a>
         </nav>
     </header>
@@ -61,14 +64,15 @@
       // ✅ 
       const rules = {
         visitante: [
-          'Ciclo Cultivo',
-          'Cultivos',
-          'Visualizar Sensores' 
+          'Visualizar Ciclo Cultivo',
+          'Visualizar Sensores',
+          'Visualizar Cultivos'
         ],
         
         personal: [
           'Crear Sensor',
-          'Visualizar Sensores' 
+          'Visualizar Sensores',
+          'Listar Sensores'
         ],
         
         admin: [
