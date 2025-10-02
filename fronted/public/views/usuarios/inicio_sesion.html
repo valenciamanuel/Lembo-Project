@@ -6,10 +6,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Iniciar Sesión</title>
     <link rel="stylesheet" href="/fronted/public/css/pages/usuarios/inicio_sesion1.css">
-    <style>
-        
-        
-    </style>
 </head>
 
 <body>
@@ -21,31 +17,95 @@
         <form class="form" id="loginForm">
             <h2 class="form-title">Iniciar Sesión</h2>
             <div class="form__row">
-                <div> <label class="form__label" for="correo">Correo Electrónico</label> <input type="email" id="correo"
-                        name="correo" class="form__input" required> </div>
-                <div> <label class="form__label" for="contraseña">Contraseña</label> <input type="password"
-                        id="contraseña" name="contraseña" class="form__input" required> </div>
+                <div>
+                    <label class="form__label" for="correo">Correo Electrónico</label>
+                    <input type="email" id="correo" name="correo" class="form__input" required>
+                </div>
+                <div>
+                    <label class="form__label" for="contraseña">Contraseña</label>
+                    <input type="password" id="contraseña" name="contraseña" class="form__input" required>
+                </div>
             </div>
             <div id="mensajeValidacion" class="form__message"></div>
-            <div class="form__btn-group"> <button type="submit" class="form__btn form__btn--registrar">Iniciar
-                    Sesión</button> </div>
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn form__btn--registrar">Iniciar Sesión</button>
+            </div>
+            <div class="form__row" style="margin-top: 1rem; text-align:center;">
+                <a href="#" id="forgotPassword" class="form__link">¿Olvidaste tu contraseña?</a>
+            </div>
         </form>
     </main>
     <div class="gov-bottom">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
     </div>
-    <script> 
-    //valida si la contaseña es la correcta
-    document.getElementById('loginForm').addEventListener('submit', async function (e) {
-            e.preventDefault(); const correo = document.getElementById('correo').value.trim(); const contraseña = document.getElementById('contraseña').value; const mensaje = document.getElementById('mensajeValidacion'); mensaje.textContent = ''; if (!correo || !contraseña) { mensaje.textContent = 'Correo y contraseña son obligatorios'; return; } try {
-                const resp = await fetch('http://localhost:3000/register/login', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ email: correo, password: contraseña }) }); const result = await resp.json(); if (!resp.ok) { mensaje.textContent = result.message || 'Credenciales incorrectas'; return; }
-                // Guarda
-                localStorage.setItem('lembo_user_data', JSON.stringify({ id: result.id, email: correo, role: result.usertype }));
-                // Redirigir según rol
-                location.href = '/fronted/public/views/homes/index.html'
-            } catch (err) { mensaje.textContent = 'Error de conexión'; }
-        }); </script>
+
+    <script>
+        // Login normal
+        document.getElementById('loginForm').addEventListener('submit', async function (e) {
+            e.preventDefault();
+            const correo = document.getElementById('correo').value.trim();
+            const contraseña = document.getElementById('contraseña').value;
+            const mensaje = document.getElementById('mensajeValidacion');
+            mensaje.textContent = '';
+
+            if (!correo || !contraseña) {
+                mensaje.textContent = 'Correo y contraseña son obligatorios';
+                return;
+            }
+
+            try {
+                const resp = await fetch('http://localhost:3000/register/login', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: correo, password: contraseña })
+                });
+                const result = await resp.json();
+
+                if (!resp.ok) {
+                    mensaje.textContent = result.message || 'Credenciales incorrectas';
+                    return;
+                }
+
+                // Guardar usuario en localStorage
+                localStorage.setItem('lembo_user_data',
+                    JSON.stringify({ id: result.id, email: correo, role: result.usertype })
+                );
+
+                // Redirigir
+                location.href = '/fronted/public/views/homes/index.html';
+            } catch (err) {
+                mensaje.textContent = 'Error de conexión';
+            }
+        });
+
+        // Recuperar contraseña
+        document.getElementById('forgotPassword').addEventListener('click', async function (e) {
+            e.preventDefault();
+            const correo = prompt('Ingrese su correo electrónico para recuperar la contraseña:');
+            const mensaje = document.getElementById('mensajeValidacion');
+
+            if (!correo) return;
+
+            try {
+                const resp = await fetch('http://localhost:3000/register/recuperar', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email: correo })
+                });
+
+                const result = await resp.json();
+
+                if (!resp.ok) {
+                    mensaje.textContent = result.error || 'Error al recuperar contraseña';
+                    return;
+                }
+
+                mensaje.style.color = 'green';
+                mensaje.textContent = result.message || 'Se ha enviado una contraseña temporal a tu correo';
+            } catch (err) {
+                mensaje.textContent = 'Error de conexión';
+            }
+        });
+    </script>
 </body>
-
-
 </html>

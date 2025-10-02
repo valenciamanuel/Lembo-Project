@@ -1,9 +1,79 @@
 const db = require('../config/db.js');
 const bcrypt = require('bcryptjs');
+const nodemailer = require('nodemailer');
 
 const SALT_ROUNDS = 10;
 const BCRYPT_PATTERN = /^\$2[aby]\$.{56}$/;
 
+const transporter = nodemailer.createTransport({
+  service: 'gmail',
+  auth: {
+    user: 'jordan.valencia@utp.edu.co',//modifique esta linea
+    pass: 'tamz hlan xtbd kvjh',//modifique esta linea
+  },
+});
+
+// Crea una contraseña temporal
+function generateTempPassword(length = 12) {
+  return crypto.getRandomValues(new Uint8Array(Math.ceil(length * 3 / 4))).toString('base64').replace(/\+/g, '0').replace(/\//g, '0').slice(0, length);
+}
+const recuperarContrasena = async (req, res) => {
+  const { email } = req.body;
+  if (!email) return res.status(400).json({ error: 'Email is required' });
+
+  let connection;
+  try {
+    connection = await db.getConnection ? await db.getConnection() : null;
+
+    // Use the same db.query interface you used elsewhere — adapt depending on your db helper
+    const queryFn = connection ? connection.execute.bind(connection) : db.query.bind(db);
+
+    // Find user by email
+    const [rows] = await queryFn(
+      'SELECT id, name, email FROM register WHERE email = ?',
+      [email]
+    );
+
+    if (!rows || rows.length === 0) {
+      return res.status(404).json({ error: 'User not found' });
+    }
+
+    const user = rows[0];
+
+    // Generate temporary password
+    const tempPassword = generateTempPassword(12);
+
+    // Hash temp password and update DB
+    const hashed = await bcrypt.hash(tempPassword, SALT_ROUNDS);
+    await db.query('UPDATE register SET password = ? WHERE id = ?', [hashed, user.id]);
+
+    // Prepare email
+    const mailOptions = {
+      from: 'jordan.valencia@utp.edu.co',///modifique esta linea
+      to: user.email,
+      subject: 'Password recovery / Temporary password',
+      text: `Hello ${user.name},\n\nA temporary password has been generated for your account. Use the password below to log in, then change your password immediately.\n\nTemporary password: ${tempPassword}\n\nIf you did not request this, please contact support.\n\nRegards.`,
+      html: `
+        <p>Hello ${user.name},</p>
+        <p>A temporary password has been generated for your account. Use the password below to log in, then change your password immediately.</p>
+        <p><strong>Temporary password:</strong> ${tempPassword}</p>
+        <p>If you did not request this, please contact support.</p>
+        <p>Regards.</p>
+      `,
+    };
+
+    // Send email
+    await transporter.sendMail(mailOptions);
+
+    // Success response
+    return res.json({ message: 'Fue enviada la contraseña temporal a tu correo' });
+  } catch (err) {
+    console.error('Error recuperarContrasena:', err);
+    return res.status(500).json({ error: 'Internal server error' });
+  } finally {
+    if (connection && connection.release) connection.release();
+  }
+};
 const insertarRegister = async (req, res) => {
     const { usertype, IDtype, IDnum, name, email, phone, password } = req.body;
     if (!usertype || !IDtype || !IDnum || !name || !email || !phone || !password) {
@@ -155,5 +225,6 @@ module.exports = {
     insertarLogin,
     obtenerUsuarios,
     obtenerUsuarioPorId,
-    actualizarUsuario
+    actualizarUsuario,
+    recuperarContrasena
 };
