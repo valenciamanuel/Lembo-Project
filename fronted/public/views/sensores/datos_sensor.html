@@ -4,19 +4,20 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>Editar Sensor</title>
-   <link rel="stylesheet" href="/fronted/public/css/main.css">
-    <script src="/fronted/public/views/components/header.js"></script>
-    <script src="/fronted/public/js/sensores/enviar.js"></script>
-    <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
+  <link rel="stylesheet" href="/fronted/public/css/main.css">
+  <script src="/fronted/public/views/components/header.js"></script>
+  <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
 </head>
 <body>
   <header class="header"></header>
-    <!-- Barra GOV superior -->
-   <div class="page__banner--top">
-      <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
-    </div>
+
+  <!-- Barra GOV superior -->
+  <div class="page__banner--top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
+  </div>
+
   <main class="form-container">
-    <form class="form" id="edit-sensor-form">
+    <form class="form" id="edit-sensor-form" enctype="multipart/form-data">
       <h2 class="form__title">Editar Sensor</h2>
       <input type="hidden" id="sensorId">
 
@@ -27,10 +28,26 @@
           <input class="form__input" type="text" id="nombreSensor" name="nombreSensor">
 
           <label class="form__label">Tipo de Sensor</label>
-          <input class="form__input" type="text" id="tipoSensor" name="tipoSensor">
+          <select class="form__input" id="tipoSensor" name="tipoSensor" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="Temperatura">Temperatura</option>
+            <option value="Humedad">Humedad</option>
+            <option value="pH">pH</option>
+            <option value="Luminosidad">Luminosidad</option>
+            <option value="CO2">CO₂</option>
+            <option value="Otro">Otro</option>
+          </select>
 
           <label class="form__label">Unidad de Medida</label>
-          <input class="form__input" type="text" id="unidadMedida" name="unidadMedida">
+          <select class="form__input" id="unidadMedida" name="unidadMedida" required>
+            <option value="">Seleccione una unidad</option>
+            <option value="°C">Grados Celsius (°C)</option>
+            <option value="%">Porcentaje (%)</option>
+            <option value="pH">pH</option>
+            <option value="Lux">Lux</option>
+            <option value="ppm">Partes por millón (ppm)</option>
+            <option value="Otro">Otro</option>
+          </select>
         </div>
 
         <!-- Columna derecha -->
@@ -48,8 +65,9 @@
             <option value="Inactivo">Inactivo</option>
           </select>
 
-          <label class="form__label">Imagen (nombre archivo o URL)</label>
-          <input class="form__input" type="text" id="imagen" name="imagen">
+          <label class="form__label">Imagen</label>
+          <input type="file" class="form__input" id="image" name="image">
+          <div id="current-image-preview" style="margin-top: 5px;"></div>
         </div>
       </div>
 
@@ -65,9 +83,10 @@
       const urlParams = new URLSearchParams(window.location.search);
       const sensorId = urlParams.get('id');
       const form = document.getElementById('edit-sensor-form');
+      const imageInput = document.getElementById('image');
+      const previewContainer = document.getElementById('current-image-preview');
 
       if (!sensorId) {
-        console.error('No se encontró el ID del sensor en la URL.');
         alert('Error: No se encontró el ID del sensor.');
         return;
       }
@@ -75,9 +94,7 @@
       // Cargar datos del sensor
       try {
         const response = await fetch(`http://localhost:3000/sensores/${sensorId}`);
-        if (!response.ok) {
-          throw new Error('Error al obtener los datos del sensor.');
-        }
+        if (!response.ok) throw new Error('Error al obtener los datos del sensor.');
         const data = await response.json();
 
         document.getElementById('sensorId').value = data.idSensor;
@@ -87,7 +104,11 @@
         document.getElementById('tiempoEscaneo').value = data.tiempoEscaneo || "";
         document.getElementById('descripcion').value = data.descripcion || "";
         document.getElementById('estado').value = data.estado || "";
-        document.getElementById('imagen').value = data.imagen || "";
+
+        // Mostrar imagen actual
+        if(data.image) {
+          previewContainer.innerHTML = `<img src="/uploads/${data.image}" width="80" style="border-radius:6px;">`;
+        }
       } catch (error) {
         console.error("❌Error cargando datos:", error);
         alert(`Error al cargar los datos: ${error.message}`);
@@ -97,21 +118,22 @@
       form.addEventListener('submit', async (e) => {
         e.preventDefault();
 
-        const updatedData = {
-          nombreSensor: document.getElementById('nombreSensor').value,
-          tipoSensor: document.getElementById('tipoSensor').value,
-          unidadMedida: document.getElementById('unidadMedida').value,
-          tiempoEscaneo: document.getElementById('tiempoEscaneo').value,
-          descripcion: document.getElementById('descripcion').value,
-          estado: document.getElementById('estado').value,
-          imagen: document.getElementById('imagen').value
-        };
+        const formData = new FormData();
+        formData.append('nombreSensor', document.getElementById('nombreSensor').value);
+        formData.append('tipoSensor', document.getElementById('tipoSensor').value);
+        formData.append('unidadMedida', document.getElementById('unidadMedida').value);
+        formData.append('tiempoEscaneo', document.getElementById('tiempoEscaneo').value);
+        formData.append('descripcion', document.getElementById('descripcion').value);
+        formData.append('estado', document.getElementById('estado').value);
+
+        if(imageInput.files[0]) {
+          formData.append('image', imageInput.files[0]);
+        }
 
         try {
           const response = await fetch(`http://localhost:3000/sensores/${sensorId}`, {
             method: 'PUT',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify(updatedData)
+            body: formData
           });
 
           if (!response.ok) {
@@ -119,18 +141,19 @@
             throw new Error(errorData.error || 'Error al actualizar el sensor.');
           }
 
-          alert(' Sensor actualizado exitosamente.');
+          alert('Sensor actualizado exitosamente.');
           window.location.href = 'listar_sensor.html';
         } catch (error) {
-          console.error(" Error al actualizar el sensor:", error);
+          console.error("Error al actualizar el sensor:", error);
           alert(`Error al actualizar: ${error.message}`);
         }
       });
     });
   </script>
+
+  <!-- Barra GOV inferior -->
+  <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
 </body>
 </html>
-<!-- Barra GOV inferior -->
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>

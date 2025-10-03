@@ -118,7 +118,8 @@
                   ${s.estado}
                 </span>
               </td>
-              <td>${s.image ? `<img src="/uploads/${s.image}" width="60" style="border-radius: 6px;">` : "Sin imagen"}</td>
+              <td>${s.image ? `<img src="http://localhost:3000/uploads/${s.image}" width="60" style="border-radius: 6px;">` : "Sin imagen"}</td>
+
               <td>
                 <button class="btn btn-warning btn-sm" onclick="editSensor(${s.idSensor})" title="Editar">
                   <i class="material-icons">edit</i>
