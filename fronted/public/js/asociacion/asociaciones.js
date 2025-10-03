@@ -476,26 +476,38 @@ function renderizarTablaAsociaciones(filtro = "") {
   }
 
   asociacionesFiltradas.forEach((asociacion) => {
-    const row = document.createElement("tr")
-    row.innerHTML = `
-            <td>${asociacion.id}</td>
-            <td>${asociacion.responsable}</td>
-            <td>${asociacion.nombre_asociacion}</td>
-            <td>$${Number.parseFloat(asociacion.inversion).toFixed(2)}</td>
-            <td>$${Number.parseFloat(asociacion.meta).toFixed(2)}</td>
-            <td>${asociacion.cultivo}</td>
-            <td>
-                <button class="button button--icon btn-ver" data-id="${asociacion.id}" title="Ver detalles">
-                    <i class="fa-solid fa-eye"></i>
-                </button>
-                <button class="button button--icon btn-editar" data-id="${asociacion.id}" title="Editar">
-                    <i class="fa-solid fa-edit"></i>
-                </button>
-                <button class="button button--icon btn-eliminar" data-id="${asociacion.id}" title="Eliminar">
-                    <i class="fa-solid fa-trash"></i>
-                </button>
-            </td>
-        `
+  const row = document.createElement("tr")
+
+  // Detectar estado (soporte para 'state' o 'estado')
+  const estadoValor = String(asociacion.state || asociacion.estado || '').trim()
+  const isInactive = estadoValor && estadoValor.toLowerCase() !== 'activo'
+
+  // Construir nombre con badge si está inactiva
+  const nombreWithBadge = isInactive
+    ? `${asociacion.nombre_asociacion} <span class="badge badge--inactive">Inactivo</span>`
+    : (asociacion.nombre_asociacion || '')
+
+  row.innerHTML = `
+      <td>${asociacion.id}</td>
+      <td>${asociacion.responsable}</td>
+      <td>${nombreWithBadge}</td>
+      <td>$${Number.parseFloat(asociacion.inversion).toFixed(2)}</td>
+      <td>$${Number.parseFloat(asociacion.meta).toFixed(2)}</td>
+      <td>${asociacion.cultivo}</td>
+      <td>
+        <button class="button button--icon btn-ver" data-id="${asociacion.id}" title="Ver detalles">
+          <i class="fa-solid fa-eye"></i>
+        </button>
+        <button class="button button--icon btn-editar" data-id="${asociacion.id}" title="Editar">
+          <i class="fa-solid fa-edit"></i>
+        </button>
+        <button class="button button--icon btn-eliminar" data-id="${asociacion.id}" title="Eliminar">
+          <i class="fa-solid fa-trash"></i>
+        </button>
+      </td>
+    `
+
+  if (isInactive) row.classList.add('row--inactive')
     asociacionesTableBody.appendChild(row)
   })
 
@@ -508,8 +520,9 @@ function renderizarTablaAsociaciones(filtro = "") {
     btn.addEventListener("click", () => editarAsociacion(btn.dataset.id))
   })
 
+  // Borrar directo: confirmar con el usuario y enviar DELETE (no dependemos de un modal que pueda faltar)
   document.querySelectorAll(".btn-eliminar").forEach((btn) => {
-    btn.addEventListener("click", () => confirmarEliminarAsociacion(btn.dataset.id))
+    btn.addEventListener("click", () => eliminarAsociacionDirect(btn.dataset.id))
   })
 }
 
@@ -970,6 +983,70 @@ async function guardarAsociacion(event) {
     return
   }
 
+  // Validar que los elementos seleccionados estén activos (responsable, cultivo, ciclo, sensores, insumos)
+  // Responsable (si existe en los datos)
+  const responsableValue = responsableSelect ? responsableSelect.value : ''
+  if (responsableValue) {
+    const responsableObj = responsablesData.find((r) => (r.name === responsableValue || r.nombre === responsableValue || r.fullname === responsableValue))
+    if (responsableObj) {
+      const rState = String(responsableObj.state || responsableObj.estado || '').toLowerCase()
+      if (rState && rState !== 'activo') {
+        mostrarNotificacion('El responsable seleccionado está inactivo. No se puede guardar la asociación.', 'error')
+        return
+      }
+    }
+  }
+
+  // Cultivo
+  if (cultivoSelect && cultivoSelect.value) {
+    const cultivoObj = cultivosData.find((c) => c.cultivoName === cultivoSelect.value)
+    if (cultivoObj) {
+      const cState = String(cultivoObj.state || cultivoObj.estado || '').toLowerCase()
+      if (cState && cState !== 'activo') {
+        mostrarNotificacion('El cultivo seleccionado está inactivo. No se puede guardar la asociación.', 'error')
+        return
+      }
+    }
+  }
+
+  // Ciclo de cultivo
+  if (cicloSelect && cicloSelect.value) {
+    const cicloObj = ciclosData.find((c) => c.cicloName === cicloSelect.value)
+    if (cicloObj) {
+      const cicloState = String(cicloObj.state || cicloObj.estado || '').toLowerCase()
+      if (cicloState && cicloState !== 'activo') {
+        mostrarNotificacion('El ciclo de cultivo seleccionado está inactivo. No se puede guardar la asociación.', 'error')
+        return
+      }
+    }
+  }
+
+  // Sensores: verificar que ninguno de los sensores seleccionados esté inactivo
+  if (Array.isArray(sensoresSeleccionados) && sensoresSeleccionados.length) {
+    const sensoresInactivos = sensoresSeleccionados.filter((nombre) => {
+      const s = sensoresData.find((sd) => sd.nombreSensor === nombre || sd.nombre === nombre)
+      const sState = s ? String(s.estado || s.state || '').toLowerCase() : ''
+      return s && sState && sState !== 'activo'
+    })
+    if (sensoresInactivos.length) {
+      mostrarNotificacion(`Los siguientes sensores están inactivos: ${sensoresInactivos.join(', ')}. No se puede guardar la asociación.`, 'error')
+      return
+    }
+  }
+
+  // Insumos: verificar que ninguno de los insumos seleccionados esté inactivo
+  if (Array.isArray(insumosSeleccionados) && insumosSeleccionados.length) {
+    const insumosInactivos = insumosSeleccionados.filter((i) => {
+      const st = String(i.estado || i.state || '').toLowerCase()
+      return st && st !== 'activo'
+    }).map((i) => i.nombreInsumo || i.nombre || i.nombreInsumo)
+
+    if (insumosInactivos.length) {
+      mostrarNotificacion(`Los siguientes insumos están inactivos: ${insumosInactivos.join(', ')}. No se puede guardar la asociación.`, 'error')
+      return
+    }
+  }
+
   // Validar cantidades de insumos
   for (const insumo of insumosSeleccionados) {
     if (!insumo.cantidadUtilizar || insumo.cantidadUtilizar <= 0) {
@@ -1232,18 +1309,10 @@ function editarAsociacion(id) {
 
   // Seleccionar los insumos
   if (asociacion.insumos) {
-    const insumosNombres = asociacion.insumos.split(",").map((s) => s.trim())
-    insumosSeleccionados = []
-
-    insumosNombres.forEach((nombreInsumo) => {
-      const insumo = insumosData.find((i) => i.nombreInsumo === nombreInsumo)
-      if (insumo) {
-        insumosSeleccionados.push({
-          ...insumo,
-          cantidadUtilizar: 1,
-        })
-      }
-    })
+    const insumosArray = asociacion.insumos.split(",").map((s) => s.trim())
+    insumosSeleccionados = insumosData
+      .filter((i) => insumosArray.includes(i.nombreInsumo))
+      .map((i) => ({ ...i, cantidadUtilizar: i.cantidadUtilizar || 1 }))
   } else {
     insumosSeleccionados = []
   }
@@ -1276,6 +1345,27 @@ async function eliminarAsociacion() {
   } catch (error) {
     console.error("Error:", error)
     mostrarNotificacion("Error al eliminar la asociación", "error")
+  }
+}
+
+// Eliminación directa desde la lista: confirma y ejecuta DELETE
+async function eliminarAsociacionDirect(id) {
+  if (!id) return
+  const ok = confirm('¿Confirma que desea eliminar la asociación con ID ' + id + '? Esta operación no se puede deshacer.')
+  if (!ok) return
+
+  try {
+    const response = await fetch(`${API_URL}/asociaciones/${id}`, { method: 'DELETE' })
+    if (!response.ok) {
+      const errText = await response.text().catch(() => '')
+      throw new Error(errText || 'Error al eliminar la asociación')
+    }
+
+    await cargarDatos()
+    mostrarNotificacion('Asociación eliminada exitosamente', 'success')
+  } catch (err) {
+    console.error('eliminarAsociacionDirect error:', err)
+    mostrarNotificacion(err.message || 'Error al eliminar la asociación', 'error')
   }
 }
 
