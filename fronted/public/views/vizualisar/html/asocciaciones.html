@@ -7,8 +7,63 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Quicksand:wght@300;400;500;600;700&family=Work+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
     <link rel="stylesheet" href="/fronted/public/css/pages/visualizar/asociaciones.css">
+    <!-- Chart.js: required for rendering the Inversión vs Meta chart -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js" defer></script>
+    <script src="/fronted/public/js/asociacion/asociaciones.js" defer></script>
 </head>
 <body>
+    <script>
+        (function () {
+            const userDataString = sessionStorage.getItem('userData');
+            const user = userDataString ? JSON.parse(userDataString) : null;
+
+            if (!user) {
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
+
+            const role = user.role;
+            const allowedRolesForCreation = ['admin', 'superadmin'];
+
+            const btnCrear = document.getElementById('btnCrearAsociacion');
+            const headerExport = document.querySelector('.header__export');
+
+            if (!allowedRolesForCreation.includes(role)) {
+                if (btnCrear) btnCrear.style.display = 'none';
+                if (headerExport) headerExport.style.display = 'none';
+            }
+
+            // Evitar que se abra el modal si el usuario no tiene permiso.
+            // Si existe una función global original, la envolvemos; si no, hacemos un fallback simple.
+            const originalOpen = window.openAsociacionModal;
+            window.openAsociacionModal = function (...args) {
+                if (!allowedRolesForCreation.includes(role)) {
+                    alert('No tienes permisos para crear una asociación.');
+                    return;
+                }
+                if (typeof originalOpen === 'function') {
+                    return originalOpen.apply(this, args);
+                }
+                // Preferir la función del módulo principal si está disponible
+                if (typeof window.abrirModalCrearAsociacion === 'function') {
+                    return window.abrirModalCrearAsociacion.apply(this, args);
+                }
+                const modal = document.getElementById('modalAsociacion');
+                if (modal) {
+                    modal.classList.add('active');
+                    document.body.style.overflow = 'hidden';
+                }
+            };
+
+            // Registrar listener en el botón para evitar usar onclick inline
+            if (btnCrear) {
+                btnCrear.addEventListener('click', () => {
+                    window.openAsociacionModal();
+                });
+            }
+        })();
+    </script>
+
     <div class="app">
         <div class="gov-top">
             <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
@@ -16,12 +71,11 @@
         <header class="header">
             <a href="/fronted/public/views/homes/index.html">
                 <div class="header__logo">
-                    
                     <h1 class="header__title">LEMBO SGLA</h1>
                 </div>
             </a>
             <div class="header__actions">
-                <button class="button button--primary" id="btnCrearAsociacion">
+                <button class="button button--primary" id="btnCrearAsociacion" onclick="openAsociacionModal()">
                     <i class="fa-solid fa-plus button__icon"></i>
                     <span class="button__text">Nueva Asociación</span>
                 </button>
@@ -91,20 +145,30 @@
                                 <th>Acciones</th>
                             </tr>
                         </thead>
-                        <tbody class="table__body" id="asociacionesTableBody">
-                            </tbody>
+                        <tbody class="table__body" id="asociacionesTableBody"></tbody>
                     </table>
                 </div>
 
                 <div class="charts">
-                    <div class="chart-container">
-                        <h3 class="chart__title">Inversión vs Meta por Asociación</h3>
-                        <canvas id="inversionMetaChart"></canvas>
+                    <div class="charts__grid">
+                        <div class="chart-container">
+                            <h3 class="chart__title">Inversión vs Meta por Asociación</h3>
+                            <canvas id="inversionMetaChart"></canvas>
+                        </div>
+
+                        <div class="chart-container">
+                            <h3 class="chart__title">Distribución de Cultivos (Asociaciones)</h3>
+                            <canvas id="cultivoDistribucionChart"></canvas>
+                        </div>
+
+                        <div class="chart-container">
+                            <h3 class="chart__title">Uso de Sensores (veces registrados en asociaciones)</h3>
+                            <canvas id="sensoresUsoChart"></canvas>
+                        </div>
                     </div>
                 </div>
             </section>
         </main>
-
     </div>
 
     <div class="modal" id="modalDetalles">
@@ -113,8 +177,7 @@
                 <h2 class="modal__title">Detalles de la Asociación</h2>
                 <button class="modal__close" id="closeModalDetalles">&times;</button>
             </div>
-            <div class="modal__body" id="detallesAsociacionContent">
-                </div>
+            <div class="modal__body" id="detallesAsociacionContent"></div>
         </div>
     </div>
 
@@ -127,7 +190,7 @@
             <div class="modal__body">
                 <form id="formAsociacion" class="form">
                     <input type="hidden" id="asociacionId">
-                    
+
                     <div class="form__row">
                         <div class="form__group">
                             <label class="form__label" for="responsable">Responsable</label>
@@ -181,36 +244,33 @@
                             </div>
                         </div>
                     </div>
-                    
+
                     <div class="form__group">
                         <label class="form__label">Sensores (máximo 3)</label>
-                        <div class="form__sensors" id="sensoresContainer">
-                            </div>
+                        <div class="form__sensors" id="sensoresContainer"></div>
                         <div class="form__help-text">Seleccione hasta 3 sensores para esta asociación</div>
                         <button type="button" class="button button--secondary" id="btnNuevoSensor">
                             <i class="fa-solid fa-plus"></i>
                             <span>Nuevo Sensor</span>
                         </button>
                     </div>
-                    
+
                     <div class="form__group">
                         <label class="form__label">Insumos (máximo 3)</label>
-                        <div class="form__insumos" id="insumosContainer">
-                            </div>
+                        <div class="form__insumos" id="insumosContainer"></div>
                         <div class="form__help-text">Seleccione hasta 3 insumos para esta asociación</div>
                         <button type="button" class="button button--secondary" id="btnNuevoInsumo">
                             <i class="fa-solid fa-plus"></i>
                             <span>Nuevo Insumo</span>
                         </button>
                     </div>
-                    
+
                     <div class="form__group" id="insumosDetallesContainer" style="display: none;">
                         <div class="insumos-detalles">
                             <div class="insumos-detalles__header">
                                 <h4 class="insumos-detalles__title">Detalles de Insumos Seleccionados</h4>
                             </div>
-                            <div class="insumos-detalles__content" id="insumosDetallesContent">
-                                </div>
+                            <div class="insumos-detalles__content" id="insumosDetallesContent"></div>
                         </div>
                     </div>
 
@@ -234,385 +294,7 @@
         </div>
     </div>
 
-    <div class="modal" id="modalResponsable">
-        <div class="modal__content modal__content--medium">
-            <div class="modal__header">
-                <h2 class="modal__title">Nuevo Responsable</h2>
-                <button class="modal__close" id="closeModalResponsable">&times;</button>
-            </div>
-            <div class="modal__body">
-                <form id="formResponsable" class="form">
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="responsableUsertype">Tipo de Usuario</label>
-                            <select class="form__select" id="responsableUsertype" required>
-                                <option value="">Seleccionar tipo</option>
-                                <option value="admin">Administrador</option>
-                                <option value="personal">Personal</option>
-                                <option value="superadmin">Super Administrador</option>
-                            </select>
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="responsableIDtype">Tipo de Documento</label>
-                            <select class="form__select" id="responsableIDtype" required>
-                                <option value="">Seleccionar documento</option>
-                                <option value="CC">Cédula de Ciudadanía</option>
-                                <option value="TI">Tarjeta de Identidad</option>
-                                <option value="RC">Registro Civil</option>
-                                <option value="PASAPORTE">Pasaporte</option>
-                            </select>
-                        </div>
-                    </div>
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="responsableIDnum">Número de Documento</label>
-                            <input type="text" class="form__input" id="responsableIDnum" required>
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="responsableName">Nombre Completo</label>
-                            <input type="text" class="form__input" id="responsableName" required>
-                        </div>
-                    </div>
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="responsableEmail">Correo Electrónico</label>
-                            <input type="email" class="form__input" id="responsableEmail" required>
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="responsablePhone">Teléfono</label>
-                            <input type="tel" class="form__input" id="responsablePhone" required>
-                        </div>
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="responsablePassword">Contraseña</label>
-                        <input type="password" class="form__input" id="responsablePassword" required>
-                    </div>
-                    <div class="form__actions">
-                        <button type="button" class="button button--secondary" id="btnCancelarResponsable">Cancelar</button>
-                        <button type="submit" class="button button--success">Crear Responsable</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modalSensor">
-        <div class="modal__content modal__content--medium">
-            <div class="modal__header">
-                <h2 class="modal__title">Nuevo Sensor</h2>
-                <button class="modal__close" id="closeModalSensor">&times;</button>
-            </div>
-            <div class="modal__body">
-                <form id="formSensor" class="form">
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="sensorTipo">Tipo de Sensor</label>
-                            <input type="text" class="form__input" id="sensorTipo" required placeholder="Ej: Temperatura, Humedad, pH">
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="sensorNombre">Nombre del Sensor</label>
-                            <input type="text" class="form__input" id="sensorNombre" required placeholder="Ej: Sensor Temp-01">
-                        </div>
-                    </div>
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="sensorUnidad">Unidad de Medida</label>
-                            <input type="text" class="form__input" id="sensorUnidad" required placeholder="Ej: °C, %, ppm">
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="sensorTiempo">Tiempo de Escaneo (segundos)</label>
-                            <input type="number" class="form__input" id="sensorTiempo" required min="1" placeholder="60">
-                        </div>
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="sensorDescripcion">Descripción</label>
-                        <textarea class="form__textarea" id="sensorDescripcion" placeholder="Descripción del sensor y su función"></textarea>
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="sensorEstado">Estado</label>
-                        <select class="form__select" id="sensorEstado" required>
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                    <div class="form__actions">
-                        <button type="button" class="button button--secondary" id="btnCancelarSensor">Cancelar</button>
-                        <button type="submit" class="button button--success">Crear Sensor</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modalCultivo">
-        <div class="modal__content modal__content--medium">
-            <div class="modal__header">
-                <h2 class="modal__title">Nuevo Cultivo</h2>
-                <button class="modal__close" id="closeModalCultivo">&times;</button>
-            </div>
-            <div class="modal__body">
-                <form id="formCultivo" class="form">
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="cultivoType">Tipo de Cultivo</label>
-                            <input type="text" class="form__input" id="cultivoType" required placeholder="Ej: Hortalizas, Frutas, Cereales">
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="cultivoName">Nombre del Cultivo</label>
-                            <input type="text" class="form__input" id="cultivoName" required placeholder="Ej: Tomate, Lechuga, Maíz">
-                        </div>
-                    </div>
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="cultivoID">ID del Cultivo</label>
-                            <input type="text" class="form__input" id="cultivoID" required placeholder="Ej: CULT-001">
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="cultivoSize">Tamaño</label>
-                            <input type="text" class="form__input" id="cultivoSize" placeholder="Ej: 100 m², 1 hectárea">
-                        </div>
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="cultivoLocation">Ubicación</label>
-                        <input type="text" class="form__input" id="cultivoLocation" placeholder="Ej: Lote A, Invernadero 1">
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="cultivoDescription">Descripción</label>
-                        <textarea class="form__textarea" id="cultivoDescription" placeholder="Descripción del cultivo, características especiales, etc."></textarea>
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="cultivoState">Estado</label>
-                        <select class="form__select" id="cultivoState" required>
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                    <div class="form__actions">
-                        <button type="button" class="button button--secondary" id="btnCancelarCultivo">Cancelar</button>
-                        <button type="submit" class="button button--success">Crear Cultivo</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modalCiclo">
-        <div class="modal__content modal__content--medium">
-            <div class="modal__header">
-                <h2 class="modal__title">Nuevo Ciclo de Cultivo</h2>
-                <button class="modal__close" id="closeModalCiclo">&times;</button>
-            </div>
-            <div class="modal__body">
-                <form id="formCiclo" class="form">
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="cicloID">ID del Ciclo</label>
-                            <input type="text" class="form__input" id="cicloID" required placeholder="Ej: CICLO-2025-01">
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="cicloName">Nombre del Ciclo</label>
-                            <input type="text" class="form__input" id="cicloName" required placeholder="Ej: Ciclo Primavera 2025">
-                        </div>
-                    </div>
-                    <div class="form__row">
-                        <div class="form__group">
-                            <label class="form__label" for="siembraDate">Fecha de Siembra</label>
-                            <input type="date" class="form__input" id="siembraDate" required>
-                        </div>
-                        <div class="form__group">
-                            <label class="form__label" for="cosechaDate">Fecha de Cosecha</label>
-                            <input type="date" class="form__input" id="cosechaDate" required>
-                        </div>
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="cicloNews">Noticias</label>
-                        <textarea class="form__textarea" id="cicloNews" placeholder="Noticias o eventos importantes del ciclo"></textarea>
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="cicloDescription">Descripción</label>
-                        <textarea class="form__textarea" id="cicloDescription" placeholder="Descripción detallada del ciclo de cultivo"></textarea>
-                    </div>
-                    <div class="form__group">
-                        <label class="form__label" for="cicloState">Estado</label>
-                        <select class="form__select" id="cicloState" required>
-                            <option value="activo">Activo</option>
-                            <option value="inactivo">Inactivo</option>
-                        </select>
-                    </div>
-                    <div class="form__actions">
-                        <button type="button" class="button button--secondary" id="btnCancelarCiclo">Cancelar</button>
-                        <button type="submit" class="button button--success">Crear Ciclo</button>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-    <div class="modal" id="modalInsumo">
-        <div class="modal__content modal__content--large">
-            <div class="modal__header">
-                <h2 class="modal__title">Nuevo Insumo</h2>
-                <button class="modal__close" id="closeModalInsumo">&times;</button>
-            </div>
-            <div class="modal__body">
-                <form id="formInsumo" class="insumo-form">
-                    <div class="insumo-form__section">
-                        <div class="insumo-form__section-header">
-                            <h3 class="insumo-form__section-title">
-                                <i class="fa-solid fa-info-circle"></i>
-                                Información Básica
-                            </h3>
-                        </div>
-                        <div class="insumo-form__section-content">
-                            <div class="insumo-form__grid">
-                                <div class="form__group">
-                                    <label class="form__label" for="tipoInsumo">Tipo de Insumo</label>
-                                    <select class="form__select" id="tipoInsumo" required>
-                                        <option value="">Seleccionar tipo</option>
-                                        <option value="Fertilizante">Fertilizante</option>
-                                        <option value="Pesticida">Pesticida</option>
-                                        <option value="Herbicida">Herbicida</option>
-                                        <option value="Fungicida">Fungicida</option>
-                                        <option value="Semilla">Semilla</option>
-                                        <option value="Sustrato">Sustrato</option>
-                                        <option value="Herramienta">Herramienta</option>
-                                        <option value="Otro">Otro</option>
-                                    </select>
-                                </div>
-                                <div class="form__group">
-                                    <label class="form__label" for="nombreInsumo">Nombre del Insumo</label>
-                                    <input type="text" class="form__input" id="nombreInsumo" required placeholder="Ej: Fertilizante NPK 10-10-10">
-                                </div>
-                                <div class="form__group">
-                                    <label class="form__label" for="unidadMedida">Unidad de Medida</label>
-                                    <select class="form__select" id="unidadMedida" required>
-                                        <option value="">Seleccionar unidad</option>
-                                        <option value="kg">Kilogramos (kg)</option>
-                                        <option value="g">Gramos (g)</option>
-                                        <option value="L">Litros (L)</option>
-                                        <option value="mL">Mililitros (mL)</option>
-                                        <option value="unidad">Unidad</option>
-                                        <option value="paquete">Paquete</option>
-                                        <option value="saco">Saco</option>
-                                        <option value="caja">Caja</option>
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="insumo-form__section">
-                        <div class="insumo-form__section-header">
-                            <h3 class="insumo-form__section-title">
-                                <i class="fa-solid fa-boxes-stacked"></i>
-                                Inventario y Precios
-                            </h3>
-                        </div>
-                        <div class="insumo-form__section-content">
-                            <div class="insumo-form__grid">
-                                <div class="form__group">
-                                    <label class="form__label" for="cantidad">Cantidad Inicial</label>
-                                    <input type="number" class="form__input" id="cantidad" step="0.01" required min="0" placeholder="0.00">
-                                </div>
-                                <div class="form__group">
-                                    <label class="form__label" for="valorUnitario">Valor Unitario ($)</label>
-                                    <input type="number" class="form__input" id="valorUnitario" step="0.01" required min="0" placeholder="0.00">
-                                </div>
-                                <div class="form__group">
-                                    <label class="form__label">Valor Total Calculado</label>
-                                    <div class="insumo-form__calculation">
-                                        <div class="insumo-form__calculation-title">Total Inventario</div>
-                                        <div class="insumo-form__calculation-value" id="valorTotalCalculado">$0.00</div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-
-                    <div class="insumo-form__section">
-                        <div class="insumo-form__section-header">
-                            <h3 class="insumo-form__section-title">
-                                <i class="fa-solid fa-clipboard-list"></i>
-                                Información Adicional
-                            </h3>
-                        </div>
-                        <div class="insumo-form__section-content">
-                            <div class="form__group">
-                                <label class="form__label" for="descripcionInsumo">Descripción</label>
-                                <textarea class="form__textarea" id="descripcionInsumo" placeholder="Descripción detallada del insumo, instrucciones de uso, precauciones, etc." rows="4"></textarea>
-                            </div>
-                            <div class="form__actions" style="margin-top: 20px;">
-                                <button type="button" class="button button--secondary" id="btnCancelarInsumo">Cancelar</button>
-                                <button type="submit" class="button button--success">Crear Insumo</button>
-                            </div>
-                        </div>
-                    </div>
-                </form>
-            </div>
-        </div>
-    </div>
-
-
-<script>
-(function () { 
-    // 🔑 VALIDACIÓN DE SESIÓN CORREGIDA: Lee 'userData' de sessionStorage
-    const userDataString = sessionStorage.getItem('userData');
-    const user = userDataString ? JSON.parse(userDataString) : null;
-    
-    // Redirigir si no está logueado
-    if (!user) { 
-        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
-        return; 
-    } 
-    
-    const role = user.role; 
-    
-    // Ocultar la página si el rol no tiene permiso
-    // Asumimos que la gestión de asociaciones es para el superadmin (como se sugiere en home-cultivo)
-    if (role !== 'superadmin') {
-        // Podrías redirigir a una página de error o a su home por defecto
-        window.location.href = '/fronted/public/views/homes/index.html'; 
-        return;
-    }
-
-    // Lógica para cerrar sesión
-    const btnLogout = document.createElement('a');
-    btnLogout.id = 'btnLogout';
-    btnLogout.className = 'header__link';
-    btnLogout.textContent = 'Cerrar Sesión';
-    btnLogout.style.cursor = 'pointer';
-
-    const headerNav = document.querySelector('.header__actions');
-    // Si la página no tiene un área de navegación formal, lo añadimos al final de las acciones o al body si es necesario.
-    // Para este caso, solo implementaremos la función de logout.
-
-    document.getElementById('btnLogout')?.addEventListener('click', function () { 
-        // Limpiar sessionStorage y redirigir
-        sessionStorage.removeItem('userData');
-        sessionStorage.removeItem('userToken');
-        // También limpiamos la clave antigua de localStorage por si acaso
-        localStorage.removeItem('lembo_user_data');
-        
-        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
-    }); 
-    
-    // NOTA: La lógica de permisos de navegación más compleja (como en las páginas 'home')
-    // no es necesaria aquí ya que la página completa está restringida por rol.
-    
-})();
-
-// Lógica de cálculo del valor total del insumo (Ejemplo)
-document.getElementById('cantidad').addEventListener('input', updateValorTotal);
-document.getElementById('valorUnitario').addEventListener('input', updateValorTotal);
-
-function updateValorTotal() {
-    const cantidad = parseFloat(document.getElementById('cantidad').value) || 0;
-    const valorUnitario = parseFloat(document.getElementById('valorUnitario').value) || 0;
-    const valorTotal = cantidad * valorUnitario;
-    document.getElementById('valorTotalCalculado').textContent = '$' + valorTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-</script>
+<script></script>
 
 </body>
 </html>

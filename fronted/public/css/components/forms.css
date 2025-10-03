@@ -1,4 +1,5 @@
-@import url('variables.css');
+/* variables.css is located one level up in /css, so use relative path */
+@import url('../variables.css');
 
 /* General adjustments to avoid overlapping with header */
 html, body {

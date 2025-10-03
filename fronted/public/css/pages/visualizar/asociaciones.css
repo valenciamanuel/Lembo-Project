@@ -277,6 +277,21 @@ main {
   gap: 2rem;
 }
 
+.charts__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 1.5rem;
+}
+
+.chart-container canvas {
+  width: 100% !important;
+  height: 220px !important;
+}
+
+@media (max-width: 900px) {
+  .charts__grid { grid-template-columns: 1fr; }
+}
+
 .chart-container {
   background: var(--white);
   padding: 1.5rem;

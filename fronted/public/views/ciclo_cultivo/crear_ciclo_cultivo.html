@@ -126,7 +126,8 @@
                 }
 
                 try {
-                    const res = await fetch('http://localhost:3000/ciclo-cultivo', {
+                    // Backend exposes this router at /ciclocultivo (see backend/server.js)
+                    const res = await fetch('http://localhost:3000/ciclocultivo', {
                         method: 'POST',
                         body: formData
                     });

@@ -121,10 +121,20 @@ async function cargarCultivos() {
 
 async function cargarCiclos() {
   try {
-    const response = await fetch(`${API_URL}/ciclocultivo`)
-    if (!response.ok) throw new Error("Error al cargar ciclos de cultivo")
+    const response = await fetch(`${API_URL}/ciclocultivo`, { cache: 'no-store' })
+    console.debug('cargarCiclos: status', response.status)
 
-    ciclosData = await response.json()
+    if (response.status === 204 || response.status === 304) {
+      console.debug('cargarCiclos: respuesta sin contenido, se asigna array vacío')
+      ciclosData = []
+    } else if (response.ok) {
+      const text = await response.clone().text()
+      console.debug('cargarCiclos: body length', text.length, 'preview:', text.slice(0, 200))
+      ciclosData = await response.json()
+    } else {
+      throw new Error("Error al cargar ciclos de cultivo")
+    }
+
     actualizarSelectCiclos()
   } catch (error) {
     console.error("Error:", error)
@@ -147,10 +157,20 @@ async function cargarSensores() {
 
 async function cargarInsumos() {
   try {
-    const response = await fetch(`${API_URL}/insumo`)
-    if (!response.ok) throw new Error("Error al cargar insumos")
+    const response = await fetch(`${API_URL}/insumo`, { cache: 'no-store' })
+    console.debug('cargarInsumos: status', response.status)
 
-    insumosData = await response.json()
+    if (response.status === 204 || response.status === 304) {
+      console.debug('cargarInsumos: respuesta sin contenido, se asigna array vacío')
+      insumosData = []
+    } else if (response.ok) {
+      const text = await response.clone().text()
+      console.debug('cargarInsumos: body length', text.length, 'preview:', text.slice(0, 200))
+      insumosData = await response.json()
+    } else {
+      throw new Error("Error al cargar insumos")
+    }
+
     actualizarInsumosCheckbox()
   } catch (error) {
     console.error("Error:", error)
@@ -198,12 +218,15 @@ function actualizarSelectCultivos() {
 function actualizarSelectCiclos() {
   cicloSelect.innerHTML = '<option value="">Seleccionar ciclo</option>'
 
-  const ciclosActivos = ciclosData.filter((c) => c.state === "activo")
+  // Mostrar todos los ciclos, pero indicar su estado entre paréntesis
+  const ciclos = Array.isArray(ciclosData) ? ciclosData : []
+  console.debug('cargarCiclos: encontrados', ciclos.length, 'registros')
 
-  ciclosActivos.forEach((ciclo) => {
+  ciclos.forEach((ciclo) => {
     const option = document.createElement("option")
+    const stateLabel = (ciclo.state || '').toString().trim()
     option.value = ciclo.cicloName
-    option.textContent = ciclo.cicloName
+    option.textContent = ciclo.cicloName + (stateLabel ? ` (${stateLabel})` : '')
     cicloSelect.appendChild(option)
   })
 }
@@ -256,22 +279,33 @@ function actualizarSensoresCheckbox() {
 function actualizarInsumosCheckbox() {
   insumosContainer.innerHTML = ""
 
-  const insumosActivos = insumosData.filter((i) => i.estado === "activo")
+  // Mostrar todos los insumos y marcar su estado en la etiqueta
+  const insumos = Array.isArray(insumosData) ? insumosData : []
+  console.debug('cargarInsumos: encontrados', insumos.length, 'registros')
 
-  insumosActivos.forEach((insumo) => {
+  insumos.forEach((insumo) => {
     const insumoDiv = document.createElement("div")
     insumoDiv.className = "insumo-checkbox"
 
     const isChecked = insumosSeleccionados.some((i) => i.idInsumo === insumo.idInsumo)
+    const isInactive = (insumo.estado || '').toString().toLowerCase() !== 'activo'
+    const disabledDueToLimit = insumosSeleccionados.length >= 3 && !isChecked
 
-    insumoDiv.innerHTML = `
-            <input type="checkbox" id="insumo-${insumo.idInsumo}" value="${insumo.idInsumo}" 
-                ${isChecked ? "checked" : ""} ${insumosSeleccionados.length >= 3 && !isChecked ? "disabled" : ""}>
-            <label class="insumo-checkbox__label" for="insumo-${insumo.idInsumo}">
-                ${insumo.nombreInsumo} (${insumo.tipoInsumo}) - ${insumo.cantidad} ${insumo.unidadMedida}
-            </label>
-        `
+    const input = document.createElement('input')
+    input.type = 'checkbox'
+    input.id = `insumo-${insumo.idInsumo}`
+    input.value = insumo.idInsumo
+    if (isChecked) input.checked = true
+    if (isInactive || disabledDueToLimit) input.disabled = true
 
+    const label = document.createElement('label')
+    label.className = 'insumo-checkbox__label'
+    label.htmlFor = input.id
+    const estadoLabel = insumo.estado ? ` (${insumo.estado})` : ''
+    label.textContent = insumo.nombreInsumo + ` (${insumo.tipoInsumo}) - ` + insumo.cantidad + ' ' + insumo.unidadMedida + estadoLabel
+
+    insumoDiv.appendChild(input)
+    insumoDiv.appendChild(label)
     insumosContainer.appendChild(insumoDiv)
   })
 
@@ -496,19 +530,132 @@ function actualizarEstadisticas() {
 // Funciones de gráficos
 function inicializarGraficos() {
   renderizarGraficoInversionMeta()
+  renderizarGraficoCultivoDistribucion()
+  renderizarGraficoSensoresUso()
+}
+
+// Grafico: distribución de cultivos
+function renderizarGraficoCultivoDistribucion() {
+  if (typeof Chart === 'undefined') return
+  const canvas = document.getElementById('cultivoDistribucionChart')
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')
+
+  // Contar cultivos en asociaciones
+  const counter = {}
+  asociacionesData.forEach(a => {
+    const name = a.cultivo || 'Sin cultivo'
+    counter[name] = (counter[name] || 0) + 1
+  })
+
+  const labels = Object.keys(counter)
+  const data = labels.map(l => counter[l])
+
+  if (window.cultivoDistribucionChart && typeof window.cultivoDistribucionChart.destroy === 'function') {
+    try { window.cultivoDistribucionChart.destroy() } catch (e) {}
+    window.cultivoDistribucionChart = null
+  }
+
+  // Si no hay datos, limpiar canvas
+  if (!labels.length) { try { ctx.clearRect(0,0,canvas.width,canvas.height) } catch(e){}; return }
+
+  window.cultivoDistribucionChart = new Chart(ctx, {
+    type: 'doughnut',
+    data: {
+      labels: labels,
+      datasets: [{ data: data, backgroundColor: labels.map((_, i) => `hsl(${(i*60)%360} 70% 50%)`) }]
+    },
+    options: { responsive: true, plugins: { legend: { position: 'bottom' } } }
+  })
+}
+
+// Grafico: uso de sensores (cuentas de apariciones en asociaciones)
+function renderizarGraficoSensoresUso() {
+  if (typeof Chart === 'undefined') return
+  const canvas = document.getElementById('sensoresUsoChart')
+  if (!canvas) return
+  const ctx = canvas.getContext('2d')
+
+  // construir contador de sensores desde asociacionesData (sensores están separados por comas)
+  const counter = {}
+  asociacionesData.forEach(a => {
+    if (!a.sensores) return
+    a.sensores.split(',').map(s => s.trim()).forEach(name => {
+      if (!name) return
+      counter[name] = (counter[name] || 0) + 1
+    })
+  })
+
+  const labels = Object.keys(counter)
+  const data = labels.map(l => counter[l])
+
+  if (window.sensoresUsoChart && typeof window.sensoresUsoChart.destroy === 'function') {
+    try { window.sensoresUsoChart.destroy() } catch (e) {}
+    window.sensoresUsoChart = null
+  }
+
+  if (!labels.length) { try { ctx.clearRect(0,0,canvas.width,canvas.height) } catch(e){}; return }
+
+  window.sensoresUsoChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+      labels: labels,
+      datasets: [{ label: 'Apariciones en asociaciones', data: data, backgroundColor: 'rgba(54,162,235,0.7)' }]
+    },
+    options: { responsive: true, scales: { y: { beginAtZero: true } }, plugins: { legend: { display: false } } }
+  })
 }
 
 function renderizarGraficoInversionMeta() {
-  const ctx = document.getElementById("inversionMetaChart").getContext("2d")
+  // Asegurarse de que Chart.js y el canvas están disponibles
+  if (typeof Chart === 'undefined') {
+    console.debug('renderizarGraficoInversionMeta: Chart.js no está cargado, se omite el gráfico')
+    return
+  }
 
+  const canvas = document.getElementById("inversionMetaChart")
+  if (!canvas) {
+    console.debug('renderizarGraficoInversionMeta: canvas #inversionMetaChart no encontrado')
+    return
+  }
+
+  const ctx = canvas.getContext("2d")
+
+  // Tomar hasta 5 asociaciones más recientes (por id)
   const asociacionesRecientes = [...asociacionesData]
     .sort((a, b) => b.id - a.id)
     .slice(0, 5)
     .reverse()
 
-  const labels = asociacionesRecientes.map((a) => a.nombre_asociacion)
-  const inversionData = asociacionesRecientes.map((a) => Number.parseFloat(a.inversion))
-  const metaData = asociacionesRecientes.map((a) => Number.parseFloat(a.meta))
+  const labels = asociacionesRecientes.map((a) => a.nombre_asociacion || 'Sin nombre')
+  // Normalizar valores numéricos: convertir a número y usar 0 si no es válido
+  const inversionData = asociacionesRecientes.map((a) => {
+    const v = Number.parseFloat(a.inversion)
+    return Number.isFinite(v) ? v : 0
+  })
+  const metaData = asociacionesRecientes.map((a) => {
+    const v = Number.parseFloat(a.meta)
+    return Number.isFinite(v) ? v : 0
+  })
+
+  // Si no hay datos, limpiar el canvas y mostrar mensaje en consola
+  if (!labels.length || (inversionData.every((v) => v === 0) && metaData.every((v) => v === 0))) {
+    console.debug('renderizarGraficoInversionMeta: no hay datos válidos para mostrar el gráfico')
+    // destruir gráfico anterior si existía
+    if (window.inversionMetaChart && typeof window.inversionMetaChart.destroy === 'function') {
+      try { window.inversionMetaChart.destroy() } catch (e) { /* ignore */ }
+      window.inversionMetaChart = null
+    }
+    // Opcional: limpiar el canvas
+    try { ctx.clearRect(0, 0, canvas.width, canvas.height) } catch (e) { /* ignore */ }
+    return
+  }
+
+  // Destruir gráfico previo si existe para evitar sobreposiciones
+  if (window.inversionMetaChart && typeof window.inversionMetaChart.destroy === 'function') {
+    try { window.inversionMetaChart.destroy() } catch (e) { /* ignore */ }
+    window.inversionMetaChart = null
+  }
 
   window.inversionMetaChart = new Chart(ctx, {
     type: "bar",
@@ -549,12 +696,27 @@ function renderizarGraficoInversionMeta() {
 
 // Funciones de modales
 function abrirModal(modal) {
-  modal.classList.add("active")
+  // modal can be an element or an id string
+  let element = modal
+  if (typeof modal === 'string') {
+    element = document.getElementById(modal)
+  }
+  if (!element) {
+    console.warn('abrirModal: modal no encontrado', modal)
+    return
+  }
+  element.classList.add("active")
   document.body.style.overflow = "hidden"
 }
 
 function cerrarModal(modal) {
-  modal.classList.remove("active")
+  // modal can be an element or an id string
+  let element = modal
+  if (typeof modal === 'string') {
+    element = document.getElementById(modal)
+  }
+  if (!element) return
+  element.classList.remove("active")
   document.body.style.overflow = ""
 }
 
@@ -773,6 +935,12 @@ function configurarCalculoInsumo() {
   const valorUnitarioInput = document.getElementById("valorUnitario")
   const valorTotalCalculado = document.getElementById("valorTotalCalculado")
   const valorTotalHidden = document.getElementById("valorTotal")
+
+  // Si alguno de los elementos no existe (p. ej. modal no cargado), salir sin errores
+  if (!cantidadInput || !valorUnitarioInput || !valorTotalCalculado || !valorTotalHidden) {
+    console.debug('configurarCalculoInsumo: elementos de insumo no encontrados, se omite configuración')
+    return
+  }
 
   function calcularValorTotal() {
     const cantidad = Number.parseFloat(cantidadInput.value) || 0
@@ -1255,62 +1423,110 @@ function inicializarEventListeners() {
   btnExportarExcel.addEventListener("click", exportarExcel)
   btnExportarPDF.addEventListener("click", exportarPDF)
 
-  // Botones para abrir modales secundarios
-  btnNuevoResponsable.addEventListener("click", () => {
-    formResponsable.reset()
-    abrirModal(modalResponsable)
+  // Botones para abrir modales secundarios (comprobar existencia antes de usar)
+  if (btnNuevoResponsable) {
+    btnNuevoResponsable.addEventListener("click", () => {
+      if (formResponsable) formResponsable.reset()
+      abrirModal(modalResponsable)
+    })
+  }
+
+  if (btnNuevoSensor) {
+    btnNuevoSensor.addEventListener("click", () => {
+      // Redirigir a la página de crear sensor en lugar de abrir un modal
+      if (formSensor) formSensor.reset()
+      window.location.href = '/fronted/public/views/sensores/crear_sensor.html'
+    })
+  }
+
+  if (btnNuevoCultivo) {
+    btnNuevoCultivo.addEventListener("click", () => {
+      // Redirigir a la página de crear cultivo
+      if (formCultivo) formCultivo.reset()
+      window.location.href = '/fronted/public/views/cultivo/crear_cultivo.html'
+    })
+  }
+
+  if (btnNuevoCiclo) {
+    btnNuevoCiclo.addEventListener("click", () => {
+      // Redirigir a la página de crear ciclo de cultivo
+      if (formCiclo) formCiclo.reset()
+      window.location.href = '/fronted/public/views/ciclo_cultivo/crear_ciclo_cultivo.html'
+    })
+  }
+
+  if (btnNuevoInsumo) {
+    btnNuevoInsumo.addEventListener("click", () => {
+      // Redirigir a la página de crear insumo (archivo con nombre actual en el repo: crear_inusomo.html)
+      if (formInsumo) formInsumo.reset()
+      const v = document.getElementById("valorTotalCalculado")
+      if (v) v.textContent = "$0.00"
+      window.location.href = '/fronted/public/views/insumos/crear_inusomo.html'
+    })
+  }
+
+  // Cerrar modales (agregar listeners sólo si los elementos existen)
+  const btnCloseDetalles = document.getElementById("closeModalDetalles")
+  if (btnCloseDetalles) btnCloseDetalles.addEventListener("click", () => cerrarModal('modalDetalles'))
+
+  const btnCloseAsociacion = document.getElementById("closeModalAsociacion")
+  if (btnCloseAsociacion) btnCloseAsociacion.addEventListener("click", () => cerrarModal(modalAsociacion || 'modalAsociacion'))
+
+  const btnCloseResponsable = document.getElementById("closeModalResponsable")
+  if (btnCloseResponsable) btnCloseResponsable.addEventListener("click", () => cerrarModal(modalResponsable || 'modalResponsable'))
+
+  const btnCloseSensor = document.getElementById("closeModalSensor")
+  if (btnCloseSensor) btnCloseSensor.addEventListener("click", () => cerrarModal(modalSensor || 'modalSensor'))
+
+  const btnCloseCultivo = document.getElementById("closeModalCultivo")
+  if (btnCloseCultivo) btnCloseCultivo.addEventListener("click", () => cerrarModal(modalCultivo || 'modalCultivo'))
+
+  const btnCloseCiclo = document.getElementById("closeModalCiclo")
+  if (btnCloseCiclo) btnCloseCiclo.addEventListener("click", () => cerrarModal(modalCiclo || 'modalCiclo'))
+
+  const btnCloseInsumo = document.getElementById("closeModalInsumo")
+  if (btnCloseInsumo) btnCloseInsumo.addEventListener("click", () => cerrarModal(modalInsumo || 'modalInsumo'))
+
+  const btnCloseConfirmacion = document.getElementById("closeModalConfirmacion")
+  if (btnCloseConfirmacion) btnCloseConfirmacion.addEventListener("click", () => cerrarModal(modalConfirmacion || 'modalConfirmacion'))
+
+  // Botones de cancelar (hacemos limpieza adicional en el caso del modal de asociación)
+  const btnCancelarAsoc = document.getElementById("btnCancelarAsociacion")
+  if (btnCancelarAsoc) btnCancelarAsoc.addEventListener("click", () => {
+    cerrarModal(modalAsociacion || 'modalAsociacion')
+    if (typeof limpiarFormularioAsociacion === 'function') limpiarFormularioAsociacion()
   })
 
-  btnNuevoSensor.addEventListener("click", () => {
-    formSensor.reset()
-    abrirModal(modalSensor)
-  })
+  const btnCancelarResponsable = document.getElementById("btnCancelarResponsable")
+  if (btnCancelarResponsable) btnCancelarResponsable.addEventListener("click", () => cerrarModal(modalResponsable || 'modalResponsable'))
 
-  btnNuevoCultivo.addEventListener("click", () => {
-    formCultivo.reset()
-    abrirModal(modalCultivo)
-  })
+  const btnCancelarSensor = document.getElementById("btnCancelarSensor")
+  if (btnCancelarSensor) btnCancelarSensor.addEventListener("click", () => cerrarModal(modalSensor || 'modalSensor'))
 
-  btnNuevoCiclo.addEventListener("click", () => {
-    formCiclo.reset()
-    abrirModal(modalCiclo)
-  })
+  const btnCancelarCultivo = document.getElementById("btnCancelarCultivo")
+  if (btnCancelarCultivo) btnCancelarCultivo.addEventListener("click", () => cerrarModal(modalCultivo || 'modalCultivo'))
 
-  btnNuevoInsumo.addEventListener("click", () => {
-    formInsumo.reset()
-    document.getElementById("valorTotalCalculado").textContent = "$0.00"
-    abrirModal(modalInsumo)
-  })
+  const btnCancelarCiclo = document.getElementById("btnCancelarCiclo")
+  if (btnCancelarCiclo) btnCancelarCiclo.addEventListener("click", () => cerrarModal(modalCiclo || 'modalCiclo'))
 
-  // Cerrar modales
-  document.getElementById("closeModalDetalles").addEventListener("click", () => cerrarModal(modalDetalles))
-  document.getElementById("closeModalAsociacion").addEventListener("click", () => cerrarModal(modalAsociacion))
-  document.getElementById("closeModalResponsable").addEventListener("click", () => cerrarModal(modalResponsable))
-  document.getElementById("closeModalSensor").addEventListener("click", () => cerrarModal(modalSensor))
-  document.getElementById("closeModalCultivo").addEventListener("click", () => cerrarModal(modalCultivo))
-  document.getElementById("closeModalCiclo").addEventListener("click", () => cerrarModal(modalCiclo))
-  document.getElementById("closeModalInsumo").addEventListener("click", () => cerrarModal(modalInsumo))
-  document.getElementById("closeModalConfirmacion").addEventListener("click", () => cerrarModal(modalConfirmacion))
+  const btnCancelarInsumo = document.getElementById("btnCancelarInsumo")
+  if (btnCancelarInsumo) btnCancelarInsumo.addEventListener("click", () => cerrarModal(modalInsumo || 'modalInsumo'))
 
-  // Botones de cancelar
-  document.getElementById("btnCancelarAsociacion").addEventListener("click", () => cerrarModal(modalAsociacion))
-  document.getElementById("btnCancelarResponsable").addEventListener("click", () => cerrarModal(modalResponsable))
-  document.getElementById("btnCancelarSensor").addEventListener("click", () => cerrarModal(modalSensor))
-  document.getElementById("btnCancelarCultivo").addEventListener("click", () => cerrarModal(modalCultivo))
-  document.getElementById("btnCancelarCiclo").addEventListener("click", () => cerrarModal(modalCiclo))
-  document.getElementById("btnCancelarInsumo").addEventListener("click", () => cerrarModal(modalInsumo))
-  document.getElementById("btnCancelarEliminar").addEventListener("click", () => cerrarModal(modalConfirmacion))
+  const btnCancelarEliminar = document.getElementById("btnCancelarEliminar")
+  if (btnCancelarEliminar) btnCancelarEliminar.addEventListener("click", () => cerrarModal(modalConfirmacion || 'modalConfirmacion'))
+  /* Lines 1308-1332 omitted */
 
-  // Botones de confirmación
-  document.getElementById("btnConfirmarEliminar").addEventListener("click", eliminarAsociacion)
+  // Botones de confirmación (agregar solo si existe el elemento)
+  const btnConfirmarEliminarElem = document.getElementById("btnConfirmarEliminar")
+  if (btnConfirmarEliminarElem) btnConfirmarEliminarElem.addEventListener("click", eliminarAsociacion)
 
-  // Formularios
-  formAsociacion.addEventListener("submit", guardarAsociacion)
-  formResponsable.addEventListener("submit", crearResponsable)
-  formSensor.addEventListener("submit", crearSensor)
-  formCultivo.addEventListener("submit", crearCultivo)
-  formCiclo.addEventListener("submit", crearCiclo)
-  formInsumo.addEventListener("submit", crearInsumo)
+  // Formularios (registrar handlers solo si existen)
+  if (formAsociacion) formAsociacion.addEventListener("submit", guardarAsociacion)
+  if (formResponsable) formResponsable.addEventListener("submit", crearResponsable)
+  if (formSensor) formSensor.addEventListener("submit", crearSensor)
+  if (formCultivo) formCultivo.addEventListener("submit", crearCultivo)
+  if (formCiclo) formCiclo.addEventListener("submit", crearCiclo)
+  if (formInsumo) formInsumo.addEventListener("submit", crearInsumo)
 
   // Búsqueda
   searchInput.addEventListener("input", function () {

@@ -1,6 +1,31 @@
 
 document.addEventListener("DOMContentLoaded", function () {
-    const form = document.querySelector(".formulario");
+    const form = document.querySelector(".formulario") || document.querySelector('.form');
+
+    // Verificar rol del usuario (consistente con otras vistas)
+    const userDataString = sessionStorage.getItem('userData');
+    const user = userDataString ? JSON.parse(userDataString) : null;
+
+    const allowedRoles = ['admin', 'superadmin']; // Roles permitidos para crear asociaciones
+
+    if (!user) {
+        // No autenticado: redirigir al login
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+        return;
+    }
+
+    const role = user.role;
+    if (!allowedRoles.includes(role)) {
+        // Si no tiene permiso, deshabilitar el formulario y mostrar mensaje
+        if (form) {
+            form.innerHTML = '';
+            const cont = document.createElement('div');
+            cont.className = 'formulario__sin-permiso';
+            cont.textContent = 'No tienes permisos para crear una asociación. Contacta con un administrador.';
+            form.appendChild(cont);
+        }
+        return;
+    }
 
     function mostrarError(campo, mensaje) {
         let contenedorError = campo.parentElement.querySelector(".formulario__error");
@@ -32,7 +57,8 @@ document.addEventListener("DOMContentLoaded", function () {
         window.scrollTo({ top: 0, behavior: "smooth" }); 
     }
 
-    form.addEventListener("submit", function (event) {
+    if (form) {
+        form.addEventListener("submit", function (event) {
         event.preventDefault();
         limpiarErrores();
 
@@ -65,10 +91,11 @@ document.addEventListener("DOMContentLoaded", function () {
         }
 
         if (valido) {
-            mostrarMensajeExito("✅ Asociación creada con éxito.");
+            mostrarMensajeExito(" Asociación creada con éxito.");
             setTimeout(() => {
                 window.location.href = "/fronted/public/views/vizualisar/html/practica.html";
             }, 1000);
         }
-    });
+        });
+    }
 });
