@@ -1,167 +1,163 @@
 const db = require('../config/db.js');
 const fs = require('fs/promises');
 const path = require('path');
-const multer = require('multer');
 
-// Directorio de uploads en el frontend
-const UPLOADS_PATH = path.join(__dirname, '..', '..', 'fronted', 'public', 'uploads');
-
-// Configuración de Multer
-const storage = multer.diskStorage({
-    destination: (req, file, cb) => {
-        cb(null, UPLOADS_PATH);
-    },
-    filename: (req, file, cb) => {
-        const ext = path.extname(file.originalname);
-        const name = `${Date.now()}-${Math.round(Math.random()*1E9)}${ext}`;
-        cb(null, name);
-    }
-});
-const upload = multer({ storage });
-
-// --- Funciones de Validación y Archivo ---
-const validarNumeroPositivo = (value) => {
-    const numericValue = Number(value);
-    // Permite cero, pero no negativos
-    return !isNaN(numericValue) && numericValue >= 0; 
+const validarNumeroPositivo = (valor) => {
+    const num = Number(valor);
+    return !isNaN(num) && num >= 0;
 };
 
-const deleteFileIfExist = async filename => {
-    if (!filename) return;
-    const filePath = path.join(UPLOADS_PATH, filename);
-    try { await fs.unlink(filePath); } catch {}
+const validarEstado = (estado) => ['Activo', 'Inactivo'].includes(estado || '');
+
+const deleteFileIfExist = async (filename) => {
+    if (!filename) return;
+    // Corrección: 'fronted' -> 'frontend'
+    const filePath = path.join(__dirname, '..', '..', 'frontend', 'public', 'uploads', filename);
+    try {
+        await fs.unlink(filePath);
+    } catch (error) {
+        if (error.code !== 'ENOENT') {
+            throw error;
+        }
+    }
 };
-// ------------------------------------
 
 const insertarInsumo = async (req, res) => {
-    // Eliminamos 'valorTotal' de la desestructuración de req.body
-    const { tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, descripcion, estado } = req.body;
-    const image = req.file ? req.file.filename : null;
+    try {
+        const { nombreInsumo, tipoInsumo, cantidad, unidadMedida, valorUnitario, descripcion, estado } = req.body;
+        const imagen = req.file ? req.file.filename : null;
 
-    // Validaciones de campos obligatorios
-    if (!tipoInsumo || !nombreInsumo || !unidadMedida || cantidad == null ||
-        valorUnitario == null || !descripcion || !estado) {
-        await deleteFileIfExist(image);
-        return res.status(400).json({ error: 'Todos los campos son obligatorios (image opcional)' });
-    }
+        // Trim para campos de texto
+        const trimmedNombre = nombreInsumo?.trim();
+        const trimmedTipo = tipoInsumo?.trim();
+        const trimmedDescripcion = descripcion?.trim();
+        const trimmedUnidad = unidadMedida?.trim();
 
-    // Validación de valores numéricos
-    if (!validarNumeroPositivo(cantidad)) {
-        await deleteFileIfExist(image);
-        return res.status(400).json({ error: 'La cantidad debe ser un número positivo o cero.' });
-    }
-    const numericCantidad = Number(cantidad);
+        if (!trimmedNombre || !trimmedTipo || !cantidad || !valorUnitario) {
+            if (req.file) await deleteFileIfExist(req.file.filename);
+            return res.status(400).json({ error: 'Faltan campos obligatorios para insertar el insumo.' });
+        }
 
-    if (!validarNumeroPositivo(valorUnitario)) {
-        await deleteFileIfExist(image);
-        return res.status(400).json({ error: 'El valor unitario debe ser un número positivo o cero.' });
-    }
-    const numericValorUnitario = Number(valorUnitario);
+        if (!validarNumeroPositivo(cantidad) || !validarNumeroPositivo(valorUnitario)) {
+            if (req.file) await deleteFileIfExist(req.file.filename);
+            return res.status(400).json({ error: 'Cantidad y valor unitario deben ser números positivos o cero.' });
+        }
 
-    // CÁLCULO DEL VALOR TOTAL EN EL BACKEND
-    const numericValorTotal = numericCantidad * numericValorUnitario;
+        if (estado && !validarEstado(estado)) {
+            if (req.file) await deleteFileIfExist(req.file.filename);
+            return res.status(400).json({ error: 'Estado debe ser "Activo" o "Inactivo".' });
+        }
 
-    try {
-        const sql = `
-INSERT INTO insumo
-(tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image)
-VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)
-`.trim(); // <--- SOLUCIÓN: El .trim() elimina los espacios y saltos de línea molestos
+        const numericCantidad = Number(cantidad);
+        const numericValorUnitario = Number(valorUnitario);
+        const numericValorTotal = numericCantidad * numericValorUnitario;
 
-        // Usamos las variables numéricas validadas, incluyendo el valorTotal recalculado
-        const values = [
-            tipoInsumo, nombreInsumo, unidadMedida, numericCantidad, 
-            numericValorUnitario, numericValorTotal, descripcion, estado, image
-        ];
-        const [result] = await db.query(sql, values);
-        res.status(201).json({ idInsumo: result.insertId, tipoInsumo, nombreInsumo, unidadMedida, cantidad: numericCantidad, valorUnitario: numericValorUnitario, valorTotal: numericValorTotal, descripcion, estado, image });
-    } catch (err) {
-        await deleteFileIfExist(image);
-        console.error(' Error al insertar el insumo:', err);
-        res.status(500).json({ error: 'Error al insertar el insumo' });
-    }
+        const sql = `INSERT INTO insumo (nombreInsumo, tipoInsumo, cantidad, unidadMedida, valorUnitario, valorTotal, descripcion, estado, image)
+                     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`;
+        const values = [trimmedNombre, trimmedTipo, numericCantidad, trimmedUnidad, numericValorUnitario, numericValorTotal, trimmedDescripcion, estado || 'Activo', imagen];
+
+        const [result] = await db.query(sql, values);
+
+        res.status(201).json({ idInsumo: result.insertId, message: 'Insumo registrado correctamente', image: imagen });
+    } catch (err) {
+        console.error('Error al insertar insumo:', err);
+        if (req.file) await deleteFileIfExist(req.file.filename).catch(console.error);
+        res.status(500).json({ error: 'Error interno del servidor al insertar el insumo' });
+    }
 };
 
 const obtenerInsumos = async (req, res) => {
-    try {
-        const sql = 'SELECT idInsumo, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion, estado, image FROM insumo';
-        const [results] = await db.query(sql);
-        res.status(200).json(results);
-    } catch (err) {
-        console.error(' Error al obtener los insumos:', err);
-        res.status(500).json({ error: 'Error al obtener los insumos' });
-    }
+    try {
+        const [results] = await db.query('SELECT * FROM insumo');
+        res.status(200).json(results);
+    } catch (err) {
+        console.error('Error al obtener insumos:', err);
+        res.status(500).json({ error: 'Error al obtener insumos' });
+    }
 };
 
 const obtenerInsumoPorId = async (req, res) => {
-    try {
-        const { id } = req.params;
-        const [rows] = await db.query("SELECT * FROM insumo WHERE idInsumo = ?", [id]);
-        if (rows.length === 0) return res.status(404).json({ error: "Insumo no encontrado" });
-        res.json(rows[0]);
-    } catch (err) {
-        console.error("Error al obtener insumo:", err);
-        res.status(500).json({ error: "Error al obtener insumo" });
-    }
+    try {
+        const { id } = req.params;
+        const [rows] = await db.query('SELECT * FROM insumo WHERE idInsumo = ?', [id]);
+
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
+        res.json(rows[0]);
+    } catch (err) {
+        console.error('Error al obtener insumo:', err);
+        res.status(500).json({ error: 'Error al obtener insumo' });
+    }
 };
 
 const actualizarInsumo = async (req, res) => {
-    const { id } = req.params;
-    // Eliminamos 'valorTotal' de la desestructuración de req.body
-    let { nombreInsumo, tipoInsumo, cantidad, unidadMedida, valorUnitario, descripcion, estado, image: oldImage } = req.body;
-    const newImage = req.file ? req.file.filename : oldImage;
+    const { id } = req.params;
+    const { nombreInsumo, tipoInsumo, cantidad, unidadMedida, valorUnitario, descripcion, estado } = req.body;
 
-    const deleteNewFileOnError = req.file ? deleteFileIfExist(newImage) : null;
-    
-    if (req.file && oldImage && newImage !== oldImage) {
-        await deleteFileIfExist(oldImage);
-    }
-    
-    // Validación de valores numéricos
-    if (!validarNumeroPositivo(cantidad)) {
-        if (req.file) await deleteNewFileOnError;
-        return res.status(400).json({ error: 'La cantidad debe ser un número positivo o cero.' });
-    }
-    const numericCantidad = Number(cantidad);
+    try {
+        const [current] = await db.query('SELECT image FROM insumo WHERE idInsumo = ?', [id]);
+        if (current.length === 0) {
+            if (req.file) await deleteFileIfExist(req.file.filename);
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
 
-    if (!validarNumeroPositivo(valorUnitario)) {
-        if (req.file) await deleteNewFileOnError;
-        return res.status(400).json({ error: 'El valor unitario debe ser un número positivo o cero.' });
-    }
-    const numericValorUnitario = Number(valorUnitario);
+        const oldImage = current[0].image;
+        let finalImage = oldImage; // Inicializamos con la imagen que está en la BD
 
-    // CÁLCULO DEL VALOR TOTAL EN EL BACKEND
-    const numericValorTotal = numericCantidad * numericValorUnitario;
+        if (req.file) {
+            finalImage = req.file.filename; // Usamos la nueva imagen
 
-    try {
-        const sql = `
-UPDATE insumo
-SET nombreInsumo=?, tipoInsumo=?, cantidad=?, unidadMedida=?, valorUnitario=?, valorTotal=?, descripcion=?, estado=?, image=?
-WHERE idInsumo=?
-`.trim(); // <--- SOLUCIÓN: El .trim() elimina los espacios y saltos de línea molestos
-        // Usamos el valorTotal recalculado
-        const values = [
-            nombreInsumo, tipoInsumo, numericCantidad, unidadMedida, 
-            numericValorUnitario, numericValorTotal, descripcion, estado, newImage, id
-        ];
-        const [result] = await db.query(sql, values);
+            // Borramos la imagen antigua SOLO si existía una imagen anterior
+            if (oldImage) {
+                await deleteFileIfExist(oldImage);
+            }
+        }
 
-        if (result.affectedRows === 0) {
-            if (req.file) await deleteNewFileOnError;
-            return res.status(404).json({ error: "Insumo no encontrado o sin cambios" });
-        }
-        res.json({ message: " Insumo actualizado correctamente", image: newImage });
-    } catch (err) {
-        if (req.file) await deleteFileIfExist(req.file.filename).catch(console.error);
-        console.error(" Error al actualizar insumo:", err);
-        res.status(500).json({ error: "Error al actualizar insumo" });
-    }
+        // Trim para campos de texto
+        const trimmedNombre = nombreInsumo?.trim();
+        const trimmedTipo = tipoInsumo?.trim();
+        const trimmedDescripcion = descripcion?.trim();
+        const trimmedUnidad = unidadMedida?.trim();
+
+        if (!validarNumeroPositivo(cantidad) || !validarNumeroPositivo(valorUnitario)) {
+            if (req.file) await deleteFileIfExist(req.file.filename);
+            return res.status(400).json({ error: 'Cantidad y valor unitario deben ser números positivos o cero.' });
+        }
+
+        if (estado && !validarEstado(estado)) {
+            if (req.file) await deleteFileIfExist(req.file.filename);
+            return res.status(400).json({ error: 'Estado debe ser "Activo" o "Inactivo".' });
+        }
+
+        const numericCantidad = Number(cantidad);
+        const numericValorUnitario = Number(valorUnitario);
+        const numericValorTotal = numericCantidad * numericValorUnitario;
+
+        const [result] = await db.query(
+            `UPDATE insumo
+             SET nombreInsumo=?, tipoInsumo=?, cantidad=?, unidadMedida=?, valorUnitario=?, valorTotal=?, descripcion=?, estado=?, image=?
+             WHERE idInsumo=?`,
+            [trimmedNombre, trimmedTipo, numericCantidad, trimmedUnidad, numericValorUnitario, numericValorTotal, trimmedDescripcion, estado, finalImage, id]
+        );
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado o sin cambios' });
+        }
+
+        res.json({ message: 'Insumo actualizado correctamente', image: finalImage });
+    } catch (err) {
+        console.error('Error al actualizar insumo:', err);
+        if (req.file) {
+            await deleteFileIfExist(req.file.filename).catch(console.error);
+        }
+        res.status(500).json({ error: 'Error interno del servidor al actualizar insumo' });
+    }
 };
 
 module.exports = {
-    upload,
-    insertarInsumo,
-    obtenerInsumos,
-    obtenerInsumoPorId,
-    actualizarInsumo
+    insertarInsumo,
+    obtenerInsumos,
+    obtenerInsumoPorId,
+    actualizarInsumo,
 };

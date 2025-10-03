@@ -33,7 +33,14 @@
         </div>
         <div class="form__column">
           <label class="form__label" for="unidadMedida">Unidad de Medida</label>
-          <input class="form__input" type="text" id="unidadMedida" name="unidadMedida" required>
+          <select class="form__input" id="unidadMedida" name="unidadMedida" required>
+            <option value="">Seleccione la unidad</option>
+            <option value="Kg">Kilogramo (Kg)</option>
+            <option value="Lt">Litro (Lt)</option>
+            <option value="Unidad">Unidad</option>
+            <option value="Metro">Metro</option>
+            <option value="Paquete">Paquete</option>
+          </select>
 
           <label class="form__label" for="cantidad">Cantidad</label>
           <input class="form__input" type="number" id="cantidad" name="cantidad" step="0.01" required>
@@ -47,7 +54,7 @@
         </div>
         <div class="form__column">
           <label class="form__label" for="valorTotal">Valor Total</label>
-          <input class="form__input" type="number" id="valorTotal" name="valorTotal" step="0.01" required>
+          <input class="form__input" type="number" id="valorTotal" name="valorTotal" step="0.01" readonly>
         </div>
       </div>
 
@@ -91,7 +98,21 @@
 
       const form = document.getElementById('edit-insumo-form');
       const fields = ['tipoInsumo','nombreInsumo','unidadMedida','cantidad','valorUnitario','valorTotal','descripcion','estado'];
-      // Cargar datos
+
+      const cantidadInput = document.getElementById('cantidad');
+      const valorUnitarioInput = document.getElementById('valorUnitario');
+      const valorTotalInput = document.getElementById('valorTotal');
+
+      const calcularValorTotal = () => {
+        const cantidad = parseFloat(cantidadInput.value) || 0;
+        const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
+        valorTotalInput.value = (cantidad * valorUnitario).toFixed(2);
+      };
+
+      cantidadInput.addEventListener('input', calcularValorTotal);
+      valorUnitarioInput.addEventListener('input', calcularValorTotal);
+
+      // Cargar datos del insumo
       try {
         const res = await fetch(`http://localhost:3000/insumo/${id}`);
         if (!res.ok) throw Error();
@@ -101,6 +122,7 @@
           const el = document.getElementById(f);
           if (el) el.value = data[f] ?? '';
         });
+        calcularValorTotal();
       } catch {
         alert('Error cargando datos');
         return;
@@ -110,33 +132,17 @@
         e.preventDefault();
         document.getElementById('mensajeValidacion').textContent='';
 
-        // Validaciones
         for (const f of fields) {
           const el = document.getElementById(f);
           if (!el.value.trim()) { showError('Todos los campos obligatorios deben llenarse'); return; }
         }
-        const num = parseFloat(document.getElementById('cantidad').value);
-        if (isNaN(num) || num<=0) { showError('Cantidad > 0'); return; }
-        const vu = parseFloat(document.getElementById('valorUnitario').value);
-        if (isNaN(vu) || vu<0) { showError('Valor unitario >= 0'); return; }
-        const vt = parseFloat(document.getElementById('valorTotal').value);
-        if (isNaN(vt) || vt<0) { showError('Valor total >= 0'); return; }
-        if (document.getElementById('descripcion').value.trim().length<3) {
-          showError('Descripción muy corta'); return;
-        }
+        if (parseFloat(cantidadInput.value) <= 0) { showError('Cantidad > 0'); return; }
+        if (parseFloat(valorUnitarioInput.value) < 0) { showError('Valor unitario >= 0'); return; }
 
-        // FormData
         const formData = new FormData();
-        formData.append('tipoInsumo', document.getElementById('tipoInsumo').value);
-        formData.append('nombreInsumo', document.getElementById('nombreInsumo').value);
-        formData.append('unidadMedida', document.getElementById('unidadMedida').value);
-        formData.append('cantidad', document.getElementById('cantidad').value);
-        formData.append('valorUnitario', document.getElementById('valorUnitario').value);
-        formData.append('valorTotal', document.getElementById('valorTotal').value);
-        formData.append('descripcion', document.getElementById('descripcion').value);
-        formData.append('estado', document.getElementById('estado').value);
+        fields.forEach(f => formData.append(f, document.getElementById(f).value));
         const file = document.getElementById('imageFile').files[0];
-        if (file) formData.append('image', file);
+        if(file) formData.append('image', file);
 
         try {
           const resp = await fetch(`http://localhost:3000/insumo/${id}`, {

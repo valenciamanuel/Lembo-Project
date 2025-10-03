@@ -16,12 +16,10 @@
 </head>
 
 <body>
-  <!-- GOV superior -->
   <div class="gov-top">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
   </div>
 
-  <!-- Header -->
   <header class="header"></header>
 
   <main class="content-container">
@@ -49,6 +47,7 @@
           <th>ID</th>
           <th>Tipo</th>
           <th>Nombre</th>
+          <th>Unidad de Medida</th>
           <th>Cantidad</th>
           <th>Valor Unitario</th>
           <th>Valor Total</th>
@@ -61,12 +60,10 @@
     </table>
   </main>
 
-  <!-- Footer -->
   <footer class="footer">
     <p>Sistema de Gestión Agrícola - LEMBO &copy; 2025</p>
   </footer>
 
-  <!-- GOV inferior -->
   <div class="gov-bottom">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
   </div>
@@ -90,7 +87,7 @@
         tbody.innerHTML = "";
 
         if (insumosData.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="9">No hay insumos registrados</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="10">No hay insumos registrados</td></tr>`;
         } else {
           insumosData.forEach(i => {
             const row = document.createElement("tr");
@@ -98,26 +95,30 @@
               <td>${i.idInsumo}</td>
               <td>${i.tipoInsumo}</td>
               <td>${i.nombreInsumo}</td>
+              <td>${i.unidadMedida}</td>
               <td>${i.cantidad}</td>
               <td>${i.valorUnitario}</td>
               <td>${i.valorTotal}</td>
               <td>
-                <span class="status-badge ${i.estado === 'activo' ? 'status-activo' : 'status-inactivo'}">
+                <span class="status-badge ${i.estado.toLowerCase() === 'activo' ? 'status-activo' : 'status-inactivo'}">
                   ${i.estado}
                 </span>
               </td>
               <td>
                 ${i.image
-                ? `<img src="/fronted/public/uploads/${i.image}" alt="Imagen de ${i.nombreInsumo}" width="60" style="border-radius:6px; object-fit:cover;">`
-                : 'Sin imagen'}
+                  ? `<img src="http://localhost:3000/uploads/${i.image}?t=${Date.now()}" 
+                         alt="Imagen de ${i.nombreInsumo}" width="60" 
+                         style="border-radius:6px; object-fit:cover;">`
+                  : 'Sin imagen'}
               </td>
+              <td>
                 <button class="btn btn-warning btn-sm" onclick="editInsumo(${i.idInsumo})" title="Editar">
                   <i class="material-icons">edit</i>
                 </button>
-                <button class="btn ${i.estado === 'activo' ? 'btn-danger' : 'btn-success'} btn-sm"
+                <button class="btn ${i.estado.toLowerCase() === 'activo' ? 'btn-danger' : 'btn-success'} btn-sm"
                         onclick="toggleInsumoStatus(${i.idInsumo},'${i.estado}')"
-                        title="${i.estado === 'activo' ? 'Desactivar' : 'Activar'}">
-                  <i class="material-icons">${i.estado === 'activo' ? 'visibility_off' : 'visibility'}</i>
+                        title="${i.estado.toLowerCase() === 'activo' ? 'Desactivar' : 'Activar'}">
+                  <i class="material-icons">${i.estado.toLowerCase() === 'activo' ? 'visibility_off' : 'visibility'}</i>
                 </button>
               </td>
             `;
@@ -127,7 +128,7 @@
       } catch (e) {
         console.error(e);
         document.getElementById("insumos-table").innerHTML =
-          `<tr><td colspan="9" style="color:#dc3545;">Error cargando insumos</td></tr>`;
+          `<tr><td colspan="10" style="color:#dc3545;">Error cargando insumos</td></tr>`;
       } finally {
         loader.classList.remove("show");
         tableContainer.style.display = "table";
@@ -141,7 +142,7 @@
     async function toggleInsumoStatus(id, current) {
       try {
         const insumo = insumosData.find(x => x.idInsumo === id);
-        const newEstado = current === 'activo' ? 'inactivo' : 'activo';
+        const newEstado = current.toLowerCase() === 'activo' ? 'inactivo' : 'activo';
         const body = {
           tipoInsumo: insumo.tipoInsumo,
           nombreInsumo: insumo.nombreInsumo,
@@ -173,11 +174,11 @@
       doc.setFontSize(11);
       doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 28);
       const rows = insumosData.map(i => [
-        i.idInsumo, i.tipoInsumo, i.nombreInsumo,
+        i.idInsumo, i.tipoInsumo, i.nombreInsumo, i.unidadMedida,
         i.cantidad, i.valorUnitario, i.valorTotal, i.estado
       ]);
       doc.autoTable({
-        head: [['ID', 'Tipo', 'Nombre', 'Cantidad', 'Valor U.', 'Valor T.', 'Estado']],
+        head: [['ID', 'Tipo', 'Nombre', 'Unidad de Medida', 'Cantidad', 'Valor U.', 'Valor T.', 'Estado']],
         body: rows, startY: 35, theme: 'grid',
         headStyles: { fillColor: [57, 169, 0] }, styles: { fontSize: 9 }
       });
@@ -186,9 +187,14 @@
 
     function exportToExcel() {
       const data = insumosData.map(i => ({
-        ID: i.idInsumo, Tipo: i.tipoInsumo, Nombre: i.nombreInsumo,
-        Cantidad: i.cantidad, ValorUnitario: i.valorUnitario,
-        ValorTotal: i.valorTotal, Estado: i.estado
+        ID: i.idInsumo,
+        Tipo: i.tipoInsumo,
+        Nombre: i.nombreInsumo,
+        'Unidad de Medida': i.unidadMedida,
+        Cantidad: i.cantidad,
+        ValorUnitario: i.valorUnitario,
+        ValorTotal: i.valorTotal,
+        Estado: i.estado
       }));
       const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
@@ -197,5 +203,4 @@
     }
   </script>
 </body>
-
 </html>
