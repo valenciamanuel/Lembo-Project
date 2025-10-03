@@ -11,7 +11,6 @@
 </head>
 
 <body>
-    <!-- SCRIPT DE SEGURIDAD Y PERMISOS -->
     <script>
         (function () {
             const userDataString = sessionStorage.getItem('userData');
@@ -28,6 +27,17 @@
                 window.location.href = '/fronted/public/views/cultivos/listar_cultivo.html';
                 return;
             }
+
+            // Lógica para cerrar sesión (si el header.js lo inyecta)
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) {
+                btnLogout.onclick = function () {
+                    sessionStorage.removeItem('userData');
+                    sessionStorage.removeItem('userToken');
+                    localStorage.removeItem('lembo_user_data');
+                    window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                };
+            }
         })();
     </script>
 
@@ -42,11 +52,13 @@
             <h2 class="form__title">Editar Cultivo</h2>
             <div id="mensajeValidacion" class="form__message"></div>
             <input type="hidden" id="cultivoId">
+            <input type="hidden" id="existingImageName">
 
             <div class="form__row">
                 <div class="form__column">
-                    <label class="form__label" for="image">Imagen</label>
+                    <label class="form__label" for="image">Imagen (Solo selecciona si deseas cambiarla)</label>
                     <input class="form__input" type="file" name="image" id="image" accept="image/*">
+                    <div id="current-image-preview" style="margin-top: 5px;"></div>
 
                     <label class="form__label" for="cultivoType">Tipo cultivo</label>
                     <select class="form__input" name="cultivoType" id="cultivoType" required>
@@ -116,8 +128,11 @@
             }
 
             const form = document.getElementById('edit-form');
+            const fileInput = document.getElementById('image');
+            const previewContainer = document.getElementById('current-image-preview');
+            const existingImageNameInput = document.getElementById('existingImageName');
+            
             const fields = ['cultivoType', 'cultivoName', 'cultivoID', 'size', 'location', 'description', 'state'];
-            let currentImage = '';
 
             // CARGAR DATOS EXISTENTES
             try {
@@ -126,7 +141,14 @@
                 const data = await res.json();
 
                 document.getElementById('cultivoId').value = data.id;
-                currentImage = data.image || '';
+                
+                // Carga del nombre de la imagen y previsualización
+                existingImageNameInput.value = data.image || ''; // Guardamos el nombre actual
+                if (data.image) {
+                    previewContainer.innerHTML = `<img src="/uploads/${data.image}" width="80" style="border-radius:6px; border: 1px solid #ccc;">
+                                                  <p style="font-size: 0.8em; margin-top: 5px;">Imagen actual</p>`;
+                }
+
 
                 fields.forEach(f => {
                     const element = document.getElementById(f);
@@ -149,11 +171,12 @@
 
                 for (const f of fields) {
                     const val = document.getElementById(f).value.trim();
+                    
+                    // Validaciones
                     if (!val || (f === 'cultivoType' && val === '') || (f === 'state' && val === '')) {
                         showMessage('Todos los campos obligatorios deben llenarse.', 'error');
                         return;
                     }
-
                     if (f === 'cultivoName' && val.length < 3) {
                         showMessage('El nombre del cultivo debe tener al menos 3 caracteres.', 'error');
                         return;
@@ -170,12 +193,18 @@
                     formData.append(f, val);
                 }
 
-                const fileInput = document.getElementById('image');
                 const newFile = fileInput.files[0];
 
+                // LÓGICA CLAVE PARA MANEJAR LA IMAGEN
                 if (newFile) {
+                    // 1. Si el usuario selecciona un nuevo archivo
                     formData.append('image', newFile);
+                } else if (existingImageNameInput.value) {
+                    // 2. Si NO selecciona un archivo nuevo pero EXISTE uno anterior, enviamos el nombre para que se conserve
+                    formData.append('image', existingImageNameInput.value);
                 }
+                // Nota: Si no había imagen y no se selecciona una, el campo 'image' no se adjunta al FormData, y el backend debería mantener el valor nulo.
+
 
                 // PETICIÓN PUT
                 try {

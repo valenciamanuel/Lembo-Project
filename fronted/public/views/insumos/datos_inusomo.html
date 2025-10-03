@@ -2,354 +2,224 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editar Insumo</title>
-  <link rel="stylesheet" href="/fronted/public/css/main.css">
-  <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
-  <script src="/fronted/public/views/components/header.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Editar Insumo</title>
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
+    <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 
 <body>
-  <script>
-    (function () {
-      const userDataString = sessionStorage.getItem('userData');
-      const user = userDataString ? JSON.parse(userDataString) : null;
+    <script>
+        (function () {
+            const userDataString = sessionStorage.getItem('userData');
+            const user = userDataString ? JSON.parse(userDataString) : null;
 
-      // 1. COMPROBAR INICIO DE SESIÓN
-      if (!user) {
-        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
-        return;
-      }
+            // 1. COMPROBAR INICIO DE SESIÓN
+            if (!user) {
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
 
-      const userRole = user.role;
+            const userRole = user.role;
 
-      // 2. DEFINIR REGLAS DE PERMISOS (Solo Admin y Superadmin pueden editar)
-      const allowedRoles = ['admin', 'superadmin'];
+            // 2. DEFINIR REGLAS DE PERMISOS (Solo Admin y Superadmin pueden editar)
+            const allowedRoles = ['admin', 'superadmin'];
 
-      // 3. VALIDAR PERMISO
-      if (!allowedRoles.includes(userRole)) {
-        alert('Acceso Denegado: Su rol no tiene permiso para editar insumos.');
-        // Redirigir a una página de vista segura, como el listado de insumos
-        window.location.href = '/fronted/public/views/insumos/listar_insumo.html'; 
-        return;
-      }
+            // 3. VALIDAR PERMISO
+            if (!allowedRoles.includes(userRole)) {
+                alert('Acceso Denegado: Su rol no tiene permiso para editar insumos.');
+                // Redirigir a una página de vista segura, como el listado de insumos
+                window.location.href = '/fronted/public/views/insumos/listar_insumo.html';
+                return;
+            }
 
-      // Lógica de Cerrar Sesión (Si aplica)
-      const btnLogout = document.getElementById('btnLogout');
-      if (btnLogout) {
-        btnLogout.onclick = function () {
-          sessionStorage.removeItem('userData');
-          sessionStorage.removeItem('userToken');
-          localStorage.removeItem('lembo_user_data');
-          window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+            // Lógica de Cerrar Sesión (Si aplica)
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) {
+                btnLogout.onclick = function () {
+                    sessionStorage.removeItem('userData');
+                    sessionStorage.removeItem('userToken');
+                    localStorage.removeItem('lembo_user_data');
+                    window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                };
+            }
+        })();
+    </script>
+
+    <div class="page__banner--top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
+    </div>
+
+    <header class="header"></header>
+
+    <main class="form-container">
+
+        <form class="form" id="edit-insumo-form" enctype="multipart/form-data" novalidate>
+
+            <h2 class="form__title">Editar Insumo</h2>
+
+            <div id="mensajeValidacion" class="form__message"></div>
+
+            <input type="hidden" id="idInsumo">
+
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label" for="imageFile">Imagen</label>
+                    <input class="form__input" type="file" id="imageFile" name="image" accept="image/*">
+
+                    <label class="form__label" for="tipoInsumo">Tipo de Insumo</label>
+                    <select class="form__input" id="tipoInsumo" name="tipoInsumo" required>
+                        <option value="">Seleccione el tipo de insumo</option>
+                        <option value="Químico">Químico</option>
+                        <option value="Físico">Físico</option>
+                        <option value="Orgánico">Orgánico</option>
+                        <option value="Herramienta">Herramienta</option>
+                        <option value="Suministro">Suministro</option>
+                    </select>
+                    <label class="form__label" for="nombreInsumo">Nombre del Insumo</label>
+                    <input class="form__input" type="text" id="nombreInsumo" name="nombreInsumo" required>
+                </div>
+
+                <div class="form__column">
+                    <label class="form__label" for="unidadMedida">Unidad de medida</label>
+                    <select class="form__input" id="unidadMedida" name="unidadMedida" required>
+                        <option value="">Seleccione la unidad</option>
+                        <option value="Kg">Kilogramo (Kg)</option>
+                        <option value="Lt">Litro (Lt)</option>
+                        <option value="Unidad">Unidad</option>
+                        <option value="Metro">Metro</option>
+                        <option value="Paquete">Paquete</option>
+                    </select>
+
+                    <label class="form__label" for="cantidad">Cantidad</label>
+                    <input class="form__input" type="number" id="cantidad" name="cantidad" step="0.01" required>
+                </div>
+            </div>
+
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label" for="valorUnitario">Valor Unitario</label>
+                    <input class="form__input" type="number" id="valorUnitario" name="valorUnitario" step="0.01" required>
+                </div>
+                <div class="form__column">
+                    <label class="form__label" for="valorTotal">Valor Total</label>
+                    <input class="form__input" type="number" id="valorTotal" name="valorTotal" step="0.01" readonly>
+                </div>
+            </div>
+
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label" for="descripcion">Descripción</label>
+                    <textarea class="form__input" id="descripcion" name="descripcion" required></textarea>
+                </div>
+                <div class="form__column">
+                    <label class="form__label" for="estado">Estado</label>
+                    <select class="form__input" id="estado" name="estado" required>
+                        <option value="">Seleccione</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+                <a href="listar_insumo.html" class="btn__secundary">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <div class="gov-bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+    </div>
+
+    <script>
+        const showError = text => {
+            const msg = document.getElementById('mensajeValidacion');
+            msg.textContent = text;
+            msg.classList.add('error');
         };
-      }
-    })();
-  </script>
 
-  <div class="page__banner--top">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
-  </div>
-
-  <header class="header"></header>
-
-
-
-  <main class="form-container">
-
-    <form class="form" id="edit-insumo-form" enctype="multipart/form-data" novalidate>
-
-      <h2 class="form__title">Editar Insumo</h2>
-
-      <div id="mensajeValidacion" class="form__message"></div>
-
-      <input type="hidden" id="idInsumo">
-
-
-
-      <div class="form__row">
-
-        <div class="form__column">
-
-          <label class="form__label" for="imageFile">Imagen</label>
-
-          <input class="form__input" type="file" id="imageFile" name="image" accept="image/*">
-
-
-
-          <label class="form__label" for="tipoInsumo">Tipo de Insumo</label>
-
-          <input class="form__input" type="text" id="tipoInsumo" name="tipoInsumo" required>
-
-
-
-          <label class="form__label" for="nombreInsumo">Nombre del Insumo</label>
-
-          <input class="form__input" type="text" id="nombreInsumo" name="nombreInsumo" required>
-
-        </div>
-
-        <div class="form__column">
-
-          <label class="form__label" for="unidadMedida">Unidad de Medida</label>
-
-          <select class="form__input" id="unidadMedida" name="unidadMedida" required>
-
-            <option value="">Seleccione la unidad</option>
-
-            <option value="Kg">Kilogramo (Kg)</option>
-
-            <option value="Lt">Litro (Lt)</option>
-
-            <option value="Unidad">Unidad</option>
-
-            <option value="Metro">Metro</option>
-
-            <option value="Paquete">Paquete</option>
-
-          </select>
-
-
-
-          <label class="form__label" for="cantidad">Cantidad</label>
-
-          <input class="form__input" type="number" id="cantidad" name="cantidad" step="0.01" required>
-
-        </div>
-
-      </div>
-
-
-
-      <div class="form__row">
-
-        <div class="form__column">
-
-          <label class="form__label" for="valorUnitario">Valor Unitario</label>
-
-          <input class="form__input" type="number" id="valorUnitario" name="valorUnitario" step="0.01" required>
-
-        </div>
-
-        <div class="form__column">
-
-          <label class="form__label" for="valorTotal">Valor Total</label>
-
-          <input class="form__input" type="number" id="valorTotal" name="valorTotal" step="0.01" readonly>
-
-        </div>
-
-      </div>
-
-
-
-      <div class="form__row">
-
-        <div class="form__column">
-
-          <label class="form__label" for="descripcion">Descripción</label>
-
-          <textarea class="form__input" id="descripcion" name="descripcion" required></textarea>
-
-        </div>
-
-        <div class="form__column">
-
-          <label class="form__label" for="estado">Estado</label>
-
-          <select class="form__input" id="estado" name="estado" required>
-
-            <option value="">Seleccione</option>
-
-            <option value="Activo">Activo</option>
-
-            <option value="Inactivo">Inactivo</option>
-
-          </select>
-
-        </div>
-
-      </div>
-
-
-
-      <div class="form__btn-group">
-
-        <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
-
-        <a href="listar_insumo.html" class="btn__secundary">Cancelar</a>
-
-      </div>
-
-    </form>
-
-  </main>
-
-
-
-  <div class="gov-bottom">
-
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-
-  </div>
-
-
-
-  <script>
-
-    const showError = text => {
-
-      const msg = document.getElementById('mensajeValidacion');
-
-      msg.textContent = text;
-
-      msg.classList.add('error');
-
-    };
-
-
-
-    document.addEventListener("DOMContentLoaded", async () => {
-
-      const params = new URLSearchParams(window.location.search);
-
-      const id = params.get('id');
-
-      if (!id) { alert('ID no proporcionado'); return; }
-
-
-
-      const form = document.getElementById('edit-insumo-form');
-
-      const fields = ['tipoInsumo', 'nombreInsumo', 'unidadMedida', 'cantidad', 'valorUnitario', 'valorTotal', 'descripcion', 'estado'];
-
-
-
-      const cantidadInput = document.getElementById('cantidad');
-
-      const valorUnitarioInput = document.getElementById('valorUnitario');
-
-      const valorTotalInput = document.getElementById('valorTotal');
-
-
-
-      const calcularValorTotal = () => {
-
-        const cantidad = parseFloat(cantidadInput.value) || 0;
-
-        const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
-
-        valorTotalInput.value = (cantidad * valorUnitario).toFixed(2);
-
-      };
-
-
-
-      cantidadInput.addEventListener('input', calcularValorTotal);
-
-      valorUnitarioInput.addEventListener('input', calcularValorTotal);
-
-
-
-      // Cargar datos del insumo
-
-      try {
-
-        const res = await fetch(`http://localhost:3000/insumo/${id}`);
-
-        if (!res.ok) throw Error();
-
-        const data = await res.json();
-
-        document.getElementById('idInsumo').value = data.idInsumo;
-
-        fields.forEach(f => {
-
-          const el = document.getElementById(f);
-
-          if (el) el.value = data[f] ?? '';
-
+        document.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            const id = params.get('id');
+            if (!id) { alert('ID no proporcionado'); return; }
+
+            const form = document.getElementById('edit-insumo-form');
+            const fields = ['tipoInsumo', 'nombreInsumo', 'unidadMedida', 'cantidad', 'valorUnitario', 'valorTotal', 'descripcion', 'estado'];
+
+            const cantidadInput = document.getElementById('cantidad');
+            const valorUnitarioInput = document.getElementById('valorUnitario');
+            const valorTotalInput = document.getElementById('valorTotal');
+
+            const calcularValorTotal = () => {
+                const cantidad = parseFloat(cantidadInput.value) || 0;
+                const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
+                valorTotalInput.value = (cantidad * valorUnitario).toFixed(2);
+            };
+
+            cantidadInput.addEventListener('input', calcularValorTotal);
+            valorUnitarioInput.addEventListener('input', calcularValorTotal);
+
+            // Cargar datos del insumo
+            try {
+                const res = await fetch(`http://localhost:3000/insumo/${id}`);
+                if (!res.ok) throw Error();
+                const data = await res.json();
+                document.getElementById('idInsumo').value = data.idInsumo;
+
+                // Carga los valores, incluyendo el nuevo select 'tipoInsumo'
+                fields.forEach(f => {
+                    const el = document.getElementById(f);
+                    if (el) el.value = data[f] ?? '';
+                });
+
+                calcularValorTotal();
+            } catch {
+                alert('Error cargando datos');
+                return;
+            }
+
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+                document.getElementById('mensajeValidacion').textContent = '';
+
+                // Validación de campos obligatorios
+                for (const f of fields) {
+                    const el = document.getElementById(f);
+                    // Uso de .trim() solo en inputs de texto, pero no afecta a selects
+                    if (!el.value.trim()) { showError('Todos los campos obligatorios deben llenarse'); return; }
+                }
+
+                // Validaciones numéricas
+                if (parseFloat(cantidadInput.value) <= 0) { showError('Cantidad > 0'); return; }
+                if (parseFloat(valorUnitarioInput.value) < 0) { showError('Valor unitario >= 0'); return; }
+
+                const formData = new FormData();
+                // Adjunta todos los campos al FormData, incluyendo el nuevo select
+                fields.forEach(f => formData.append(f, document.getElementById(f).value));
+                const file = document.getElementById('imageFile').files[0];
+                if (file) formData.append('image', file);
+
+                try {
+                    const resp = await fetch(`http://localhost:3000/insumo/${id}`, {
+                        method: 'PUT',
+                        body: formData
+                    });
+                    if (!resp.ok) {
+                        const e = await resp.json();
+                        throw new Error(e.error || 'Error al actualizar');
+                    }
+                    alert('Insumo actualizado');
+                    window.location.href = 'listar_insumo.html';
+                } catch (err) {
+                    showError(err.message);
+                }
+            });
         });
-
-        calcularValorTotal();
-
-      } catch {
-
-        alert('Error cargando datos');
-
-        return;
-
-      }
-
-
-
-      form.addEventListener('submit', async e => {
-
-        e.preventDefault();
-
-        document.getElementById('mensajeValidacion').textContent = '';
-
-
-
-        for (const f of fields) {
-
-          const el = document.getElementById(f);
-
-          if (!el.value.trim()) { showError('Todos los campos obligatorios deben llenarse'); return; }
-
-        }
-
-        if (parseFloat(cantidadInput.value) <= 0) { showError('Cantidad > 0'); return; }
-
-        if (parseFloat(valorUnitarioInput.value) < 0) { showError('Valor unitario >= 0'); return; }
-
-
-
-        const formData = new FormData();
-
-        fields.forEach(f => formData.append(f, document.getElementById(f).value));
-
-        const file = document.getElementById('imageFile').files[0];
-
-        if (file) formData.append('image', file);
-
-
-
-        try {
-
-          const resp = await fetch(`http://localhost:3000/insumo/${id}`, {
-
-            method: 'PUT',
-
-            body: formData
-
-          });
-
-          if (!resp.ok) {
-
-            const e = await resp.json();
-
-            throw new Error(e.error || 'Error al actualizar');
-
-          }
-
-          alert('Insumo actualizado');
-
-          window.location.href = 'listar_insumo.html';
-
-        } catch (err) {
-
-          showError(err.message);
-
-        }
-
-      });
-
-    });
-
-  </script>
-
+    </script>
 </body>
 
 </html>
