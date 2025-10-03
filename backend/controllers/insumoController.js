@@ -76,6 +76,42 @@ const obtenerInsumos = async (req, res) => {
     }
 };
 
+const eliminarInsumo = async (req, res) => {
+    try {
+        // Verificar permisos (admin o superadmin)
+        const user = req.user;
+        const allowedRoles = ['admin', 'superadmin'];
+        if (!user || !allowedRoles.includes(user.usertype)) {
+            return res.status(403).json({ error: 'Acceso denegado. Se requieren permisos de admin.' });
+        }
+
+        const { id } = req.params;
+        const numericId = Number(id);
+        if (isNaN(numericId) || !Number.isInteger(numericId) || numericId <= 0) {
+            return res.status(400).json({ error: 'ID de insumo inválido.' });
+        }
+
+        const [rows] = await db.query('SELECT * FROM insumo WHERE idInsumo = ?', [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
+
+        // Soft-delete: actualizar estado a 'Inactivo'
+        const connection = await db.getConnection();
+        const [result] = await connection.execute("UPDATE insumo SET estado = 'Inactivo' WHERE idInsumo = ?", [id]);
+        connection.release();
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Insumo no encontrado' });
+        }
+
+        res.json({ message: 'Insumo desactivado correctamente' });
+    } catch (err) {
+        console.error('Error al desactivar insumo:', err);
+        res.status(500).json({ error: 'Error interno al desactivar insumo' });
+    }
+};
+
 const obtenerInsumoPorId = async (req, res) => {
     try {
         const { id } = req.params;
@@ -160,4 +196,5 @@ module.exports = {
     obtenerInsumos,
     obtenerInsumoPorId,
     actualizarInsumo,
+    eliminarInsumo,
 };

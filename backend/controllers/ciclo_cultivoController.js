@@ -226,10 +226,43 @@ const toggleCicloEstado = async (req, res) => {
     }
 };
 
+// --- NUEVO: Eliminar (soft-delete) ciclo de cultivo ---
+const eliminarCiclo = async (req, res) => {
+    const { id } = req.params;
+    let connection;
+    try {
+        const numericId = Number(id);
+        console.log(`🔔 eliminarCiclo called for id=${id} by user=${req.user?.id || 'unknown'}`);
+        if (isNaN(numericId) || numericId <= 0) return res.status(400).json({ error: 'ID inválido' });
+
+        // Verificar permisos
+        const allowed = ['admin', 'superadmin'];
+        if (!req.user || !allowed.includes(req.user.usertype)) return res.status(403).json({ error: 'Acceso denegado' });
+
+        connection = await db.getConnection();
+        const [rows] = await connection.execute('SELECT id FROM ciclocultivo WHERE id = ?', [id]);
+        if (!rows || rows.length === 0) {
+            console.log(`⚠️ ciclo id=${id} no encontrado`);
+            return res.status(404).json({ error: 'Ciclo no encontrado' });
+        }
+
+        const [result] = await connection.execute("UPDATE ciclocultivo SET state='inactivo' WHERE id = ?", [id]);
+        if (result.affectedRows === 0) return res.status(404).json({ error: 'Ciclo no encontrado' });
+
+        return res.json({ message: 'Ciclo eliminado (soft-delete)' });
+    } catch (err) {
+        console.error('Error eliminarCiclo:', err);
+        return res.status(500).json({ error: 'Error al eliminar ciclo' });
+    } finally {
+        if (connection) connection.release();
+    }
+};
+
 module.exports = {
     insertarCicloCultivo,
     obtenerCiclosCultivo,
     obtenerCicloPorId,
     actualizarCicloCultivo,
     toggleCicloEstado
+    , eliminarCiclo
 };

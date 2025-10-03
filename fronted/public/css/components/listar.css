@@ -341,3 +341,22 @@ h1 {
 }
 .table-img { width: 60px; height: 40px; object-fit: cover; border-radius: 4px; }
 .hidden-action { display: none; }
+
+/* Acción: dejar botones en línea dentro de la celda de acciones */
+.actions-cell {
+  display: flex;
+  gap: 0.6rem;
+  justify-content: center;
+  align-items: center;
+}
+.actions-cell .btn {
+  margin-left: 0; /* eliminar márgenes globales que empujan botones a nueva línea */
+  padding: 0.45rem 0.6rem;
+  min-width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: inline-flex;
+  justify-content: center;
+  align-items: center;
+}
+.actions-cell .btn + .btn { margin-left: 0; }

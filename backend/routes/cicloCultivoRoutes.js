@@ -11,6 +11,9 @@ const {
     toggleCicloEstado 
 } = require('../controllers/ciclo_cultivoController.js'); 
 
+const { protect } = require('../middleware/authMiddleware');
+const { eliminarCiclo } = require('../controllers/ciclo_cultivoController.js');
+
 // --- Configuración de Multer para manejar la subida de imágenes ---
 
 const storage = multer.diskStorage({
@@ -34,5 +37,6 @@ router.get('/:id', obtenerCicloPorId);
 router.put('/:id', upload.single('image'), actualizarCicloCultivo); 
 
 router.put('/:id/estado', toggleCicloEstado);
+router.delete('/:id', protect, eliminarCiclo);
 
 module.exports = router;

@@ -126,6 +126,8 @@
                 const res = await fetch("http://localhost:3000/insumo");
                 if (!res.ok) throw new Error("Error al obtener insumos");
                 insumosData = await res.json();
+                // Mostrar sólo insumos activos
+                insumosData = insumosData.filter(i => i.estado && i.estado.toLowerCase() === 'activo');
                 const tbody = document.getElementById("insumos-table");
                 tbody.innerHTML = "";
 
@@ -148,6 +150,9 @@
                                         onclick="toggleInsumoStatus(${i.idInsumo},'${i.estado}')"
                                         title="${i.estado.toLowerCase() === 'activo' ? 'Desactivar' : 'Activar'}">
                                         <i class="material-icons">${i.estado.toLowerCase() === 'activo' ? 'visibility_off' : 'visibility'}</i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="confirmDeleteInsumo(${i.idInsumo}, '${i.nombreInsumo.replace(/'/g, "\\'")}')" title="Eliminar">
+                                        <i class="material-icons">delete</i>
                                     </button>
                                 </td>
                             `;
@@ -184,6 +189,38 @@
             } finally {
                 loader.classList.remove("show");
                 tableContainer.style.display = "table";
+            }
+        }
+
+        // Confirmar y eliminar insumo (soft-delete)
+        function confirmDeleteInsumo(id, nombre) {
+            if (!allowedToAct.includes(userRole)) return alert('Acceso Denegado: No tiene permisos para eliminar.');
+            const confirmation = confirm(`¿Seguro que desea eliminar el insumo "${nombre}"? Esta acción lo desactivará.`);
+            if (!confirmation) return;
+            deleteInsumo(id);
+        }
+
+        async function deleteInsumo(id) {
+            try {
+                const token = sessionStorage.getItem('userToken');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                const res = await fetch(`http://localhost:3000/insumo/${id}`, {
+                    method: 'DELETE',
+                    headers
+                });
+
+                if (!res.ok) {
+                    const err = await res.json().catch(() => ({}));
+                    throw new Error(err.error || 'Error al eliminar insumo');
+                }
+
+                alert('Insumo eliminado (desactivado) correctamente');
+                await loadInsumos();
+            } catch (err) {
+                console.error('Error eliminando insumo:', err);
+                alert('No se pudo eliminar el insumo. Por favor, intente nuevamente.');
             }
         }
 

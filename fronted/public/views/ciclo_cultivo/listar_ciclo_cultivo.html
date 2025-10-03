@@ -68,13 +68,11 @@
   let isManager = false;
   let ciclosData = [];
 
-  // 1. Validar sesión y permisos
   const userData = sessionStorage.getItem('userData');
   const user = userData ? JSON.parse(userData) : null;
   if(!user) return window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
   isManager = managementRoles.includes(user.role);
 
-  // Ocultar acciones si no es admin
   document.addEventListener('DOMContentLoaded', () => {
     if(!isManager){
       document.getElementById('management-actions').style.display='none';
@@ -83,31 +81,41 @@
     loadCiclos();
   });
 
-  // 2. Cargar ciclos
   async function loadCiclos(){
     const loader = document.getElementById("loader");
     const tableContainer = document.getElementById("ciclos-table-container");
     const totalColumns = isManager ? 10 : 9;
-    loader.classList.add("show"); tableContainer.style.display="none";
+    loader.classList.add("show"); 
+    tableContainer.style.display="none";
 
     try {
       const res = await fetch(`${SERVER_BASE_URL}/ciclocultivo`);
-      if(!res.ok) throw new Error("Error al obtener ciclos");
-      ciclosData = await res.json();
+      const text = await res.text();
+      let data;
+      try { data = JSON.parse(text); } 
+      catch { throw new Error('Respuesta inválida de la API'); }
+
+      ciclosData = Array.isArray(data) ? data : [];
       const tbody = document.getElementById("ciclos-table");
-      tbody.innerHTML = ciclosData.length===0
+      tbody.innerHTML = ciclosData.length === 0
         ? `<tr><td colspan="${totalColumns}">No hay ciclos registrados</td></tr>`
         : '';
 
-      ciclosData.forEach(c=>{
-        const imgCell = c.image ? `<img src="${SERVER_BASE_URL}${UPLOADS_PATH}${c.image}" class="table-img" onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'">` : 'Sin imagen';
+      ciclosData.filter(x => String(x.state).toLowerCase() === 'activo').forEach(c=>{
+        const imgCell = c.image 
+          ? `<img src="${SERVER_BASE_URL}${UPLOADS_PATH}${c.image}" class="table-img" onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}'">` 
+          : 'Sin imagen';
         const actionCell = isManager ? `
-          <td>
+          <td class="actions-cell">
             <button class="btn btn-warning btn-sm" onclick="editCiclo(${c.id})" title="Editar"><i class="material-icons">edit</i></button>
             <button class="btn ${c.state==='activo'?'btn-danger':'btn-success'} btn-sm" onclick="toggleCicloState(${c.id},'${c.state}')" title="${c.state==='activo'?'Desactivar':'Activar'}">
               <i class="material-icons">${c.state==='activo'?'visibility_off':'visibility'}</i>
             </button>
+            <button class="btn btn-outline-danger btn-sm" onclick="confirmDeleteCiclo(${c.id}, '${(c.cicloName || '').replace(/'/g, "\\'")}')" title="Eliminar">
+              <i class="material-icons">delete</i>
+            </button>
           </td>` : '';
+
         const row = document.createElement('tr');
         row.innerHTML = `
           <td>${c.cicloID}</td>
@@ -122,16 +130,22 @@
         `;
         tbody.appendChild(row);
       });
+
     } catch(e){
       console.error(e);
-      document.getElementById("ciclos-table").innerHTML = `<tr><td colspan="${totalColumns}" style="color:#dc3545;">Error cargando ciclos. Revise la consola.</td></tr>`;
+      const tbody = document.getElementById("ciclos-table");
+      tbody.innerHTML = `<tr><td colspan="${totalColumns}" style="color:#dc3545;">Error cargando ciclos. Revise la consola.</td></tr>`;
     } finally{
-      loader.classList.remove("show"); tableContainer.style.display="table";
+      loader.classList.remove("show"); 
+      tableContainer.style.display="table";
     }
   }
 
-  // 3. Funciones de gestión
-  window.editCiclo = function(id){ if(!isManager) return alert('Acceso Denegado'); window.location.href=`../ciclo_cultivo/datos_ciclo_cultivo.html?id=${id}`; }
+  window.editCiclo = function(id){ 
+    if(!isManager) return alert('Acceso Denegado'); 
+    window.location.href=`../ciclo_cultivo/datos_ciclo_cultivo.html?id=${id}`; 
+  }
+
   window.toggleCicloState = async function(id,current){
     if(!isManager) return alert('Acceso Denegado');
     try{
@@ -149,16 +163,55 @@
     } catch{ alert('Error al cambiar estado'); }
   }
 
-  // 4. Exportaciones
+  // --- Funcionalidad de ELIMINAR ciclos ---
+  window.confirmDeleteCiclo = async function(id, nombre){
+    if(!isManager) return alert('Acceso Denegado');
+    
+    const confirmed = confirm(`¿Está seguro de eliminar el ciclo "${nombre}"?`);
+    if(!confirmed) return;
+
+    try {
+      const token = sessionStorage.getItem('userToken'); // token del login
+      if(!token) return alert('No tienes sesión activa. Inicia sesión nuevamente.');
+
+      const res = await fetch(`${SERVER_BASE_URL}/ciclocultivo/${id}`, { 
+        method: 'DELETE', 
+        headers: { 
+          'Content-Type': 'application/json', 
+          'Authorization': 'Bearer ' + token 
+        } 
+      });
+
+      if(res.status === 401) throw new Error('No autorizado. Inicia sesión nuevamente.');
+      if(res.status === 403) throw new Error('Acceso denegado. Solo administradores pueden eliminar.');
+      if(!res.ok) throw new Error('Error al eliminar ciclo.');
+
+      alert(`Ciclo "${nombre}" eliminado correctamente`);
+      await loadCiclos(); // recarga la tabla
+
+    } catch(err){
+      console.error(err);
+      alert(err.message || 'Error al eliminar ciclo.');
+    }
+  }
+
   window.exportToPDF = function(){
     const { jsPDF } = window.jspdf;
     const doc = new jsPDF();
     doc.setFontSize(18); doc.text('Ciclos de Cultivo',14,20);
     doc.setFontSize(11); doc.text(`Fecha: ${new Date().toLocaleDateString()}`,14,28);
     const rows = ciclosData.map(c=>[c.id,c.cicloID,c.cicloName,c.siembraDate,c.cosechaDate,c.news,c.description,c.state,c.image?'Sí':'No']);
-    doc.autoTable({head:[['ID','Código','Nombre','Siembra','Cosecha','Novedades','Descripción','Estado','Imagen']], body:rows, startY:35, theme:'grid', headStyles:{fillColor:[57,169,0]}, styles:{fontSize:9}});
+    doc.autoTable({
+      head:[['ID','Código','Nombre','Siembra','Cosecha','Novedades','Descripción','Estado','Imagen']], 
+      body:rows, 
+      startY:35, 
+      theme:'grid', 
+      headStyles:{fillColor:[57,169,0]}, 
+      styles:{fontSize:9}
+    });
     doc.save('ciclos_cultivo.pdf');
   }
+
   window.exportToExcel = function(){
     const data = ciclosData.map(c=>({
       ID:c.id, Código:c.cicloID, Nombre:c.cicloName, FechaSiembra:c.siembraDate,
@@ -166,9 +219,11 @@
       Estado:c.state, Imagen:c.image?`${SERVER_BASE_URL}${UPLOADS_PATH}${c.image}`:'N/A'
     }));
     const ws = XLSX.utils.json_to_sheet(data);
-    const wb = XLSX.utils.book_new(); XLSX.utils.book_append_sheet(wb,ws,'CiclosCultivo');
+    const wb = XLSX.utils.book_new(); 
+    XLSX.utils.book_append_sheet(wb,ws,'CiclosCultivo');
     XLSX.writeFile(wb,'ciclos_cultivo.xlsx');
   }
+
 })();
 </script>
 </body>

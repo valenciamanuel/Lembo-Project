@@ -113,6 +113,8 @@
                 if (!response.ok) throw new Error("Error al obtener sensores");
 
                 sensoresData = await response.json();
+                // Mostrar sólo sensores activos (los 'Inactivo' son soft-deleted)
+                sensoresData = sensoresData.filter(s => s.estado === 'Activo');
                 const tableBody = document.getElementById("sensores-table");
                 tableBody.innerHTML = "";
 
@@ -120,7 +122,10 @@
                 const hideActions = actionsHeader && actionsHeader.style.display === 'none';
 
                 if (sensoresData.length === 0) {
-                    const colspan = hideActions ? 8 : 9;
+                    // Número de columnas visibles cuando no hay filas
+                    // columnas: Tipo, Nombre, Unidad, Tiempo, Descripción, Estado, Imagen, [Acciones?]
+                    const baseCols = 7; // sin acciones
+                    const colspan = hideActions ? baseCols : baseCols + 1;
                     tableBody.innerHTML = `<tr><td colspan="${colspan}">No hay sensores registrados</td></tr>`;
                 } else {
                     sensoresData.forEach(s => {
@@ -136,6 +141,9 @@
                                         onclick="toggleSensorStatus(${s.idSensor}, '${s.estado}')"
                                         title="${s.estado === 'Activo' ? 'Desactivar' : 'Activar'}">
                                         <i class="material-icons">${s.estado === 'Activo' ? 'visibility_off' : 'visibility'}</i>
+                                    </button>
+                                    <button class="btn btn-danger btn-sm" onclick="confirmDeleteSensor(${s.idSensor}, '${s.nombreSensor.replace(/'/g, "\\'")}')" title="Eliminar">
+                                        <i class="material-icons">delete</i>
                                     </button>
                                 </td>`;
                         }
@@ -182,6 +190,38 @@
             } catch (error) {
                 console.error('Error al cambiar estado:', error);
                 alert('Error al cambiar el estado del sensor. Por favor, intente nuevamente.');
+            }
+        }
+
+        // Confirmar y eliminar sensor
+        function confirmDeleteSensor(id, nombre) {
+            if (!allowedToAct.includes(userRole)) return alert('Acceso Denegado.');
+            const confirmation = confirm(`¿Seguro que desea eliminar el sensor "${nombre}"? Esta acción no se puede deshacer.`);
+            if (!confirmation) return;
+            deleteSensor(id);
+        }
+
+        async function deleteSensor(id) {
+            try {
+                const token = sessionStorage.getItem('userToken');
+                const headers = { 'Content-Type': 'application/json' };
+                if (token) headers['Authorization'] = `Bearer ${token}`;
+
+                const response = await fetch(`http://localhost:3000/sensores/${id}`, {
+                    method: 'DELETE',
+                    headers
+                });
+
+                if (!response.ok) {
+                    const err = await response.json().catch(() => ({}));
+                    throw new Error(err.error || 'Error eliminando el sensor');
+                }
+
+                alert('Sensor eliminado correctamente');
+                await loadSensores();
+            } catch (error) {
+                console.error('Error eliminando sensor:', error);
+                alert('No se pudo eliminar el sensor. Por favor, intente nuevamente.');
             }
         }
     </script>

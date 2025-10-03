@@ -101,12 +101,14 @@
                 if (!res.ok) throw new Error();
                 cultivosData = await res.json();
                 const tbody = document.getElementById("cultivos-table");
+                // Mostrar solo cultivos con estado activo (case-insensitive)
+                const visibleCultivos = Array.isArray(cultivosData) ? cultivosData.filter(c => String(c.state).toLowerCase() === 'activo') : [];
                 tbody.innerHTML = "";
 
-                if (cultivosData.length === 0) {
+                if (visibleCultivos.length === 0) {
                     tbody.innerHTML = `<tr><td colspan="${isManager ? 9 : 8}">No hay cultivos registrados</td></tr>`;
                 } else {
-                    cultivosData.forEach(c => {
+                    visibleCultivos.forEach(c => {
                         const actionButtons = isManager ? `
                         <td class="actions-cell">
                             <button class="btn btn-warning btn-sm" onclick="editCultivo(${c.id})" title="Editar">
@@ -116,6 +118,9 @@
                                     onclick="toggleCultivo(${c.id},'${c.state}')"
                                     title="${c.state==='Activo'?'Desactivar':'Activar'}">
                                 <i class="material-icons">${c.state==='Activo'?'visibility_off':'visibility'}</i>
+                            </button>
+                            <button class="btn btn-outline-danger btn-sm" onclick="confirmDeleteCultivo(${c.id}, '${c.cultivoName.replace(/'/g, "\\'")}')" title="Eliminar">
+                                <i class="material-icons">delete</i>
                             </button>
                         </td>` : '';
 
@@ -145,6 +150,45 @@
             } finally {
                 loader.classList.remove("show");
                 tableContainer.style.display = "table";
+            }
+        }
+
+        function confirmDeleteCultivo(id, name) {
+            if (!confirm(`¿Eliminar cultivo ${name}? Esta acción lo marcará como inactivo.`)) return;
+            deleteCultivo(id);
+        }
+
+        async function deleteCultivo(id) {
+            const token = sessionStorage.getItem('userToken');
+            if (!token) return alert('Debe iniciar sesión para eliminar.');
+            try {
+                const res = await fetch(`http://localhost:3000/cultivo/${id}`, {
+                    method: 'DELETE',
+                    headers: { 'Authorization': `Bearer ${token}` }
+                });
+                if (res.status === 401) {
+                    alert('No autorizado. Inicie sesión nuevamente.');
+                    return;
+                }
+                if (res.status === 403) {
+                    alert('Acceso denegado. Su usuario no tiene permisos para eliminar.');
+                    return;
+                }
+                if (res.status === 404) {
+                    // Ya no existe en la BD: refrescar lista
+                    await loadCultivos();
+                    alert('Cultivo no encontrado (ya fue eliminado)');
+                    return;
+                }
+                if (!res.ok) {
+                    const err = await res.json().catch(()=>({}));
+                    throw new Error(err.error || 'Error al eliminar');
+                }
+                // Reload list (or remove from DOM)
+                await loadCultivos();
+                alert('Cultivo eliminado correctamente');
+            } catch (e) {
+                alert(e.message || 'Error al eliminar cultivo');
             }
         }
 

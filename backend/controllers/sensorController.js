@@ -122,9 +122,48 @@ const actualizarSensor = async (req, res) => {
     }
 };
 
+const eliminarSensor = async (req, res) => {
+    try {
+        // Verificar que el usuario exista y tenga permisos
+        const user = req.user;
+        const allowedRoles = ['admin', 'superadmin'];
+        if (!user || !allowedRoles.includes(user.usertype)) {
+            return res.status(403).json({ error: 'Acceso denegado. Se requieren permisos de admin.' });
+        }
+
+        const { id } = req.params;
+
+        const numericId = Number(id);
+        if (isNaN(numericId) || !Number.isInteger(numericId) || numericId <= 0) {
+            return res.status(400).json({ error: "El ID del sensor a eliminar debe ser un número entero positivo." });
+        }
+
+        // Verificar existencia
+        const [rows] = await db.query('SELECT * FROM sensores WHERE idSensor = ?', [id]);
+        if (rows.length === 0) {
+            return res.status(404).json({ error: 'Sensor no encontrado' });
+        }
+
+        // Soft-delete: actualizar estado a 'Inactivo'
+        const connection = await db.getConnection();
+        const [result] = await connection.execute("UPDATE sensores SET estado = 'Inactivo' WHERE idSensor = ?", [id]);
+        connection.release();
+
+        if (result.affectedRows === 0) {
+            return res.status(404).json({ error: 'Sensor no encontrado' });
+        }
+
+        res.json({ message: 'Sensor desactivado correctamente' });
+    } catch (err) {
+        console.error('Error al desactivar el sensor:', err.message || err);
+        res.status(500).json({ error: 'Error al desactivar el sensor' });
+    }
+};
+
 module.exports = {
     insertarSensor,
     obtenerSensores,
     obtenerSensorPorId,
     actualizarSensor,
+    eliminarSensor,
 };

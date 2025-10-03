@@ -162,10 +162,43 @@ const actualizarCultivo = async (req, res) => {
     }
 };
 
+const eliminarCultivo = async (req, res) => {
+    try {
+        const id = req.params.id;
+        const numericId = Number(id);
+        console.log(`🔔 eliminarCultivo called for id=${id} by user=${req.user?.id || 'unknown'}`);
+        if (isNaN(numericId) || !Number.isInteger(numericId) || numericId <= 0) {
+            return res.status(400).json({ error: 'ID inválido' });
+        }
+
+        // Verificar rol del usuario (middleware protect debe haber seteado req.user)
+        const allowed = ['admin', 'superadmin'];
+        if (!req.user || !allowed.includes(req.user.usertype)) {
+            return res.status(403).json({ error: 'Acceso denegado' });
+        }
+
+        // Verificamos existencia antes de actualizar para dar mensajes claros
+        const [rows] = await pool.query('SELECT id FROM cultivo WHERE id = ?', [id]);
+        if (!rows || rows.length === 0) {
+            console.log(`⚠️ cultivo id=${id} no encontrado en DB`);
+            return res.status(404).json({ error: 'Cultivo no encontrado' });
+        }
+
+        const sql = `UPDATE cultivo SET state = 'Inactivo' WHERE id = ?`;
+        const [result] = await pool.query(sql, [id]);
+        if (!result.affectedRows) return res.status(404).json({ error: 'Cultivo no encontrado' });
+        res.json({ message: 'Cultivo eliminado (soft-delete)'});
+    } catch (err) {
+        console.error('Error in eliminarCultivo:', err);
+        res.status(500).json({ error: 'Error al eliminar cultivo' });
+    }
+};
+
 module.exports = {
     upload,
     insertarCultivo,
     obtenerCultivos,
     obtenerCultivoPorId,
     actualizarCultivo
+    , eliminarCultivo
 };
