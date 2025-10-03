@@ -57,9 +57,17 @@ html, body {
 }
 h1 {
   color: white;
-  font-size: 2rem;  /* aquí ya controlas */
+  font-size: 2rem;  
   font-weight: bold;
-  text-decoration: none;
+  text-decoration: none; /* Eliminar subrayado */
+  margin: 0;
+  padding: 0; 
+  border: none; 
+  outline: none; 
+  line-height: 1;
+  vertical-align: middle; 
+  display: inline-block; 
+  background: none; 
 }
 
 
@@ -331,3 +339,5 @@ h1 {
     .header__link { font-size: 1.2rem; }
     .content-container { width: 100%; padding: 1rem; margin-top: calc(28px + 5rem + 1rem); margin-bottom: calc(28px + 5rem + 1rem); }
 }
+.table-img { width: 60px; height: 40px; object-fit: cover; border-radius: 4px; }
+.hidden-action { display: none; }
