@@ -7,13 +7,12 @@
     <link rel="stylesheet" href="/fronted/public/css/main.css">
     <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
     <script src="/fronted/public/views/components/header.js" defer></script>
-
 </head>
 <body>
     <div class="gov-top">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
     </div>
-    <header class="header"style="top: 5rem;"></header>
+    <header class="header" style="top: 5rem;"></header>
 
     <main class="form-container">
         <form class="form" id="edit-form" enctype="multipart/form-data" novalidate>
@@ -27,7 +26,18 @@
                     <input class="form__input" type="file" name="image" id="image" accept="image/*">
 
                     <label class="form__label" for="cultivoType">Tipo cultivo</label>
-                    <input class="form__input" type="text" id="cultivoType" name="cultivoType" required>
+                    <select class="form__input" name="cultivoType" id="cultivoType" required>
+                        <option value="">Seleccione un tipo de cultivo</option>
+                        <option value="cereal">Cereal</option>
+                        <option value="hortaliza">Hortaliza</option>
+                        <option value="frutal">Frutal</option>
+                        <option value="leguminosa">Leguminosa</option>
+                        <option value="oleaginosa">Oleaginosa</option>
+                        <option value="tuberculo">Tubérculo</option>
+                        <option value="forrajero">Forrajero</option>
+                        <option value="industrial">Industrial</option>
+                        <option value="medicinal">Medicinal/Aromática</option>
+                    </select>
 
                     <label class="form__label" for="cultivoName">Nombre Cultivo</label>
                     <input class="form__input" type="text" id="cultivoName" name="cultivoName" required>
@@ -43,7 +53,7 @@
                     <input class="form__input" type="text" id="location" name="location" required>
 
                     <label class="form__label" for="description">Descripción</label>
-                    <textarea class="form__input" id="description" name="description" required></textarea>
+                    <input class="form__input" type="text" id="description" name="description" required>
 
                     <label class="form__label" for="state">Estado</label>
                     <select class="form__input" id="state" name="state" required>
@@ -77,7 +87,7 @@
             const cultivoId = params.get('id');
             
             if (!cultivoId) { 
-                alert('ID no proporcionado'); 
+                showError('Error: ID de cultivo no proporcionado.');
                 return; 
             }
 
@@ -85,14 +95,13 @@
             const fields = ['cultivoType', 'cultivoName', 'cultivoID', 'size', 'location', 'description', 'state'];
             let currentImage = '';
             
-            // Cargar datos existentes
             try {
                 const res = await fetch(`http://localhost:3000/cultivo/${cultivoId}`);
                 if (!res.ok) throw new Error('Error al cargar datos');
                 const data = await res.json();
                 
                 document.getElementById('cultivoId').value = data.id;
-                currentImage = data.image || ''; // Guardar imagen actual
+                currentImage = data.image || ''; 
                 
                 fields.forEach(f => {
                     const element = document.getElementById(f);
@@ -102,20 +111,18 @@
                 });
             } catch (error) {
                 console.error(error);
-                alert('Error al cargar datos del cultivo');
+                showError('Error al cargar datos del cultivo');
                 return;
             }
 
-            // Manejar envío del formulario
             form.addEventListener('submit', async e => {
                 e.preventDefault();
                 document.getElementById('mensajeValidacion').textContent = '';
 
-                // Validaciones
                 const vals = {};
                 for (const f of fields) {
                     vals[f] = document.getElementById(f).value.trim();
-                    if (!vals[f]) { 
+                    if (!vals[f] || (f === 'cultivoType' && vals[f] === '')) { 
                         showError('Todos los campos obligatorios deben llenarse'); 
                         return; 
                     }
@@ -150,7 +157,6 @@
                     return; 
                 }
 
-                // Crear FormData
                 const formData = new FormData();
                 formData.append('cultivoType', vals.cultivoType);
                 formData.append('cultivoName', vals.cultivoName);
@@ -160,16 +166,11 @@
                 formData.append('description', vals.description);
                 formData.append('state', vals.state);
                 
-                // Manejar imagen
                 const fileInput = document.getElementById('image');
                 const newFile = fileInput.files[0];
                 
                 if (newFile) {
-                    // Si hay nueva imagen, agregarla
                     formData.append('image', newFile);
-                } else {
-                    // Si no hay nueva imagen, mantener la actual
-                    formData.append('image', currentImage);
                 }
 
                 try {
@@ -183,8 +184,17 @@
                         throw new Error(errorData.error || 'Error al actualizar cultivo');
                     }
                     
-                    alert('✅ Cultivo actualizado exitosamente');
-                    window.location.href = 'listar_cultivo.html';
+                    // Mostrar alerta al usuario
+                    alert('¡Cultivo actualizado exitosamente!');
+
+                    const messageEl = document.getElementById('mensajeValidacion');
+                    messageEl.textContent = 'Cultivo actualizado exitosamente';
+                    messageEl.classList.remove('error');
+                    messageEl.classList.add('success');
+                    
+                    setTimeout(() => {
+                        window.location.href = 'listar_cultivo.html';
+                    }, 1000);
                     
                 } catch (error) {
                     console.error('Error:', error);
