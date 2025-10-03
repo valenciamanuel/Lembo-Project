@@ -10,14 +10,13 @@
 </head>
 <body>
     <div class="app">
-        <!-- Header -->
         <div class="gov-top">
             <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
         </div>
         <header class="header">
             <a href="/fronted/public/views/homes/index.html">
                 <div class="header__logo">
-                   
+                    
                     <h1 class="header__title">LEMBO SGLA</h1>
                 </div>
             </a>
@@ -39,7 +38,6 @@
             </div>
         </header>
 
-        <!-- Main Content -->
         <main class="main">
             <section class="dashboard">
                 <div class="dashboard__header">
@@ -50,7 +48,6 @@
                     </div>
                 </div>
 
-                <!-- Estadísticas -->
                 <div class="stats">
                     <div class="stats__card">
                         <div class="stats__icon">
@@ -81,7 +78,6 @@
                     </div>
                 </div>
 
-                <!-- Tabla de Asociaciones -->
                 <div class="table-container">
                     <table class="table">
                         <thead class="table__head">
@@ -96,12 +92,10 @@
                             </tr>
                         </thead>
                         <tbody class="table__body" id="asociacionesTableBody">
-                            <!-- Datos cargados dinámicamente -->
-                        </tbody>
+                            </tbody>
                     </table>
                 </div>
 
-                <!-- Gráficos -->
                 <div class="charts">
                     <div class="chart-container">
                         <h3 class="chart__title">Inversión vs Meta por Asociación</h3>
@@ -113,7 +107,6 @@
 
     </div>
 
-    <!-- Modal Ver Detalles -->
     <div class="modal" id="modalDetalles">
         <div class="modal__content modal__content--large">
             <div class="modal__header">
@@ -121,12 +114,10 @@
                 <button class="modal__close" id="closeModalDetalles">&times;</button>
             </div>
             <div class="modal__body" id="detallesAsociacionContent">
-                <!-- Contenido cargado dinámicamente -->
-            </div>
+                </div>
         </div>
     </div>
 
-    <!-- Modal Crear/Editar Asociación -->
     <div class="modal" id="modalAsociacion">
         <div class="modal__content modal__content--large">
             <div class="modal__header">
@@ -194,8 +185,7 @@
                     <div class="form__group">
                         <label class="form__label">Sensores (máximo 3)</label>
                         <div class="form__sensors" id="sensoresContainer">
-                            <!-- Sensores se cargarán dinámicamente -->
-                        </div>
+                            </div>
                         <div class="form__help-text">Seleccione hasta 3 sensores para esta asociación</div>
                         <button type="button" class="button button--secondary" id="btnNuevoSensor">
                             <i class="fa-solid fa-plus"></i>
@@ -206,8 +196,7 @@
                     <div class="form__group">
                         <label class="form__label">Insumos (máximo 3)</label>
                         <div class="form__insumos" id="insumosContainer">
-                            <!-- Insumos se cargarán dinámicamente -->
-                        </div>
+                            </div>
                         <div class="form__help-text">Seleccione hasta 3 insumos para esta asociación</div>
                         <button type="button" class="button button--secondary" id="btnNuevoInsumo">
                             <i class="fa-solid fa-plus"></i>
@@ -215,15 +204,13 @@
                         </button>
                     </div>
                     
-                    <!-- Contenedor para detalles de insumos seleccionados -->
                     <div class="form__group" id="insumosDetallesContainer" style="display: none;">
                         <div class="insumos-detalles">
                             <div class="insumos-detalles__header">
                                 <h4 class="insumos-detalles__title">Detalles de Insumos Seleccionados</h4>
                             </div>
                             <div class="insumos-detalles__content" id="insumosDetallesContent">
-                                <!-- Detalles de insumos se cargarán dinámicamente -->
-                            </div>
+                                </div>
                         </div>
                     </div>
 
@@ -247,7 +234,6 @@
         </div>
     </div>
 
-    <!-- Modal Nuevo Responsable -->
     <div class="modal" id="modalResponsable">
         <div class="modal__content modal__content--medium">
             <div class="modal__header">
@@ -310,7 +296,6 @@
         </div>
     </div>
 
-    <!-- Modal Nuevo Sensor -->
     <div class="modal" id="modalSensor">
         <div class="modal__content modal__content--medium">
             <div class="modal__header">
@@ -359,7 +344,6 @@
         </div>
     </div>
 
-    <!-- Modal Nuevo Cultivo -->
     <div class="modal" id="modalCultivo">
         <div class="modal__content modal__content--medium">
             <div class="modal__header">
@@ -412,7 +396,6 @@
         </div>
     </div>
 
-    <!-- Modal Nuevo Ciclo de Cultivo -->
     <div class="modal" id="modalCiclo">
         <div class="modal__content modal__content--medium">
             <div class="modal__header">
@@ -465,7 +448,6 @@
         </div>
     </div>
 
-    <!-- Modal Nuevo Insumo - Rediseñado -->
     <div class="modal" id="modalInsumo">
         <div class="modal__content modal__content--large">
             <div class="modal__header">
@@ -474,7 +456,6 @@
             </div>
             <div class="modal__body">
                 <form id="formInsumo" class="insumo-form">
-                    <!-- Información Básica -->
                     <div class="insumo-form__section">
                         <div class="insumo-form__section-header">
                             <h3 class="insumo-form__section-title">
@@ -520,7 +501,6 @@
                         </div>
                     </div>
 
-                    <!-- Información de Inventario -->
                     <div class="insumo-form__section">
                         <div class="insumo-form__section-header">
                             <h3 class="insumo-form__section-title">
@@ -549,7 +529,6 @@
                         </div>
                     </div>
 
-                    <!-- Información Adicional -->
                     <div class="insumo-form__section">
                         <div class="insumo-form__section-header">
                             <h3 class="insumo-form__section-title">
@@ -562,55 +541,78 @@
                                 <label class="form__label" for="descripcionInsumo">Descripción</label>
                                 <textarea class="form__textarea" id="descripcionInsumo" placeholder="Descripción detallada del insumo, instrucciones de uso, precauciones, etc." rows="4"></textarea>
                             </div>
-                            <div class="insumo-form__grid">
-                                <div class="form__group">
-                                    <label class="form__label" for="estadoInsumo">Estado</label>
-                                    <select class="form__select" id="estadoInsumo" required>
-                                        <option value="activo">Activo</option>
-                                        <option value="inactivo">Inactivo</option>
-                                    </select>
-                                </div>
+                            <div class="form__actions" style="margin-top: 20px;">
+                                <button type="button" class="button button--secondary" id="btnCancelarInsumo">Cancelar</button>
+                                <button type="submit" class="button button--success">Crear Insumo</button>
                             </div>
                         </div>
-                    </div>
-
-                    <input type="hidden" id="valorTotal">
-
-                    <div class="form__actions">
-                        <button type="button" class="button button--secondary" id="btnCancelarInsumo">Cancelar</button>
-                        <button type="submit" class="button button--success">
-                            <i class="fa-solid fa-save"></i>
-                            Crear Insumo
-                        </button>
                     </div>
                 </form>
             </div>
         </div>
     </div>
 
-    <!-- Modal de Confirmación para Eliminar -->
-    <div class="modal" id="modalConfirmacion">
-        <div class="modal__content modal__content--small">
-            <div class="modal__header">
-                <h2 class="modal__title">Confirmar Eliminación</h2>
-                <button class="modal__close" id="closeModalConfirmacion">&times;</button>
-            </div>
-            <div class="modal__body">
-                <p class="modal__message">¿Está seguro que desea eliminar esta asociación? Esta acción no se puede deshacer.</p>
-                <div class="form__actions">
-                    <button type="button" class="button button--secondary" id="btnCancelarEliminar">Cancelar</button>
-                    <button type="button" class="button button--danger" id="btnConfirmarEliminar">Eliminar</button>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-    <script src="https://cdn.jsdelivr.net/npm/xlsx@0.18.5/dist/xlsx.full.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-    <script src="/fronted/public/js/asociacion/asociaciones.js"></script>
+
+<script>
+(function () { 
+    // 🔑 VALIDACIÓN DE SESIÓN CORREGIDA: Lee 'userData' de sessionStorage
+    const userDataString = sessionStorage.getItem('userData');
+    const user = userDataString ? JSON.parse(userDataString) : null;
+    
+    // Redirigir si no está logueado
+    if (!user) { 
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+        return; 
+    } 
+    
+    const role = user.role; 
+    
+    // Ocultar la página si el rol no tiene permiso
+    // Asumimos que la gestión de asociaciones es para el superadmin (como se sugiere en home-cultivo)
+    if (role !== 'superadmin') {
+        // Podrías redirigir a una página de error o a su home por defecto
+        window.location.href = '/fronted/public/views/homes/index.html'; 
+        return;
+    }
+
+    // Lógica para cerrar sesión
+    const btnLogout = document.createElement('a');
+    btnLogout.id = 'btnLogout';
+    btnLogout.className = 'header__link';
+    btnLogout.textContent = 'Cerrar Sesión';
+    btnLogout.style.cursor = 'pointer';
+
+    const headerNav = document.querySelector('.header__actions');
+    // Si la página no tiene un área de navegación formal, lo añadimos al final de las acciones o al body si es necesario.
+    // Para este caso, solo implementaremos la función de logout.
+
+    document.getElementById('btnLogout')?.addEventListener('click', function () { 
+        // Limpiar sessionStorage y redirigir
+        sessionStorage.removeItem('userData');
+        sessionStorage.removeItem('userToken');
+        // También limpiamos la clave antigua de localStorage por si acaso
+        localStorage.removeItem('lembo_user_data');
+        
+        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+    }); 
+    
+    // NOTA: La lógica de permisos de navegación más compleja (como en las páginas 'home')
+    // no es necesaria aquí ya que la página completa está restringida por rol.
+    
+})();
+
+// Lógica de cálculo del valor total del insumo (Ejemplo)
+document.getElementById('cantidad').addEventListener('input', updateValorTotal);
+document.getElementById('valorUnitario').addEventListener('input', updateValorTotal);
+
+function updateValorTotal() {
+    const cantidad = parseFloat(document.getElementById('cantidad').value) || 0;
+    const valorUnitario = parseFloat(document.getElementById('valorUnitario').value) || 0;
+    const valorTotal = cantidad * valorUnitario;
+    document.getElementById('valorTotalCalculado').textContent = '$' + valorTotal.toFixed(2).replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
+
+</script>
+
 </body>
 </html>

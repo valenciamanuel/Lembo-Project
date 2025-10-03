@@ -6,16 +6,16 @@ const db = require('./config/db.js'); // Asegurar de que este archivo exista y s
 
 // --- Conexión a la Base de Datos (Opcional, pero recomendado aquí) ---
 db.getConnection()
-    .then(() => console.log(' Conexión exitosa al pool de la base de datos.'))
-    .catch(err => console.error(' Error al conectar a la base de datos:', err));
+    .then(() => console.log(' Conexión exitosa al pool de la base de datos.'))
+    .catch(err => console.error(' Error al conectar a la base de datos:', err));
 
 // --- Configuración CORS ---
 app.use(cors({
-  origin: ["http://localhost:5501", "http://127.0.0.1:5501"],
-  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
-  allowedHeaders: ["Content-Type", "Authorization"],
-  credentials: true,
-  optionsSuccessStatus: 200
+  origin: ["http://localhost:5501", "http://127.0.0.1:5501"],
+  methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+  allowedHeaders: ["Content-Type", "Authorization"],
+  credentials: true,
+  optionsSuccessStatus: 200
 }));
 
 app.use(express.json());
@@ -33,7 +33,7 @@ app.use("/uploads", express.static(path.join(__dirname, "..", "fronted", "public
 
 // RUTA DE PRUEBA:
 app.get('/test', (req, res) => {
-  res.status(200).json({ message: 'Conexión exitosa, sin DB' });
+  res.status(200).json({ message: 'Conexión exitosa, sin DB' });
 });
 
 // Importación de rutas
@@ -48,6 +48,9 @@ const asociacionListRoutes = require('./routes/asociacionListRoute.js');
 const asociacionDetalleRoute = require('./routes/asociacionDetalleRoute.js');
 const apiasociaciones = require('./routes/api.js');
 
+// 🔑 CLAVE: Importación del nuevo módulo de ruta de perfil
+const profileRoutes = require('./routes/profileRoute.js'); 
+
 // Uso de rutas
 app.use('/ciclocultivo', cicloCultivoRoutes); 
 app.use('/cultivo', cultivoRoutes); 
@@ -60,12 +63,16 @@ app.use('/asociaciones/listar', asociacionListRoutes);
 app.use('/asociaciones', asociacionDetalleRoute);
 app.use('/api', apiasociaciones);
 
+// 🔑 CLAVE: Uso del nuevo módulo de ruta de perfil
+// Esta ruta es la que usa el dashboard.js para la validación de token.
+app.use('/api/profile', profileRoutes);
+
 // Manejo de error 404 (Si ninguna ruta coincide)
 app.use((req, res) => {
-  res.status(404).json({ error: "Ruta no encontrada" });
+  res.status(404).json({ error: "Ruta no encontrada" });
 });
 
 const PORT = process.env.PORT || 3000;
 app.listen(PORT, () => {
-  console.log(`✅ Server is running on port ${PORT}`);
+  console.log(`✅ Server is running on port ${PORT}`);
 });

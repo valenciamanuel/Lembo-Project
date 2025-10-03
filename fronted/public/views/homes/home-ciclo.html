@@ -9,8 +9,7 @@
     <script src="/fronted/public/views/components/grid.js"></script>
 </head>
 
-<body> <!-- Banner superior -->
-    <div class="header-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img">
+<body> <div class="header-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img">
     </div>
     <header class="header"> <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA"
             class="header__logo">
@@ -27,12 +26,13 @@
             </div>
         </div>
         <div class="grid"></div>
-    </main> <!-- Banner inferior -->
-    <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
+    </main> <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
             class="footer-banner__img"> </div>
     <script>
 (function () { 
-    const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); 
+    // 🔑 CLAVE CORREGIDA: Lee 'userData' de sessionStorage (donde se guarda en el login)
+    const userDataString = sessionStorage.getItem('userData');
+    const user = userDataString ? JSON.parse(userDataString) : null;
     
     if (!user) { 
         window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
@@ -46,7 +46,7 @@
             'Sensores', 
             'Insumos', 
             'Inicio',
-            'Visualizar cultivo'
+            'Visualizar ciclo cultivo' // Corregido: 'Visualizar cultivo' por 'Visualizar ciclo cultivo'
         ], 
         personal: [
             'Sensores'
@@ -60,7 +60,7 @@
             'Listar ciclo cultivo'
         ], 
         
-
+        // ... (resto de roles)
         superadmin: [
 
             'Registrar usuario',
@@ -70,7 +70,7 @@
             'Producción',
             'SGL',
 
-           
+            
             'Inicio', 
             'Insumos', 
             'Sensores', 
@@ -92,7 +92,11 @@
     }); 
 
     document.getElementById('btnLogout').onclick = function () { 
-        localStorage.removeItem('lembo_user_data'); 
+        // 🔑 CLAVE CORREGIDA: Limpiar sessionStorage
+        sessionStorage.removeItem('userData');
+        sessionStorage.removeItem('userToken');
+        localStorage.removeItem('lembo_user_data');
+        
         window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
     }; 
 })();

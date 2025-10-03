@@ -30,69 +30,87 @@
     <div class="footer-banner"> <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"
             class="footer-banner__img"> </div>
 
-  <script>
-  (function () {
-   const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null');
-   
-   if (!user) {
-    window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
-    return;
-   }
+    <script>
+        (function () {
+            // 🔑 CLAVE: Intentamos leer la clave 'userData' de sessionStorage (donde se guarda en el login)
+            const userDataString = sessionStorage.getItem('userData');
+            
+            // Si userDataString está vacío, el login fue fallido o el usuario no está logueado
+            const user = userDataString ? JSON.parse(userDataString) : null;
+            
+            if (!user) {
+                // Redirige al login si no hay datos de usuario
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
 
-   const role = user.role; 
+            const role = user.role; 
 
-   const rules = {
-    visitante: [
-     'Inicio',
-     'Sensores',
-     'Visualizar sensor',
-     'Insumos', 
-     'Cultivos'
-    ],
-    personal: [
-     'Sensores'
-    ],
-    admin: [
-     'Inicio', 
-     'Insumos', 
-     'Cultivos', 
-     'Crear sensor', 
-     'Visualizar sensor', 
-     'Listar sensor'
-    ],
-    
-    superadmin: [
-     'Registrar usuario', 
-     'Listar usuarios',
-     'Ciclo Cultivo',
-     'Asociación',
-     'Sensores',
-     'Insumos',
-     'Cultivos',
-     'Crear sensor',
-     'Visualizar sensor',
-     'Listar sensor',
-     'Producción' 
-    ]
-   }; 
-   
-   document.querySelectorAll('.header__link').forEach(link => {
-    const txt = link.textContent.trim();
-    if (txt === 'Cerrar Sesión') return;
-    if (!rules[role] || !rules[role].includes(txt)) link.remove();
-   });
-   
-   document.querySelectorAll('.top-boxes__item a').forEach(a => {
-    const txt = a.textContent.trim();
-    if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove();
-   });
-   
-   document.getElementById('btnLogout').onclick = () => {
-    localStorage.removeItem('lembo_user_data');
-    window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
-   };
-  })(); 
-  </script>
+            // Se asume que el token y los datos del usuario están en sessionStorage
+            // Si el login guarda el token con otra clave (ej: userToken), puedes necesitar leer ambas.
+
+            const rules = {
+                visitante: [
+                    'Inicio',
+                    'Sensores',
+                    'Visualizar sensor',
+                    'Insumos', 
+                    'Cultivos'
+                ],
+                personal: [
+                    'Sensores',
+                    'Crear sensor',       // Asegúrate de incluir las opciones correctas
+                    'Visualizar sensor',  // en el menú superior y en las cajas
+                    'Listar sensor'
+                ],
+                admin: [
+                    'Inicio', 
+                    'Insumos', 
+                    'Cultivos', 
+                    'Crear sensor', 
+                    'Visualizar sensor', 
+                    'Listar sensor'
+                ],
+                
+                superadmin: [
+                    'Registrar usuario', 
+                    'Listar usuarios',
+                    'Ciclo Cultivo',
+                    'Asociación',
+                    'Sensores',
+                    'Insumos',
+                    'Cultivos',
+                    'Crear sensor',
+                    'Visualizar sensor',
+                    'Listar sensor',
+                    'Producción' 
+                ]
+            }; 
+            
+            // Lógica para filtrar enlaces del Header
+            document.querySelectorAll('.header__link').forEach(link => {
+                const txt = link.textContent.trim();
+                if (txt === 'Cerrar Sesión') return;
+                // 'Sensores' no es un enlace en el header, pero lo dejé para evitar error de rol
+                if (!rules[role] || !rules[role].includes(txt)) link.remove();
+            });
+            
+            // Lógica para filtrar cajas de acceso rápido (top-boxes)
+            document.querySelectorAll('.top-boxes__item a').forEach(a => {
+                const txt = a.textContent.trim();
+                if (!rules[role] || !rules[role].includes(txt)) a.parentElement.remove();
+            });
+            
+            // Lógica para Cerrar Sesión (Limpieza de sessionStorage)
+            document.getElementById('btnLogout').onclick = () => {
+                sessionStorage.removeItem('userData');
+                sessionStorage.removeItem('userToken'); // Si usas esta clave, también debe eliminarse
+                localStorage.removeItem('lembo_user_data'); // Limpieza de la clave antigua
+                
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+            };
+        })(); 
+    </script>
 
 
 </body>

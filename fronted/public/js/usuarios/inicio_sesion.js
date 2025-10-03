@@ -1,32 +1,57 @@
 document.addEventListener("DOMContentLoaded", function () {
     const form = document.getElementById("loginForm");
-    const email = document.getElementById("email");
-    const password = document.getElementById("password");
+    const emailInput = document.getElementById("email"); 
+    const passwordInput = document.getElementById("password"); 
     const message = document.getElementById("message");
 
-    form.addEventListener("submit", function (event) {
-        event.preventDefault(); // Evita el envío automático
+    form.addEventListener("submit", async function (event) { 
+        event.preventDefault(); 
 
-        if (!email.value.trim() || !password.value.trim()) {
+        const email = emailInput.value.trim();
+        const password = passwordInput.value.trim();
+
+        if (!email || !password) {
             showMessage("Todos los campos son obligatorios.", "error");
             return;
         }
-
-        if (!validateEmail(email.value)) {
+        if (!validateEmail(email)) {
             showMessage("Ingrese un correo válido.", "error");
             return;
         }
-
-        if (password.value.length < 6) {
+        if (password.length < 6) {
             showMessage("La contraseña debe tener al menos 6 caracteres.", "error");
             return;
         }
+        
+        showMessage("Iniciando sesión...", "info");
 
-        showMessage("Inicio de sesión exitoso.", "success");
+        try {
+            const response = await fetch('/api/register/login', { 
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email, password }),
+            });
 
-        setTimeout(() => {
-            window.location.href = "/dashboard.html"; // Redirigir después del éxito
-        }, 1000);
+            const data = await response.json();
+
+            if (response.ok) {
+                // 🔑 CLAVE: Usamos sessionStorage. El token se borra al cerrar la pestaña.
+                sessionStorage.setItem('userToken', data.token); 
+                showMessage("Inicio de sesión exitoso. Redirigiendo...", "success");
+
+                setTimeout(() => {
+                    window.location.href = "/dashboard.html"; 
+                }, 500);
+            } else {
+                const errorMessage = data.message || "Credenciales inválidas o error desconocido.";
+                showMessage(errorMessage, "error");
+            }
+        } catch (error) {
+            console.error('Error de red durante el inicio de sesión:', error);
+            showMessage("Error al conectar con el servidor. Verifique que el backend esté en funcionamiento.", "error");
+        }
     });
 
     function showMessage(text, type) {

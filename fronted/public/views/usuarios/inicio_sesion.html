@@ -42,70 +42,113 @@
     </div>
 
     <script>
-        // Login normal
+        // -----------------------------------------------------------
+        // FUNCIONES DE SOPORTE
+        // -----------------------------------------------------------
+        const messageContainer = document.getElementById('mensajeValidacion');
+
+        function showMessage(text, type) {
+            messageContainer.textContent = text;
+            messageContainer.className = `form__message form__message--${type}`; 
+            messageContainer.style.display = 'block';
+        }
+
+        function validateEmail(email) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+        }
+
+        // -----------------------------------------------------------
+        // LÓGICA DE INICIO DE SESIÓN (Usando URL ABSOLUTA)
+        // -----------------------------------------------------------
         document.getElementById('loginForm').addEventListener('submit', async function (e) {
             e.preventDefault();
-            const correo = document.getElementById('correo').value.trim();
-            const contraseña = document.getElementById('contraseña').value;
-            const mensaje = document.getElementById('mensajeValidacion');
-            mensaje.textContent = '';
 
-            if (!correo || !contraseña) {
-                mensaje.textContent = 'Correo y contraseña son obligatorios';
+            const email = document.getElementById('correo').value.trim(); 
+            const password = document.getElementById('contraseña').value;
+            
+            showMessage('Validando datos...', 'info');
+
+            // Validaciones de datos
+            if (!email || !password) {
+                showMessage('Correo y contraseña son obligatorios.', 'error');
                 return;
             }
+            if (!validateEmail(email)) {
+                showMessage("Ingrese un correo válido.", "error");
+                return;
+            }
+            if (password.length < 6) { 
+                showMessage("La contraseña debe tener al menos 6 caracteres.", "error");
+                return;
+            }
+            
+            showMessage("Iniciando sesión...", "info");
 
             try {
-                const resp = await fetch('http://localhost:3000/register/login', {
+                // 🔑 CLAVE: Usamos la URL ABSOLUTA (http://localhost:3000)
+                const resp = await fetch('http://localhost:3000/register/login', { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ email: correo, password: contraseña })
+                    body: JSON.stringify({ email: email, password: password }) 
                 });
+                
                 const result = await resp.json();
 
                 if (!resp.ok) {
-                    mensaje.textContent = result.message || 'Credenciales incorrectas';
+                    const errorMessage = result.message || 'Credenciales incorrectas o error desconocido.';
+                    showMessage(errorMessage, 'error');
                     return;
                 }
 
-                // Guardar usuario en localStorage
-                localStorage.setItem('lembo_user_data',
-                    JSON.stringify({ id: result.id, email: correo, role: result.usertype })
-                );
+                // ÉXITO: Guardamos el token y redirigimos
+                if (result.token) {
+                    sessionStorage.setItem('userToken', result.token); 
+                    sessionStorage.setItem('userData',
+                        JSON.stringify({ id: result.id, email: result.email, role: result.usertype })
+                    );
 
-                // Redirigir
-                location.href = '/fronted/public/views/homes/index.html';
+                    showMessage('Inicio de sesión exitoso. Redirigiendo...', 'success');
+
+                    setTimeout(() => {
+                        location.href = '/fronted/public/views/homes/index.html'; 
+                    }, 500);
+
+                } else {
+                     showMessage('Error: No se recibió un token de autenticación del servidor.', 'error');
+                }
+
             } catch (err) {
-                mensaje.textContent = 'Error de conexión';
+                console.error('Error de conexión durante el login:', err);
+                // Si este error persiste, verifica que el puerto 3000 esté disponible
+                showMessage('Error al conectar con el servidor. Verifique que el Backend esté encendido.', 'error');
             }
         });
 
-        // Recuperar contraseña
+        // -----------------------------------------------------------
+        // LÓGICA DE RECUPERAR CONTRASEÑA (Usando URL ABSOLUTA)
+        // -----------------------------------------------------------
         document.getElementById('forgotPassword').addEventListener('click', async function (e) {
             e.preventDefault();
             const correo = prompt('Ingrese su correo electrónico para recuperar la contraseña:');
-            const mensaje = document.getElementById('mensajeValidacion');
-
+            
             if (!correo) return;
 
             try {
-                const resp = await fetch('http://localhost:3000/register/recuperar', {
+                // 🔑 CLAVE: Usamos la URL ABSOLUTA
+                const resp = await fetch('http://localhost:3000/register/recuperar', { 
                     method: 'POST',
                     headers: { 'Content-Type': 'application/json' },
                     body: JSON.stringify({ email: correo })
                 });
 
                 const result = await resp.json();
+                const type = resp.ok ? 'success' : 'error';
+                const text = resp.ok ? (result.message || 'Se ha enviado una contraseña temporal a tu correo') : (result.message || 'Error al recuperar contraseña');
+                
+                showMessage(text, type);
 
-                if (!resp.ok) {
-                    mensaje.textContent = result.error || 'Error al recuperar contraseña';
-                    return;
-                }
-
-                mensaje.style.color = 'green';
-                mensaje.textContent = result.message || 'Se ha enviado una contraseña temporal a tu correo';
             } catch (err) {
-                mensaje.textContent = 'Error de conexión';
+                showMessage('Error de conexión al intentar recuperar la contraseña.', 'error');
             }
         });
     </script>

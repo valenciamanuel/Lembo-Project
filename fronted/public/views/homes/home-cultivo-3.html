@@ -16,9 +16,9 @@
             class="header__logo">
         <nav class="header__nav">
              <a href="home-ciclo.html" class="header__link">Ciclo cultivo</a> <a
-                href="home-insumos.html" class="header__link">Insumos</a> <a href="home-sensores.html"
-                class="header__link">Sensores</a> <a href="index.html" class="header__link">Inicio</a> <a id="btnLogout"
-                class="header__link" style="cursor:pointer">Cerrar Sesión</a>
+                 href="home-insumos.html" class="header__link">Insumos</a> <a href="home-sensores.html"
+                 class="header__link">Sensores</a> <a href="index.html" class="header__link">Inicio</a> <a id="btnLogout"
+                 class="header__link" style="cursor:pointer">Cerrar Sesión</a>
         </nav>
     </header>
     <main class="background">
@@ -33,7 +33,9 @@
             class="footer-banner__img"> </div>
     <script>
 (function () { 
-    const user = JSON.parse(localStorage.getItem('lembo_user_data') || 'null'); 
+    // 🔑 CLAVE CORREGIDA: Lee 'userData' de sessionStorage (donde se guarda en el login)
+    const userDataString = sessionStorage.getItem('userData');
+    const user = userDataString ? JSON.parse(userDataString) : null;
     
     if (!user) { 
         window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
@@ -64,7 +66,7 @@
             'Listar cultivo'
         ], 
         
-      
+        
         superadmin: [
             
             'Registrar usuario',
@@ -95,7 +97,11 @@
     }); 
 
     document.getElementById('btnLogout').onclick = function () { 
-        localStorage.removeItem('lembo_user_data'); 
+        // 🔑 CLAVE CORREGIDA: Limpiar sessionStorage
+        sessionStorage.removeItem('userData');
+        sessionStorage.removeItem('userToken');
+        localStorage.removeItem('lembo_user_data'); // Limpieza de la clave antigua
+        
         window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
     }; 
 })();
