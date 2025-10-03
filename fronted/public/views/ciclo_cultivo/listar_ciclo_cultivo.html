@@ -12,6 +12,14 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
   <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+  <style>
+    .table-img {
+      width: 60px;
+      height: 40px;
+      object-fit: cover;
+      border-radius: 4px;
+    }
+  </style>
 </head>
 <body>
   <!-- Barra GOV superior -->
@@ -49,11 +57,12 @@
           <th>ID</th>
           <th>Código</th>
           <th>Nombre</th>
-          <th>Fecha Siembra</th>
-          <th>Fecha Cosecha</th>
+          <th>Fecha Inicio</th>
+          <th>Fecha Fin</th>
           <th>Novedades</th>
           <th>Descripción</th>
           <th>Estado</th>
+          <th>Imagen</th>
           <th>Acciones</th>
         </tr>
       </thead>
@@ -73,6 +82,10 @@
 
   <script>
     let ciclosData = [];
+    // Definir la URL base del servidor de backend
+    const SERVER_BASE_URL = "http://localhost:3000";
+    const UPLOADS_PATH = "/uploads/"; 
+    const DEFAULT_IMAGE = '/fronted/public/img/default.png'; 
 
     document.addEventListener("DOMContentLoaded", loadCiclos);
 
@@ -81,18 +94,29 @@
       const tableContainer = document.getElementById("ciclos-table-container");
       loader.classList.add("show");
       tableContainer.style.display = "none";
+      const totalColumns = 10;
 
       try {
-        const res = await fetch("http://localhost:3000/ciclocultivo");
+        const res = await fetch(`${SERVER_BASE_URL}/ciclocultivo`);
         if (!res.ok) throw new Error("Error al obtener ciclos");
         ciclosData = await res.json();
         const tbody = document.getElementById("ciclos-table");
         tbody.innerHTML = "";
 
         if (ciclosData.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="10">No hay ciclos de cultivo registrados</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="${totalColumns}">No hay ciclos de cultivo registrados</td></tr>`;
         } else {
           ciclosData.forEach(c => {
+            
+            // Construimos el contenido de la celda de la imagen usando la misma estructura que en Sensores
+            const imageCellContent = c.image 
+              ? `<img src="${SERVER_BASE_URL}${UPLOADS_PATH}${c.image}" 
+                      width="60" 
+                      style="border-radius: 6px; object-fit: cover; height: 40px;"
+                      alt="Imagen Ciclo" 
+                      onerror="this.onerror=null;this.src='${DEFAULT_IMAGE}';">` 
+              : "Sin imagen";
+            
             const row = document.createElement("tr");
             row.innerHTML = `
               <td>${c.id}</td>
@@ -107,7 +131,8 @@
                   ${c.state}
                 </span>
               </td>
-              
+              <td>${imageCellContent}</td>
+              <td>
                 <button class="btn btn-warning btn-sm" onclick="editCiclo(${c.id})" title="Editar">
                   <i class="material-icons">edit</i>
                 </button>
@@ -124,7 +149,7 @@
       } catch (e) {
         console.error(e);
         document.getElementById("ciclos-table").innerHTML =
-          `<tr><td colspan="10" style="color:#dc3545;">Error cargando ciclos</td></tr>`;
+          `<tr><td colspan="${totalColumns}" style="color:#dc3545;">Error cargando ciclos. Revise la consola.</td></tr>`;
       } finally {
         loader.classList.remove("show");
         tableContainer.style.display = "table";
@@ -149,7 +174,7 @@
           state: newState,
           image: ciclo.image
         };
-        const res = await fetch(`http://localhost:3000/ciclocultivo/${id}`, {
+        const res = await fetch(`${SERVER_BASE_URL}/ciclocultivo/${id}`, {
           method: 'PUT',
           headers: {'Content-Type':'application/json'},
           body: JSON.stringify(body)
@@ -172,11 +197,11 @@
 
       const rows = ciclosData.map(c => [
         c.id, c.cicloID, c.cicloName, c.siembraDate,
-        c.cosechaDate, c.news, c.description, c.state
+        c.cosechaDate, c.news, c.description, c.state, c.image ? 'Sí' : 'No'
       ]);
 
       doc.autoTable({
-        head: [['ID','Código','Nombre','Siembra','Cosecha','Novedades','Descripción','Estado']],
+        head: [['ID','Código','Nombre','Siembra','Cosecha','Novedades','Descripción','Estado','Imagen']],
         body: rows,
         startY: 35,
         theme: 'grid',
@@ -196,7 +221,8 @@
         FechaCosecha: c.cosechaDate,
         Novedades: c.news,
         Descripción: c.description,
-        Estado: c.state
+        Estado: c.state,
+        Imagen: c.image ? `${SERVER_BASE_URL}${UPLOADS_PATH}${c.image}` : 'N/A'
       }));
       const ws = XLSX.utils.json_to_sheet(data);
       const wb = XLSX.utils.book_new();
