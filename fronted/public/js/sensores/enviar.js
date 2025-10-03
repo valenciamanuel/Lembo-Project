@@ -1,6 +1,5 @@
 document.addEventListener('DOMContentLoaded', () => {
     const form = document.querySelector('.form'); 
-    // Ahora 'message-container' existe en el HTML
     const messageContainer = document.getElementById('message-container');
 
     const showMessage = (message, type) => {
@@ -11,19 +10,19 @@ document.addEventListener('DOMContentLoaded', () => {
         messageContainer.innerHTML = '';
         messageContainer.appendChild(msgDiv);
         setTimeout(() => msgDiv.classList.add('show'), 10);
-        setTimeout(() => { msgDiv.classList.remove('show'); setTimeout(() => msgDiv.remove(), 500); }, 4000);
+        setTimeout(() => { 
+            msgDiv.classList.remove('show'); 
+            setTimeout(() => msgDiv.remove(), 500); 
+        }, 2000);
     };
-    
-    // --- FUNCIÓN DE VALIDACIÓN NUMÉRICA ---
+
     const validarNumeroPositivo = (inputElement, mensaje, allowZero = true) => {
         const value = Number(inputElement.value);
-        
         if (isNaN(value)) {
             inputElement.classList.add('form__input--error');
             showMessage(mensaje + ' debe ser un valor numérico.', 'error');
             return false;
         }
-        
         if (allowZero && value < 0) {
             inputElement.classList.add('form__input--error');
             showMessage(mensaje + ' (No puede ser negativo).', 'error');
@@ -33,10 +32,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showMessage(mensaje + ' (Debe ser un valor positivo > 0).', 'error');
             return false;
         }
-        
         return true;
     };
-    // -------------------------------------------------------------
 
     const imageInput = document.getElementById('image'); 
     const tipoSensor = document.querySelector('.sensor__input--type');
@@ -49,7 +46,6 @@ document.addEventListener('DOMContentLoaded', () => {
     const inputs = [tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion];
     const selects = [estado];
 
-
     [...inputs, ...selects, imageInput].forEach(input => {
         input.addEventListener(input.tagName === 'SELECT' ? 'change' : 'input', () => {
             input.classList.remove('form__input--error');
@@ -59,12 +55,11 @@ document.addEventListener('DOMContentLoaded', () => {
 
     form.addEventListener('submit', async (event) => {
         event.preventDefault();
-
         [...inputs, ...selects, imageInput].forEach(input => {
             input.classList.remove('form__input--error');
             if (input.tagName !== 'SELECT' && input.type !== 'file') input.placeholder = '';
         });
-        messageContainer.innerHTML = ''; // Limpiar mensajes al inicio
+        messageContainer.innerHTML = '';
 
         let valido = true;
 
@@ -81,14 +76,13 @@ document.addEventListener('DOMContentLoaded', () => {
             }
         };
 
-        // 1. Validaciones de campos vacíos
         validarCampo(tipoSensor, 'Tipo de sensor obligatorio');
         validarCampo(nombreSensor, 'Nombre del sensor obligatorio');
         validarCampo(unidadMedida, 'Unidad de medida obligatoria');
         validarCampo(tiempoEscaneo, 'Tiempo de escaneo obligatorio');
         validarCampo(descripcion, 'Descripción obligatoria');
         validarCampo(estado, 'Seleccionar estado');
-        
+
         if (!imageInput.files[0]) {
             valido = false;
             imageInput.classList.add('form__input--error');
@@ -96,11 +90,7 @@ document.addEventListener('DOMContentLoaded', () => {
         }
 
         if (!valido) return;
-        
-        // 2. Validación numérica para Tiempo de Escaneo
-        // Debe ser positivo o cero.
         if (!validarNumeroPositivo(tiempoEscaneo, 'Tiempo de escaneo', true)) return; 
-
 
         const formData = new FormData(form);
 
@@ -113,7 +103,6 @@ document.addEventListener('DOMContentLoaded', () => {
             if (!response.ok) {
                 const errorData = await response.json().catch(() => ({ error: 'Error desconocido' }));
                 console.error('Error al enviar datos:', errorData);
-                // Mostrar el error retornado por el servidor o un error genérico
                 showMessage('Error al enviar datos: ' + (errorData.error || 'Problema de conexión o servidor no responde.'), 'error');
                 return;
             }
@@ -129,7 +118,10 @@ document.addEventListener('DOMContentLoaded', () => {
             }
 
             form.reset();
-            showMessage('Sensor creado exitosamente.', 'success');
+            // ✅ Mostrar alert y redirigir después de cerrarla
+            alert('Sensor creado exitosamente.');
+            window.location.href = "../homes/home-sensores.html";
+
         } catch (error) {
             console.error('Error de red al crear el sensor:', error);
             showMessage('Error al crear el sensor. Revisa la consola para más detalles. Asegúrate de que el servidor esté corriendo.', 'error');

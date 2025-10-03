@@ -16,7 +16,7 @@ document.addEventListener('DOMContentLoaded', () => {
         news, description, state
     ];
 
-    // ✅ CORRECCIÓN 1: Función robusta para obtener la fecha de hoy (YYYY-MM-DD)
+    // Función robusta para obtener la fecha de hoy (YYYY-MM-DD)
     const getTodayString = () => {
         const d = new Date();
         // Creamos un nuevo objeto Date fijado a las 00:00:00 local del cliente.
@@ -35,19 +35,34 @@ document.addEventListener('DOMContentLoaded', () => {
     if (siembraDate) siembraDate.removeAttribute('readonly'); 
     if (cosechaDate) cosechaDate.setAttribute('min', todayString);
     
+    // showMessage se usa ahora SOLO para errores dentro del contenedor
     const showMessage = (message, type) => {
         if (!messageContainer) return;
+        // Solo mostramos mensajes si es error o si el mensaje no está vacío
+        if (type !== 'error' && type !== 'success') return; 
+
+        // Limpia cualquier mensaje previo
+        messageContainer.innerHTML = ''; 
+        
         const msgDiv = document.createElement('div');
         msgDiv.classList.add('message', type);
         msgDiv.textContent = message;
+        
         messageContainer.appendChild(msgDiv);
+        
         setTimeout(() => msgDiv.classList.add('show'), 10);
-        setTimeout(() => { msgDiv.classList.remove('show'); setTimeout(() => msgDiv.remove(), 500); }, 4000);
+        
+        // Solo temporizamos si es un error
+        if (type === 'error') {
+             setTimeout(() => { 
+                msgDiv.classList.remove('show'); 
+                setTimeout(() => msgDiv.remove(), 500); 
+            }, 4000);
+        }
     };
 
-    // ✅ CORRECCIÓN 2: Validar por comparación de STRING (más seguro)
+    // Validar por comparación de STRING (más seguro)
     const isValidFutureDateOrToday = (dateString) => {
-        // Un string YYYY-MM-DD se puede comparar directamente con otro string YYYY-MM-DD
         return dateString >= todayString;
     };
     
@@ -101,7 +116,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
         if (!valido) return;
 
-        // ✅ NUEVA VALIDACIÓN: ID Positivo
+        // Validación: ID Positivo
         const numericCicloID = Number(cicloID.value.trim());
         if (isNaN(numericCicloID) || numericCicloID <= 0) {
             valido = false;
@@ -127,6 +142,8 @@ document.addEventListener('DOMContentLoaded', () => {
             showMessage('La fecha de cosecha no puede ser anterior al día de hoy.', 'error');
         }
         
+        if (!valido) return; // Paramos antes de la comparación si falló la fecha inicial
+
         // Convertir a Date para la comparación lógica Siembra < Cosecha
         const siembraDateObj = new Date(siembraStr);
         const cosechaDateObj = new Date(cosechaStr);
@@ -145,8 +162,8 @@ document.addEventListener('DOMContentLoaded', () => {
         const formData = new FormData();
         formData.append('cicloID', cicloID.value);
         formData.append('cicloName', cicloName.value);
-        formData.append('siembraDate', siembraStr); // Usamos el string limpio
-        formData.append('cosechaDate', cosechaStr); // Usamos el string limpio
+        formData.append('siembraDate', siembraStr); 
+        formData.append('cosechaDate', cosechaStr); 
         formData.append('news', news.value);
         formData.append('description', description.value);
         formData.append('state', state.value);
@@ -170,9 +187,11 @@ document.addEventListener('DOMContentLoaded', () => {
             const result = await response.json();
             console.log(' Ciclo Cultivo registrado', result);
 
-            showMessage("Ciclo creado correctamente", "success");
-            form.reset();
-            imageInput.value = '';
+        
+            alert('Ciclo creado');
+            
+        
+            window.location.href = '../ciclos/listar_ciclos.html'; 
             
         } catch (error) {
             console.error(' Error', error);

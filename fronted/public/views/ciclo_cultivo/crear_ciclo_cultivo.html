@@ -33,15 +33,23 @@
                     <label class="form__label">ID Ciclo Cultivo</label>
                     <input class="form__input form__input--ID" type="text" name="cicloID">
 
+                    <label class="form__label">Tipo de Ciclo</label>
+                    <select name="tipoCiclo" class="form__input form__input--tipo">
+                        <option value="">Seleccione una opción</option>
+                        <option value="Corto">Corto</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Largo">Largo o perenne</option>
+                    </select>
+
                     <label class="form__label">Nombre Ciclo Cultivo</label>
                     <input class="form__input form__input--name" type="text" name="cicloName">
 
-                    <label class="form__label">Fecha Siembra</label>
+                    <label class="form__label">Fecha Inicio</label>
                     <input class="form__input form__input--siembra" type="date" name="siembraDate">
                 </div>
 
                 <div class="form__column">
-                    <label class="form__label">Fecha Cosecha</label>
+                    <label class="form__label">Fecha Fin</label>
                     <input class="form__input form__input--cosecha" type="date" name="cosechaDate">
 
                     <label class="form__label">Novedades</label>
@@ -56,6 +64,8 @@
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
                     </select>
+
+                    
                 </div>
             </div>
 

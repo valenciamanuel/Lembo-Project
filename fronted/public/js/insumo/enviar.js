@@ -5,14 +5,15 @@ document.addEventListener('DOMContentLoaded', () => {
     
     const imageInput = document.getElementById('image');
     
-    const tipoInsumo = document.querySelector('.insumo__input--type');
-    const nombreInsumo = document.querySelector('.insumo__input--nombre');
-    const unidadMedida = document.querySelector('.insumo__input--unidad');
-    const cantidad = document.querySelector('.insumo__input--cantidad');
-    const valorUnitario = document.querySelector('.insumo__input--unitario');
-    const valorTotal = document.querySelector('.insumo__input--total');
-    const descripcion = document.querySelector('.insumo__input--descripcion');
-    const estado = document.querySelector('.insumo__input--estado');
+    const tipoInsumo = document.getElementById('tipoInsumo');
+    const nombreInsumo = document.getElementById('nombreInsumo');
+    const unidadMedida = document.getElementById('unidadMedida');
+    const cantidad = document.getElementById('cantidad');
+    const valorUnitario = document.getElementById('valorUnitario');
+    const valorTotal = document.getElementById('valorTotal');
+    const descripcion = document.getElementById('descripcion');
+    const estado = document.getElementById('estado');
+
 
     const inputs = [imageInput, tipoInsumo, nombreInsumo, unidadMedida, cantidad, valorUnitario, valorTotal, descripcion];
     const selects = [estado];

@@ -1,12 +1,9 @@
 const db = require('../config/db.js');
 
-// --- Nueva Función de Validación ---
 const validarTiempoPositivo = (value) => {
     const numericValue = Number(value);
-    // Debe ser un número válido y mayor o igual a cero.
     return !isNaN(numericValue) && numericValue >= 0; 
 };
-// ------------------------------------
 
 const insertarSensor = async (req, res) => {
     try {
@@ -17,17 +14,18 @@ const insertarSensor = async (req, res) => {
             return res.status(400).json({ error: 'Todos los campos son obligatorios' });
         }
         
-        // --- Validación Backend para tiempoEscaneo ---
         if (!validarTiempoPositivo(tiempoEscaneo)) {
             return res.status(400).json({ error: 'El tiempo de escaneo debe ser un número positivo o cero.' });
         }
         const numericTiempoEscaneo = Number(tiempoEscaneo);
-        // ----------------------------------------------
 
         const sql = 'INSERT INTO sensores (tipoSensor, nombreSensor, unidadMedida, tiempoEscaneo, descripcion, estado, image) VALUES (?, ?, ?, ?, ?, ?, ?)';
         const [result] = await db.query(sql, [tipoSensor, nombreSensor, unidadMedida, numericTiempoEscaneo, descripcion, estado, image]);
 
+        console.log(`Sensor creado: ID ${result.insertId}, Tipo: ${tipoSensor}, Nombre: ${nombreSensor}`);
+
         res.status(201).json({
+            message: "Sensor creado correctamente",
             id: result.insertId,
             tipoSensor,
             nombreSensor,
@@ -71,11 +69,10 @@ const obtenerSensorPorId = async (req, res) => {
 
         res.json(rows[0]);
     } catch (err) {
-        console.error(" Error al obtener sensor:", err);
+        console.error("Error al obtener sensor:", err);
         res.status(500).json({ error: "Error al obtener sensor" });
     }
 };
-
 
 const actualizarSensor = async (req, res) => {
     try {
@@ -95,14 +92,12 @@ const actualizarSensor = async (req, res) => {
         descripcion = descripcion ?? null;
         estado = estado ?? null;
 
-        // --- Validación Backend para tiempoEscaneo en actualización ---
         if (tiempoEscaneo !== null && tiempoEscaneo !== undefined) {
              if (!validarTiempoPositivo(tiempoEscaneo)) {
                 return res.status(400).json({ error: 'El tiempo de escaneo debe ser un número positivo o cero.' });
             }
             tiempoEscaneo = Number(tiempoEscaneo);
         }
-        // -------------------------------------------------------------
 
         const sql = `
             UPDATE sensores
@@ -122,11 +117,10 @@ const actualizarSensor = async (req, res) => {
 
         res.json({ message: "Sensor actualizado correctamente" });
     } catch (err) {
-        console.error(" Error al actualizar el sensor:", err.message || err);
+        console.error("Error al actualizar el sensor:", err.message || err);
         res.status(500).json({ error: "Error al actualizar el sensor" });
     }
 };
-
 
 module.exports = {
     insertarSensor,

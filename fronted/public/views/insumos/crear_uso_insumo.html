@@ -10,15 +10,16 @@
   <script src="/fronted/public/js/insumo/enviaruso.js" defer></script>
 </head>
 <body>
-  <!-- Barra GOV superior -->
   <div class="gov-top">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top"/>
   </div>
+
   <header class="header" style="top: 5rem;"></header>
 
   <main class="form-container">
     <form class="form" id="crear-uso-form">
       <h2 class="form__title">Crear Uso de Insumo</h2>
+
       <div class="form__row">
         <div class="form__column">
           <label class="form__label" for="fechaUso">Fecha de Uso</label>
@@ -44,7 +45,7 @@
       <div class="form__row">
         <div class="form__column">
           <label class="form__label" for="valorTotal">Valor Total</label>
-          <input class="form__input" type="number" id="valorTotal" name="valor_total" step="0.01" required/>
+          <input class="form__input" type="number" id="valorTotal" name="valor_total" step="0.01" required readonly/>
         </div>
         <div class="form__column">
           <label class="form__label" for="observaciones">Observaciones</label>
@@ -60,7 +61,7 @@
           </select>
         </div>
         <div class="form__column">
-          <a href="crear_inusomo.html" class="btn btn-secondary" style="margin-top:2rem;">
+          <a href="crear_inusomo.html" class="btn btn-secondary" style="margin-top: 2rem;">
             + Crear Insumo
           </a>
         </div>
@@ -70,17 +71,50 @@
         <button type="submit" class="form__btn form__btn--registrar">Crear</button>
         <a href="listar_uso_insumo.html" class="btn__secundary">Cancelar</a>
       </div>
+
+      <div id="message-container" style="margin-top: 1rem;"></div>
     </form>
   </main>
 
-  <!-- Barra GOV inferior -->
   <div class="gov-bottom">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom"/>
   </div>
 
   <script>
+    // --- LÓGICA DE CÁLCULO Y VALIDACIÓN DE FECHA EN EL CLIENTE ---
     document.addEventListener("DOMContentLoaded", async () => {
       const insumoSelect = document.getElementById("insumo");
+      const cantidadInput = document.getElementById("cantidad");
+      const valorUnitarioInput = document.getElementById("valorUnitario");
+      const valorTotalInput = document.getElementById("valorTotal");
+      const fechaUsoInput = document.getElementById("fechaUso");
+      const form = document.getElementById("crear-uso-form");
+      const messageContainer = document.getElementById("message-container");
+
+      // 1. Función para calcular Valor Total
+      const calcularValorTotal = () => {
+        const cantidad = parseFloat(cantidadInput.value) || 0;
+        const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
+        const total = cantidad * valorUnitario;
+        valorTotalInput.value = total.toFixed(2);
+      };
+
+      // 2. Event Listeners para cálculo automático
+      cantidadInput.addEventListener('input', calcularValorTotal);
+      valorUnitarioInput.addEventListener('input', calcularValorTotal);
+
+      // Función para mostrar errores
+      const showError = (message) => {
+        messageContainer.innerHTML = '';
+        const msgDiv = document.createElement('div');
+        msgDiv.classList.add('message', 'error');
+        msgDiv.style.color = 'red';
+        msgDiv.textContent = message;
+        messageContainer.appendChild(msgDiv);
+        setTimeout(() => msgDiv.remove(), 5000);
+      };
+
+      // 3. Cargar insumos
       try {
         const res = await fetch("http://localhost:3000/insumo");
         const data = await res.json();
@@ -94,28 +128,58 @@
         console.error("Error cargando insumos:", e);
       }
 
-      document.getElementById("crear-uso-form").addEventListener("submit", async e => {
+      // 4. Manejo del Submit
+      form.addEventListener("submit", async e => {
         e.preventDefault();
+        messageContainer.innerHTML = '';
+
+        const fechaUso = fechaUsoInput.value;
+        const hoy = new Date();
+        hoy.setHours(0, 0, 0, 0);
+        const fechaSeleccionada = new Date(fechaUso);
+        fechaSeleccionada.setHours(0, 0, 0, 0);
+
+        if (fechaSeleccionada > hoy) {
+          showError("La fecha de uso no puede ser una fecha futura.");
+          return;
+        }
+
+        calcularValorTotal();
+
         const payload = {
-          fecha_uso: document.getElementById("fechaUso").value,
-          cantidad: parseFloat(document.getElementById("cantidad").value),
+          fecha_uso: fechaUso,
+          cantidad: parseFloat(cantidadInput.value),
           responsable: document.getElementById("responsable").value,
-          valor_unitario: parseFloat(document.getElementById("valorUnitario").value),
-          valor_total: parseFloat(document.getElementById("valorTotal").value),
+          valor_unitario: parseFloat(valorUnitarioInput.value),
+          valor_total: parseFloat(valorTotalInput.value),
           observaciones: document.getElementById("observaciones").value,
           insumo: document.getElementById("insumo").value
         };
+
+        for (const key in payload) {
+          if (payload.hasOwnProperty(key) && !payload[key] && key !== 'observaciones' && key !== 'valor_total') {
+            showError(`El campo ${key.replace('_', ' ')} es obligatorio.`);
+            return;
+          }
+        }
+
         try {
           const resp = await fetch("http://localhost:3000/uso_insumo", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify(payload)
           });
-          if (!resp.ok) throw new Error();
+
+          if (!resp.ok) {
+            const errorBody = await resp.json().catch(() => ({ error: 'Error desconocido del servidor' }));
+            throw new Error(errorBody.error || 'Error en la solicitud');
+          }
+
           alert("Uso de insumo creado exitosamente");
           window.location.href = "listar_uso_insumo.html";
-        } catch {
-          alert("Error al crear uso de insumo");
+        } catch (e) {
+          console.error("Error al crear uso de insumo:", e);
+          showError(e.message || "Error al crear uso de insumo. Verifique la conexión.");
         }
       });
     });

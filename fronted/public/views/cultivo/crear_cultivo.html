@@ -6,7 +6,9 @@
   <title>Datos Cultivo</title>
   <link rel="stylesheet" href="/fronted/public/css/main.css">
   <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
+  <script src="/fronted/public/js/cultivos/enviar.js" defer></script>
   <script src="/fronted/public/views/components/header.js" defer></script>
+
 </head>
 <body>
   <div class="page__banner--top">
@@ -16,13 +18,26 @@
   <main class="form-container">
     <form class="form" id="crear-cultivo-form" enctype="multipart/form-data" novalidate>
       <h2 class="form__title">Datos Cultivo</h2>
-      <div id="mensajeValidacion" class="form__message"></div>
+      <div id="message-container" class="form__message"></div>
       <div class="form__row">
         <div class="form__column">
           <label class="form__label" for="image">Cargar imagen</label>
           <input class="form__input cultivo__input--imagen" type="file" name="image" id="image" accept="image/*">
+
           <label class="form__label" for="cultivoType">Tipo cultivo</label>
-          <input class="form__input cultivo__input--type" type="text" name="cultivoType" id="cultivoType" required>
+          <select class="form__input cultivo__input--type" name="cultivoType" id="cultivoType" required>
+            <option value="">Seleccione un tipo de cultivo</option>
+            <option value="cereal">Cereal</option>
+            <option value="hortaliza">Hortaliza</option>
+            <option value="frutal">Frutal</option>
+            <option value="leguminosa">Leguminosa</option>
+            <option value="oleaginosa">Oleaginosa</option>
+            <option value="tuberculo">Tubérculo</option>
+            <option value="forrajero">Forrajero</option>
+            <option value="industrial">Industrial</option>
+            <option value="medicinal">Medicinal/Aromática</option>
+          </select>
+
           <label class="form__label" for="cultivoName">Nombre Cultivo</label>
           <input class="form__input cultivo__input--name" type="text" name="cultivoName" id="cultivoName" required>
           <label class="form__label" for="cultivoID">Identificador cultivo</label>
@@ -52,102 +67,5 @@
   <div class="page__banner--bottom">
     <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="page__banner__img">
   </div>
-
-  <script>
-    const showError = text => {
-      const msg = document.getElementById('mensajeValidacion');
-      msg.textContent = text;
-      msg.classList.add('error');
-    };
-
-    document.getElementById('crear-cultivo-form').addEventListener('submit', async e => {
-      e.preventDefault();
-      document.getElementById('mensajeValidacion').textContent = '';
-
-      const tipo = document.getElementById('cultivoType').value.trim();
-      const nombre = document.getElementById('cultivoName').value.trim();
-      const id = document.getElementById('cultivoID').value.trim();
-      const size = document.getElementById('size').value.trim();
-      const loc = document.getElementById('location').value.trim();
-      const desc = document.getElementById('description').value.trim();
-      const state = document.getElementById('state').value;
-      const fileInput = document.getElementById('image');
-
-      if (!tipo || !nombre || !id || !size || !loc || !desc || !state) {
-        showError('Todos los campos son obligatorios');
-        return;
-      }
-      
-      // --- VALIDACIONES DE LONGITUD PARA CAMPOS DE TEXTO ---
-      if (tipo.length < 3) {
-        showError('El tipo de cultivo debe tener al menos 3 caracteres');
-        return;
-      }
-      if (nombre.length < 3) {
-        showError('El nombre del cultivo debe tener al menos 3 caracteres');
-        return;
-      }
-      if (loc.length < 3) {
-        showError('La ubicación debe tener al menos 3 caracteres');
-        return;
-      }
-      if (desc.length < 5) {
-        showError('La descripción debe tener al menos 5 caracteres');
-        return;
-      }
-      
-      // --- VALIDACIONES NUMÉRICAS Y DE FORMATO PARA ID Y TAMAÑO ---
-      const numericId = Number(id);
-      
-      if (isNaN(numericId) || !Number.isInteger(numericId) || numericId <= 0) {
-        showError('El Identificador de cultivo (ID) debe ser un número entero positivo.');
-        return;
-      }
-      
-      const numericSize = Number(size);
-      if (isNaN(numericSize) || numericSize <= 0) {
-        showError('El tamaño debe ser un número positivo (mayor a 0).');
-        return;
-      }
-      
-      if (!/^[A-Za-z0-9_-]+$/.test(id)) {
-         showError('El identificador solo puede contener letras, números, guiones o guion bajo');
-         return;
-      }
-
-      // Construir FormData
-      const formData = new FormData();
-      formData.append('cultivoType', tipo);
-      formData.append('cultivoName', nombre);
-      // Enviamos los valores numéricos ya validados al backend
-      formData.append('cultivoID', numericId); 
-      formData.append('size', numericSize); 
-      formData.append('location', loc);
-      formData.append('description', desc);
-      formData.append('state', state);
-      if (fileInput.files[0]) {
-        formData.append('image', fileInput.files[0]);
-      }
-
-      try {
-        const res = await fetch('http://localhost:3000/cultivo', {
-          method: 'POST',
-          body: formData
-        });
-        if (!res.ok) {
-          const err = await res.json();
-          throw new Error(err.error || 'Error al crear cultivo');
-        }
-        // No usar 'alert()', usar un mensaje en el contenedor
-        document.getElementById('mensajeValidacion').textContent = ' Cultivo creado exitosamente.';
-        document.getElementById('mensajeValidacion').classList.remove('error');
-        // Redirigir o limpiar el formulario
-        setTimeout(() => window.location.href = 'listar_cultivo.html', 1500); 
-
-      } catch (error) {
-        showError(error.message);
-      }
-    });
-  </script>
 </body>
 </html>
