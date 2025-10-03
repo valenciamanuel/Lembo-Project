@@ -1,81 +1,83 @@
 <!DOCTYPE html>
 <html lang="es">
-
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Visualizar Ciclos de Cultivo</title>
-    <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
-    <script src="/fronted/public/views/components/header.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Visualizar Ciclos de Cultivo</title>
+  <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
-
 <body>
-    <div class="gov-top">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-    </div>
+<div class="gov-top">
+  <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+</div>
 
-    <header class="header"></header>
+<header class="header"></header>
 
-    <main class="content-container">
-        <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
+<main class="content-container">
+  <h2 class="form__title">Ciclos de Cultivo Registrados</h2>
+  <div id="ciclos-container" class="cards-container"></div>
+</main>
 
-        <div id="ciclos-container" class="cards-container">
-             </div>
-        
-    </main>
+<div class="gov-bottom">
+  <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+</div>
 
+<script>
+(function() {
+  const SERVER_BASE_URL = "http://localhost:3000";
+  const UPLOADS_PATH = "/uploads/";
+  
+  // 1. Validar sesión
+  const userData = sessionStorage.getItem('userData');
+  const user = userData ? JSON.parse(userData) : null;
+  if(!user) return window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
 
+  // Todos los roles autenticados pueden visualizar (solo lectura)
+  document.addEventListener("DOMContentLoaded", async () => {
+    const container = document.getElementById("ciclos-container");
+    container.innerHTML = "";
 
-    <!-- GOV inferior -->
-     <div class="gov-bottom">
-      <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-         </div>
+    try {
+      const res = await fetch(`${SERVER_BASE_URL}/ciclocultivo`);
+      if(!res.ok) throw new Error("Error al obtener ciclos de cultivo");
 
-    
-    <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            try {
-                const response = await fetch("http://localhost:3000/ciclocultivo");
-                if (!response.ok) throw new Error("Error al obtener ciclos de cultivo");
+      const ciclos = await res.json();
+      if(ciclos.length === 0) {
+        container.innerHTML = `<p class="no-ciclos">No hay ciclos de cultivo registrados</p>`;
+        return;
+      }
 
-                const ciclos = await response.json();
-                const container = document.getElementById("ciclos-container");
-                container.innerHTML = "";
+      ciclos.forEach(c => {
+        const card = document.createElement("div");
+        card.classList.add("card");
 
-                if (ciclos.length === 0) {
-                    container.innerHTML = `<p class="no-ciclos">No hay ciclos de cultivo registrados</p>`;
-                    return;
-                }
+        const imageUrl = c.image ? `${SERVER_BASE_URL}${UPLOADS_PATH}${c.image}` : null;
+        card.innerHTML = `
+          <div class="card-image">
+            ${imageUrl ? `<img src="${imageUrl}" alt="${c.cicloName}" onerror="this.onerror=null;this.src='/fronted/public/img/default.png'">` 
+                       : `<div class="no-image">Sin imagen</div>`}
+          </div>
+          <div class="card-content">
+            <h3>🌱 ${c.cicloName}</h3>
+            <p><strong>Código:</strong> ${c.cicloID || '-'}</p>
+            <p><strong>Tipo Ciclo:</strong> ${c.tipoCiclo || '-'}</p>
+            <p><strong>Fecha Siembra:</strong> ${c.siembraDate ? new Date(c.siembraDate).toLocaleDateString() : '-'}</p>
+            <p><strong>Fecha Cosecha:</strong> ${c.cosechaDate ? new Date(c.cosechaDate).toLocaleDateString() : '-'}</p>
+            <p><strong>Novedades:</strong> ${c.news || '-'}</p>
+            <p><strong>Descripción:</strong> ${c.description || '-'}</p>
+            <p><strong>Estado:</strong> <span class="estado ${c.state ? c.state.toLowerCase() : 'inactivo'}">${c.state || "Sin estado"}</span></p>
+          </div>
+        `;
+        container.appendChild(card);
+      });
 
-                ciclos.forEach(c => {
-                    const card = document.createElement("div");
-                    card.classList.add("card");
-
-                    const imageUrl = c.image ? `http://localhost:3000/uploads/${c.image}` : null;
-
-                    card.innerHTML = `
-      <div class="card-image">
-       ${c.image ? `<img src="${imageUrl}" alt="${c.cicloName}">` : `<div class="no-image">Sin imagen</div>`}
-      </div>
-      <div class="card-content">
-       <h3>🌱 ${c.cicloName}</h3>
-       <p><strong>Código:</strong> ${c.cicloID}</p>
-       <p><strong>Fecha Siembra:</strong> ${c.siembraDate}</p>
-       <p><strong>Fecha Cosecha:</strong> ${c.cosechaDate}</p>
-       <p><strong>Novedades:</strong> ${c.news}</p>
-       <p><strong>Descripción:</strong> ${c.description}</p>
-       <p><strong>Estado:</strong> <span class="estado ${c.state ? c.state.toLowerCase() : ''}">${c.state || "Sin estado"}</span></p>
-      </div>
-     `;
-                    container.appendChild(card);
-                });
-            } catch (error) {
-                console.error(" Error cargando ciclos de cultivo:", error);
-                document.getElementById("ciclos-container").innerHTML = `<p class="no-ciclos">Error al cargar ciclos de cultivo</p>`;
-            }
-        });
-    </script>
-
+    } catch(error) {
+      console.error("Error cargando ciclos de cultivo:", error);
+      container.innerHTML = `<p class="no-ciclos">Error al cargar ciclos de cultivo</p>`;
+    }
+  });
+})();
+</script>
 </body>
-
 </html>

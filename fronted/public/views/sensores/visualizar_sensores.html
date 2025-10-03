@@ -6,7 +6,7 @@
     <title>Visualizar Sensores</title>
     <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css"> 
     <script src="/fronted/public/views/components/header.js" defer></script>
-    </head>
+</head>
 <body>
     <div class="gov-top">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
@@ -17,15 +17,47 @@
         <h2 class="form__title">Sensores Registrados</h2>
 
         <div id="sensores-container" class="cards-container">
-            </div>
+        </div>
     </main>
     <div class="gov-bottom">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-           </div>
+    </div>
+
+    <script>
+    (function () { 
+        const userDataString = sessionStorage.getItem('userData');
+        const user = userDataString ? JSON.parse(userDataString) : null;
+        
+        if (!user) { 
+            window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+            return; 
+        } 
+        
+        const role = user.role; 
+        
+        const allowedRoles = ['visitante', 'personal', 'admin', 'superadmin'];
+        
+        if (!allowedRoles.includes(role)) {
+            alert('Acceso Denegado: Su rol no tiene permiso para visualizar sensores.');
+            window.location.href = '/fronted/public/views/homes/home.html';
+            return; 
+        }
+
+        const btnLogout = document.getElementById('btnLogout');
+        if (btnLogout) {
+            btnLogout.onclick = function () { 
+                sessionStorage.removeItem('userData');
+                sessionStorage.removeItem('userToken');
+                localStorage.removeItem('lembo_user_data');
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+            };
+        }
+    })();
+    </script>
+    
     <script>
         document.addEventListener("DOMContentLoaded", async () => {
             try {
-
                 const response = await fetch("http://localhost:3000/sensores");
                 if (!response.ok) throw new Error("Error al obtener sensores");
 
@@ -46,7 +78,6 @@
 
                     card.innerHTML = `
                         <div class="card-image">
-                            <!--  CORRECCIÓN EN ESTA LÍNEA: Usamos la URL completa para evitar el error 404 del puerto 5501 -->
                             ${s.image ? `<img src="${BASE_URL}/uploads/${s.image}" alt="${s.nombreSensor}">` : `<div class="no-image">Sin imagen</div>`}
                         </div>
                         <div class="card-content">

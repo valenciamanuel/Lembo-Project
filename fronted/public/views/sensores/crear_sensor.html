@@ -1,84 +1,127 @@
-    <!DOCTYPE html>
-    <html lang="es">
+<!DOCTYPE html>
+<html lang="es">
 
-    <head>
-        <meta charset="UTF-8">
-        <meta name="viewport" content="width=device-width, initial-scale=1.0">
-        <title>Datos del Sensor</title>
-        <link rel="stylesheet" href="/fronted/public/css/main.css">
-        <script src="/fronted/public/views/components/header.js"></script>
-        <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
-    </head>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Datos del Sensor</title>
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <script src="/fronted/public/views/components/header.js"></script>
+    <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
+</head>
 
-    <body>
-        <div class="page__banner--top">
-            <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
-        </div>
-        <header class="header"></header>
-        <main class="form-container">
-            <form class="form" id="crear-sensor-form" enctype="multipart/form-data">
-                <h2 class="form__title">Datos sensores</h2>
-                
-                <!-- CONTENEDOR DE MENSAJES -->
-                <div id="message-container"></div> 
-                
-                <div class="form__row">
-                    <div class="form__column">
-                        <label class="form__label" for="image">Cargar imagen</label>
-                        <input type="file" id="image" name="image" class="form__input form__input--imagen">
-                        
-                        <label class="form__label" for="tipoSensor">Tipo de sensor</label>
-                        <select id="tipoSensor" name="tipoSensor" class="form__input sensor__input--type" required>
-                            <option value="">Seleccione un tipo</option>
-                            <option value="Temperatura">Temperatura</option>
-                            <option value="Humedad">Humedad</option>
-                            <option value="pH">pH</option>
-                            <option value="Luminosidad">Luminosidad</option>
-                            <option value="CO2">CO₂</option>
-                            <option value="Otro">Otro</option>
-                        </select>
+<body>
+    <div class="page__banner--top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
+    </div>
+    <header class="header"></header>
+    <main class="form-container">
+        <form class="form" id="crear-sensor-form" enctype="multipart/form-data">
+            <h2 class="form__title">Datos sensores</h2>
 
-                        <label class="form__label" for="nombreSensor">Nombre del sensor</label>
-                        <input type="text" id="nombreSensor" name="nombreSensor" class="form__input sensor__input--name" required>
-                        
-                        <label class="form__label" for="unidadMedida">Unidad de medida</label>
-                        <select id="unidadMedida" name="unidadMedida" class="form__input sensor__input--medida" required>
-                            <option value="">Seleccione una unidad</option>
-                            <option value="°C">Grados Celsius (°C)</option>
-                            <option value="%">Porcentaje (%)</option>
-                            <option value="pH">pH</option>
-                            <option value="Lux">Lux</option>
-                            <option value="ppm">Partes por millón (ppm)</option>
-                            <option value="Otro">Otro</option>
-                        </select>
-                    </div>
+            <div id="message-container"></div> 
 
-                    <div class="form__column">
-                        <label class="form__label" for="tiempoEscaneo">Tiempo de escaneo (segundos)</label>
-                        <input type="number" id="tiempoEscaneo" name="tiempoEscaneo" class="form__input sensor__input--escaneo" min="1" required>
-                        
-                        <label class="form__label" for="descripcion">Descripción</label>
-                        <input type="text" id="descripcion" name="descripcion" class="form__input sensor__input--descripcion">
-                        
-                        <label class="form__label" for="estado">Estado</label>
-                        <select id="estado" name="estado" class="form__input sensor__input--estado" required>
-                            <option value="">Seleccione una opción</option>
-                            <option value="Activo">Activo</option>
-                            <option value="Inactivo">Inactivo</option>
-                        </select>
-                    </div>
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label" for="image">Cargar imagen</label>
+                    <input type="file" id="image" name="image" class="form__input form__input--imagen">
+                    
+                    <label class="form__label" for="tipoSensor">Tipo de sensor</label>
+                    <select id="tipoSensor" name="tipoSensor" class="form__input sensor__input--type" required>
+                        <option value="">Seleccione un tipo</option>
+                        <option value="Temperatura">Temperatura</option>
+                        <option value="Humedad">Humedad</option>
+                        <option value="pH">pH</option>
+                        <option value="Luminosidad">Luminosidad</option>
+                        <option value="CO2">CO₂</option>
+                        <option value="Otro">Otro</option>
+                    </select>
+
+                    <label class="form__label" for="nombreSensor">Nombre del sensor</label>
+                    <input type="text" id="nombreSensor" name="nombreSensor" class="form__input sensor__input--name" required>
+                    
+                    <label class="form__label" for="unidadMedida">Unidad de medida</label>
+                    <select id="unidadMedida" name="unidadMedida" class="form__input sensor__input--medida" required>
+                        <option value="">Seleccione una unidad</option>
+                        <option value="°C">Grados Celsius (°C)</option>
+                        <option value="%">Porcentaje (%)</option>
+                        <option value="pH">pH</option>
+                        <option value="Lux">Lux</option>
+                        <option value="ppm">Partes por millón (ppm)</option>
+                        <option value="Otro">Otro</option>
+                    </select>
                 </div>
 
-                <div class="form__btn-group">
-                    <button type="submit" class="form__btn">Crear</button>
-                    <a href="../homes/home-sensores.html" class="btn__secundary">Cancelar</a>
+                <div class="form__column">
+                    <label class="form__label" for="tiempoEscaneo">Tiempo de escaneo (segundos)</label>
+                    <input type="number" id="tiempoEscaneo" name="tiempoEscaneo" class="form__input sensor__input--escaneo" min="1" required>
+                    
+                    <label class="form__label" for="descripcion">Descripción</label>
+                    <input type="text" id="descripcion" name="descripcion" class="form__input sensor__input--descripcion">
+                    
+                    <label class="form__label" for="estado">Estado</label>
+                    <select id="estado" name="estado" class="form__input sensor__input--estado" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
                 </div>
-            </form>
-        </main>
-        <div class="page__banner--bottom">
-            <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="page__banner__img">
-        </div>
+            </div>
 
-        <script src="/fronted/public/js/sensores/enviar.js"></script>
-    </body>
-    </html>
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn">Crear</button>
+                <a href="../homes/home-sensores.html" class="btn__secundary">Cancelar</a>
+            </div>
+        </form>
+    </main>
+    <div class="page__banner--bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="page__banner__img">
+    </div>
+
+    <script>
+    (function () { 
+        // CLAVE: Obtiene los datos del usuario para verificar el rol
+        const userDataString = sessionStorage.getItem('userData');
+        const user = userDataString ? JSON.parse(userDataString) : null;
+        
+        // 1. COMPROBAR INICIO DE SESIÓN
+        if (!user) { 
+            // Si no está logueado, redirigir
+            window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+            return; 
+        } 
+        
+        const role = user.role; 
+        
+        // 2. DEFINIR REGLAS DE PERMISOS
+        // Definimos la regla específica para ACCEDER a esta página ("Crear Sensor")
+        // Como 'Crear Sensor' no es un elemento del menú, definiremos qué roles pueden VER y usar este formulario.
+        const allowedRoles = ['admin', 'superadmin']; // Define aquí los roles permitidos
+        
+        // 3. VALIDAR PERMISO PARA CREAR SENSOR
+        if (!allowedRoles.includes(role)) {
+            // Si el rol no está permitido, lo redirigimos a una página segura (ej: el home)
+            alert('Acceso Denegado: Su rol no tiene permiso para crear sensores.');
+            window.location.href = '/fronted/public/views/homes/home.html'; // Ajusta esta URL si es necesario
+            return; 
+        }
+
+        // El resto de la lógica del header (ocultar/mostrar elementos) no es necesaria aquí,
+        // ya que solo estamos validando el acceso a esta página específica.
+
+        // Lógica de Cerrar Sesión (Opcional, pero útil si el botón está aquí)
+        const btnLogout = document.getElementById('btnLogout');
+        if (btnLogout) {
+            btnLogout.onclick = function () { 
+                sessionStorage.removeItem('userData');
+                sessionStorage.removeItem('userToken');
+                localStorage.removeItem('lembo_user_data');
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+            };
+        }
+    })();
+    </script>
+    
+    <script src="/fronted/public/js/sensores/enviar.js"></script>
+</body>
+</html>

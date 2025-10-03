@@ -2,205 +2,266 @@
 <html lang="es">
 
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Listar Insumos</title>
-  <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
-  <script src="/fronted/public/views/components/header.js" defer></script>
-  <!-- Material Design Icons -->
-  <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-  <!-- CDN para PDF y Excel -->
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Insumos</title>
+    <link rel="stylesheet" href="/fronted/public/css/components/listar.css">
+    <script src="/fronted/public/views/components/header.js" defer></script>
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf-autotable/3.5.28/jspdf.plugin.autotable.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/xlsx/0.18.5/xlsx.full.min.js"></script>
 </head>
 
 <body>
-  <div class="gov-top">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-  </div>
+    <script>
+        let userRole = null; // Variable global para el rol
 
-  <header class="header"></header>
+        (function () {
+            const userDataString = sessionStorage.getItem('userData');
+            const user = userDataString ? JSON.parse(userDataString) : null;
 
-  <main class="content-container">
-    <h2 class="form__title">Insumos Registrados</h2>
+            // 1. COMPROBAR INICIO DE SESIÓN
+            if (!user) {
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
 
-    <div class="action-buttons">
-      <a href="../insumos/crear_inusomo.html" class="btn btn-primary">
-        <i class="material-icons">add</i> Agregar Insumo
-      </a>
-      <button class="btn btn-success" onclick="exportToPDF()">
-        <i class="material-icons">picture_as_pdf</i> Descargar PDF
-      </button>
-      <button class="btn btn-success" onclick="exportToExcel()">
-        <i class="material-icons">table_chart</i> Descargar Excel
-      </button>
+            userRole = user.role; // Almacena el rol globalmente
+
+            // 2. DEFINIR REGLAS DE PERMISOS
+            const allowedRolesToAct = ['admin', 'superadmin']; // Roles que pueden modificar/agregar
+            const allowedRolesToView = ['visitante', 'personal', 'admin', 'superadmin']; // Roles que pueden ver
+
+            // 3. VALIDAR PERMISO DE VISTA
+            if (!allowedRolesToView.includes(userRole)) {
+                alert('Acceso Denegado: Su rol no tiene permiso para visualizar insumos.');
+                window.location.href = '/fronted/public/views/homes/home.html';
+                return;
+            }
+
+            // 4. CONTROL DE VISIBILIDAD DE ACCIONES
+            if (!allowedRolesToAct.includes(userRole)) {
+                const actionButtons = document.querySelector('.action-buttons');
+                const btnAgregar = document.querySelector('.action-buttons .btn-primary');
+                if (btnAgregar) btnAgregar.remove();
+            }
+
+        })();
+    </script>
+
+    <div class="gov-top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
     </div>
 
-    <div class="loader" id="loader">
-      <div class="spinner"></div>
+    <header class="header"></header>
+
+    <main class="content-container">
+        <h2 class="form__title">Insumos Registrados</h2>
+
+        <div class="action-buttons">
+            <a href="../insumos/crear_inusomo.html" class="btn btn-primary">
+                <i class="material-icons">add</i> Agregar Insumo
+            </a>
+            <button class="btn btn-success" onclick="exportToPDF()">
+                <i class="material-icons">picture_as_pdf</i> Descargar PDF
+            </button>
+            <button class="btn btn-success" onclick="exportToExcel()">
+                <i class="material-icons">table_chart</i> Descargar Excel
+            </button>
+        </div>
+
+        <div class="loader" id="loader">
+            <div class="spinner"></div>
+        </div>
+
+        <table class="styled-table" id="insumos-table-container">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Tipo</th>
+                    <th>Nombre</th>
+                    <th>Unidad de Medida</th>
+                    <th>Cantidad</th>
+                    <th>Valor Unitario</th>
+                    <th>Valor Total</th>
+                    <th>Estado</th>
+                    <th>Imagen</th>
+                    <th id="acciones-header">Acciones</th>
+                </tr>
+            </thead>
+            <tbody id="insumos-table"></tbody>
+        </table>
+    </main>
+
+    <footer class="footer">
+        <p>Sistema de Gestión Agrícola - LEMBO &copy; 2025</p>
+    </footer>
+
+    <div class="gov-bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
     </div>
 
-    <table class="styled-table" id="insumos-table-container">
-      <thead>
-        <tr>
-          <th>ID</th>
-          <th>Tipo</th>
-          <th>Nombre</th>
-          <th>Unidad de Medida</th>
-          <th>Cantidad</th>
-          <th>Valor Unitario</th>
-          <th>Valor Total</th>
-          <th>Estado</th>
-          <th>Imagen</th>
-          <th>Acciones</th>
-        </tr>
-      </thead>
-      <tbody id="insumos-table"></tbody>
-    </table>
-  </main>
+    <script>
+        let insumosData = [];
+        const allowedToAct = ['admin', 'superadmin']; // Roles permitidos para editar y cambiar estado
 
-  <footer class="footer">
-    <p>Sistema de Gestión Agrícola - LEMBO &copy; 2025</p>
-  </footer>
+        document.addEventListener("DOMContentLoaded", loadInsumos);
 
-  <div class="gov-bottom">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-  </div>
+        async function loadInsumos() {
+            const loader = document.getElementById("loader");
+            const tableContainer = document.getElementById("insumos-table-container");
+            const actionsHeader = document.getElementById("acciones-header");
 
-  <script>
-    let insumosData = [];
+            const hideActions = !allowedToAct.includes(userRole);
 
-    document.addEventListener("DOMContentLoaded", loadInsumos);
+            // Ocultar la cabecera de "Acciones" si el rol no está permitido
+            if (actionsHeader && hideActions) {
+                actionsHeader.style.display = 'none';
+            }
 
-    async function loadInsumos() {
-      const loader = document.getElementById("loader");
-      const tableContainer = document.getElementById("insumos-table-container");
-      loader.classList.add("show");
-      tableContainer.style.display = "none";
+            loader.classList.add("show");
+            tableContainer.style.display = "none";
 
-      try {
-        const res = await fetch("http://localhost:3000/insumo");
-        if (!res.ok) throw new Error("Error al obtener insumos");
-        insumosData = await res.json();
-        const tbody = document.getElementById("insumos-table");
-        tbody.innerHTML = "";
+            try {
+                const res = await fetch("http://localhost:3000/insumo");
+                if (!res.ok) throw new Error("Error al obtener insumos");
+                insumosData = await res.json();
+                const tbody = document.getElementById("insumos-table");
+                tbody.innerHTML = "";
 
-        if (insumosData.length === 0) {
-          tbody.innerHTML = `<tr><td colspan="10">No hay insumos registrados</td></tr>`;
-        } else {
-          insumosData.forEach(i => {
-            const row = document.createElement("tr");
-            row.innerHTML = `
-              <td>${i.idInsumo}</td>
-              <td>${i.tipoInsumo}</td>
-              <td>${i.nombreInsumo}</td>
-              <td>${i.unidadMedida}</td>
-              <td>${i.cantidad}</td>
-              <td>${i.valorUnitario}</td>
-              <td>${i.valorTotal}</td>
-              <td>
-                <span class="status-badge ${i.estado.toLowerCase() === 'activo' ? 'status-activo' : 'status-inactivo'}">
-                  ${i.estado}
-                </span>
-              </td>
-              <td>
-                ${i.image
-                  ? `<img src="http://localhost:3000/uploads/${i.image}?t=${Date.now()}" 
-                         alt="Imagen de ${i.nombreInsumo}" width="60" 
-                         style="border-radius:6px; object-fit:cover;">`
-                  : 'Sin imagen'}
-              </td>
-              <td>
-                <button class="btn btn-warning btn-sm" onclick="editInsumo(${i.idInsumo})" title="Editar">
-                  <i class="material-icons">edit</i>
-                </button>
-                <button class="btn ${i.estado.toLowerCase() === 'activo' ? 'btn-danger' : 'btn-success'} btn-sm"
-                        onclick="toggleInsumoStatus(${i.idInsumo},'${i.estado}')"
-                        title="${i.estado.toLowerCase() === 'activo' ? 'Desactivar' : 'Activar'}">
-                  <i class="material-icons">${i.estado.toLowerCase() === 'activo' ? 'visibility_off' : 'visibility'}</i>
-                </button>
-              </td>
-            `;
-            tbody.appendChild(row);
-          });
+                const colspan = hideActions ? 9 : 10;
+
+                if (insumosData.length === 0) {
+                    tbody.innerHTML = `<tr><td colspan="${colspan}">No hay insumos registrados</td></tr>`;
+                } else {
+                    insumosData.forEach(i => {
+                        const row = document.createElement("tr");
+
+                        let actionsCell = '';
+                        if (allowedToAct.includes(userRole)) {
+                            actionsCell = `
+                                <td>
+                                    <button class="btn btn-warning btn-sm" onclick="editInsumo(${i.idInsumo})" title="Editar">
+                                        <i class="material-icons">edit</i>
+                                    </button>
+                                    <button class="btn ${i.estado.toLowerCase() === 'activo' ? 'btn-danger' : 'btn-success'} btn-sm"
+                                        onclick="toggleInsumoStatus(${i.idInsumo},'${i.estado}')"
+                                        title="${i.estado.toLowerCase() === 'activo' ? 'Desactivar' : 'Activar'}">
+                                        <i class="material-icons">${i.estado.toLowerCase() === 'activo' ? 'visibility_off' : 'visibility'}</i>
+                                    </button>
+                                </td>
+                            `;
+                        }
+
+                        row.innerHTML = `
+                            <td>${i.idInsumo}</td>
+                            <td>${i.tipoInsumo}</td>
+                            <td>${i.nombreInsumo}</td>
+                            <td>${i.unidadMedida}</td>
+                            <td>${i.cantidad}</td>
+                            <td>${i.valorUnitario}</td>
+                            <td>${i.valorTotal}</td>
+                            <td>
+                                <span class="status-badge ${i.estado.toLowerCase() === 'activo' ? 'status-activo' : 'status-inactivo'}">
+                                    ${i.estado}
+                                </span>
+                            </td>
+                            <td>
+                                ${i.image
+                                    ? `<img src="http://localhost:3000/uploads/${i.image}?t=${Date.now()}" 
+                                        alt="Imagen de ${i.nombreInsumo}" width="60" 
+                                        style="border-radius:6px; object-fit:cover;">`
+                                    : 'Sin imagen'}
+                            </td>
+                            ${actionsCell}
+                        `;
+                        tbody.appendChild(row);
+                    });
+                }
+            } catch (e) {
+                console.error(e);
+                document.getElementById("insumos-table").innerHTML =
+                    `<tr><td colspan="${colspan}" style="color:#dc3545;">Error cargando insumos</td></tr>`;
+            } finally {
+                loader.classList.remove("show");
+                tableContainer.style.display = "table";
+            }
         }
-      } catch (e) {
-        console.error(e);
-        document.getElementById("insumos-table").innerHTML =
-          `<tr><td colspan="10" style="color:#dc3545;">Error cargando insumos</td></tr>`;
-      } finally {
-        loader.classList.remove("show");
-        tableContainer.style.display = "table";
-      }
-    }
 
-    function editInsumo(id) {
-      window.location.href = `../insumos/datos_inusomo.html?id=${id}`;
-    }
+        function editInsumo(id) {
+            if (!allowedToAct.includes(userRole)) return alert('Acceso Denegado: No tiene permisos para editar.');
+            window.location.href = `../insumos/datos_inusomo.html?id=${id}`;
+        }
 
-    async function toggleInsumoStatus(id, current) {
-      try {
-        const insumo = insumosData.find(x => x.idInsumo === id);
-        const newEstado = current.toLowerCase() === 'activo' ? 'inactivo' : 'activo';
-        const body = {
-          tipoInsumo: insumo.tipoInsumo,
-          nombreInsumo: insumo.nombreInsumo,
-          unidadMedida: insumo.unidadMedida,
-          cantidad: insumo.cantidad,
-          valorUnitario: insumo.valorUnitario,
-          valorTotal: insumo.valorTotal,
-          descripcion: insumo.descripcion,
-          estado: newEstado
-        };
-        const res = await fetch(`http://localhost:3000/insumo/${id}`, {
-          method: 'PUT',
-          headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify(body)
-        });
-        if (!res.ok) throw new Error();
-        await loadInsumos();
-        alert(`Insumo ${newEstado === 'activo' ? 'activado' : 'desactivado'}`);
-      } catch {
-        alert('Error al cambiar estado');
-      }
-    }
+        async function toggleInsumoStatus(id, current) {
+            if (!allowedToAct.includes(userRole)) return alert('Acceso Denegado: No tiene permisos para cambiar el estado.');
 
-    function exportToPDF() {
-      const { jsPDF } = window.jspdf;
-      const doc = new jsPDF();
-      doc.setFontSize(18);
-      doc.text('Lista de Insumos', 14, 20);
-      doc.setFontSize(11);
-      doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 28);
-      const rows = insumosData.map(i => [
-        i.idInsumo, i.tipoInsumo, i.nombreInsumo, i.unidadMedida,
-        i.cantidad, i.valorUnitario, i.valorTotal, i.estado
-      ]);
-      doc.autoTable({
-        head: [['ID', 'Tipo', 'Nombre', 'Unidad de Medida', 'Cantidad', 'Valor U.', 'Valor T.', 'Estado']],
-        body: rows, startY: 35, theme: 'grid',
-        headStyles: { fillColor: [57, 169, 0] }, styles: { fontSize: 9 }
-      });
-      doc.save('insumos.pdf');
-    }
+            try {
+                const insumo = insumosData.find(x => x.idInsumo === id);
+                const newEstado = current.toLowerCase() === 'activo' ? 'inactivo' : 'activo';
+                const body = {
+                    tipoInsumo: insumo.tipoInsumo,
+                    nombreInsumo: insumo.nombreInsumo,
+                    unidadMedida: insumo.unidadMedida,
+                    cantidad: insumo.cantidad,
+                    valorUnitario: insumo.valorUnitario,
+                    valorTotal: insumo.valorTotal,
+                    descripcion: insumo.descripcion,
+                    estado: newEstado
+                };
+                const res = await fetch(`http://localhost:3000/insumo/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(body)
+                });
+                if (!res.ok) throw new Error();
+                await loadInsumos();
+                alert(`Insumo ${newEstado === 'activo' ? 'activado' : 'desactivado'}`);
+            } catch {
+                alert('Error al cambiar estado');
+            }
+        }
 
-    function exportToExcel() {
-      const data = insumosData.map(i => ({
-        ID: i.idInsumo,
-        Tipo: i.tipoInsumo,
-        Nombre: i.nombreInsumo,
-        'Unidad de Medida': i.unidadMedida,
-        Cantidad: i.cantidad,
-        ValorUnitario: i.valorUnitario,
-        ValorTotal: i.valorTotal,
-        Estado: i.estado
-      }));
-      const ws = XLSX.utils.json_to_sheet(data);
-      const wb = XLSX.utils.book_new();
-      XLSX.utils.book_append_sheet(wb, ws, 'Insumos');
-      XLSX.writeFile(wb, 'insumos.xlsx');
-    }
-  </script>
+        function exportToPDF() {
+            const { jsPDF } = window.jspdf;
+            const doc = new jsPDF();
+            doc.setFontSize(18);
+            doc.text('Lista de Insumos', 14, 20);
+            doc.setFontSize(11);
+            doc.text(`Fecha: ${new Date().toLocaleDateString()}`, 14, 28);
+            const rows = insumosData.map(i => [
+                i.idInsumo, i.tipoInsumo, i.nombreInsumo, i.unidadMedida,
+                i.cantidad, i.valorUnitario, i.valorTotal, i.estado
+            ]);
+            doc.autoTable({
+                head: [['ID', 'Tipo', 'Nombre', 'Unidad de Medida', 'Cantidad', 'Valor U.', 'Valor T.', 'Estado']],
+                body: rows,
+                startY: 35,
+                theme: 'grid',
+                headStyles: { fillColor: [57, 169, 0] },
+                styles: { fontSize: 9 }
+            });
+            doc.save('insumos.pdf');
+        }
+
+        function exportToExcel() {
+            const data = insumosData.map(i => ({
+                ID: i.idInsumo,
+                Tipo: i.tipoInsumo,
+                Nombre: i.nombreInsumo,
+                'Unidad de Medida': i.unidadMedida,
+                Cantidad: i.cantidad,
+                ValorUnitario: i.valorUnitario,
+                ValorTotal: i.valorTotal,
+                Estado: i.estado
+            }));
+            const ws = XLSX.utils.json_to_sheet(data);
+            const wb = XLSX.utils.book_new();
+            XLSX.utils.book_append_sheet(wb, ws, 'Insumos');
+            XLSX.writeFile(wb, 'insumos.xlsx');
+        }
+    </script>
 </body>
+
 </html>

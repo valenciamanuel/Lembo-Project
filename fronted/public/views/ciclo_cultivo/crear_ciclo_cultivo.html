@@ -1,71 +1,68 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="es">
 
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Datos Ciclo Cultivo</title>
     <link rel="stylesheet" href="/fronted/public/css/main.css">
-    <script src="/fronted/public/views/components/header.js"></script>
     <link rel="stylesheet" href="/fronted/public/css/components/forms.css">
     <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
-    
-    <script src="/fronted/public/js/ciclo_cultivo/enviar.js" defer></script>
+    <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 
 <body>
     <div class="page__banner--top">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
     </div>
+
     <header class="header"></header>
+
     <main class="form-container">
-        
-        <div id="message-container"></div>
-        
-        <form class="form">
+        <div id="message-container" class="form__message"></div>
+
+        <form class="form" id="crear-ciclo-form" enctype="multipart/form-data" novalidate>
             <h2 class="form__title">Datos Ciclo Cultivo</h2>
 
             <div class="form__row">
                 <div class="form__column">
-                    <label class="form__label">Cargar imagen</label>
-                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
+                    <label class="form__label" for="image">Cargar imagen</label>
+                    <input class="form__input form__input--imagen" type="file" name="image" id="image" accept="image/*">
 
-                    <label class="form__label">ID Ciclo Cultivo</label>
-                    <input class="form__input form__input--ID" type="text" name="cicloID">
+                    <label class="form__label" for="cicloID">ID Ciclo Cultivo</label>
+                    <input class="form__input form__input--ID" type="text" name="cicloID" id="cicloID" required>
 
-                    <label class="form__label">Tipo de Ciclo</label>
-                    <select name="tipoCiclo" class="form__input form__input--tipo">
+                    <label class="form__label" for="tipoCiclo">Tipo de Ciclo</label>
+                    <select name="tipoCiclo" id="tipoCiclo" class="form__input form__input--tipo" required>
                         <option value="">Seleccione una opción</option>
                         <option value="Corto">Corto</option>
                         <option value="Intermedio">Intermedio</option>
-                        <option value="Largo">Largo o perenne</option>
+                        <option value="Largo o perenne">Largo o perenne</option>
                     </select>
 
-                    <label class="form__label">Nombre Ciclo Cultivo</label>
-                    <input class="form__input form__input--name" type="text" name="cicloName">
+                    <label class="form__label" for="cicloName">Nombre Ciclo Cultivo</label>
+                    <input class="form__input form__input--name" type="text" name="cicloName" id="cicloName" required>
 
-                    <label class="form__label">Fecha Inicio</label>
-                    <input class="form__input form__input--siembra" type="date" name="siembraDate">
+                    <label class="form__label" for="siembraDate">Fecha Inicio</label>
+                    <input class="form__input form__input--siembra" type="date" name="siembraDate" id="siembraDate" required>
                 </div>
 
                 <div class="form__column">
-                    <label class="form__label">Fecha Fin</label>
-                    <input class="form__input form__input--cosecha" type="date" name="cosechaDate">
+                    <label class="form__label" for="cosechaDate">Fecha Fin</label>
+                    <input class="form__input form__input--cosecha" type="date" name="cosechaDate" id="cosechaDate">
 
-                    <label class="form__label">Novedades</label>
-                    <input class="form__input form__input--news" type="text" name="news">
+                    <label class="form__label" for="news">Novedades</label>
+                    <input class="form__input form__input--news" type="text" name="news" id="news">
 
-                    <label class="form__label">Descripción</label>
-                    <input class="form__input form__input--description" type="text" name="description">
+                    <label class="form__label" for="description">Descripción</label>
+                    <input class="form__input form__input--description" type="text" name="description" id="description" required>
 
-                    <label class="form__label">Estado (activo / inactivo)</label>
-                    <select name="state" class="form__input form__input--state">
+                    <label class="form__label" for="state">Estado</label>
+                    <select name="state" id="state" class="form__input form__input--state" required>
                         <option value="">Seleccione una opción</option>
                         <option value="Activo">Activo</option>
                         <option value="Inactivo">Inactivo</option>
                     </select>
-
-                    
                 </div>
             </div>
 
@@ -75,9 +72,80 @@
             </div>
         </form>
     </main>
+
     <div class="page__banner--bottom">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="page__banner__img">
     </div>
+
+    <script>
+        (function () {
+            // Seguridad y permisos
+            const userDataString = sessionStorage.getItem('userData');
+            const user = userDataString ? JSON.parse(userDataString) : null;
+
+            if (!user) {
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
+
+            const allowedRoles = ['admin', 'superadmin'];
+            if (!allowedRoles.includes(user.role)) {
+                alert('Acceso Denegado: Su rol no tiene permiso para crear ciclos.');
+                window.location.href = '/fronted/public/views/ciclo_cultivo/listar_ciclo.html';
+                return;
+            }
+
+            const messageContainer = document.getElementById('message-container');
+            const form = document.getElementById('crear-ciclo-form');
+
+            const showMessage = (text, type) => {
+                messageContainer.textContent = text;
+                messageContainer.className = `form__message ${type}`;
+                setTimeout(() => messageContainer.textContent = '', 5000);
+            };
+
+            form.addEventListener('submit', async e => {
+                e.preventDefault();
+                const formData = new FormData(form);
+
+                // Validaciones obligatorias
+                const requiredFields = ['cicloID', 'tipoCiclo', 'cicloName', 'siembraDate', 'description', 'state'];
+                for (const field of requiredFields) {
+                    if (!formData.get(field) || formData.get(field).trim() === '') {
+                        showMessage('Todos los campos obligatorios deben llenarse.', 'error');
+                        return;
+                    }
+                }
+
+                // Validación de fechas
+                const siembraDate = new Date(formData.get('siembraDate'));
+                const cosechaDateStr = formData.get('cosechaDate');
+                if (cosechaDateStr && new Date(cosechaDateStr) <= siembraDate) {
+                    showMessage('La Fecha Fin (Cosecha) debe ser posterior a la Fecha Inicio (Siembra).', 'error');
+                    return;
+                }
+
+                try {
+                    const res = await fetch('http://localhost:3000/ciclo-cultivo', {
+                        method: 'POST',
+                        body: formData
+                    });
+
+                    if (!res.ok) {
+                        const err = await res.json().catch(() => ({ error: 'Error desconocido del servidor.' }));
+                        throw new Error(err.error || 'Error al crear el ciclo de cultivo.');
+                    }
+
+                    showMessage('Ciclo de cultivo creado exitosamente.', 'success');
+                    setTimeout(() => window.location.href = 'listar_ciclo.html', 1000);
+
+                } catch (error) {
+                    console.error('Error al enviar el formulario:', error);
+                    showMessage(error.message, 'error');
+                }
+            });
+        })();
+    </script>
 </body>
 
 </html>

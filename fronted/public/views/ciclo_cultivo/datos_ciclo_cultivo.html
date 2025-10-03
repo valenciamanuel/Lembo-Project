@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
@@ -8,45 +9,56 @@
     <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
     <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
+
 <body>
-    <!-- Barra GOV superior -->
     <div class="page__banner--top">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
     </div>
+
     <header class="header"></header>
+
     <main class="form-container">
         <form class="form" id="edit-form" enctype="multipart/form-data">
             <h2 class="form__title">Editar Ciclo de Cultivo</h2>
+            <div id="mensajeValidacion" class="form__message"></div>
             <input type="hidden" id="cicloId">
 
             <div class="form__row">
                 <div class="form__column">
-                    <label class="form__label">Cargar imagen</label>
-                    <input class="form__input form__input--imagen" type="file" name="image" id="image">
+                    <label class="form__label" for="image">Cargar imagen</label>
+                    <input class="form__input form__input--imagen" type="file" name="image" id="image" accept="image/*">
                     <div id="current-image-container"></div>
 
-                    <label class="form__label">Código</label>
-                    <input class="form__input" type="text" name="cicloID" id="cicloID">
+                    <label class="form__label" for="cicloID">Código</label>
+                    <input class="form__input" type="text" name="cicloID" id="cicloID" required>
 
-                    <label class="form__label">Nombre</label>
-                    <input class="form__input" type="text" name="cicloName" id="cicloName">
+                    <label class="form__label" for="cicloName">Nombre</label>
+                    <input class="form__input" type="text" name="cicloName" id="cicloName" required>
 
-                    <label class="form__label">Fecha Inicio</label>
-                    <input class="form__input" type="date" name="siembraDate" id="siembraDate">
+                    <label class="form__label" for="tipoCiclo">Tipo de Ciclo</label>
+                    <select name="tipoCiclo" id="tipoCiclo" class="form__input" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Corto">Corto</option>
+                        <option value="Intermedio">Intermedio</option>
+                        <option value="Largo o perenne">Largo o perenne</option>
+                    </select>
+
+                    <label class="form__label" for="siembraDate">Fecha Inicio</label>
+                    <input class="form__input" type="date" name="siembraDate" id="siembraDate" required>
                 </div>
 
                 <div class="form__column">
-                    <label class="form__label">Fecha Fin</label>
+                    <label class="form__label" for="cosechaDate">Fecha Fin</label>
                     <input class="form__input" type="date" name="cosechaDate" id="cosechaDate">
 
-                    <label class="form__label">Novedades</label>
+                    <label class="form__label" for="news">Novedades</label>
                     <textarea class="form__input" name="news" id="news" rows="3"></textarea>
 
-                    <label class="form__label">Descripción</label>
-                    <textarea class="form__input" name="description" id="description" rows="3"></textarea>
+                    <label class="form__label" for="description">Descripción</label>
+                    <textarea class="form__input" name="description" id="description" rows="3" required></textarea>
 
-                    <label class="form__label">Estado</label>
-                    <select name="state" id="state" class="form__input">
+                    <label class="form__label" for="state">Estado</label>
+                    <select name="state" id="state" class="form__input" required>
                         <option value="">Seleccione una opción</option>
                         <option value="activo">Activo</option>
                         <option value="inactivo">Inactivo</option>
@@ -61,83 +73,127 @@
         </form>
     </main>
 
-    <!-- Barra GOV inferior -->
     <div class="gov-bottom">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
     </div>
 
     <script>
-        document.addEventListener("DOMContentLoaded", async () => {
-            const urlParams = new URLSearchParams(window.location.search);
-            const cicloId = urlParams.get('id');
-            const form = document.getElementById('edit-form');
+        (function () {
+            // 1. Seguridad y permisos
+            const userData = sessionStorage.getItem('userData');
+            const user = userData ? JSON.parse(userData) : null;
 
-            if (!cicloId) {
-                alert('Error: No se encontró el ID del ciclo de cultivo.');
+            if (!user) {
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
                 return;
             }
 
-            try {
-                const response = await fetch(`http://localhost:3000/ciclocultivo/${cicloId}`);
-                if (!response.ok) throw new Error('Error al obtener los datos del ciclo de cultivo.');
-
-                const data = await response.json();
-                document.getElementById('cicloId').value = data.id;
-                document.getElementById('cicloID').value = data.cicloID;
-                document.getElementById('cicloName').value = data.cicloName;
-                document.getElementById('siembraDate').value = data.siembraDate.split('T')[0];
-                document.getElementById('cosechaDate').value = data.cosechaDate.split('T')[0];
-                document.getElementById('news').value = data.news;
-                document.getElementById('description').value = data.description;
-                document.getElementById('state').value = data.state;
-
-                const imageContainer = document.getElementById('current-image-container');
-                if (data.image) {
-                    imageContainer.innerHTML = `<img src="/uploads/${data.image}" alt="Imagen actual" width="150">`;
-                } else {
-                    imageContainer.innerHTML = '<span>No hay imagen</span>';
-                }
-
-            } catch (error) {
-                alert(`Error al cargar los datos: ${error.message}`);
+            const allowedRoles = ['admin', 'superadmin'];
+            if (!allowedRoles.includes(user.role)) {
+                alert('Acceso Denegado: Su rol no tiene permiso para editar ciclos.');
+                window.location.href = '/fronted/public/views/ciclo_cultivo/listar_ciclo.html';
+                return;
             }
 
-            form.addEventListener('submit', async (e) => {
-                e.preventDefault();
+            const showMessage = (msg, type) => {
+                const el = document.getElementById('mensajeValidacion');
+                el.textContent = msg;
+                el.className = `form__message ${type}`;
+                setTimeout(() => el.textContent = '', 5000);
+            };
 
-                const formData = new FormData();
-                formData.append('cicloID', document.getElementById('cicloID').value);
-                formData.append('cicloName', document.getElementById('cicloName').value);
-                formData.append('siembraDate', document.getElementById('siembraDate').value);
-                formData.append('cosechaDate', document.getElementById('cosechaDate').value);
-                formData.append('news', document.getElementById('news').value);
-                formData.append('description', document.getElementById('description').value);
-                formData.append('state', document.getElementById('state').value);
+            document.addEventListener('DOMContentLoaded', async () => {
+                const urlParams = new URLSearchParams(window.location.search);
+                const cicloId = urlParams.get('id');
+                const form = document.getElementById('edit-form');
+                let currentImage = '';
 
-                const imageFile = document.getElementById('image').files[0];
-                if (imageFile) {
-                    formData.append('image', imageFile);
+                if (!cicloId) {
+                    showMessage('Error: No se encontró el ID del ciclo.', 'error');
+                    return;
                 }
 
+                // 2. Cargar datos del ciclo
                 try {
-                    const response = await fetch(`http://localhost:3000/ciclocultivo/${cicloId}`, {
-                        method: 'PUT',
-                        body: formData
-                    });
+                    const res = await fetch(`http://localhost:3000/ciclocultivo/${cicloId}`);
+                    if (!res.ok) throw new Error('Error al obtener los datos.');
 
-                    if (!response.ok) {
-                        const errorData = await response.json();
-                        throw new Error(errorData.error || 'Error al actualizar el ciclo.');
-                    }
+                    const data = await res.json();
+                    document.getElementById('cicloId').value = data.id;
+                    document.getElementById('cicloID').value = data.cicloID || '';
+                    document.getElementById('cicloName').value = data.cicloName || '';
+                    document.getElementById('tipoCiclo').value = data.tipoCiclo || '';
+                    document.getElementById('siembraDate').value = data.siembraDate ? data.siembraDate.split('T')[0] : '';
+                    document.getElementById('cosechaDate').value = data.cosechaDate ? data.cosechaDate.split('T')[0] : '';
+                    document.getElementById('news').value = data.news || '';
+                    document.getElementById('description').value = data.description || '';
+                    document.getElementById('state').value = data.state.toLowerCase() || '';
+                    currentImage = data.image || '';
 
-                    alert('Ciclo de cultivo actualizado exitosamente.');
-                    window.location.href = 'listar_ciclo_cultivo.html';
+                    const imgContainer = document.getElementById('current-image-container');
+                    imgContainer.innerHTML = currentImage
+                        ? `<p>Imagen actual:</p><img src="/fronted/public/uploads/${currentImage}" width="150" style="margin-bottom:10px;border-radius:4px;">`
+                        : '<p>No hay imagen actual.</p>';
 
                 } catch (error) {
-                    alert(`Error al actualizar: ${error.message}`);
+                    showMessage(`Error al cargar datos: ${error.message}`, 'error');
                 }
+
+                // 3. Manejar envío del formulario
+                form.addEventListener('submit', async (e) => {
+                    e.preventDefault();
+                    showMessage('', '');
+
+                    const fields = {
+                        cicloID: document.getElementById('cicloID').value.trim(),
+                        cicloName: document.getElementById('cicloName').value.trim(),
+                        tipoCiclo: document.getElementById('tipoCiclo').value.trim(),
+                        siembraDate: document.getElementById('siembraDate').value,
+                        cosechaDate: document.getElementById('cosechaDate').value,
+                        news: document.getElementById('news').value.trim(),
+                        description: document.getElementById('description').value.trim(),
+                        state: document.getElementById('state').value.trim()
+                    };
+
+                    // Validaciones
+                    const requiredFields = ['cicloID','cicloName','tipoCiclo','siembraDate','description','state'];
+                    for(const key of requiredFields) {
+                        if(!fields[key]){
+                            showMessage('Todos los campos obligatorios deben completarse.', 'error');
+                            return;
+                        }
+                    }
+
+                    if(fields.cosechaDate && new Date(fields.cosechaDate) <= new Date(fields.siembraDate)){
+                        showMessage('La Fecha Fin debe ser posterior a la Fecha Inicio.', 'error');
+                        return;
+                    }
+
+                    const formData = new FormData();
+                    for(const key in fields) formData.append(key, fields[key]);
+                    const imageFile = document.getElementById('image').files[0];
+                    if(imageFile) formData.append('image', imageFile);
+
+                    try {
+                        const res = await fetch(`http://localhost:3000/ciclocultivo/${cicloId}`, {
+                            method: 'PUT',
+                            body: formData
+                        });
+                        if(!res.ok){
+                            const errData = await res.json().catch(()=>({error:'Error desconocido del servidor'}));
+                            throw new Error(errData.error || 'Error al actualizar el ciclo.');
+                        }
+
+                        showMessage('Ciclo actualizado exitosamente.', 'success');
+                        setTimeout(()=> window.location.href = 'listar_ciclo_cultivo.html', 1000);
+
+                    } catch(error) {
+                        console.error(error);
+                        showMessage(`Error al actualizar: ${error.message}`, 'error');
+                    }
+                });
             });
-        });
+        })();
     </script>
 </body>
 </html>

@@ -1,73 +1,93 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visualizar Cultivos</title>
-  <link rel="stylesheet" href="/css/components/visualizar.css">
-  <script src="/fronted/public/views/components/header.js" defer></script>
-  <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Cultivos</title>
+    <link rel="stylesheet" href="/css/components/visualizar.css">
+    <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
+    <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
+
 <body>
-   <div class="gov-top">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-  </div> 
+    <script>
+        (function () {
+            const userDataString = sessionStorage.getItem('userData');
+            const user = userDataString ? JSON.parse(userDataString) : null;
 
-  <header class="header"></header>
+            // 1. COMPROBAR INICIO DE SESIÓN
+            if (!user) {
+                // Si no hay sesión, redirigir al login.
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
 
-  <main class="content-container">
-    <h2 class="form__title">Cultivos Registrados</h2>
+            // NOTA: Todos los roles autenticados (usuario, admin, superadmin)
+            // tienen permiso para visualizar (solo lectura).
+        })();
+    </script>
 
-    <div id="cultivos-container" class="cards-container">
-      <!-- Aquí JS insertará cada card -->
+    <div class="gov-top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
     </div>
-  </main>
-  <!-- Barra GOV inferior -->
-  <div class="gov-bottom">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-  </div> 
 
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      try {
-        const response = await fetch("http://localhost:3000/cultivo");
-        if (!response.ok) throw new Error("Error al obtener cultivos");
+    <header class="header"></header>
 
-        const cultivos = await response.json();
-        const container = document.getElementById("cultivos-container");
-        container.innerHTML = "";
+    <main class="content-container">
+        <h2 class="form__title">Cultivos Registrados</h2>
 
-        if (cultivos.length === 0) {
-          container.innerHTML = `<p class="no-cultivos">No hay cultivos registrados</p>`;
-          return;
-        }
+        <div id="cultivos-container" class="cards-container"></div>
+    </main>
 
-        cultivos.forEach(c => {
-          const card = document.createElement("div");
-          card.classList.add("card");
+    <div class="gov-bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+    </div>
 
-          card.innerHTML = `
-            <div class="card-image">
-              ${c.image ? `<img src="http://localhost:3000/uploads/${c.image}" alt="${c.cultivoName}">` : `<div class="no-image">Sin imagen</div>`}
-            </div>
-            <div class="card-content">
-              <h3>${c.cultivoName}</h3>
-              <p><strong>Tipo:</strong> ${c.cultivoType}</p>
-              <p><strong>Código:</strong> ${c.cultivoID}</p>
-              <p><strong>Tamaño:</strong> ${c.size || "-"}</p>
-              <p><strong>Ubicación:</strong> ${c.location || "-"}</p>
-              <p><strong>Estado:</strong> <span class="estado ${c.state.toLowerCase()}">${c.state}</span></p>
-            </div>
-          `;
-          container.appendChild(card);
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                // Asegúrate de que el script de seguridad ha terminado de validar la sesión
+                // antes de hacer la llamada a la API.
+                const response = await fetch("http://localhost:3000/cultivo");
+                if (!response.ok) throw new Error("Error al obtener cultivos");
+
+                const cultivos = await response.json();
+                const container = document.getElementById("cultivos-container");
+                container.innerHTML = "";
+
+                if (cultivos.length === 0) {
+                    container.innerHTML = `<p class="no-cultivos">No hay cultivos registrados</p>`;
+                    return;
+                }
+
+                cultivos.forEach(c => {
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+
+                    card.innerHTML = `
+                        <div class="card-image">
+                            ${c.image ? `<img src="http://localhost:3000/uploads/${c.image}" alt="${c.cultivoName}">` : `<div class="no-image">Sin imagen</div>`}
+                        </div>
+                        <div class="card-content">
+                            <h3>${c.cultivoName}</h3>
+                            <p><strong>Tipo:</strong> ${c.cultivoType}</p>
+                            <p><strong>Código:</strong> ${c.cultivoID}</p>
+                            <p><strong>Tamaño:</strong> ${c.size || "-"}</p>
+                            <p><strong>Ubicación:</strong> ${c.location || "-"}</p>
+                            <p><strong>Estado:</strong> <span class="estado ${c.state.toLowerCase()}">${c.state}</span></p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+            } catch (error) {
+                console.error("Error cargando cultivos:", error);
+
+                const container = document.getElementById("cultivos-container");
+                container.innerHTML = `<p class="no-cultivos">Error al cargar cultivos</p>`;
+            }
         });
-      } catch (error) {
-        console.error(" Error cargando cultivos:", error);
-
-        const container = document.getElementById("cultivos-container");
-        container.innerHTML = `<p class="no-cultivos">Error al cargar cultivos</p>`;
-      }
-    });
-  </script>
+    </script>
 </body>
+
 </html>

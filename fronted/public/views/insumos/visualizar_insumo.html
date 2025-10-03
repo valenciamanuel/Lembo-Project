@@ -1,81 +1,105 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Visualizar Insumos</title>
-  <link rel="stylesheet" href="/css/components/visualizar.css">
-  <script src="/fronted/public/views/components/header.js" defer></script>
-  <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Visualizar Insumos</title>
+    <link rel="stylesheet" href="/css/components/visualizar.css">
+    <link rel="stylesheet" href="/fronted/public/css/components/visualizar.css">
+    <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
 <body>
-  <div class="gov-top">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
-  </div> 
+    <script>
+        (function() {
+            const userDataString = sessionStorage.getItem('userData');
+            const user = userDataString ? JSON.parse(userDataString) : null;
+            if (!user) {
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
+            const role = user.role;
+            const allowedRoles = ['visitante', 'personal', 'admin', 'superadmin'];
+            if (!allowedRoles.includes(role)) {
+                alert('Acceso Denegado: Su rol no tiene permiso para visualizar insumos.');
+                window.location.href = '/fronted/public/views/homes/home.html';
+                return;
+            }
 
-  <header class="header"></header>
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) {
+                btnLogout.onclick = function() {
+                    sessionStorage.removeItem('userData');
+                    sessionStorage.removeItem('userToken');
+                    localStorage.removeItem('lembo_user_data');
+                    window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                };
+            }
+        })();
+    </script>
 
-  <main class="content-container">
-    <h2 class="form__title">Insumos Registrados</h2>
+    <div class="gov-top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top">
+    </div>
 
-  <div id="insumos-container" class="cards-container">
-   <!-- Aquí JS insertará cada card -->
-  </div>
- </main>
+    <header class="header"></header>
 
- <script>
-  document.addEventListener("DOMContentLoaded", async () => {
-   try {
-    const response = await fetch("http://localhost:3000/insumo");
-    if (!response.ok) throw new Error("Error al obtener insumos");
+    <main class="content-container">
+        <h2 class="form__title">Insumos Registrados</h2>
+        <div id="insumos-container" class="cards-container"></div>
+    </main>
 
-    const insumos = await response.json();
-    const container = document.getElementById("insumos-container");
-    container.innerHTML = "";
-
-    if (insumos.length === 0) {
-     container.innerHTML = `<p class="no-insumos">No hay insumos registrados</p>`;
-     return;
-    }
-
-    const BASE_URL = "http://localhost:3000";
-
-    const formatPrice = (value) => {
-     const numberValue = parseFloat(value);
-     return isNaN(numberValue) ? '0.00' : numberValue.toFixed(2);
-    };
-
-    insumos.forEach(i => {
-     const card = document.createElement("div");
-     card.classList.add("card");
-
-     card.innerHTML = `
-      <div class="card-image">
-       ${i.image ? `<img src="${BASE_URL}/uploads/${i.image}" alt="${i.nombreInsumo}">` : `<div class="no-image">Sin imagen</div>`}
-      </div>
-      <div class="card-content">
-       <h3>${i.nombreInsumo}</h3>
-       <p><strong>Tipo:</strong> ${i.tipoInsumo || 'N/A'}</p>
-       <p><strong>Descripción:</strong> ${i.descripcion || 'N/A'}</p>
-       <p><strong>Cantidad:</strong> ${i.cantidad}</p>
-       <p><strong>Valor Unitario:</strong> $${formatPrice(i.valorUnitario)}</p>
-       <p><strong>Valor Total:</strong> $${formatPrice(i.valorTotal)}</p>
-       <p><strong>Estado:</strong> ${i.estado || 'Desconocido'}</p>
-      </div>
-     `;
-     container.appendChild(card);
-    });
-   } catch (error) {
-    console.error("Error cargando insumos:", error);
-
-    const container = document.getElementById("insumos-container");
-    container.innerHTML = `<p class="no-insumos">Error al cargar insumos. Asegúrese de que el servidor Express esté en ejecución y la ruta /insumo funcione.</p>`;
-   }
-  });
- </script>
-</body>
-</html>
-<!-- Barra GOV inferior -->
     <div class="gov-bottom">
         <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
     </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", async () => {
+            try {
+                const response = await fetch("http://localhost:3000/insumo");
+                if (!response.ok) throw new Error("Error al obtener insumos");
+
+                const insumos = await response.json();
+                const container = document.getElementById("insumos-container");
+                container.innerHTML = "";
+
+                if (insumos.length === 0) {
+                    container.innerHTML = `<p class="no-insumos">No hay insumos registrados</p>`;
+                    return;
+                }
+
+                const BASE_URL = "http://localhost:3000";
+                const formatPrice = (value) => {
+                    const numberValue = parseFloat(value);
+                    return isNaN(numberValue) ? '0.00' : numberValue.toFixed(2);
+                };
+
+                insumos.forEach(i => {
+                    const card = document.createElement("div");
+                    card.classList.add("card");
+
+                    card.innerHTML = `
+                        <div class="card-image">
+                            ${i.image ? `<img src="${BASE_URL}/uploads/${i.image}" alt="${i.nombreInsumo}">` : `<div class="no-image">Sin imagen</div>`}
+                        </div>
+                        <div class="card-content">
+                            <h3>${i.nombreInsumo}</h3>
+                            <p><strong>Tipo:</strong> ${i.tipoInsumo || 'N/A'}</p>
+                            <p><strong>Descripción:</strong> ${i.descripcion || 'N/A'}</p>
+                            <p><strong>Cantidad:</strong> ${i.cantidad}</p>
+                            <p><strong>Valor Unitario:</strong> $${formatPrice(i.valorUnitario)}</p>
+                            <p><strong>Valor Total:</strong> $${formatPrice(i.valorTotal)}</p>
+                            <p><strong>Estado:</strong> ${i.estado || 'Desconocido'}</p>
+                        </div>
+                    `;
+                    container.appendChild(card);
+                });
+
+            } catch (error) {
+                console.error("Error cargando insumos:", error);
+                const container = document.getElementById("insumos-container");
+                container.innerHTML = `<p class="no-insumos">Error al cargar insumos. Asegúrese de que el servidor Express esté en ejecución y la ruta /insumo funcione.</p>`;
+            }
+        });
+    </script>
+</body>
+</html>

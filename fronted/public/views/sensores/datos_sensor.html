@@ -1,159 +1,195 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editar Sensor</title>
-  <link rel="stylesheet" href="/fronted/public/css/main.css">
-  <script src="/fronted/public/views/components/header.js"></script>
-  <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Sensor</title>
+  <link rel="stylesheet" href="/fronted/public/css/main.css">
+  <script src="/fronted/public/views/components/header.js"></script>
+  <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
 </head>
 <body>
-  <header class="header"></header>
+  <header class="header"></header>
 
-  <!-- Barra GOV superior -->
-  <div class="page__banner--top">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
-  </div>
+    <div class="page__banner--top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
+  </div>
 
-  <main class="form-container">
-    <form class="form" id="edit-sensor-form" enctype="multipart/form-data">
-      <h2 class="form__title">Editar Sensor</h2>
-      <input type="hidden" id="sensorId">
+  <main class="form-container">
+    <form class="form" id="edit-sensor-form" enctype="multipart/form-data">
+      <h2 class="form__title">Editar Sensor</h2>
+      <input type="hidden" id="sensorId">
 
-      <div class="form__row">
-        <!-- Columna izquierda -->
-        <div class="form__column">
-          <label class="form__label">Nombre del Sensor</label>
-          <input class="form__input" type="text" id="nombreSensor" name="nombreSensor">
+      <div class="form__row">
+                <div class="form__column">
+          <label class="form__label">Nombre del Sensor</label>
+          <input class="form__input" type="text" id="nombreSensor" name="nombreSensor">
 
-          <label class="form__label">Tipo de Sensor</label>
-          <select class="form__input" id="tipoSensor" name="tipoSensor" required>
-            <option value="">Seleccione un tipo</option>
-            <option value="Temperatura">Temperatura</option>
-            <option value="Humedad">Humedad</option>
-            <option value="pH">pH</option>
-            <option value="Luminosidad">Luminosidad</option>
-            <option value="CO2">CO₂</option>
-            <option value="Otro">Otro</option>
-          </select>
+          <label class="form__label">Tipo de Sensor</label>
+          <select class="form__input" id="tipoSensor" name="tipoSensor" required>
+            <option value="">Seleccione un tipo</option>
+            <option value="Temperatura">Temperatura</option>
+            <option value="Humedad">Humedad</option>
+            <option value="pH">pH</option>
+            <option value="Luminosidad">Luminosidad</option>
+            <option value="CO2">CO₂</option>
+            <option value="Otro">Otro</option>
+          </select>
 
-          <label class="form__label">Unidad de Medida</label>
-          <select class="form__input" id="unidadMedida" name="unidadMedida" required>
-            <option value="">Seleccione una unidad</option>
-            <option value="°C">Grados Celsius (°C)</option>
-            <option value="%">Porcentaje (%)</option>
-            <option value="pH">pH</option>
-            <option value="Lux">Lux</option>
-            <option value="ppm">Partes por millón (ppm)</option>
-            <option value="Otro">Otro</option>
-          </select>
-        </div>
+          <label class="form__label">Unidad de Medida</label>
+          <select class="form__input" id="unidadMedida" name="unidadMedida" required>
+            <option value="">Seleccione una unidad</option>
+            <option value="°C">Grados Celsius (°C)</option>
+            <option value="%">Porcentaje (%)</option>
+            <option value="pH">pH</option>
+            <option value="Lux">Lux</option>
+            <option value="ppm">Partes por millón (ppm)</option>
+            <option value="Otro">Otro</option>
+          </select>
+        </div>
 
-        <!-- Columna derecha -->
-        <div class="form__column">
-          <label class="form__label">Tiempo de Escaneo</label>
-          <input class="form__input" type="text" id="tiempoEscaneo" name="tiempoEscaneo">
+                <div class="form__column">
+          <label class="form__label">Tiempo de Escaneo</label>
+          <input class="form__input" type="text" id="tiempoEscaneo" name="tiempoEscaneo">
 
-          <label class="form__label">Descripción</label>
-          <textarea class="form__input" id="descripcion" name="descripcion"></textarea>
+          <label class="form__label">Descripción</label>
+          <textarea class="form__input" id="descripcion" name="descripcion"></textarea>
 
-          <label class="form__label">Estado</label>
-          <select class="form__input" id="estado" name="estado">
-            <option value="">Seleccione una opción</option>
-            <option value="Activo">Activo</option>
-            <option value="Inactivo">Inactivo</option>
-          </select>
+          <label class="form__label">Estado</label>
+          <select class="form__input" id="estado" name="estado">
+            <option value="">Seleccione una opción</option>
+            <option value="Activo">Activo</option>
+            <option value="Inactivo">Inactivo</option>
+          </select>
 
-          <label class="form__label">Imagen</label>
-          <input type="file" class="form__input" id="image" name="image">
-          <div id="current-image-preview" style="margin-top: 5px;"></div>
-        </div>
-      </div>
+          <label class="form__label">Imagen</label>
+          <input type="file" class="form__input" id="image" name="image">
+          <div id="current-image-preview" style="margin-top: 5px;"></div>
+        </div>
+      </div>
 
-      <div class="form__btn-group">
-        <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
-        <a href="listar_sensor.html" class="btn__secundary">Cancelar</a>
-      </div>
-    </form>
-  </main>
+      <div class="form__btn-group">
+        <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+        <a href="listar_sensor.html" class="btn__secundary">Cancelar</a>
+      </div>
+    </form>
+  </main>
 
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const sensorId = urlParams.get('id');
-      const form = document.getElementById('edit-sensor-form');
-      const imageInput = document.getElementById('image');
-      const previewContainer = document.getElementById('current-image-preview');
-
-      if (!sensorId) {
-        alert('Error: No se encontró el ID del sensor.');
-        return;
+    <script>
+  (function () { 
+      // CLAVE: Obtiene los datos del usuario para verificar el rol
+      const userDataString = sessionStorage.getItem('userData');
+      const user = userDataString ? JSON.parse(userDataString) : null;
+      
+      // 1. COMPROBAR INICIO DE SESIÓN
+      if (!user) { 
+          // Si no está logueado, redirigir
+          window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+          return; 
+      } 
+      
+      const role = user.role; 
+      
+      // 2. DEFINIR REGLAS DE PERMISOS PARA EDITAR
+      // Solo Admin y Superadmin pueden editar un sensor
+      const allowedRoles = ['admin', 'superadmin']; 
+      
+      // 3. VALIDAR PERMISO PARA EDITAR SENSOR
+      if (!allowedRoles.includes(role)) {
+          // Si el rol no está permitido, lo redirigimos a una página segura (ej: el home)
+          alert('Acceso Denegado: Su rol no tiene permiso para editar sensores.');
+          window.location.href = '/fronted/public/views/homes/home.html'; // Ajusta esta URL si es necesario
+          return; 
       }
-
-      // Cargar datos del sensor
-      try {
-        const response = await fetch(`http://localhost:3000/sensores/${sensorId}`);
-        if (!response.ok) throw new Error('Error al obtener los datos del sensor.');
-        const data = await response.json();
-
-        document.getElementById('sensorId').value = data.idSensor;
-        document.getElementById('nombreSensor').value = data.nombreSensor || "";
-        document.getElementById('tipoSensor').value = data.tipoSensor || "";
-        document.getElementById('unidadMedida').value = data.unidadMedida || "";
-        document.getElementById('tiempoEscaneo').value = data.tiempoEscaneo || "";
-        document.getElementById('descripcion').value = data.descripcion || "";
-        document.getElementById('estado').value = data.estado || "";
-
-        // Mostrar imagen actual
-        if(data.image) {
-          previewContainer.innerHTML = `<img src="/uploads/${data.image}" width="80" style="border-radius:6px;">`;
-        }
-      } catch (error) {
-        console.error("❌Error cargando datos:", error);
-        alert(`Error al cargar los datos: ${error.message}`);
+      
+      // Lógica de Cerrar Sesión (Opcional, si tienes el botón aquí)
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+          btnLogout.onclick = function () { 
+              sessionStorage.removeItem('userData');
+              sessionStorage.removeItem('userToken');
+              localStorage.removeItem('lembo_user_data');
+              window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+          };
       }
+  })();
+  </script>
 
-      // Guardar cambios
-      form.addEventListener('submit', async (e) => {
-        e.preventDefault();
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const sensorId = urlParams.get('id');
+      const form = document.getElementById('edit-sensor-form');
+      const imageInput = document.getElementById('image');
+      const previewContainer = document.getElementById('current-image-preview');
 
-        const formData = new FormData();
-        formData.append('nombreSensor', document.getElementById('nombreSensor').value);
-        formData.append('tipoSensor', document.getElementById('tipoSensor').value);
-        formData.append('unidadMedida', document.getElementById('unidadMedida').value);
-        formData.append('tiempoEscaneo', document.getElementById('tiempoEscaneo').value);
-        formData.append('descripcion', document.getElementById('descripcion').value);
-        formData.append('estado', document.getElementById('estado').value);
+      if (!sensorId) {
+        alert('Error: No se encontró el ID del sensor.');
+        return;
+      }
 
-        if(imageInput.files[0]) {
-          formData.append('image', imageInput.files[0]);
-        }
+      // Cargar datos del sensor
+      try {
+        const response = await fetch(`http://localhost:3000/sensores/${sensorId}`);
+        if (!response.ok) throw new Error('Error al obtener los datos del sensor.');
+        const data = await response.json();
 
-        try {
-          const response = await fetch(`http://localhost:3000/sensores/${sensorId}`, {
-            method: 'PUT',
-            body: formData
-          });
+        document.getElementById('sensorId').value = data.idSensor;
+        document.getElementById('nombreSensor').value = data.nombreSensor || "";
+        document.getElementById('tipoSensor').value = data.tipoSensor || "";
+        document.getElementById('unidadMedida').value = data.unidadMedida || "";
+        document.getElementById('tiempoEscaneo').value = data.tiempoEscaneo || "";
+        document.getElementById('descripcion').value = data.descripcion || "";
+        document.getElementById('estado').value = data.estado || "";
 
-          if (!response.ok) {
-            const errorData = await response.json();
-            throw new Error(errorData.error || 'Error al actualizar el sensor.');
-          }
+        // Mostrar imagen actual
+        if(data.image) {
+          previewContainer.innerHTML = `<img src="/uploads/${data.image}" width="80" style="border-radius:6px;">`;
+        }
+      } catch (error) {
+        console.error("❌Error cargando datos:", error);
+        alert(`Error al cargar los datos: ${error.message}`);
+      }
 
-          alert('Sensor actualizado exitosamente.');
-          window.location.href = 'listar_sensor.html';
-        } catch (error) {
-          console.error("Error al actualizar el sensor:", error);
-          alert(`Error al actualizar: ${error.message}`);
-        }
-      });
-    });
-  </script>
+      // Guardar cambios
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
 
-  <!-- Barra GOV inferior -->
-  <div class="gov-bottom">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-  </div>
+        const formData = new FormData();
+        formData.append('nombreSensor', document.getElementById('nombreSensor').value);
+        formData.append('tipoSensor', document.getElementById('tipoSensor').value);
+        formData.append('unidadMedida', document.getElementById('unidadMedida').value);
+        formData.append('tiempoEscaneo', document.getElementById('tiempoEscaneo').value);
+        formData.append('descripcion', document.getElementById('descripcion').value);
+        formData.append('estado', document.getElementById('estado').value);
+
+        if(imageInput.files[0]) {
+          formData.append('image', imageInput.files[0]);
+        }
+
+        try {
+          const response = await fetch(`http://localhost:3000/sensores/${sensorId}`, {
+            method: 'PUT',
+            body: formData
+          });
+
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.error || 'Error al actualizar el sensor.');
+          }
+
+          alert('Sensor actualizado exitosamente.');
+          window.location.href = 'listar_sensor.html';
+        } catch (error) {
+          console.error("Error al actualizar el sensor:", error);
+          alert(`Error al actualizar: ${error.message}`);
+        }
+      });
+    });
+  </script>
+
+    <div class="gov-bottom">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+  </div>
 </body>
 </html>

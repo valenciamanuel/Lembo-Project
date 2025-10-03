@@ -1,143 +1,179 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-  <meta charset="UTF-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Editar Uso de Insumo</title>
-  <link rel="stylesheet" href="/fronted/public/css/main.css">
-  <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
-  <script src="/fronted/public/views/components/header.js" defer></script>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Editar Uso de Insumo</title>
+  <link rel="stylesheet" href="/fronted/public/css/main.css">
+  <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
+  <script src="/fronted/public/views/components/header.js" defer></script>
 
 </head>
 <body>
-  <!-- Barra GOV superior -->
-  <div class="page__banner--top">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
-  </div>
-  <header class="header"></header>
-
-  <main class="form-container">
-    <form class="form" id="edit-uso-form">
-      <h2 class="form__title">Editar Uso de Insumo</h2>
-      <input type="hidden" id="idUso">
-
-      <div class="form__row">
-        <div class="form__column">
-          <label class="form__label">Fecha de Uso</label>
-          <input class="form__input" type="date" id="fecha_uso">
-        </div>
-        <div class="form__column">
-          <label class="form__label">Cantidad</label>
-          <input class="form__input" type="number" id="cantidad" step="0.01">
-        </div>
-      </div>
-
-      <div class="form__row">
-        <div class="form__column">
-          <label class="form__label">Responsable</label>
-          <input class="form__input" type="text" id="responsable">
-        </div>
-        <div class="form__column">
-          <label class="form__label">Valor Unitario</label>
-          <input class="form__input" type="number" id="valor_unitario" step="0.01">
-        </div>
-      </div>
-
-      <div class="form__row">
-        <div class="form__column">
-          <label class="form__label">Valor Total</label>
-          <input class="form__input" type="number" id="valor_total" step="0.01">
-        </div>
-        <div class="form__column">
-          <label class="form__label">Insumo</label>
-          <input class="form__input" type="text" id="insumo">
-        </div>
-      </div>
-
-      <div class="form__row">
-        <div class="form__column">
-          <label class="form__label">Observaciones</label>
-          <textarea class="form__input" id="observaciones"></textarea>
-        </div>
-        <div class="form__column"></div>
-      </div>
-
-      <div class="form__btn-group">
-        <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
-        <a href="listar_uso de insumos.html" class="btn__secundary">Cancelar</a>
-      </div>
-    </form>
-  </main>
-
-  <script>
-    document.addEventListener("DOMContentLoaded", async () => {
-      const urlParams = new URLSearchParams(window.location.search);
-      const idUso = urlParams.get('id');
-      const form = document.getElementById('edit-uso-form');
-
-      if (!idUso) {
-        alert("Error: No se encontró el ID del uso de insumo en la URL.");
-        return;
+    <script>
+  (function () { 
+      const userDataString = sessionStorage.getItem('userData');
+      const user = userDataString ? JSON.parse(userDataString) : null;
+      
+      // 1. COMPROBAR INICIO DE SESIÓN
+      if (!user) { 
+          window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+          return; 
+      } 
+      
+      const role = user.role; 
+      
+      // 2. DEFINIR REGLAS DE PERMISOS PARA EDITAR (Solo Admin y Superadmin)
+      const allowedRoles = ['admin', 'superadmin']; 
+      
+      // 3. VALIDAR PERMISO
+      if (!allowedRoles.includes(role)) {
+          alert('Acceso Denegado: Su rol no tiene permiso para editar el uso de insumos.');
+          // Redirigir a una página segura, como el listado de insumos o el home
+          window.location.href = '/fronted/public/views/homes/home-insumos.html'; 
+          return; 
       }
-
-      // Cargar datos existentes
-      try {
-        const res = await fetch(`http://localhost:3000/uso_insumo/${idUso}`);
-        if (!res.ok) throw new Error("Error al obtener los datos.");
-        const data = await res.json();
-
-        document.getElementById('idUso').value = data.idUso;
-        document.getElementById('fecha_uso').value = data.fecha_uso ? data.fecha_uso.split("T")[0] : "";
-        document.getElementById('cantidad').value = data.cantidad || 0;
-        document.getElementById('responsable').value = data.responsable || "";
-        document.getElementById('valor_unitario').value = data.valor_unitario || 0;
-        document.getElementById('valor_total').value = data.valor_total || 0;
-        document.getElementById('observaciones').value = data.observaciones || "";
-        document.getElementById('insumo').value = data.insumo || "";
-      } catch (error) {
-        console.error(" Error cargando datos:", error);
-        alert("Error al cargar los datos del uso de insumo.");
+      
+      // Lógica de Cerrar Sesión (Si aplica)
+      const btnLogout = document.getElementById('btnLogout');
+      if (btnLogout) {
+          btnLogout.onclick = function () { 
+              sessionStorage.removeItem('userData');
+              sessionStorage.removeItem('userToken');
+              localStorage.removeItem('lembo_user_data');
+              window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html'; 
+          };
       }
+  })();
+  </script>
 
-      //  Guardar cambios
-      form.addEventListener("submit", async (e) => {
-        e.preventDefault();
+    <div class="page__banner--top">
+    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
+  </div>
+  <header class="header"></header>
 
-        const updatedData = {
-          fecha_uso: document.getElementById('fecha_uso').value,
-          cantidad: document.getElementById('cantidad').value,
-          responsable: document.getElementById('responsable').value,
-          valor_unitario: document.getElementById('valor_unitario').value,
-          valor_total: document.getElementById('valor_total').value,
-          observaciones: document.getElementById('observaciones').value,
-          insumo: document.getElementById('insumo').value
-        };
+  <main class="form-container">
+    <form class="form" id="edit-uso-form">
+      <h2 class="form__title">Editar Uso de Insumo</h2>
+      <input type="hidden" id="idUso">
 
-        try {
-          const res = await fetch(`http://localhost:3000/uso_insumo/${idUso}`, {
-            method: "PUT",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(updatedData)
-          });
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Fecha de Uso</label>
+          <input class="form__input" type="date" id="fecha_uso">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Cantidad</label>
+          <input class="form__input" type="number" id="cantidad" step="0.01">
+        </div>
+        </div>
 
-          if (!res.ok) {
-            const errData = await res.json();
-            throw new Error(errData.error || "Error al actualizar uso de insumo");
-          }
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Responsable</label>
+          <input class="form__input" type="text" id="responsable">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Valor Unitario</label>
+          <input class="form__input" type="number" id="valor_unitario" step="0.01">
+        </div>
+      </div>
 
-          alert(" Uso de insumo actualizado exitosamente.");
-          window.location.href = "listar_uso de insumos.html";
-        } catch (error) {
-          console.error(" Error al actualizar:", error);
-          alert("Error al actualizar uso de insumo.");
-        }
-      });
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Valor Total</label>
+          <input class="form__input" type="number" id="valor_total" step="0.01">
+        </div>
+        <div class="form__column">
+          <label class="form__label">Insumo</label>
+          <input class="form__input" type="text" id="insumo">
+        </div>
+      </div>
 
-    });
-  </script>
+      <div class="form__row">
+        <div class="form__column">
+          <label class="form__label">Observaciones</label>
+          <textarea class="form__input" id="observaciones"></textarea>
+        </div>
+        <div class="form__column"></div>
+      </div>
+
+      <div class="form__btn-group">
+        <button type="submit" class="form__btn form__btn--registrar">Actualizar</button>
+        <a href="listar_uso de insumos.html" class="btn__secundary">Cancelar</a>
+      </div>
+    </form>
+  </main>
+
+  <script>
+    document.addEventListener("DOMContentLoaded", async () => {
+      const urlParams = new URLSearchParams(window.location.search);
+      const idUso = urlParams.get('id');
+      const form = document.getElementById('edit-uso-form');
+
+      if (!idUso) {
+        alert("Error: No se encontró el ID del uso de insumo en la URL.");
+        return;
+      }
+
+      // Cargar datos existentes
+      try {
+        const res = await fetch(`http://localhost:3000/uso_insumo/${idUso}`);
+        if (!res.ok) throw new Error("Error al obtener los datos.");
+        const data = await res.json();
+
+        document.getElementById('idUso').value = data.idUso;
+        document.getElementById('fecha_uso').value = data.fecha_uso ? data.fecha_uso.split("T")[0] : "";
+        document.getElementById('cantidad').value = data.cantidad || 0;
+        document.getElementById('responsable').value = data.responsable || "";
+        document.getElementById('valor_unitario').value = data.valor_unitario || 0;
+        document.getElementById('valor_total').value = data.valor_total || 0;
+        document.getElementById('observaciones').value = data.observaciones || "";
+        document.getElementById('insumo').value = data.insumo || "";
+      } catch (error) {
+        console.error(" Error cargando datos:", error);
+        alert("Error al cargar los datos del uso de insumo.");
+      }
+
+      //  Guardar cambios
+      form.addEventListener("submit", async (e) => {
+        e.preventDefault();
+
+        const updatedData = {
+          fecha_uso: document.getElementById('fecha_uso').value,
+          cantidad: document.getElementById('cantidad').value,
+          responsable: document.getElementById('responsable').value,
+          valor_unitario: document.getElementById('valor_unitario').value,
+          valor_total: document.getElementById('valor_total').value,
+          observaciones: document.getElementById('observaciones').value,
+          insumo: document.getElementById('insumo').value
+        };
+
+        try {
+          const res = await fetch(`http://localhost:3000/uso_insumo/${idUso}`, {
+            method: "PUT",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(updatedData)
+          });
+
+          if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error || "Error al actualizar uso de insumo");
+          }
+
+          alert(" Uso de insumo actualizado exitosamente.");
+          window.location.href = "listar_uso de insumos.html";
+        } catch (error) {
+          console.error(" Error al actualizar:", error);
+          alert("Error al actualizar uso de insumo.");
+        }
+      });
+
+    });
+  </script>
+
+      <div class="gov-bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+    </div>
 </body>
 </html>
-<!-- Barra GOV inferior -->
-    <div class="gov-bottom">
-        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-    </div>

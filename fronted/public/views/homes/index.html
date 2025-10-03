@@ -1,134 +1,131 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Home Principal</title>
-    <link rel="stylesheet" href="/fronted/public/css/pages/homes/stylieshome-insumos-sensores.css">
-    <script src="/fronted/public/views/components/grid.js"></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home Principal</title>
+    <link rel="stylesheet" href="/fronted/public/css/pages/homes/stylieshome-insumos-sensores.css">
+    <script src="/fronted/public/views/components/grid.js"></script>
 </head>
 <body>
-    <header class="header">
-        <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="header__logo">
-        <nav class="header__nav">
-            <a href="../usuarios/registrar.html" class="header__link">Registrar usuario</a>
-            <a href="../usuarios/listar.html" class="header__link">Listar usuarios</a>
-            <a href="../homes/home-ciclo.html" class="header__link">Ciclo Cultivo</a>
-            <a href="../vizualisar/html/asocciaciones.html" class="header__link">Asociación</a>
-            <a href="../sensores/crear_sensor.html" class="header__link">Crear Sensor</a>
-            <a href="../sensores/visualizar_sensores.html" class="header__link">Visualizar Sensores</a>
-            <a href="../sensores/listar_sensor.html" class="header__link">Listar Sensores</a>
-            <a href="../cultivo/visualizar_cultivo.html" class="header__link">Visualizar Cultivos</a>
-            <a href="../ciclo_cultivo/visualizar_ciclo_cultivo.html" class="header__link">Visualizar Ciclo Cultivo</a>
-            <a id="btnLogout" class="header__link" style="cursor: pointer;">Cerrar Sesión</a>
-        </nav>
-    </header>
+    <header class="header">
+        <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="header__logo">
+        <nav class="header__nav">
+            <a href="../usuarios/registrar.html" class="header__link">Registrar usuario</a>
+            <a href="../usuarios/listar.html" class="header__link">Listar usuarios</a>
+            <a href="../homes/home-ciclo.html" class="header__link">Ciclo Cultivo</a>
+            <a href="../vizualisar/html/asocciaciones.html" class="header__link">Asociación</a>
+            <a href="../sensores/crear_sensor.html" class="header__link">Crear Sensor</a>
+            <a href="../sensores/visualizar_sensores.html" class="header__link">Visualizar Sensores</a>
+            <a href="../sensores/listar_sensor.html" class="header__link">Listar Sensores</a>
+            <a href="../cultivo/visualizar_cultivo.html" class="header__link">Visualizar Cultivos</a>
+            <a href="../ciclo_cultivo/visualizar_ciclo_cultivo.html" class="header__link">Visualizar Ciclo Cultivo</a>
+            <a id="btnLogout" class="header__link" style="cursor: pointer;">Cerrar Sesión</a>
+        </nav>
+    </header>
 
-    <div class="header-banner">
-      <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img">
-    </div>
+    <div class="header-banner">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img">
+    </div>
 
-    <div class="background">
-        
-        <div class="top-boxes">
-            <div class="top-boxes__item">
-                <p><a href="../homes/home-insumos.html">Insumos</a></p>
-            </div>
-            <div class="top-boxes__item">
-                <p><a href="../homes/home-cultivo-3.html">Cultivos</a></p>
-            </div>
-            
-            <div class="top-boxes__item">
-                <p><a href="../homes/home-sensores.html">Sensores</a></p>
-            </div>
-        </div>
+    <div class="background">
+        <div class="top-boxes">
+            <div class="top-boxes__item">
+                <p><a href="../homes/home-insumos.html">Insumos</a></p>
+            </div>
+            <div class="top-boxes__item">
+                <p><a href="../homes/home-cultivo-3.html">Cultivos</a></p>
+            </div>
+            <div class="top-boxes__item">
+                <p><a href="../homes/home-sensores.html">Sensores</a></p>
+            </div>
+        </div>
 
-        <div class="grid"></div>
-    </div>
+        <div class="grid"></div>
+    </div>
 
-    <div class="footer-banner">
-      <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="footer-banner__img">
-    </div>
+    <div class="footer-banner">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="footer-banner__img">
+    </div>
 
-    <script>
-    (function(){
-        // 🔑 CLAVE: Cambiamos a sessionStorage.getItem('userData')
-        // y si no existe, intentamos con la clave antigua 'lembo_user_data' 
-        const userDataString = sessionStorage.getItem('userData') || localStorage.getItem('lembo_user_data');
-        
-        const user = userDataString ? JSON.parse(userDataString) : null;
-      
-        if (!user) {
-            // Si no está logueado, redirige al login
-            window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
-            return;
-        }
-      
-        const role = user.role;
-      
-        // Resto del código de control de acceso (Rules)
-        const rules = {
-            visitante: [
-              'Visualizar Ciclo Cultivo',
-              'Visualizar Sensores',
-              'Visualizar Cultivos'
-            ],
-            
-            personal: [
-              'Crear Sensor',
-              'Visualizar Sensores',
-              'Listar Sensores'
-            ],
-            
-            admin: [
-              'Listar usuarios',
-              'Ciclo Cultivo',
-              'Insumos', 
-              'Cultivos', 
-              'Sensores', 
-              'Crear Sensor', 
-              'Visualizar Sensores',
-              'Producción',
-              'Asociación'
-            ],
-            
-            superadmin: [
-              'Registrar usuario',
-              'Listar usuarios',
-              'Ciclo Cultivo',
-              'Insumos', 
-              'Cultivos', 
-              'Sensores', 
-              'Crear Sensor',
-              'Visualizar Sensores',
-              'Producción',
-              'Asociación']
-        };
-      
-        document.querySelectorAll('.header__link').forEach(link => {
-            const txt = link.textContent.trim();
-            if (txt === 'Cerrar Sesión') return;
-            if (!rules[role] || !rules[role].includes(txt)) link.remove();
-        });
+    <script>
+        (function() {
+            // 🔑 CLAVE: Cambiamos a sessionStorage.getItem('userData') 
+            // y si no existe, intentamos con la clave antigua 'lembo_user_data' 
+            const userDataString = sessionStorage.getItem('userData') || localStorage.getItem('lembo_user_data');
+            const user = userDataString ? JSON.parse(userDataString) : null;
 
-        document.querySelectorAll('.top-boxes__item a').forEach(a => {
-            const txt = a.textContent.trim();
-            if (!rules[role] || !rules[role].includes(txt)) a.closest('.top-boxes__item').remove();
-        });
-      
-        const btnLogout = document.getElementById('btnLogout');
-        if (btnLogout) {
-            btnLogout.onclick = function(){
-                // 🔑 CLAVE: Eliminar las claves correctas y de ambos almacenamientos por seguridad
-                sessionStorage.removeItem('userData');
-                sessionStorage.removeItem('userToken');
-                localStorage.removeItem('lembo_user_data'); // Limpieza de la clave antigua
-                
-                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
-            };
-        }
-    })();
-    </script>
+            if (!user) {
+                // Si no está logueado, redirige al login
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
+
+            const role = user.role;
+
+            // Reglas de acceso
+            const rules = {
+                visitante: [
+                    'Visualizar Ciclo Cultivo',
+                    'Visualizar Sensores',
+                    'Visualizar Cultivos'
+                ],
+                personal: [
+                    'Crear Sensor',
+                    'Visualizar Sensores',
+                    'Listar Sensores'
+                ],
+                admin: [
+                    'Listar usuarios',
+                    'Ciclo Cultivo',
+                    'Insumos', 
+                    'Cultivos', 
+                    'Sensores', 
+                    'Crear Sensor', 
+                    'Visualizar Sensores',
+                    'Producción',
+                    'Asociación'
+                ],
+                superadmin: [
+                    'Registrar usuario',
+                    'Listar usuarios',
+                    'Ciclo Cultivo',
+                    'Insumos', 
+                    'Cultivos', 
+                    'Sensores', 
+                    'Crear Sensor',
+                    'Visualizar Sensores',
+                    'Producción',
+                    'Asociación'
+                ]
+            };
+
+            // Ocultar links según rol
+            document.querySelectorAll('.header__link').forEach(link => {
+                const txt = link.textContent.trim();
+                if (txt === 'Cerrar Sesión') return;
+                if (!rules[role] || !rules[role].includes(txt)) link.remove();
+            });
+
+            document.querySelectorAll('.top-boxes__item a').forEach(a => {
+                const txt = a.textContent.trim();
+                if (!rules[role] || !rules[role].includes(txt)) {
+                    a.closest('.top-boxes__item').remove();
+                }
+            });
+
+            // Logout
+            const btnLogout = document.getElementById('btnLogout');
+            if (btnLogout) {
+                btnLogout.onclick = function() {
+                    sessionStorage.removeItem('userData');
+                    sessionStorage.removeItem('userToken');
+                    localStorage.removeItem('lembo_user_data'); // Limpieza clave antigua
+                    window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                };
+            }
+        })();
+    </script>
 
 </body>
 </html>

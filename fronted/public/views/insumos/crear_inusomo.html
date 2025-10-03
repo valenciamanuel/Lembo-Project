@@ -1,184 +1,220 @@
 <!DOCTYPE html>
 <html lang="es">
+
 <head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Crear Insumo</title>
-<link rel="stylesheet" href="/fronted/public/css/main.css">
-<link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
-<script src="/fronted/public/views/components/header.js" defer></script>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Crear Insumo</title>
+    <link rel="stylesheet" href="/fronted/public/css/main.css">
+    <link rel="stylesheet" href="/fronted/public/css/pages/crear.css">
+    <script src="/fronted/public/views/components/header.js" defer></script>
 </head>
+
 <body>
-<div class="page__banner--top">
-<img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
-</div>
-<header class="header"></header>
-<main class="form-container">
-<form class="form" id="crear-insumo-form" enctype="multipart/form-data" novalidate>
-<h2 class="form__title">Datos Insumos</h2>
-<div id="mensajeValidacion" class="form__message"></div>
-<div class="form__row">
- <div class="form__column">
- <label class="form__label" for="image">Cargar imagen</label>
- <input class="form__input form__input--imagen" type="file" id="image" name="image" accept="image/*">
- <label class="form__label" for="tipoInsumo">Tipo insumo</label>
- <select class="form__input" id="tipoInsumo" name="tipoInsumo" required>
- <option value="">Seleccione el tipo de insumo</option>
- <option value="Químico">Químico</option>
- <option value="Físico">Físico</option>
- <option value="Orgánico">Orgánico</option>
- <option value="Herramienta">Herramienta</option>
- <option value="Suministro">Suministro</option>
- </select>
- <label class="form__label" for="nombreInsumo">Nombre insumo</label>
- <input class="form__input" type="text" id="nombreInsumo" name="nombreInsumo" required>
- 
- <label class="form__label" for="unidadMedida">Unidad de medida</label>
- <select class="form__input" id="unidadMedida" name="unidadMedida" required>
- <option value="">Seleccione la unidad</option>
- <option value="Kg">Kilogramo (Kg)</option>
- <option value="Lt">Litro (Lt)</option>
- <option value="Unidad">Unidad</option>
- <option value="Metro">Metro</option>
- <option value="Paquete">Paquete</option>
- </select>
-  
- <label class="form__label" for="cantidad">Cantidad</label>
- <input class="form__input" type="number" id="cantidad" name="cantidad" step="0.01" required>
- </div>
- <div class="form__column">
- <label class="form__label" for="valorUnitario">Valor unitario</label>
- <input class="form__input" type="number" id="valorUnitario" name="valorUnitario" step="0.01" required>
- 
-  <label class="form__label" for="valorTotal">Valor Total</label>
- <input class="form__input" type="number" id="valorTotal" name="valorTotal" step="0.01" readonly required>
- 
- <label class="form__label" for="descripcion">Descripción</label>
- <input class="form__input" type="text" id="descripcion" name="descripcion" required>
- <label class="form__label" for="estado">Estado</label>
- <select id="estado" name="estado" class="form__input" required>
- <option value="">Seleccione una opción</option>
- <option value="Activo">Activo</option>
- <option value="Inactivo">Inactivo</option>
- </select>
- </div>
-</div>
-<div class="form__btn-group">
- <button type="submit" class="form__btn form__btn--registrar">Crear</button>
- <a href="../homes/home-insumos.html" class="btn__secundary">Cancelar</a>
-</div>
-</form>
-</main>
-<div class="gov-bottom">
-<img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
-</div>
+    <script>
+        (function () {
+            const userDataString = sessionStorage.getItem('userData');
+            const user = userDataString ? JSON.parse(userDataString) : null;
 
-<script>
-const showError = text => {
-const msg = document.getElementById('mensajeValidacion');
-msg.textContent = text;
-msg.classList.remove('success'); 
-msg.classList.add('error');
-};
+            // 1. COMPROBAR INICIO DE SESIÓN
+            if (!user) {
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
 
- const showSuccess = text => {
-  const msg = document.getElementById('mensajeValidacion');
-  msg.textContent = text;
-  msg.classList.remove('error');
-  msg.classList.add('success');
-};
+            const userRole = user.role;
 
-// --- CÁLCULO AUTOMÁTICO DEL VALOR TOTAL (CAMBIO 2) ---
- const cantidadInput = document.getElementById('cantidad');
- const valorUnitarioInput = document.getElementById('valorUnitario');
- const valorTotalInput = document.getElementById('valorTotal');
+            // 2. DEFINIR REGLAS DE PERMISOS (Solo Admin y Superadmin pueden crear insumos)
+            const allowedRoles = ['admin', 'superadmin'];
 
- const calcularValorTotal = () => {
-  const cantidad = parseFloat(cantidadInput.value) || 0;
-  const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
+            // 3. VALIDAR PERMISO
+            if (!allowedRoles.includes(userRole)) {
+                alert('Acceso Denegado: Su rol no tiene permiso para crear insumos.');
+                window.location.href = '/fronted/public/views/insumos/listar_insumo.html';
+                return;
+            }
+        })();
+    </script>
 
-  let valorTotal = cantidad * valorUnitario;
+    <div class="page__banner--top">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="page__banner__img">
+    </div>
 
-// Muestra el valor total, asegurando que no sea negativo y con 2 decimales
-  valorTotalInput.value = (valorTotal > 0 ? valorTotal : 0).toFixed(2);
-};
+    <header class="header"></header>
 
-// Asignar el cálculo a los eventos de cambio
- cantidadInput.addEventListener('input', calcularValorTotal);
- valorUnitarioInput.addEventListener('input', calcularValorTotal);
+    <main class="form-container">
+        <form class="form" id="crear-insumo-form" enctype="multipart/form-data" novalidate>
+            <h2 class="form__title">Datos Insumos</h2>
+            <div id="mensajeValidacion" class="form__message"></div>
 
-// Inicializar el cálculo al cargar la página (por si hay valores previos)
- document.addEventListener('DOMContentLoaded', calcularValorTotal);
-// --------------------------------------------------------------------
+            <div class="form__row">
+                <div class="form__column">
+                    <label class="form__label" for="image">Cargar imagen</label>
+                    <input class="form__input form__input--imagen" type="file" id="image" name="image" accept="image/*">
 
+                    <label class="form__label" for="tipoInsumo">Tipo insumo</label>
+                    <select class="form__input" id="tipoInsumo" name="tipoInsumo" required>
+                        <option value="">Seleccione el tipo de insumo</option>
+                        <option value="Químico">Químico</option>
+                        <option value="Físico">Físico</option>
+                        <option value="Orgánico">Orgánico</option>
+                        <option value="Herramienta">Herramienta</option>
+                        <option value="Suministro">Suministro</option>
+                    </select>
 
- document.getElementById('crear-insumo-form').addEventListener('submit', async e => {
-  e.preventDefault();
+                    <label class="form__label" for="nombreInsumo">Nombre insumo</label>
+                    <input class="form__input" type="text" id="nombreInsumo" name="nombreInsumo" required>
 
-// Recogiendo valores sin .trim() para los <select>
-  const tipoInsumo = document.getElementById('tipoInsumo').value; 
-  const nombreInsumo = document.getElementById('nombreInsumo').value.trim();
-  const unidadMedida = document.getElementById('unidadMedida').value;
-  const cantidad = document.getElementById('cantidad').value;
-  const valorUnitario = document.getElementById('valorUnitario').value;
-// El valorTotal se sigue recogiendo aunque esté en readonly, pero lo eliminaremos del backend
-  const valorTotal = document.getElementById('valorTotal').value; 
-  const descripcion = document.getElementById('descripcion').value.trim();
-  const estado = document.getElementById('estado').value;
-  const imageInput = document.getElementById('image');
+                    <label class="form__label" for="unidadMedida">Unidad de medida</label>
+                    <select class="form__input" id="unidadMedida" name="unidadMedida" required>
+                        <option value="">Seleccione la unidad</option>
+                        <option value="Kg">Kilogramo (Kg)</option>
+                        <option value="Lt">Litro (Lt)</option>
+                        <option value="Unidad">Unidad</option>
+                        <option value="Metro">Metro</option>
+                        <option value="Paquete">Paquete</option>
+                    </select>
 
-  document.getElementById('mensajeValidacion').textContent = '';
+                    <label class="form__label" for="cantidad">Cantidad</label>
+                    <input class="form__input" type="number" id="cantidad" name="cantidad" step="0.01" required>
+                </div>
 
-// Validaciones
-  if (!tipoInsumo || !nombreInsumo || !unidadMedida || cantidad === '' ||
-  valorUnitario === '' || !descripcion || !estado) { // Eliminamos 'valorTotal' de la validación
- showError('Todos los campos son obligatorios. Por favor, asegúrate de seleccionar el Tipo Insumo, la Unidad de Medida y el Estado.');
- return;
-}
-  if (isNaN(cantidad) || parseFloat(cantidad) <= 0) {
- showError('La cantidad debe ser un número mayor que 0');
- return;
-}
-  if (isNaN(valorUnitario) || parseFloat(valorUnitario) < 0) {
- showError('El valor unitario debe ser un número igual o mayor que 0');
- return;
-}
-// Eliminamos la validación de valorTotal aquí ya que se calcula.
+                <div class="form__column">
+                    <label class="form__label" for="valorUnitario">Valor unitario</label>
+                    <input class="form__input" type="number" id="valorUnitario" name="valorUnitario" step="0.01" required>
 
-  if (descripcion.length < 3) {
- showError('La descripción debe tener al menos 3 caracteres');
- return;
-}
+                    <label class="form__label" for="valorTotal">Valor Total</label>
+                    <input class="form__input" type="number" id="valorTotal" name="valorTotal" step="0.01" readonly required>
 
-// Construir FormData (valorTotal se envía, pero el backend lo ignorará y recalculará)
-  const formData = new FormData();
-  formData.append('tipoInsumo', tipoInsumo);
-  formData.append('nombreInsumo', nombreInsumo);
-  formData.append('unidadMedida', unidadMedida);
-  formData.append('cantidad', cantidad);
-  formData.append('valorUnitario', valorUnitario);
-// formData.append('valorTotal', valorTotal); <--- No es necesario, pero si se deja, el backend lo ignora.
-  formData.append('descripcion', descripcion);
-  formData.append('estado', estado);
-  if (imageInput.files[0]) {
- formData.append('image', imageInput.files[0]);
-}
+                    <label class="form__label" for="descripcion">Descripción</label>
+                    <input class="form__input" type="text" id="descripcion" name="descripcion" required>
 
-  try {
- const res = await fetch('http://localhost:3000/insumo', {
-  method: 'POST',
-  body: formData
- });
- if (!res.ok) {
-  const err = await res.json();
-  throw new Error(err.error || 'Error al crear insumo');
- }
- alert(' Insumo creado exitosamente');
- window.location.href = 'listar_insumo.html';
-} catch (error) {
- showError(error.message);
-}
-});
-</script>
+                    <label class="form__label" for="estado">Estado</label>
+                    <select id="estado" name="estado" class="form__input" required>
+                        <option value="">Seleccione una opción</option>
+                        <option value="Activo">Activo</option>
+                        <option value="Inactivo">Inactivo</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="form__btn-group">
+                <button type="submit" class="form__btn form__btn--registrar">Crear</button>
+                <a href="../homes/home-insumos.html" class="btn__secundary">Cancelar</a>
+            </div>
+        </form>
+    </main>
+
+    <div class="gov-bottom">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom">
+    </div>
+
+    <script>
+        const showError = text => {
+            const msg = document.getElementById('mensajeValidacion');
+            msg.textContent = text;
+            msg.classList.remove('success');
+            msg.classList.add('error');
+        };
+
+        const showSuccess = text => {
+            const msg = document.getElementById('mensajeValidacion');
+            msg.textContent = text;
+            msg.classList.remove('error');
+            msg.classList.add('success');
+        };
+
+        // --- CÁLCULO AUTOMÁTICO DEL VALOR TOTAL ---
+        const cantidadInput = document.getElementById('cantidad');
+        const valorUnitarioInput = document.getElementById('valorUnitario');
+        const valorTotalInput = document.getElementById('valorTotal');
+
+        const calcularValorTotal = () => {
+            const cantidad = parseFloat(cantidadInput.value) || 0;
+            const valorUnitario = parseFloat(valorUnitarioInput.value) || 0;
+            let valorTotal = cantidad * valorUnitario;
+
+            // Muestra el valor total, asegurando que no sea negativo y con 2 decimales
+            valorTotalInput.value = (valorTotal > 0 ? valorTotal : 0).toFixed(2);
+        };
+
+        // Asignar el cálculo a los eventos de cambio
+        cantidadInput.addEventListener('input', calcularValorTotal);
+        valorUnitarioInput.addEventListener('input', calcularValorTotal);
+
+        // Inicializar el cálculo al cargar la página
+        document.addEventListener('DOMContentLoaded', calcularValorTotal);
+        // --------------------------------------------------------------------
+
+        document.getElementById('crear-insumo-form').addEventListener('submit', async e => {
+            e.preventDefault();
+
+            // Recogiendo valores sin .trim() para los <select>
+            const tipoInsumo = document.getElementById('tipoInsumo').value;
+            const nombreInsumo = document.getElementById('nombreInsumo').value.trim();
+            const unidadMedida = document.getElementById('unidadMedida').value;
+            const cantidad = document.getElementById('cantidad').value;
+            const valorUnitario = document.getElementById('valorUnitario').value;
+            const valorTotal = document.getElementById('valorTotal').value;
+            const descripcion = document.getElementById('descripcion').value.trim();
+            const estado = document.getElementById('estado').value;
+            const imageInput = document.getElementById('image');
+
+            document.getElementById('mensajeValidacion').textContent = '';
+
+            // Validaciones
+            if (!tipoInsumo || !nombreInsumo || !unidadMedida || cantidad === '' ||
+                valorUnitario === '' || !descripcion || !estado) {
+                showError('Todos los campos son obligatorios. Por favor, asegúrate de seleccionar el Tipo Insumo, la Unidad de Medida y el Estado.');
+                return;
+            }
+
+            if (isNaN(cantidad) || parseFloat(cantidad) <= 0) {
+                showError('La cantidad debe ser un número mayor que 0');
+                return;
+            }
+
+            if (isNaN(valorUnitario) || parseFloat(valorUnitario) < 0) {
+                showError('El valor unitario debe ser un número igual o mayor que 0');
+                return;
+            }
+
+            if (descripcion.length < 3) {
+                showError('La descripción debe tener al menos 3 caracteres');
+                return;
+            }
+
+            // Construir FormData
+            const formData = new FormData();
+            formData.append('tipoInsumo', tipoInsumo);
+            formData.append('nombreInsumo', nombreInsumo);
+            formData.append('unidadMedida', unidadMedida);
+            formData.append('cantidad', cantidad);
+            formData.append('valorUnitario', valorUnitario);
+            formData.append('descripcion', descripcion);
+            formData.append('estado', estado);
+            if (imageInput.files[0]) {
+                formData.append('image', imageInput.files[0]);
+            }
+
+            try {
+                const res = await fetch('http://localhost:3000/insumo', {
+                    method: 'POST',
+                    body: formData
+                });
+
+                if (!res.ok) {
+                    const err = await res.json();
+                    throw new Error(err.error || 'Error al crear insumo');
+                }
+
+                alert('Insumo creado exitosamente');
+                window.location.href = 'listar_insumo.html';
+            } catch (error) {
+                showError(error.message);
+            }
+        });
+    </script>
 </body>
+
 </html>

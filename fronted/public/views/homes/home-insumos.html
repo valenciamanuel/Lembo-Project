@@ -1,84 +1,93 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Home Insumos</title>
-  <link rel="stylesheet" href="/fronted/public/css/pages/homes/stylieshome-insumos-sensores.css"/>
-  <script src="/fronted/public/views/components/grid.js" defer></script>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>Home Insumos</title>
+    <link rel="stylesheet" href="/fronted/public/css/pages/homes/stylieshome-insumos-sensores.css"/>
+    <script src="/fronted/public/views/components/grid.js" defer></script>
 </head>
 <body>
-    <div class="header-banner">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img"/>
-  </div>
+    <div class="header-banner">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Top" class="header-banner__img"/>
+    </div>
 
-    <header class="header">
-    <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="header__logo"/>
-    <nav class="header__nav">
-      <a href="index.html" class="header__link">Inicio</a>
-      <a href="home-cultivo-3.html" class="header__link">Cultivos</a>
-      <a href="home-sensores.html" class="header__link">Sensores</a>
-      <a id="btnLogout" class="header__link" style="cursor:pointer">Cerrar Sesión</a>
-    </nav>
-  </header>
+    <header class="header">
+        <img src="/fronted/public/img/logo-de-Sena-sin-fondo-Blanco-300x300.png" alt="Logo SENA" class="header__logo"/>
+        <nav class="header__nav">
+            <a href="index.html" class="header__link">Inicio</a>
+            <a href="home-cultivo-3.html" class="header__link">Cultivos</a>
+            <a href="home-sensores.html" class="header__link">Sensores</a>
+            <a id="btnLogout" class="header__link" style="cursor:pointer">Cerrar Sesión</a>
+        </nav>
+    </header>
 
-  <main class="background">
-        <div class="top-boxes">
-      <div class="top-boxes__item"><a href="../insumos/crear_inusomo.html">Crear insumo</a></div>
-      <div class="top-boxes__item"><a href="../insumos/visualizar_insumo.html">Visualizar insumo</a></div>
-      <div class="top-boxes__item"><a href="../insumos/listar_insumo.html">Listar insumo</a></div>
-      <div class="top-boxes__item"><a href="../insumos/listar_uso_insumo.html">Listar Uso de Insumos</a></div>
-    </div>
+    <main class="background">
+        <div class="top-boxes">
+            <div class="top-boxes__item">
+                <a href="../insumos/crear_inusomo.html">Crear insumo</a>
+            </div>
+            <div class="top-boxes__item">
+                <a href="../insumos/visualizar_insumo.html">Visualizar insumo</a>
+            </div>
+            <div class="top-boxes__item">
+                <a href="../insumos/listar_insumo.html">Listar insumo</a>
+            </div>
+            <div class="top-boxes__item">
+                <a href="../insumos/listar_uso_insumo.html">Listar Uso de Insumos</a>
+            </div>
+        </div>
 
-        <div class="grid"></div>
-  </main>
+        <div class="grid"></div>
+    </main>
 
-    <div class="footer-banner">
-    <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="footer-banner__img"/>
-    </div>
+    <div class="footer-banner">
+        <img src="/fronted/public/img/GOVPRICIPAL.jpg" alt="GOV Bottom" class="footer-banner__img"/>
+    </div>
 
-  <script>
-    (function () {
-      // 🔑 CLAVE CORREGIDA: Lee 'userData' de sessionStorage (donde se guarda en el login)
-      const userDataString = sessionStorage.getItem('userData');
-      const user = userDataString ? JSON.parse(userDataString) : null;
-      
-      if (!user) {
-        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
-        return;
-      }
-      const role = user.role;
+    <script>
+        (function () {
+            // 🔑 CLAVE CORREGIDA: Lee 'userData' de sessionStorage (donde se guarda en el login)
+            const userDataString = sessionStorage.getItem('userData');
+            const user = userDataString ? JSON.parse(userDataString) : null;
 
-      const rules = {
-        visitante: ['Sensores', 'Cultivos', 'Visualizar insumo'],
-        personal: ['Sensores'],
-        admin: ['Inicio','Cultivos','Sensores','Crear insumo','Visualizar insumo','Listar insumo','Listar Uso de Insumos'],
-        superadmin: ['Inicio','Cultivos','Sensores','Crear insumo','Visualizar insumo','Listar insumo','Listar Uso de Insumos']
-      };
+            if (!user) {
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+                return;
+            }
 
-      // ... (Lógica de filtrado de enlaces y cajas se mantiene igual)
+            const role = user.role;
 
-      document.querySelectorAll('.header__link').forEach(link => {
-        const txt = link.textContent.trim();
-        if (txt === 'Cerrar Sesión') return;
-        if (!rules[role] || !rules[role].includes(txt)) link.remove();
-      });
+            const rules = {
+                visitante: ['Sensores', 'Cultivos', 'Visualizar insumo'],
+                personal: ['Sensores'],
+                admin: ['Inicio','Cultivos','Sensores','Crear insumo','Visualizar insumo','Listar insumo','Listar Uso de Insumos'],
+                superadmin: ['Inicio','Cultivos','Sensores','Crear insumo','Visualizar insumo','Listar insumo','Listar Uso de Insumos']
+            };
 
-      document.querySelectorAll('.top-boxes__item a').forEach(a => {
-        const txt = a.textContent.trim();
-        if (!rules[role] || !rules[role].includes(txt)) {
-          a.parentElement.remove();
-        }
-      });
+            // Filtrado de enlaces en el header
+            document.querySelectorAll('.header__link').forEach(link => {
+                const txt = link.textContent.trim();
+                if (txt === 'Cerrar Sesión') return;
+                if (!rules[role] || !rules[role].includes(txt)) link.remove();
+            });
 
-      document.getElementById('btnLogout').onclick = function () {
-        // 🔑 CLAVE CORREGIDA: Limpiar sessionStorage
-        sessionStorage.removeItem('userData');
-        sessionStorage.removeItem('userToken'); // Limpia también el token si lo usas
-        localStorage.removeItem('lembo_user_data'); // Limpieza de la clave antigua por si acaso
-        window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
-      };
-    })();
-  </script>
+            // Filtrado de cajas superiores
+            document.querySelectorAll('.top-boxes__item a').forEach(a => {
+                const txt = a.textContent.trim();
+                if (!rules[role] || !rules[role].includes(txt)) {
+                    a.parentElement.remove();
+                }
+            });
+
+            // Logout
+            document.getElementById('btnLogout').onclick = function () {
+                sessionStorage.removeItem('userData');
+                sessionStorage.removeItem('userToken'); // Limpia también el token si lo usas
+                localStorage.removeItem('lembo_user_data'); // Limpieza de la clave antigua
+                window.location.href = '/fronted/public/views/usuarios/inicio_sesion.html';
+            };
+        })();
+    </script>
 </body>
 </html>
